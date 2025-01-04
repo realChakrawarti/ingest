@@ -19,7 +19,9 @@ export async function PATCH(request: NextRequest, ctx: ContextParams) {
   const payload = await request.json();
   const result = await addArchiveVideo(userId, archiveId, payload);
 
+  // Reset page cache when archives updates
   revalidatePath("/explore/archives");
+  revalidatePath(`/a/${archiveId}`);
 
   return NxResponse.success(result, {}, 201);
 }
