@@ -1,8 +1,8 @@
 import { collection, doc, getDoc, getDocs } from "firebase/firestore";
 
 import { toUTCString } from "~/shared/lib/date-time/to-utc-string";
+import { db } from "~/shared/lib/firebase/client";
 import { COLLECTION } from "~/shared/lib/firebase/collections";
-import { db } from "~/shared/lib/firebase/config";
 
 /**
  * This function returns all archive of a user

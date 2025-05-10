@@ -1,7 +1,5 @@
-import { doc, getDoc } from "firebase/firestore";
-
+import { adminDb } from "~/shared/lib/firebase/admin";
 import { COLLECTION } from "~/shared/lib/firebase/collections";
-import { db } from "~/shared/lib/firebase/config";
 
 /**
  * Retrieves the next scheduled update time for a specific catalog.
@@ -10,8 +8,8 @@ import { db } from "~/shared/lib/firebase/config";
  * @returns The timestamp of the catalog's last update
  */
 export async function getNextUpdate(catalogId: string) {
-  const catalogRef = doc(db, COLLECTION.catalogs, catalogId);
-  const catalogSnap = await getDoc(catalogRef);
+  const catalogRef = adminDb.collection(COLLECTION.catalogs).doc(catalogId);
+  const catalogSnap = await catalogRef.get();
   const catalogData = catalogSnap.data();
 
   return catalogData?.data.updatedAt.toDate();

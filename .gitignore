@@ -43,3 +43,6 @@ firestore-debug.log
 database-debug.log
 ui-debug.log
 
+# api-testing
+/ingest-api-collection
+

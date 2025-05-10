@@ -9,6 +9,9 @@ const envVariables = z.object({
   NEXT_PUBLIC_FIREBASE_API_KEY: z.string(),
   OCTOKIT_API: z.string(),
   YOUTUBE_API_KEY: z.string(),
+  FIREBASE_CLIENT_EMAIL: z.string(),
+  FIREBASE_PRIVATE_KEY: z.string(),
+  FIREBASE_PROJECT_ID: z.string(),
 });
 
 envVariables.parse(process.env);

@@ -1,16 +1,12 @@
-import { BetaAnalyticsDataClient, protos } from "@google-analytics/data";
-import { doc, getDoc, setDoc } from "firebase/firestore";
 import { revalidatePath } from "next/cache";
 
+import appConfig from "~/shared/app-config";
 import { YOUTUBE_CHANNEL_PLAYLIST_VIDEOS } from "~/shared/lib/api/youtube-endpoints";
-import {
-  FOUR_HOURS,
-  ONE_DAY,
-  ONE_MONTH,
-  ONE_WEEK,
-} from "~/shared/lib/constants";
+import { timeMs } from "~/shared/lib/constants";
+import { adminDb } from "~/shared/lib/firebase/admin";
 import { COLLECTION } from "~/shared/lib/firebase/collections";
-import { db } from "~/shared/lib/firebase/config";
+
+import { getPageviewByCatalogId } from "./get-pageviews-by-catalog-id";
 
 type VideoMetadata = {
   description: string;
@@ -28,18 +24,6 @@ type videoListData = {
   week: VideoMetadata[];
   month: VideoMetadata[];
 };
-
-const LIMIT = 10;
-
-const analyticsDataClient = new BetaAnalyticsDataClient({
-  credentials: {
-    client_email: process.env.GOOGLE_CLIENT_EMAIL,
-    // TODO: Consider storing private key as encoded base64, then decode and use
-    private_key: process.env
-      .GOOGLE_ANALYTICS_PRIVATE_KEY!.split(String.raw`\n`)
-      .join("\n"),
-  },
-});
 
 /**
  * Retrieves and manages video metadata for a specific catalog.
@@ -69,10 +53,10 @@ export async function getVideosByCatalog(catalogId: string) {
     week: [],
   };
 
-  const catalogRef = doc(db, COLLECTION.catalogs, catalogId);
-  const catalogSnap = await getDoc(catalogRef);
+  const catalogRef = adminDb.collection(COLLECTION.catalogs).doc(catalogId);
+  const catalogSnap = await catalogRef.get();
 
-  if (!catalogSnap.exists()) {
+  if (!catalogSnap.exists) {
     return "Document doesn't exists";
   }
 
@@ -80,7 +64,7 @@ export async function getVideosByCatalog(catalogId: string) {
 
   const userRef = catalogSnapData?.videoRef;
 
-  const userCatalogSnap = await getDoc(userRef);
+  const userCatalogSnap = await userRef.get();
   const userSnapData: any = userCatalogSnap.data();
   const channelListData = userSnapData?.channels;
 
@@ -93,31 +77,52 @@ export async function getVideosByCatalog(catalogId: string) {
   // Get last updated, check if time has been 6 hours or not, if so make call to YouTube API,
   // if not fetch from firestore
   const currentTime = Date.now();
-  const deltaTime = FOUR_HOURS;
 
-  const lastUpdated = catalogSnapData.data.updatedAt.toDate();
+  const lastUpdated = catalogSnapData?.data.updatedAt.toDate();
   const lastUpdatedTime = new Date(lastUpdated).getTime();
 
   let recentUpdate = new Date(currentTime);
   let pageviews = 0;
 
-  if (currentTime - lastUpdatedTime > deltaTime) {
-    pageviews = await getPageviewByCatalogId(catalogId);
-
-    // TODO: Parallelize the requests made
-    if (channelListData?.length) {
-      for (const channel of channelListData) {
-        const data = await getChannelVideos(channel);
-        videoList = [...videoList, ...data];
-      }
+  if (currentTime - lastUpdatedTime > timeMs["4h"]) {
+    try {
+      pageviews = await getPageviewByCatalogId(catalogId);
+    } catch (err) {
+      console.error(
+        `Unable to fetch pageview for catalog id ${catalogId}\n${JSON.stringify(
+          err
+        )}`
+      );
     }
+
+    const videoListPromise: Promise<VideoMetadata[]>[] = [];
+
+    // TODO: To update channel logo, we could perhaps create a array of channel id for playlist and channel for a catalog
+    // Map that array so only unique id remains, if it is less than 50, we could use YOUTUBE_CHANNELS_INFORMATION endpoint
+    // to fetch and update the channel and playlist meta using catalog's `videoRef` field
+
+    // Or instead of making a single request less than 50, we could make 2 since schema for channel meta and playlist
+    // meta are different on firestore doc, time frame to check periodically could be once a week
 
     if (playlistData?.length) {
-      for (const playlist of playlistData) {
-        const data = await getPlaylistVideos(playlist);
-        videoList = [...videoList, ...data];
-      }
+      playlistData?.forEach((playlist: any) => {
+        videoListPromise.push(getPlaylistVideos(playlist));
+      });
     }
+
+    if (channelListData?.length) {
+      channelListData?.forEach((channel: any) => {
+        videoListPromise.push(getChannelVideos(channel));
+      });
+    }
+
+    const results = await Promise.allSettled(videoListPromise);
+
+    results.forEach((result) => {
+      if (result.status === "fulfilled") {
+        videoList.push(...result.value);
+      }
+    });
 
     // Sort the videoList by time
     videoList.sort((a, b) => {
@@ -130,9 +135,9 @@ export async function getVideosByCatalog(catalogId: string) {
     for (const video of videoList) {
       const videoPublishedAt = new Date(video.publishedAt).getTime();
 
-      if (currentTime - videoPublishedAt < ONE_DAY) {
+      if (currentTime - videoPublishedAt < timeMs["1d"]) {
         videoFilterData.day.push(video);
-      } else if (currentTime - videoPublishedAt < ONE_WEEK) {
+      } else if (currentTime - videoPublishedAt < timeMs["1w"]) {
         videoFilterData.week.push(video);
       } else {
         videoFilterData.month.push(video);
@@ -149,30 +154,33 @@ export async function getVideosByCatalog(catalogId: string) {
       pageviews: pageviews,
     };
 
-    await setDoc(catalogRef, catalogVideos, { merge: true });
+    await catalogRef.set(catalogVideos, { merge: true });
 
     revalidatePath(`/c/${catalogId}`);
     console.log(`Cached invalidated /c/${catalogId}`);
   } else {
-    videoFilterData = catalogSnapData.data.videos;
-    totalVideos = catalogSnapData.data.totalVideos;
+    videoFilterData = catalogSnapData?.data.videos;
+    totalVideos = catalogSnapData?.data.totalVideos;
     recentUpdate = lastUpdated;
     console.log(
-      `Returning cached data, next update on ${new Date(
-        lastUpdatedTime + FOUR_HOURS
+      `Returning cached data for the catalog ${catalogId}, next update on ${new Date(
+        lastUpdatedTime + timeMs["4h"]
       )}`
     );
   }
 
   return {
-    description: catalogSnapData.description,
-    nextUpdate: new Date(recentUpdate.getTime() + FOUR_HOURS).toUTCString(),
-    pageviews: catalogSnapData.pageviews ?? 0,
-    title: catalogSnapData.title,
+    description: catalogSnapData?.description,
+    nextUpdate: new Date(recentUpdate.getTime() + timeMs["4h"]).toUTCString(),
+    pageviews: catalogSnapData?.pageviews ?? 0,
+    title: catalogSnapData?.title,
     totalVideos: totalVideos,
     videos: videoFilterData,
   };
 }
+
+// TODO: Both `getPlaylistVideos` and `getChannelVideos` is doing similar things with different params.
+// Consider merging the two as both are used to create the same video list for a catalog
 
 /**
  * Retrieves videos from a specified YouTube playlist, filtering out private and older videos.
@@ -191,20 +199,25 @@ async function getPlaylistVideos(playlist: any) {
   const playlistItemData: VideoMetadata[] = [];
   try {
     const result = await fetch(
-      YOUTUBE_CHANNEL_PLAYLIST_VIDEOS(playlist.id, LIMIT),
+      YOUTUBE_CHANNEL_PLAYLIST_VIDEOS(playlist.id, appConfig.catalogVideoLimit),
       { cache: "no-store" }
     ).then((data) => data.json());
 
     const currentTime = Date.now();
     const playlistVideoItems = result.items;
 
+    if (!playlistVideoItems.length) {
+      console.warn(`No uploads found in the playlist: ${playlist.id}.`);
+      return playlistItemData;
+    }
+
     for (const item of playlistVideoItems) {
       // Don't return video which are private, deleted (privacyStatusUnspecified) or are older than 30 days (ONE MONTH)
-      const videoPublished = item.contentDetails.videoPublishedAt;
+      const videoPublished = item.contentDetails?.videoPublishedAt;
       if (
         item.status.privacyStatus === "private" ||
         item.status.privacyStatus === "privacyStatusUnspecified" ||
-        currentTime - new Date(videoPublished).getTime() > ONE_MONTH
+        currentTime - new Date(videoPublished).getTime() > timeMs["1m"]
       ) {
         continue;
       }
@@ -222,6 +235,11 @@ async function getPlaylistVideos(playlist: any) {
     }
   } catch (err) {
     console.error(err);
+    throw new Error(
+      `Failed to fetch videos of playlist id: ${playlist.id}\n${JSON.stringify(
+        err
+      )}`
+    );
   }
 
   return playlistItemData;
@@ -244,19 +262,25 @@ async function getChannelVideos(channel: any) {
   const playlistItemData: VideoMetadata[] = [];
   try {
     const result = await fetch(
-      YOUTUBE_CHANNEL_PLAYLIST_VIDEOS(playlistId, LIMIT),
+      YOUTUBE_CHANNEL_PLAYLIST_VIDEOS(playlistId, appConfig.catalogVideoLimit),
       { cache: "no-store" }
     ).then((data) => data.json());
 
     const currentTime = Date.now();
     const playlistVideoItems = result.items;
 
+    if (!playlistVideoItems.length) {
+      console.warn(`No uploads found in the playlist: ${playlistId}.`);
+      return playlistItemData;
+    }
+
     for (const item of playlistVideoItems) {
       // Don't return video which are private and or older than 30 days (ONE MONTH)
-      const videoPublished = item.contentDetails.videoPublishedAt;
+      const videoPublished = item.contentDetails?.videoPublishedAt;
       if (
         item.status.privacyStatus === "private" ||
-        currentTime - new Date(videoPublished).getTime() > ONE_MONTH
+        item.status.privacyStatus === "privacyStatusUnspecified" ||
+        currentTime - new Date(videoPublished).getTime() > timeMs["1m"]
       ) {
         continue;
       }
@@ -274,53 +298,14 @@ async function getChannelVideos(channel: any) {
     }
   } catch (err) {
     console.error(err);
-  } finally {
-    return playlistItemData;
-  }
-}
-
-async function getPageviewByCatalogId(catalogId: string): Promise<number> {
-  // TODO: Make a function to check if the code is running on development or on production server
-  if (process.env.NODE_ENV === "development") {
-    return 69;
+    throw new Error(
+      `Failed to fetch videos of playlist id: ${playlistId}\n${JSON.stringify(
+        err
+      )}`
+    );
   }
 
-  const request = {
-    dateRanges: [
-      {
-        startDate: "90daysAgo",
-        endDate: "today",
-      },
-    ],
-    dimensionFilter: {
-      filter: {
-        fieldName: "pagePath",
-        stringFilter: {
-          matchType: "EXACT",
-          value: `/c/${catalogId}`,
-        },
-      },
-    },
-    dimensions: [
-      {
-        name: "pagePath",
-      },
-    ],
-    metrics: [
-      {
-        name: "screenPageViews",
-      },
-    ],
-    property: `properties/${process.env.GOOGLE_ANALYTICS_PROPERTY_ID}`,
-  } as protos.google.analytics.data.v1beta.IRunReportRequest;
-
-  console.log(`Querying pageview of catalog: ${catalogId}`);
-
-  // Refer: https://github.com/googleanalytics/nodejs-docs-samples/blob/e21670ab2c79a12c45bffa10ac26e0324279a718/google-analytics-data/run_report.js#L33-L93
-  const [response] = await analyticsDataClient.runReport(request);
-
-  const data = transformAnalyticsData(response);
-  return data?.at(0)?.pageviews ?? 0;
+  return playlistItemData;
 }
 
 /**
@@ -333,25 +318,6 @@ async function getPageviewByCatalogId(catalogId: string): Promise<number> {
  * This function transforms a channel ID by replacing the second character with 'U',
  * which is a convention used by YouTube to generate playlist IDs from channel IDs.
  */
-function createPlaylistId(channel: string) {
-  return channel.substring(0, 1) + "U" + channel.substring(2);
-}
-
-function transformAnalyticsData(
-  response: protos.google.analytics.data.v1beta.IRunReportResponse
-) {
-  // Check if response exists and has rows
-  if (!response?.rows) {
-    return [];
-  }
-
-  // Map through the rows and create an object with id and value of the catalog
-  return response.rows.map((row) => {
-    if (row.dimensionValues && row.metricValues) {
-      return {
-        id: row?.dimensionValues[0]?.value,
-        pageviews: parseInt(row?.metricValues[0]?.value ?? "0", 10),
-      };
-    }
-  });
+function createPlaylistId(channelId: string) {
+  return channelId.substring(0, 1) + "U" + channelId.substring(2);
 }
