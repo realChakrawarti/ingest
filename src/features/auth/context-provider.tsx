@@ -19,7 +19,7 @@ import {
 
 import { useToast } from "~/shared/hooks/use-toast";
 import fetchApi from "~/shared/lib/api/fetch";
-import { auth } from "~/shared/lib/firebase/config";
+import { auth } from "~/shared/lib/firebase/client";
 
 type UserContext = {
   user: User | null;

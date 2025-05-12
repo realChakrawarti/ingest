@@ -1,8 +1,8 @@
 import { arrayUnion, doc, updateDoc } from "firebase/firestore";
 
 import { YOUTUBE_CHANNELS_INFORMATION } from "~/shared/lib/api/youtube-endpoints";
+import { db } from "~/shared/lib/firebase/client";
 import { COLLECTION } from "~/shared/lib/firebase/collections";
-import { db } from "~/shared/lib/firebase/config";
 import { PlaylistItem } from "~/shared/types-schema/types";
 
 /**

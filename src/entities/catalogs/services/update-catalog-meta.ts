@@ -1,7 +1,7 @@
 import { doc, updateDoc } from "firebase/firestore";
 
+import { db } from "~/shared/lib/firebase/client";
 import { COLLECTION } from "~/shared/lib/firebase/collections";
-import { db } from "~/shared/lib/firebase/config";
 
 type CatalogMeta = {
   title: string;

@@ -1,6 +1,8 @@
-import { FirebaseOptions, initializeApp } from "firebase/app";
+import { FirebaseOptions, getApps, initializeApp } from "firebase/app";
 import { connectAuthEmulator, getAuth } from "firebase/auth";
 import { connectFirestoreEmulator, getFirestore } from "firebase/firestore";
+
+const appInstanceName = "ytcatalog-client";
 
 // TODO: Use service account, for account token validation?
 const firebaseConfig: FirebaseOptions = {
@@ -12,11 +14,28 @@ const firebaseConfig: FirebaseOptions = {
   storageBucket: "ytcatalog707.appspot.com",
 };
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
+function getClientFirebaseApp() {
+  const apps = getApps();
+  // TODO: Maybe use Array.find instead of filter?
+  const clientFirebaseApp = apps.filter((app) => app.name === appInstanceName);
+  if (!clientFirebaseApp.length) {
+    try {
+      return initializeApp(firebaseConfig, appInstanceName);
+    } catch (err) {
+      console.error(
+        "Failed to initialize Firebase client app:",
+        JSON.stringify(err)
+      );
 
-// Initialize Firestore
+      throw err;
+    }
+  }
+  return clientFirebaseApp[0];
+}
+
+const app = getClientFirebaseApp();
+
+const auth = getAuth(app);
 const db = getFirestore(app);
 
 import localFirebase from "../../../../firebase.json";

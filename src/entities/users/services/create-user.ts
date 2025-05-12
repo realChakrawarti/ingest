@@ -7,8 +7,8 @@
 
 import { doc, getDoc, setDoc } from "firebase/firestore";
 
+import { db } from "~/shared/lib/firebase/client";
 import { COLLECTION } from "~/shared/lib/firebase/collections";
-import { db } from "~/shared/lib/firebase/config";
 
 // TODO: Batch firebase calls so its atomic in nature
 export const createUser = async (uid: string): Promise<string> => {

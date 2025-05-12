@@ -1,7 +1,7 @@
 import { arrayUnion, doc, getDoc, writeBatch } from "firebase/firestore";
 
+import { db } from "~/shared/lib/firebase/client";
 import { COLLECTION } from "~/shared/lib/firebase/collections";
-import { db } from "~/shared/lib/firebase/config";
 
 export async function addArchiveVideo(
   userId: string,

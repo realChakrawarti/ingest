@@ -1,8 +1,16 @@
-import { collection, doc, getDoc, getDocs } from "firebase/firestore";
-
 import { toUTCString } from "~/shared/lib/date-time/to-utc-string";
+import { adminDb } from "~/shared/lib/firebase/admin";
 import { COLLECTION } from "~/shared/lib/firebase/collections";
-import { db } from "~/shared/lib/firebase/config";
+
+type UserCatalogs = {
+  description: string;
+  id: string;
+  title: string;
+  videoData: {
+    updatedAt: string;
+    videos: any;
+  };
+};
 
 /**
  * This function returns all catalogs of a user
@@ -10,34 +18,38 @@ import { db } from "~/shared/lib/firebase/config";
  * @returns
  */
 export async function getCatalogByUser(userId: string) {
-  let userCatalogsData: any[] = [];
+  const userCatalogsData: UserCatalogs[] = [];
 
-  const userRef = doc(db, COLLECTION.users, userId);
+  const userRef = adminDb.collection(COLLECTION.users).doc(userId);
   try {
-    const userCatalogsCollectionRef = collection(userRef, COLLECTION.catalogs);
-    const userCatalogsDoc = await getDocs(userCatalogsCollectionRef);
-    const catalogIds = userCatalogsDoc.docs.map((doc) => doc.id);
+    const userCatalogsCollectionRef = userRef.collection(COLLECTION.catalogs);
+    const userCatalogsDoc = await userCatalogsCollectionRef.get();
 
-    if (!catalogIds.length) {
+    if (userCatalogsDoc.empty) {
       return userCatalogsData;
     }
 
-    for (let i = 0; i < catalogIds.length; i++) {
-      const catalogId = catalogIds[i];
-      const catalogRef = doc(db, COLLECTION.catalogs, catalogId);
-      const catalogSnap = await getDoc(catalogRef);
-      const catalogData = catalogSnap.data();
+    const catalogIds = userCatalogsDoc.docs.map((doc) => doc.id);
 
-      userCatalogsData.push({
-        description: catalogData?.description,
-        id: catalogId,
-        title: catalogData?.title,
-        videoData: {
-          updatedAt: toUTCString(catalogData?.data?.updatedAt),
-          videos: catalogData?.data?.videos,
-        },
-      });
-    }
+    await Promise.all(
+      catalogIds.map(async (catalogId) => {
+        const catalogRef = adminDb
+          .collection(COLLECTION.catalogs)
+          .doc(catalogId);
+        const catalogSnap = await catalogRef.get();
+        const catalogData = catalogSnap.data();
+
+        userCatalogsData.push({
+          description: catalogData?.description,
+          id: catalogId,
+          title: catalogData?.title,
+          videoData: {
+            updatedAt: toUTCString(catalogData?.data?.updatedAt),
+            videos: catalogData?.data?.videos,
+          },
+        });
+      })
+    );
   } catch (err) {
     console.error(err);
   }

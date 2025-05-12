@@ -1,7 +1,7 @@
-import { GithubAuthProvider,GoogleAuthProvider } from "firebase/auth";
+import { GithubAuthProvider, GoogleAuthProvider } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 
-import { app } from "../../shared/lib/firebase/config";
+import { app } from "~/shared/lib/firebase/client";
 
 // Initialize Firestore
 export const firestore = getFirestore(app);
