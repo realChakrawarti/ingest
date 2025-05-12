@@ -30,7 +30,12 @@ function getServerFirebaseApp() {
     try {
       return initializeApp(appOptions, appInstanceName);
     } catch (err) {
-      console.error(JSON.stringify(err));
+      console.error(
+        "Failed to initialize Firebase admin app:",
+        JSON.stringify(err)
+      );
+
+      throw err;
     }
   }
   return serverFirebaseApp[0];

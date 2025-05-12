@@ -16,12 +16,18 @@ const firebaseConfig: FirebaseOptions = {
 
 function getClientFirebaseApp() {
   const apps = getApps();
+  // TODO: Maybe use Array.find instead of filter?
   const clientFirebaseApp = apps.filter((app) => app.name === appInstanceName);
   if (!clientFirebaseApp.length) {
     try {
       return initializeApp(firebaseConfig, appInstanceName);
     } catch (err) {
-      console.error(JSON.stringify(err));
+      console.error(
+        "Failed to initialize Firebase client app:",
+        JSON.stringify(err)
+      );
+
+      throw err;
     }
   }
   return clientFirebaseApp[0];

@@ -7,7 +7,7 @@ import { ValidMetadata } from "~/shared/types-schema/types";
 
 export async function getValidCatalogIds() {
   unstable_noStore();
-  let catalogListData: ValidMetadata[] = [];
+  const catalogListData: ValidMetadata[] = [];
   const catalogsCollectionRef = adminDb.collection(COLLECTION.catalogs);
 
   // Filter the catalog, where totalVideos is greater than 0 and pageviews are sorted 'desc'

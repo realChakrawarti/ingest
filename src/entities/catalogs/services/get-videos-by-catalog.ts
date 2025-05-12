@@ -64,6 +64,10 @@ export async function getVideosByCatalog(catalogId: string) {
 
   const userRef = catalogSnapData?.videoRef;
 
+  if (!userRef) {
+    return "Reference to the user doesn't exists";
+  }
+
   const userCatalogSnap = await userRef.get();
   const userSnapData: any = userCatalogSnap.data();
   const channelListData = userSnapData?.channels;
@@ -78,7 +82,7 @@ export async function getVideosByCatalog(catalogId: string) {
   // if not fetch from firestore
   const currentTime = Date.now();
 
-  const lastUpdated = catalogSnapData?.data.updatedAt.toDate();
+  const lastUpdated = catalogSnapData?.data?.updatedAt.toDate();
   const lastUpdatedTime = new Date(lastUpdated).getTime();
 
   let recentUpdate = new Date(currentTime);
@@ -97,9 +101,10 @@ export async function getVideosByCatalog(catalogId: string) {
 
     const videoListPromise: Promise<VideoMetadata[]>[] = [];
 
-    // TODO: To update channel logo, we could perhaps create a array of channel id for playlist and channel for a catalog
-    // Map that array so only unique id remains, if it is less than 50, we could use YOUTUBE_CHANNELS_INFORMATION endpoint
-    // to fetch and update the channel and playlist meta using catalog's `videoRef` field
+    // TODO: To update channel logo, we could perhaps create a array of channel id for playlist and channel for
+    // a catalog. Map that array so only unique id remains, if it is less than 50, we could use
+    // YOUTUBE_CHANNELS_INFORMATION endpoint to fetch and update the channel and playlist meta
+    // using catalog's `videoRef` field
 
     // Or instead of making a single request less than 50, we could make 2 since schema for channel meta and playlist
     // meta are different on firestore doc, time frame to check periodically could be once a week
@@ -121,6 +126,11 @@ export async function getVideosByCatalog(catalogId: string) {
     results.forEach((result) => {
       if (result.status === "fulfilled") {
         videoList.push(...result.value);
+      } else {
+        console.error(
+          `Unable to retrieve all the videos from the catalog: ${catalogId}:`,
+          result.reason
+        );
       }
     });
 
