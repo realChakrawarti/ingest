@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.5.16](https://github.com/realChakrawarti/yt-catalog/compare/v1.5.15...v1.5.16) (2025-05-12)
+
+
+### Features
+
+* integrate firebase admin sdk ([bc30bc3](https://github.com/realChakrawarti/yt-catalog/commit/bc30bc3575f5d4a4e047daab58baf6e04aecd299))
+* integrate firebase admin sdk for faster processing of queries ([ce93b47](https://github.com/realChakrawarti/yt-catalog/commit/ce93b472719107636b8bfe5c7aa4fb0773ec7972))
+
+
+### Bug Fixes
+
+* coderabbit suggestion ([558d98c](https://github.com/realChakrawarti/yt-catalog/commit/558d98c954b633926fd01984920f1d09cc71db57))
+
 ### [1.5.15](https://github.com/realChakrawarti/yt-catalog/compare/v1.5.14...v1.5.15) (2025-05-07)
 
 

@@ -1,35 +1,27 @@
-import {
-  collection,
-  doc,
-  DocumentData,
-  getDoc,
-  getDocs,
-  limit,
-  orderBy,
-  query,
-  where,
-} from "firebase/firestore";
+import { DocumentData } from "firebase-admin/firestore";
 import { unstable_noStore } from "next/cache";
 
+import { adminDb } from "~/shared/lib/firebase/admin";
 import { COLLECTION } from "~/shared/lib/firebase/collections";
-import { db } from "~/shared/lib/firebase/config";
 import { ValidMetadata } from "~/shared/types-schema/types";
 
 export async function getValidCatalogIds() {
   unstable_noStore();
-  let catalogListData: ValidMetadata[] = [];
-  const catalogsCollectionRef = collection(db, COLLECTION.catalogs);
+  const catalogListData: ValidMetadata[] = [];
+  const catalogsCollectionRef = adminDb.collection(COLLECTION.catalogs);
 
   // Filter the catalog, where totalVideos is greater than 0 and pageviews are sorted 'desc'
-  const validCatalogQuery = query(
-    catalogsCollectionRef,
-    where("data.totalVideos", ">", 0),
-    orderBy("pageviews", "desc"),
-    limit(50)
-  );
+  const validCatalogQuery = catalogsCollectionRef
+    .where("data.totalVideos", ">", 0)
+    .orderBy("pageviews", "desc")
+    .limit(50);
 
-  const catalogsDoc = await getDocs(validCatalogQuery);
-  const catalogIds = catalogsDoc.docs.map((catalog) => catalog.id);
+  const querySnapshot = await validCatalogQuery.get();
+  if (querySnapshot.empty) {
+    return catalogListData;
+  }
+
+  const catalogIds = querySnapshot.docs.map((catalog) => catalog.id);
 
   // Get the title and description of the page
   // Awaiting using a Promise.all is done to wait for the map to execute before returning the response
@@ -56,8 +48,8 @@ export async function getValidCatalogIds() {
 }
 
 const getCatalogMetadata = async (catalogId: string) => {
-  const catalogRef = doc(db, COLLECTION.catalogs, catalogId);
-  const catalogSnap = await getDoc(catalogRef);
+  const catalogRef = adminDb.collection(COLLECTION.catalogs).doc(catalogId);
+  const catalogSnap = await catalogRef.get();
   const catalogData = catalogSnap.data();
   return catalogData;
 };

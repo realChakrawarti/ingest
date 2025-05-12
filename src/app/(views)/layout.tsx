@@ -8,7 +8,6 @@ import Script from "next/script";
 import appConfig from "~/shared/app-config";
 import { Toaster } from "~/shared/ui/toaster";
 import AppSidebar from "~/widgets/app-sidebar";
-import BackgroundPattern from "~/widgets/background-pattern";
 import Footer from "~/widgets/footer";
 import Header from "~/widgets/header";
 import { ReactScan } from "~/widgets/react-scan";
@@ -40,7 +39,6 @@ export default function RootLayout({
         />
       </head>
       <body className={`min-h-full overflow-y-auto ${inter.className}`}>
-        <BackgroundPattern />
         <Providers>
           <AppSidebar />
           <div className="flex flex-col flex-1">

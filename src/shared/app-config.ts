@@ -1,13 +1,18 @@
 import packageInfo from "../../package.json" assert { type: "json" };
 
 class AppConfig {
-  private _domain: string = "707x.in";
-  private _marketName: string = "YTCatalog";
-  private _name: string = packageInfo.name;
-  private _subDomain: string = "ytcatalog";
-  private _version: string = packageInfo.version;
-  private _organization: string = "707x Labs";
-  private _githubRepo: string = "https://github.com/realChakrawarti/yt-catalog";
+  private _domain = "707x.in";
+  private _marketName = "YTCatalog";
+  private _name = packageInfo.name;
+  private _subDomain = "ytcatalog";
+  private _version = packageInfo.version;
+  private _organization = "707x Labs";
+  private _githubRepo = "https://github.com/realChakrawarti/yt-catalog";
+  private _catalogVideoLimit = 10;
+
+  get catalogVideoLimit(): number {
+    return this._catalogVideoLimit;
+  }
 
   get url(): string {
     return `https://${this._subDomain}.${this._domain}`;

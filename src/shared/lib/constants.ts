@@ -1,8 +1,29 @@
+/* eslint-disable sort-keys */
 const ONE_HOUR = 3_600_000;
-export const FOUR_HOURS = 4 * ONE_HOUR;
-
-export const ONE_DAY = ONE_HOUR * 24;
-export const ONE_WEEK = ONE_DAY * 7;
-export const ONE_MONTH = ONE_DAY * 30;
-
-export const TWELEVE_HOURS = 12 * 60 * 60; // In seconds
+const ONE_DAY = ONE_HOUR * 24;
+export const timeMs = {
+  /**
+   * Milliseconds in 1 hour
+   */
+  "1h": ONE_HOUR,
+  /**
+   * Milliseconds in 4 hours
+   */
+  "4h": 4 * ONE_HOUR,
+  /**
+   * Milliseconds in 12 hours
+   */
+  "12h": 12 * ONE_HOUR,
+  /**
+   * Milliseconds in 1 day
+   */
+  "1d": ONE_DAY,
+  /**
+   * Milliseconds in 1 week
+   */
+  "1w": 7 * ONE_DAY,
+  /**
+   * Milliseconds in 1 month
+   */
+  "1m": 30 * ONE_DAY,
+};
