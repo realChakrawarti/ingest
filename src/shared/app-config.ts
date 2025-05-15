@@ -9,6 +9,11 @@ class AppConfig {
   private _organization = "707x Labs";
   private _githubRepo = "https://github.com/realChakrawarti/yt-catalog";
   private _catalogVideoLimit = 10;
+  private _watchedPercentage = 95;
+
+  get watchedPercentage(): number {
+    return this._watchedPercentage;
+  }
 
   get catalogVideoLimit(): number {
     return this._catalogVideoLimit;

@@ -1,20 +1,11 @@
 "use client";
 
-import { FilterIcon } from "lucide-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 
+import { cn } from "~/shared/lib/tailwind-merge";
 import { Avatar, AvatarFallback, AvatarImage } from "~/shared/ui/avatar";
-import { Button } from "~/shared/ui/button";
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "~/shared/ui/sheet";
-import JustTip from "~/widgets/just-the-tip";
+import { Badge } from "~/shared/ui/badge";
 
 export default function FilterChannel({
   activeChannels,
@@ -65,50 +56,33 @@ export default function FilterChannel({
   }, [channelId]);
 
   return (
-    <Sheet>
-      <JustTip label="Filter Channel">
-        <SheetTrigger>
-          <JustTip label="Filter channel">
-            <FilterIcon className="size-6" />
-          </JustTip>
-        </SheetTrigger>
-      </JustTip>
-      <SheetContent className="w-[280px] sm:w-[400px]">
-        <SheetHeader className="text-left">
-          <SheetTitle>Filter Channels</SheetTitle>
-          <SheetDescription>
-            Select a channel to filter the content
-          </SheetDescription>
-        </SheetHeader>
-        <div className="mt-6 space-y-4">
-          {selectedChannelId && (
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={handleOnClear}
-              className="w-full justify-start"
-            >
-              Clear filter
-            </Button>
-          )}
-          <div className="flex flex-col space-y-2">
-            {activeChannels.map((channel: any) => (
-              <Button
-                key={channel.id}
-                variant={
-                  channel.id === selectedChannelId ? "default" : "outline"
-                }
-                size="sm"
-                onClick={() => handleSelectionChange(channel.id)}
-                className="justify-start"
-              >
-                {channel.title}
-              </Button>
-            ))}
-          </div>
-        </div>
-      </SheetContent>
-    </Sheet>
+    <div className="h-14 overflow-hidden">
+      <div
+        className={cn(
+          "px-3 flex gap-3 items-center overflow-x-auto scrollbar-hide max-w-sm sm:max-w-xl xl:container"
+        )}
+      >
+        {activeChannels.length > 1 ? (
+          <Badge
+            onClick={handleOnClear}
+            className="cursor-pointer text-sm h-8 p-0 px-3 text-nowrap select-none"
+            variant="outline"
+          >
+            All
+          </Badge>
+        ) : null}
+        {activeChannels.map((channel: any) => (
+          <Badge
+            key={channel.id}
+            variant={channel.id === selectedChannelId ? "default" : "outline"}
+            onClick={() => handleSelectionChange(channel.id)}
+            className="cursor-pointer text-sm h-8 p-0 px-3 text-nowrap select-none"
+          >
+            {channel.title}
+          </Badge>
+        ))}
+      </div>
+    </div>
   );
 }
 

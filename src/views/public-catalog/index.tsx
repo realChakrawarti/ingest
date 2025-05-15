@@ -65,7 +65,6 @@ export default async function PubliCatalog({
                   <h1 className="text-2xl font-semibold tracking-tight">
                     {catalogTitle}
                   </h1>
-                  <FilterChannel activeChannels={activeChannels} />
                 </span>
                 <p className="text-base text-muted-foreground">
                   {catalogDescription}
@@ -102,6 +101,8 @@ export default async function PubliCatalog({
             </div>
           </div>
         </section>
+
+        <FilterChannel activeChannels={activeChannels} />
 
         <CurrentActive activeChannels={activeChannels} />
 

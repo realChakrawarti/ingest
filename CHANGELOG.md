@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.5.17](https://github.com/realChakrawarti/yt-catalog/compare/v1.5.16...v1.5.17) (2025-05-15)
+
+
+### Features
+
+* on hover catalog card, player color changes & filter badges ([8143ddd](https://github.com/realChakrawarti/yt-catalog/commit/8143dddc9232131fc2ecc0bc4065657502841896))
+
 ### [1.5.16](https://github.com/realChakrawarti/yt-catalog/compare/v1.5.15...v1.5.16) (2025-05-12)
 
 

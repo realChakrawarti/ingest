@@ -27,14 +27,14 @@ export default function ShowCardOption({
     <div className="relative">
       <Popover open={isOpen} onOpenChange={setIsOpen}>
         <PopoverTrigger asChild>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="absolute top-3 right-0 h-6 w-6"
-            >
-              <ThreeDotIcon className="h-6 w-6" />
-              <span className="sr-only">Open menu</span>
-            </Button>
+          <Button
+            variant="ghost"
+            size="icon"
+            className="absolute top-3 right-0 h-6 w-6"
+          >
+            <ThreeDotIcon className="h-6 w-6" />
+            <span className="sr-only">Open menu</span>
+          </Button>
         </PopoverTrigger>
         <PopoverContent
           onClick={() => setIsOpen(false)}

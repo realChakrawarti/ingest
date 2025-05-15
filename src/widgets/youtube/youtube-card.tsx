@@ -1,5 +1,6 @@
 import dynamic from "next/dynamic";
 
+import { cn } from "~/shared/lib/tailwind-merge";
 import { YouTubeCardProps } from "~/shared/types-schema/types";
 
 import { ChannelMeta, DescriptionSheet } from "./components";
@@ -24,8 +25,13 @@ export default function YouTubeCard(props: YouTubeCardProps) {
 
   return (
     <div className="flex flex-col gap-3 group/player">
-      <div key={videoId} className="relative overflow-hidden rounded-lg">
-        <div className="relative aspect-video overflow-hidden">
+      <div key={videoId} className="relative overflow-hidden">
+        <div
+          className={cn(
+            "relative aspect-video overflow-hidden rounded-lg",
+            "group-hover/player:border-2 group-hover/player:border-primary"
+          )}
+        >
           <ClientYouTubePlayer enableJsApi={enableJsApi} {...video} />
           <DescriptionSheet title={title} description={description} />
           <WatchedStatus videoId={video.videoId} />

@@ -50,7 +50,7 @@ function ChannelMeta({
           hideAvatar ? "max-w-[100%]" : "max-w-[calc(100%-32px)]"
         }`}
       >
-        <h3 className="font-semibold leading-tight text-sm line-clamp-2 pr-6 text-wrap">
+        <h3 className="font-semibold leading-tight text-sm line-clamp-2 pr-6 text-wrap group-hover/player:text-primary">
           <abbr className="no-underline cursor-help" title={title}>
             {title}
           </abbr>

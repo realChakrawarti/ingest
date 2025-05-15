@@ -15,6 +15,7 @@ interface DetailsCardProps {
 export default function DetailsCard({ pageData, path }: DetailsCardProps) {
   return (
     <Link
+      prefetch={false} // In order to disable automatic updation to not frequently viewed catalogs
       key={pageData?.id}
       href={path}
       className="group relative overflow-hidden rounded-lg border bg-card transition-colors hover:bg-accent"
@@ -26,10 +27,10 @@ export default function DetailsCard({ pageData, path }: DetailsCardProps) {
       {pageData?.totalVideos ? (
         <TotalVideos totalVideos={pageData.totalVideos} />
       ) : null}
-
-      <div className="absolute inset-0 aspect-video bg-gradient-to-b from-transparent to-black/90"></div>
       <div className="p-4">
-        <h2 className="font-semibold">{pageData?.title}</h2>
+        <h2 className="font-semibold group-hover:text-primary">
+          {pageData?.title}
+        </h2>
         <p className="text-sm text-muted-foreground">{pageData?.description}</p>
       </div>
     </Link>
