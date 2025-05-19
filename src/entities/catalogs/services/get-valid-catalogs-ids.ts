@@ -54,10 +54,31 @@ const getCatalogMetadata = async (catalogId: string) => {
   return catalogData;
 };
 
+type CatalogDocumentData = {
+  channelId: string;
+  channelLogo: string;
+  channelTitle: string;
+  description: string;
+  publishedAt: string;
+  thumbnail: {
+    height: number;
+    width: number;
+    url: string;
+  };
+  title: string;
+  videoId: string;
+};
+
 const getVideoThumbnails = (catalogData: DocumentData) => {
   const videos = catalogData.data.videos;
-  const dayThumbnails = videos.day.map((video: any) => video.thumbnail.url);
-  const weekThumbnails = videos.week.map((video: any) => video.thumbnail.url);
-  const monthThumbnails = videos.month.map((video: any) => video.thumbnail.url);
+  const dayThumbnails = videos.day.map(
+    (video: CatalogDocumentData) => video.thumbnail.url
+  );
+  const weekThumbnails = videos.week.map(
+    (video: CatalogDocumentData) => video.thumbnail.url
+  );
+  const monthThumbnails = videos.month.map(
+    (video: CatalogDocumentData) => video.thumbnail.url
+  );
   return [...dayThumbnails, ...weekThumbnails, ...monthThumbnails];
 };

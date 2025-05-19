@@ -59,7 +59,9 @@ export default function FilterChannel({
     <div className="h-14 overflow-hidden">
       <div
         className={cn(
-          "px-3 flex gap-3 items-center overflow-x-auto scrollbar-hide max-w-sm sm:max-w-xl xl:container"
+          // TODO: Handle the width change of the content wrt the sidebar and window resize, this is hacky!
+          "px-3 flex gap-3 items-center overflow-x-auto scrollbar-hide",
+          "max-w-sm sm:max-w-xl md:max-w-2xl lg:max-w-3xl xl:max-w-4xl"
         )}
       >
         {activeChannels.length > 1 ? (

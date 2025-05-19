@@ -11,6 +11,8 @@ import { useVideoTracking } from "./use-video-tracking";
 
 const iframeParams = `rel=0&playsinline=1&origin=${appConfig.url}`;
 
+// TODO: picture-in-picture - https://codepen.io/jh3y/pen/wBBOdNv
+
 export default function YoutubePlayer(
   props: VideoData & { enableJsApi: boolean }
 ) {
