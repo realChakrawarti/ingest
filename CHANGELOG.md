@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.5.18](https://github.com/realChakrawarti/yt-catalog/compare/v1.5.17...v1.5.18) (2025-05-19)
+
+
+### Features
+
+* filter channel width, catalog card less motion ([9432983](https://github.com/realChakrawarti/yt-catalog/commit/9432983b405c71500ff237132165f168e3b80419))
+
 ### [1.5.17](https://github.com/realChakrawarti/yt-catalog/compare/v1.5.16...v1.5.17) (2025-05-15)
 
 

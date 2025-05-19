@@ -1,33 +1,47 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 
-import React from "react";
+import Link from "next/link";
+import React, { MutableRefObject } from "react";
 import Slider, { type Settings } from "react-slick";
 
-function ThumbnailCarousel({ thumbnails }: { thumbnails: string[] }) {
+function ThumbnailCarousel({
+  thumbnails,
+  sliderRef,
+  path,
+}: {
+  path: string;
+  thumbnails: string[];
+  sliderRef: MutableRefObject<Slider | null>;
+}) {
   const settings: Settings = {
     arrows: false,
-    autoplay: true,
-    autoplaySpeed: 3500,
+    autoplaySpeed: 2500,
     cssEase: "linear",
     dots: false,
     infinite: true,
     slidesToScroll: 1,
     slidesToShow: 1,
+    swipeToSlide: true,
   };
 
   return (
     <div className="size-full overflow-hidden">
-      <Slider {...settings}>
-        {thumbnails?.map((thumb) => (
-          <div key={thumb}>
-            <img
-              className="object-contain size-full"
-              src={thumb}
-              alt="thumbnail"
-            />
-          </div>
-        ))}
+      <Slider ref={sliderRef} {...settings}>
+        {thumbnails?.map((thumb) => {
+          const videoId = thumb.split("/vi/")[1].split("/")[0];
+          return (
+            <div key={thumb}>
+              <Link prefetch={false} scroll={false} href={`${path}#${videoId}`}>
+                <img
+                  className="object-contain size-full"
+                  src={thumb}
+                  alt="thumbnail"
+                />
+              </Link>
+            </div>
+          );
+        })}
       </Slider>
     </div>
   );

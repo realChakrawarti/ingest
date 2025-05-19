@@ -1,6 +1,11 @@
-import { EyeIcon, VideoIcon } from "lucide-react";
-import Link from "next/link";
+"use client";
 
+import { EyeIcon, Pause, Play, VideoIcon } from "lucide-react";
+import Link from "next/link";
+import { MouseEvent, useRef, useState } from "react";
+import Slider from "react-slick";
+
+import { cn } from "~/shared/lib/tailwind-merge";
 import { ValidMetadata } from "~/shared/types-schema/types";
 
 import ThumbnailCarousel from "./carousel-thumbnails";
@@ -13,27 +18,84 @@ interface DetailsCardProps {
 }
 
 export default function DetailsCard({ pageData, path }: DetailsCardProps) {
+  const sliderRef = useRef<Slider | null>(null);
+  const [slidesPlaying, setSlidesPlaying] = useState<boolean>(false);
+
+  const playSlides = (e: MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
+    setSlidesPlaying(true);
+    sliderRef.current?.slickPlay();
+  };
+
+  const pauseSlides = (e: MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
+    setSlidesPlaying(false);
+    sliderRef.current?.slickPause();
+  };
+
   return (
-    <Link
-      prefetch={false} // In order to disable automatic updation to not frequently viewed catalogs
-      key={pageData?.id}
-      href={path}
-      className="group relative overflow-hidden rounded-lg border bg-card transition-colors hover:bg-accent"
+    <section
+      className={cn(
+        "group flex flex-col gap-0 relative overflow-hidden",
+        "rounded-lg border bg-card transition-colors hover:bg-accent"
+      )}
     >
-      <section className="aspect-video">
-        <ThumbnailCarousel thumbnails={pageData.thumbnails} />
-      </section>
+      <div className="relative aspect-video">
+        {/* TODO: Function components cannot be given refs, consider moving to Next.js 15 which supports React 19 */}
+        <ThumbnailCarousel
+          path={path}
+          sliderRef={sliderRef}
+          thumbnails={pageData.thumbnails}
+        />
+
+        <div className="absolute right-0 bottom-3">
+          {slidesPlaying ? (
+            <OverlayTip
+              id="slider-play"
+              className="px-[5px] py-2 items-center rounded-l-md z-20 cursor-pointer"
+            >
+              <span onMouseDown={pauseSlides}>
+                <Pause className="size-5" />
+              </span>
+            </OverlayTip>
+          ) : (
+            <OverlayTip
+              id="slider-pause"
+              className="px-[5px] py-2 items-center rounded-l-md z-20 cursor-pointer"
+            >
+              <span onMouseDown={playSlides}>
+                <Play className="size-5" />
+              </span>
+            </OverlayTip>
+          )}
+        </div>
+      </div>
+
+      <Link
+        prefetch={false} // In order to disable automatic updation to not frequently viewed catalogs
+        key={pageData?.id}
+        href={path}
+      >
+        <div className="flex justify-between p-4 pt-2">
+          <div>
+            <h2
+              id={pageData?.id}
+              className="font-semibold group-hover:text-primary"
+            >
+              {pageData?.title}
+            </h2>
+            <p className="text-sm text-muted-foreground">
+              {pageData?.description}
+            </p>
+          </div>
+        </div>
+      </Link>
+
       {pageData?.pageviews ? <Pageview pageviews={pageData.pageviews} /> : null}
       {pageData?.totalVideos ? (
         <TotalVideos totalVideos={pageData.totalVideos} />
       ) : null}
-      <div className="p-4">
-        <h2 className="font-semibold group-hover:text-primary">
-          {pageData?.title}
-        </h2>
-        <p className="text-sm text-muted-foreground">{pageData?.description}</p>
-      </div>
-    </Link>
+    </section>
   );
 }
 
