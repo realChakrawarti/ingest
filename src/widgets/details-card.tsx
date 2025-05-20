@@ -9,7 +9,6 @@ import { cn } from "~/shared/lib/tailwind-merge";
 import { ValidMetadata } from "~/shared/types-schema/types";
 
 import ThumbnailCarousel from "./carousel-thumbnails";
-import JustTip from "./just-the-tip";
 import OverlayTip from "./overlay-tip";
 
 interface DetailsCardProps {
@@ -36,7 +35,7 @@ export default function DetailsCard({ pageData, path }: DetailsCardProps) {
   return (
     <section
       className={cn(
-        "group flex flex-col gap-0 relative overflow-hidden",
+        "flex flex-col gap-0 relative overflow-hidden",
         "rounded-lg border bg-card transition-colors hover:bg-accent"
       )}
     >
@@ -52,18 +51,24 @@ export default function DetailsCard({ pageData, path }: DetailsCardProps) {
           {slidesPlaying ? (
             <OverlayTip
               id="slider-play"
-              className="px-[5px] py-2 items-center rounded-l-md z-20 cursor-pointer"
+              className="grid size-8 rounded-l-md z-20 cursor-pointer"
             >
-              <span onMouseDown={pauseSlides}>
+              <span
+                className="grid place-items-center size-full"
+                onMouseDown={pauseSlides}
+              >
                 <Pause className="size-5" />
               </span>
             </OverlayTip>
           ) : (
             <OverlayTip
               id="slider-pause"
-              className="px-[5px] py-2 items-center rounded-l-md z-20 cursor-pointer"
+              className="size-8 rounded-l-md z-20 cursor-pointer"
             >
-              <span onMouseDown={playSlides}>
+              <span
+                className="grid place-items-center size-full"
+                onMouseDown={playSlides}
+              >
                 <Play className="size-5" />
               </span>
             </OverlayTip>
@@ -76,7 +81,7 @@ export default function DetailsCard({ pageData, path }: DetailsCardProps) {
         key={pageData?.id}
         href={path}
       >
-        <div className="flex justify-between p-4 pt-2">
+        <div className="group flex justify-between p-4 pt-2">
           <div>
             <h2
               id={pageData?.id}
@@ -101,30 +106,26 @@ export default function DetailsCard({ pageData, path }: DetailsCardProps) {
 
 function TotalVideos({ totalVideos }: { totalVideos: number }) {
   return (
-    <JustTip label="Total videos">
-      <OverlayTip
-        id="total-videos"
-        className="flex gap-1 absolute top-2 left-0 items-center px-[5px] py-2 rounded-r-md z-20"
-      >
-        <p className="text-xs">{totalVideos}</p>
-        <VideoIcon className="size-3" />
-      </OverlayTip>
-    </JustTip>
+    <OverlayTip
+      id="total-videos"
+      className="flex gap-1 absolute top-2 left-0 items-center px-[5px] py-2 rounded-r-md z-20"
+    >
+      <p className="text-xs">{totalVideos}</p>
+      <VideoIcon className="size-3" />
+    </OverlayTip>
   );
 }
 
 function Pageview({ pageviews }: { pageviews: number }) {
   if (pageviews !== undefined) {
     return (
-      <JustTip label="Unique views">
-        <OverlayTip
-          id="pageviews"
-          className="flex gap-1 px-[5px] py-2 absolute top-2 right-0 items-center rounded-l-md z-20"
-        >
-          <p className="text-xs">{pageviews}</p>
-          <EyeIcon className="size-3" />
-        </OverlayTip>
-      </JustTip>
+      <OverlayTip
+        id="pageviews"
+        className="flex gap-1 px-[5px] py-2 absolute top-2 right-0 items-center rounded-l-md z-20"
+      >
+        <p className="text-xs">{pageviews}</p>
+        <EyeIcon className="size-3" />
+      </OverlayTip>
     );
   }
   return null;

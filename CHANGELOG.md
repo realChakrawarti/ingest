@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.6.0](https://github.com/realChakrawarti/yt-catalog/compare/v1.5.19...v1.6.0) (2025-05-20)
+
+### [1.5.19](https://github.com/realChakrawarti/yt-catalog/compare/v1.5.18...v1.5.19) (2025-05-20)
+
+
+### Bug Fixes
+
+* overlay play pause slideshow & hover text color ([9bcaf77](https://github.com/realChakrawarti/yt-catalog/commit/9bcaf77caac58387a248a5b2a21109c9c352e2cb))
+
 ### [1.5.18](https://github.com/realChakrawarti/yt-catalog/compare/v1.5.17...v1.5.18) (2025-05-19)
 
 
