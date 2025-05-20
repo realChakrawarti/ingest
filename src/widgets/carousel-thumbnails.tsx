@@ -19,7 +19,8 @@ function ThumbnailCarousel({
     autoplaySpeed: 2500,
     cssEase: "linear",
     dots: false,
-    infinite: true,
+    // Refer: https://github.com/akiran/react-slick/issues/1171
+    infinite: thumbnails.length > 1,
     slidesToScroll: 1,
     slidesToShow: 1,
     swipeToSlide: true,

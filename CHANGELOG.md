@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.6.1](https://github.com/realChakrawarti/yt-catalog/compare/v1.6.0...v1.6.1) (2025-05-20)
+
+
+### Bug Fixes
+
+* cloned slider image when only one video is present ([45f94e1](https://github.com/realChakrawarti/yt-catalog/commit/45f94e179d5734754e713e6239120f3533727901))
+
 ## [1.6.0](https://github.com/realChakrawarti/yt-catalog/compare/v1.5.19...v1.6.0) (2025-05-20)
 
 ### [1.5.19](https://github.com/realChakrawarti/yt-catalog/compare/v1.5.18...v1.5.19) (2025-05-20)
