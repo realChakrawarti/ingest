@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.6.2](https://github.com/realChakrawarti/yt-catalog/compare/v1.6.1...v1.6.2) (2025-05-22)
+
+
+### Bug Fixes
+
+* player movement on hover due to the border, replaced with shadow ([20d508f](https://github.com/realChakrawarti/yt-catalog/commit/20d508f0c85155227a0808a5c4b88897e03f0294))
+
 ### [1.6.1](https://github.com/realChakrawarti/yt-catalog/compare/v1.6.0...v1.6.1) (2025-05-20)
 
 
