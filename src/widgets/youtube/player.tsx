@@ -5,6 +5,7 @@ import { useEffect, useRef } from "react";
 
 import appConfig from "~/shared/app-config";
 import { indexedDB } from "~/shared/lib/api/dexie";
+import { cn } from "~/shared/lib/tailwind-merge";
 import type { VideoData } from "~/shared/types-schema/types";
 
 import { useVideoTracking } from "./use-video-tracking";
@@ -34,19 +35,21 @@ export default function YoutubePlayer(
 
   async function _onStateChange(event: YT.OnStateChangeEvent) {
     const { target, data: playingState } = event;
+    const playerIframe = target.getIframe();
     const playerState = window.YT.PlayerState;
 
     const allPlayers = getActivePlayers();
 
     const filterPlayers = Array.from(allPlayers).filter(
-      (item) => item != target.getIframe()
+      (item) => item != playerIframe
     );
 
     switch (playingState) {
       case playerState.CUED:
         stopTracking();
         firstLoad.current = false;
-        target.getIframe().style.opacity = "0";
+        playerIframe.style.opacity = "0";
+        playerIframe.setAttribute("playing", "false");
         break;
       case playerState.PAUSED:
         stopTracking();
@@ -56,7 +59,8 @@ export default function YoutubePlayer(
         break;
 
       case playerState.PLAYING:
-        target.getIframe().style.opacity = "1";
+        playerIframe.style.opacity = "1";
+        playerIframe.setAttribute("playing", "true");
         // Stop other players
         filterPlayers.forEach((item) => {
           playerControl(item, "stopVideo");
@@ -127,7 +131,14 @@ export default function YoutubePlayer(
   }, []);
 
   return (
-    <div ref={containerRef} onMouseDown={loadIFrameElement}>
+    <div
+      className={cn(
+        "rounded-lg overflow-hidden mx-[2px] md:mx-0",
+        "group-hover/player:shadow-primary group-hover/player:shadow-[0_0_0_2px]"
+      )}
+      ref={containerRef}
+      onMouseDown={loadIFrameElement}
+    >
       <YouTubeEmbed
         params={enableJsApi ? iframeParams + "&enablejsapi=1" : iframeParams}
         videoid={videoId}

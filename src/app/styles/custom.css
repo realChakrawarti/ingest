@@ -88,15 +88,20 @@ a[href^="https://stoplight.io/"]
   display: none !important;
 }
 
-lite-youtube {
+#player-card lite-youtube {
   transition: 0.5s ease-in-out;
-  &:hover {
+}
+
+#player-card:hover {
+  & lite-youtube:not(:has(iframe)) {
     transform: scale(1.07);
   }
-  &:has(iframe) {
-    &:hover {
-      transform: none;
-    }
+  & lite-youtube.lyt-activated:has(iframe[playing="false"]) {
+    transform: scale(1.07);
+  }
+
+  & lite-youtube.lyt-activated:has(iframe[playing="true"]) {
+    transform: none;
   }
 }
 
