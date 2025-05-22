@@ -1,4 +1,5 @@
 import { doc, getDoc } from "firebase/firestore";
+import { adminDb } from "~/shared/lib/firebase/admin";
 
 import { db } from "~/shared/lib/firebase/client";
 import { COLLECTION } from "~/shared/lib/firebase/collections";
@@ -14,11 +15,12 @@ import { COLLECTION } from "~/shared/lib/firebase/collections";
 // retrived from API stored as an object in the main archive?
 export async function getArchiveById(archiveId: string) {
   let archiveResponseData = {};
-
+  
+  const archiveRef = adminDb.collection(COLLECTION.archives).doc(archiveId)
+  
   try {
     // Get title and description
-    const archiveRef = doc(db, COLLECTION.archives, archiveId);
-    const archiveSnap = await getDoc(archiveRef);
+    const archiveSnap = await archiveRef.get();
     const archiveData = archiveSnap.data();
 
     archiveResponseData = {
@@ -27,7 +29,10 @@ export async function getArchiveById(archiveId: string) {
       videos: archiveData?.data.videos,
     };
   } catch (err) {
-    console.error(err);
+      if (err instanceof Error) {
+      return err.message;
+    }
+    return "Unable to add video to archive.";
   }
 
   return archiveResponseData;
