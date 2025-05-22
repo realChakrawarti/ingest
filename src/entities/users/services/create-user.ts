@@ -5,20 +5,17 @@
  * @returns
  */
 
-import { doc, getDoc, setDoc } from "firebase/firestore";
-
-import { db } from "~/shared/lib/firebase/client";
+import { adminDb } from "~/shared/lib/firebase/admin";
 import { COLLECTION } from "~/shared/lib/firebase/collections";
 
-// TODO: Batch firebase calls so its atomic in nature
 export const createUser = async (uid: string): Promise<string> => {
-  const userRef = doc(db, COLLECTION.users, uid);
-  const userSnap = await getDoc(userRef);
+  const userRef = adminDb.collection(COLLECTION.users).doc(uid);
+  const userSnap = await userRef.get();
 
   // Check if the user document already exists
-  if (!userSnap.exists()) {
+  if (!userSnap.exists) {
     // If the document doesn't exist, create it
-    await setDoc(userRef, {
+    await userRef.set({
       createdAt: new Date(),
     });
 

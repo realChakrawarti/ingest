@@ -1,6 +1,4 @@
-import { doc, setDoc } from "firebase/firestore";
-
-import { db } from "~/shared/lib/firebase/client";
+import { adminDb } from "~/shared/lib/firebase/admin";
 import { COLLECTION } from "~/shared/lib/firebase/collections";
 import { createNanoidToken } from "~/shared/lib/nanoid-token";
 
@@ -14,29 +12,42 @@ type CatalogMeta = {
  * @param userId
  */
 export async function createCatalog(userId: string, catalogMeta: CatalogMeta) {
-  const userRef = doc(db, COLLECTION.users, userId);
+  const userRef = adminDb.collection(COLLECTION.users).doc(userId);
   const nanoidToken = createNanoidToken(6);
-  const catalogRef = doc(db, COLLECTION.catalogs, nanoidToken);
+  const catalogRef = adminDb.collection(COLLECTION.catalogs).doc(nanoidToken);
 
   // Add a doc to user -> catalog collection
-  const userCatalogRef = doc(userRef, COLLECTION.catalogs, nanoidToken);
+  const userCatalogRef = userRef
+    .collection(COLLECTION.catalogs)
+    .doc(nanoidToken);
 
-  // Create catalog sub-collection
-  await setDoc(userCatalogRef, {
-    channels: [],
-    playlists: [],
-    updatedAt: new Date(),
-  });
+  const batch = adminDb.batch();
 
-  // Add a doc to catalog collection
-  await setDoc(catalogRef, {
-    data: {
-      updatedAt: new Date(0),
-    },
-    description: catalogMeta.description,
-    title: catalogMeta.title,
-    videoRef: userCatalogRef,
-  });
+  try {
+    // Create catalog sub-collection
+    batch.set(userCatalogRef, {
+      channels: [],
+      playlists: [],
+      updatedAt: new Date(),
+    });
 
-  return nanoidToken;
+    // Add a doc to catalog collection
+    batch.set(catalogRef, {
+      data: {
+        updatedAt: new Date(0),
+      },
+      description: catalogMeta.description,
+      title: catalogMeta.title,
+      videoRef: userCatalogRef,
+    });
+
+    await batch.commit();
+
+    return nanoidToken;
+  } catch (err) {
+    if (err instanceof Error) {
+      return err.message;
+    }
+    return "Unable to create the catalog.";
+  }
 }

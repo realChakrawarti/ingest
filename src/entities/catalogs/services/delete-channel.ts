@@ -1,6 +1,4 @@
-import { doc, updateDoc } from "firebase/firestore";
-
-import { db } from "~/shared/lib/firebase/client";
+import { adminDb } from "~/shared/lib/firebase/admin";
 import { COLLECTION } from "~/shared/lib/firebase/collections";
 
 /**
@@ -16,11 +14,18 @@ export async function deleteChannel(
   catalogId: string,
   channels: any[]
 ) {
-  const userRef = doc(db, COLLECTION.users, userId);
-  const userCatalogRef = doc(userRef, COLLECTION.catalogs, catalogId);
+  const userRef = adminDb.collection(COLLECTION.users).doc(userId);
+  const userCatalogRef = userRef.collection(COLLECTION.catalogs).doc(catalogId);
 
-  await updateDoc(userCatalogRef, {
-    channels: channels,
-    updatedAt: new Date(),
-  });
+  try {
+    await userCatalogRef.update({
+      channels: channels,
+      updatedAt: new Date(),
+    });
+  } catch (err) {
+    if (err instanceof Error) {
+      return err.message;
+    }
+    return "Unable to delete the channel.";
+  }
 }
