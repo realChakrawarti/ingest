@@ -1,7 +1,7 @@
 import { revalidatePath } from "next/cache";
 import { NextRequest } from "next/server";
 
-import { deleteCatalog } from "~/entities/catalogs/services/delete-catalog";
+import { deleteCatalog } from "~/entities/catalogs";
 import { getUserIdCookie } from "~/shared/lib/next/get-cookie";
 import { NxResponse } from "~/shared/lib/next/nx-response";
 

@@ -27,7 +27,10 @@ export async function updateCatalogChannels(
       updatedAt: new Date(),
     });
   } catch (err) {
-    console.error(err);
+    if (err instanceof Error) {
+      return err.message;
+    }
+    return "Unable to update catalog channels.";
   }
 }
 

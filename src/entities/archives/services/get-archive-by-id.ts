@@ -29,7 +29,7 @@ export async function getArchiveById(archiveId: string) {
     if (err instanceof Error) {
       return err.message;
     }
-    return "Unable to add video to archive.";
+    return "Unable to retrieve archive by id.";
   }
 
   return archiveResponseData;

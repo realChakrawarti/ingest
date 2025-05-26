@@ -30,7 +30,7 @@ export async function removeArchiveVideo(
       "data.videos": FieldValue.arrayRemove(payload),
     });
 
-    batch.commit();
+    await batch.commit();
 
     return "Video removed successfully.";
   } catch (err) {
