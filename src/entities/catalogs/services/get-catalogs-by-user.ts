@@ -21,8 +21,8 @@ export async function getCatalogByUser(userId: string) {
   const userCatalogsData: UserCatalogs[] = [];
 
   const userRef = adminDb.collection(COLLECTION.users).doc(userId);
+  const userCatalogsCollectionRef = userRef.collection(COLLECTION.catalogs);
   try {
-    const userCatalogsCollectionRef = userRef.collection(COLLECTION.catalogs);
     const userCatalogsDoc = await userCatalogsCollectionRef.get();
 
     if (userCatalogsDoc.empty) {

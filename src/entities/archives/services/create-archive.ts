@@ -1,33 +1,44 @@
-import { doc, setDoc } from "firebase/firestore";
-
-import { db } from "~/shared/lib/firebase/client";
+import { adminDb } from "~/shared/lib/firebase/admin";
 import { COLLECTION } from "~/shared/lib/firebase/collections";
 import { createNanoidToken } from "~/shared/lib/nanoid-token";
 
 export async function createArchive(userId: string, archiveMeta: any) {
   const nanoidToken = createNanoidToken(9);
 
-  const userRef = doc(db, COLLECTION.users, userId);
-  const archiveRef = doc(db, COLLECTION.archives, nanoidToken);
+  const userRef = adminDb.collection(COLLECTION.users).doc(userId);
+  const archiveRef = adminDb.collection(COLLECTION.archives).doc(nanoidToken);
 
   // Add a doc to user -> archive collection
-  const userArchiveRef = doc(userRef, COLLECTION.archives, nanoidToken);
+  const userArchiveRef = userRef
+    .collection(COLLECTION.archives)
+    .doc(nanoidToken);
 
-  // Create archive sub-collection
-  await setDoc(userArchiveRef, {
-    videoIds: [],
-    updatedAt: new Date(),
-  });
+  const batch = adminDb.batch();
 
-  // Add a doc to archive collection
-  await setDoc(archiveRef, {
-    data: {
-      updatedAt: new Date(0),
-    },
-    description: archiveMeta.description,
-    title: archiveMeta.title,
-    videoRef: userArchiveRef,
-  });
+  try {
+    // Create archive sub-collection
+    batch.set(userArchiveRef, {
+      videoIds: [],
+      updatedAt: new Date(),
+    });
+
+    // Add a doc to archive collection
+    batch.set(archiveRef, {
+      data: {
+        updatedAt: new Date(0),
+      },
+      description: archiveMeta.description,
+      title: archiveMeta.title,
+      videoRef: userArchiveRef,
+    });
+
+    await batch.commit();
+  } catch (err) {
+    if (err instanceof Error) {
+      return err.message;
+    }
+    return "Unable to create an archive.";
+  }
 
   return nanoidToken;
 }

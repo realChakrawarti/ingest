@@ -1,7 +1,5 @@
-import { doc, updateDoc } from "firebase/firestore";
-
 import { YOUTUBE_CHANNELS_INFORMATION } from "~/shared/lib/api/youtube-endpoints";
-import { db } from "~/shared/lib/firebase/client";
+import { adminDb } from "~/shared/lib/firebase/admin";
 import { COLLECTION } from "~/shared/lib/firebase/collections";
 import { CatalogChannel } from "~/shared/types-schema/types";
 
@@ -16,20 +14,23 @@ export async function updateCatalogChannels(
   catalogId: string,
   catalogPayload: any
 ) {
-  const userRef = doc(db, COLLECTION.users, userId);
-  const userCatalogRef = doc(userRef, COLLECTION.catalogs, catalogId);
+  const userRef = adminDb.collection(COLLECTION.users).doc(userId);
+  const userCatalogRef = userRef.collection(COLLECTION.catalogs).doc(catalogId);
 
   const { channels } = catalogPayload;
 
   try {
     const channelsInfo = await getChannelsInfo(channels);
 
-    await updateDoc(userCatalogRef, {
+    await userCatalogRef.update({
       channels: channelsInfo,
       updatedAt: new Date(),
     });
   } catch (err) {
-    console.error(err);
+    if (err instanceof Error) {
+      return err.message;
+    }
+    return "Unable to update catalog channels.";
   }
 }
 

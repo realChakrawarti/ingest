@@ -1,4 +1,5 @@
 export { createCatalog } from "./services/create-catalog";
+export { deleteCatalog } from "./services/delete-catalog";
 export { deleteChannel } from "./services/delete-channel";
 export { deletePlaylist } from "./services/delete-playlist";
 export { getCatalogById } from "./services/get-catalog-by-id";

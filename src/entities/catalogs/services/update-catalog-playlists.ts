@@ -1,7 +1,7 @@
-import { arrayUnion, doc, updateDoc } from "firebase/firestore";
+import { FieldValue } from "firebase-admin/firestore";
 
 import { YOUTUBE_CHANNELS_INFORMATION } from "~/shared/lib/api/youtube-endpoints";
-import { db } from "~/shared/lib/firebase/client";
+import { adminDb } from "~/shared/lib/firebase/admin";
 import { COLLECTION } from "~/shared/lib/firebase/collections";
 import { PlaylistItem } from "~/shared/types-schema/types";
 
@@ -26,11 +26,12 @@ export async function updateCatalogPlaylists(
   catalogId: string,
   playlists: PlaylistItem[]
 ) {
-  const userRef = doc(db, COLLECTION.users, userId);
-  const userCatalogRef = doc(userRef, COLLECTION.catalogs, catalogId);
+  const userRef = adminDb.collection(COLLECTION.users).doc(userId);
+  const userCatalogRef = userRef.collection(COLLECTION.catalogs).doc(catalogId);
 
   const playlistList = [];
 
+  // TODO: Refactor: This looks inefficient
   for (let i = 0; i < playlists.length; i++) {
     const { channelId } = playlists[i];
     const response = await fetch(YOUTUBE_CHANNELS_INFORMATION([channelId]));
@@ -53,8 +54,8 @@ export async function updateCatalogPlaylists(
     playlistList.push(playlistItem);
   }
 
-  await updateDoc(userCatalogRef, {
-    playlists: arrayUnion(...playlistList),
+  await userCatalogRef.update({
+    playlists: FieldValue.arrayUnion(...playlistList),
     updatedAt: new Date(),
   });
 }

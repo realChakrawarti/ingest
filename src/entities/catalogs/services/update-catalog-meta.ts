@@ -1,6 +1,4 @@
-import { doc, updateDoc } from "firebase/firestore";
-
-import { db } from "~/shared/lib/firebase/client";
+import { adminDb } from "~/shared/lib/firebase/admin";
 import { COLLECTION } from "~/shared/lib/firebase/collections";
 
 type CatalogMeta = {
@@ -13,13 +11,14 @@ export async function updateCatalogMeta(
   payload: CatalogMeta
 ) {
   const { title, description } = payload;
-  const catalogRef = doc(db, COLLECTION.catalogs, catalogId);
+  const catalogRef = adminDb.collection(COLLECTION.catalogs).doc(catalogId);
 
   try {
-    await updateDoc(catalogRef, {
+    await catalogRef.update({
       title: title,
       description: description,
     });
+
     return "Catalog details updated successfully.";
   } catch (err) {
     if (err instanceof Error) {

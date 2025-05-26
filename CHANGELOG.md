@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.6.3](https://github.com/realChakrawarti/yt-catalog/compare/v1.6.2...v1.6.3) (2025-05-26)
+
+
+### Features
+
+* migrate to firebase admin-sdk ([e79329b](https://github.com/realChakrawarti/yt-catalog/commit/e79329b10363a59873edf60c6991b8d2203ba1ce))
+* migrate to firebase admin-sdk ([bc74bee](https://github.com/realChakrawarti/yt-catalog/commit/bc74bee425dd81ecbccb6cdc7f0f2613754821ab))
+
+
+### Bug Fixes
+
+* coderabbit suggestion ([0bec385](https://github.com/realChakrawarti/yt-catalog/commit/0bec385f71c64e7882163f1d0d50e4d073d59e6a))
+
 ### [1.6.2](https://github.com/realChakrawarti/yt-catalog/compare/v1.6.1...v1.6.2) (2025-05-22)
 
 

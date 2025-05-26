@@ -1,21 +1,25 @@
-import { doc, writeBatch } from "firebase/firestore";
-
-import { db } from "~/shared/lib/firebase/client";
+import { adminDb } from "~/shared/lib/firebase/admin";
 import { COLLECTION } from "~/shared/lib/firebase/collections";
 
 export async function deleteArchive(userId: string, archiveId: string) {
-  const archiveRef = doc(db, COLLECTION.archives, archiveId);
-  const userArchiveRef = doc(
-    db,
-    COLLECTION.users,
-    userId,
-    COLLECTION.archives,
-    archiveId
-  );
+  const archiveRef = adminDb.collection(COLLECTION.archives).doc(archiveId);
 
-  const batch = writeBatch(db);
-  batch.delete(archiveRef);
-  batch.delete(userArchiveRef);
+  const userArchiveRef = adminDb
+    .collection(COLLECTION.users)
+    .doc(userId)
+    .collection(COLLECTION.archives)
+    .doc(archiveId);
 
-  await batch.commit();
+  const batch = adminDb.batch();
+
+  try {
+    batch.delete(archiveRef);
+    batch.delete(userArchiveRef);
+    await batch.commit();
+  } catch (err) {
+    if (err instanceof Error) {
+      return err.message;
+    }
+    return "Unable to delete the archive.";
+  }
 }
