@@ -1,7 +1,5 @@
-import { collection, doc, getDoc, getDocs } from "firebase/firestore";
-
 import { toUTCString } from "~/shared/lib/date-time/to-utc-string";
-import { db } from "~/shared/lib/firebase/client";
+import { adminDb } from "~/shared/lib/firebase/admin";
 import { COLLECTION } from "~/shared/lib/firebase/collections";
 
 /**
@@ -12,23 +10,29 @@ import { COLLECTION } from "~/shared/lib/firebase/collections";
 export async function getArchiveByUser(userId: string) {
   let userArchivesData: any[] = [];
 
-  const userRef = doc(db, COLLECTION.users, userId);
+  const userRef = adminDb.collection(COLLECTION.users).doc(userId);
   try {
-    const userArchivesCollectionRef = collection(userRef, COLLECTION.archives);
-    const userArchivesDoc = await getDocs(userArchivesCollectionRef);
-    const archiveIds = userArchivesDoc.docs.map((doc) => doc.id);
+    const userArchivesCollectionRef = userRef.collection(COLLECTION.archives);
+    const userArchivesDoc = await userArchivesCollectionRef.listDocuments();
+    const archiveIds = userArchivesDoc.map((doc) => doc.id);
 
     if (!archiveIds.length) {
       return userArchivesData;
     }
 
-    for (let i = 0; i < archiveIds.length; i++) {
-      const archiveId = archiveIds[i];
-      const archiveRef = doc(db, COLLECTION.archives, archiveId);
-      const archiveSnap = await getDoc(archiveRef);
-      const archiveData = archiveSnap.data();
+    const archiveRefs = archiveIds.map((id) =>
+      adminDb.collection(COLLECTION.archives).doc(id)
+    );
 
-      userArchivesData.push({
+    const archiveSnapshots = await Promise.all(
+      archiveRefs.map((ref) => ref.get())
+    );
+
+    userArchivesData = archiveSnapshots.map((snapshot, index) => {
+      const archiveData = snapshot.data();
+      const archiveId = archiveIds[index];
+
+      return {
         description: archiveData?.description,
         id: archiveId,
         title: archiveData?.title,
@@ -36,8 +40,8 @@ export async function getArchiveByUser(userId: string) {
           updatedAt: toUTCString(archiveData?.data?.updatedAt),
           videos: archiveData?.data?.videos,
         },
-      });
-    }
+      };
+    });
   } catch (err) {
     console.error(err);
   }

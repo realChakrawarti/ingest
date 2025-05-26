@@ -1,6 +1,4 @@
-import { doc, getDoc } from "firebase/firestore";
-
-import { db } from "~/shared/lib/firebase/client";
+import { adminDb } from "~/shared/lib/firebase/admin";
 import { COLLECTION } from "~/shared/lib/firebase/collections";
 import {
   CatalogByIdResponse,
@@ -24,7 +22,7 @@ import {
  */
 export async function getCatalogById(catalogId: string, userId: string) {
   // Get channel list
-  const userRef = doc(db, COLLECTION.users, userId);
+  const userRef = adminDb.collection(COLLECTION.users).doc(userId);
 
   let catalogResponseData: CatalogByIdResponse = {
     channelList: [],
@@ -33,17 +31,16 @@ export async function getCatalogById(catalogId: string, userId: string) {
     title: "",
   };
 
-  try {
-    const userCatalogRef = doc(userRef, COLLECTION.catalogs, catalogId);
+  const userCatalogRef = userRef.collection(COLLECTION.catalogs).doc(catalogId);
+  const catalogRef = adminDb.collection(COLLECTION.catalogs).doc(catalogId);
 
-    const userCatalogData = await getDoc(userCatalogRef);
+  try {
+    const userCatalogData = await userCatalogRef.get();
     const channelListData: CatalogChannel[] = userCatalogData.data()?.channels;
     const playlistData: CatalogPlaylist[] = userCatalogData.data()?.playlists;
 
     // Get title and description
-
-    const catalogRef = doc(db, COLLECTION.catalogs, catalogId);
-    const catalogSnap = await getDoc(catalogRef);
+    const catalogSnap = await catalogRef.get();
     const catalogData = catalogSnap.data();
 
     catalogResponseData = {
@@ -53,7 +50,10 @@ export async function getCatalogById(catalogId: string, userId: string) {
       title: catalogData?.title,
     };
   } catch (err) {
-    console.error(err);
+    if (err instanceof Error) {
+      return err.message;
+    }
+    return "Unable to retrieve catalog by id.";
   }
 
   return catalogResponseData;
