@@ -23,7 +23,7 @@ type ContextParams = {
  * @throws Will propagate any errors from playlist update process
  *
  * @remarks
- * This endpoint requires a valid user ID cookie and expects a JSON payload
+ * This endpoint requires a valid user session and expects a JSON payload
  * of playlist items to update for the specified catalog.
  */
 export async function PATCH(request: NextRequest, ctx: ContextParams) {
@@ -57,7 +57,7 @@ export async function PATCH(request: NextRequest, ctx: ContextParams) {
  *
  * @remarks
  * This function requires an authenticated user and performs the following steps:
- * 1. Retrieves the user ID from cookies
+ * 1. Retrieves the user ID from request headers
  * 2. Extracts the catalog ID from the context
  * 3. Parses the request body to get playlists to delete
  * 4. Calls the delete playlist service method

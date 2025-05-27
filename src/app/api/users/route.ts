@@ -30,13 +30,13 @@ export async function POST(request: NextRequest) {
       return NxResponse.fail(
         "Unable to verify credentials. Please login again.",
         { code: "LOGIN_FAILED", details: err.message },
-        404
+        401
       );
     }
     return NxResponse.fail(
       "Unable to verify credentials. Please login again.",
       { code: "LOGIN_FAILED", details: JSON.stringify(err) },
-      404
+      401
     );
   }
 }

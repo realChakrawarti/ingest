@@ -10,8 +10,8 @@ export async function middleware(request: NextRequest) {
 
   if (!authSessionToken) {
     return NxResponse.fail(
-      "Not authorized",
-      { code: "UNAUTHORIZED", details: "Not authorized" },
+      "Not authorized.",
+      { code: "UNAUTHORIZED", details: "Not authorized." },
       401
     );
   }
@@ -25,6 +25,11 @@ export async function middleware(request: NextRequest) {
     }
   } catch (err) {
     console.error(err);
+    return NxResponse.fail(
+      "Unable to verify credentials.",
+      { code: "VERIFICATION_FAILED", details: "Unable to verify credentials." },
+      401
+    );
   }
 
   return NextResponse.next({

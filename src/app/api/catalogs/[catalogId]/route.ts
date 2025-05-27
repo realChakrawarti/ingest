@@ -14,8 +14,6 @@ export async function GET(_request: NextRequest, ctx: ContextParams) {
   const userId = getUserIdHeader();
   const { catalogId } = ctx.params;
 
-  console.log({ userId }, { catalogId });
-
   try {
     const data = await getCatalogById(catalogId, userId);
 
