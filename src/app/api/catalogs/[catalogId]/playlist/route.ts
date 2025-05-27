@@ -2,7 +2,7 @@ import { revalidatePath } from "next/cache";
 import { NextRequest } from "next/server";
 
 import { deletePlaylist, updateCatalogPlaylists } from "~/entities/catalogs";
-import { getUserIdCookie } from "~/shared/lib/next/get-cookie";
+import { getUserIdHeader } from "~/shared/lib/next/get-user-id-header";
 import { NxResponse } from "~/shared/lib/next/nx-response";
 import { PlaylistItem } from "~/shared/types-schema/types";
 
@@ -27,7 +27,7 @@ type ContextParams = {
  * of playlist items to update for the specified catalog.
  */
 export async function PATCH(request: NextRequest, ctx: ContextParams) {
-  const userId = getUserIdCookie();
+  const userId = getUserIdHeader();
   const { catalogId } = ctx.params;
 
   if (!catalogId) {
@@ -66,7 +66,7 @@ export async function PATCH(request: NextRequest, ctx: ContextParams) {
  * @throws Will throw an error if playlist deletion fails
  */
 export async function DELETE(request: NextRequest, ctx: ContextParams) {
-  const userId = getUserIdCookie();
+  const userId = getUserIdHeader();
   const { catalogId } = ctx.params;
 
   const playlists = await request.json();

@@ -27,3 +27,10 @@ export const timeMs = {
    */
   "1m": 30 * ONE_DAY,
 };
+
+export const SESSION_COOKIE_NAME = "__session";
+
+export const Routes = {
+  ROOT: "/",
+  DASHBOARD: "/dashboard",
+} as const;
