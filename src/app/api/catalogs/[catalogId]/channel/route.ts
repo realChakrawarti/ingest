@@ -6,7 +6,7 @@ import {
   getVideosByCatalog,
   updateCatalogChannels,
 } from "~/entities/catalogs";
-import { getUserIdCookie } from "~/shared/lib/next/get-cookie";
+import { getUserIdHeader } from "~/shared/lib/next/get-user-id-header";
 import { NxResponse } from "~/shared/lib/next/nx-response";
 
 type ContextParams = {
@@ -16,7 +16,7 @@ type ContextParams = {
 };
 
 export async function DELETE(request: NextRequest, ctx: ContextParams) {
-  const userId = getUserIdCookie();
+  const userId = getUserIdHeader();
   const { catalogId } = ctx.params;
 
   const channels = await request.json();
@@ -29,7 +29,7 @@ export async function DELETE(request: NextRequest, ctx: ContextParams) {
 }
 
 export async function PATCH(request: NextRequest, ctx: ContextParams) {
-  const userId = getUserIdCookie();
+  const userId = getUserIdHeader();
   const { catalogId } = ctx.params;
 
   if (!catalogId) {

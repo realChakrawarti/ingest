@@ -1,19 +1,42 @@
 import { NextRequest } from "next/server";
 
 import { createUser } from "~/entities/users";
-import { timeMs } from "~/shared/lib/constants";
+import { SESSION_COOKIE_NAME, timeMs } from "~/shared/lib/constants";
+import { adminAuth } from "~/shared/lib/firebase/admin";
 import { NxResponse } from "~/shared/lib/next/nx-response";
 
 export async function POST(request: NextRequest) {
-  const requestBody = await request.json();
-  const message = await createUser(requestBody.uid);
+  const { token } = await request.json();
 
-  const response = NxResponse.success<any>(message, {}, 201);
-
-  response.cookies.set("userId", requestBody.uid, {
+  const sessionCookieOptions = {
     maxAge: timeMs["12h"] / 1000, // 12 hours in seconds
     path: "/",
-  });
+  };
 
-  return response;
+  try {
+    const userDetails = await adminAuth.verifyIdToken(token);
+    const message = await createUser(userDetails.uid);
+    const response = NxResponse.success<any>(message, {}, 201);
+
+    const session = await adminAuth.createSessionCookie(token, {
+      expiresIn: timeMs["12h"],
+    });
+
+    response.cookies.set(SESSION_COOKIE_NAME, session, sessionCookieOptions);
+
+    return response;
+  } catch (err) {
+    if (err instanceof Error) {
+      return NxResponse.fail(
+        "Unable to verify credentials. Please login again.",
+        { code: "LOGIN_FAILED", details: err.message },
+        401
+      );
+    }
+    return NxResponse.fail(
+      "Unable to verify credentials. Please login again.",
+      { code: "LOGIN_FAILED", details: JSON.stringify(err) },
+      401
+    );
+  }
 }

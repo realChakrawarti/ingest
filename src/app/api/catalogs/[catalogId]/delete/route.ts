@@ -2,7 +2,7 @@ import { revalidatePath } from "next/cache";
 import { NextRequest } from "next/server";
 
 import { deleteCatalog } from "~/entities/catalogs";
-import { getUserIdCookie } from "~/shared/lib/next/get-cookie";
+import { getUserIdHeader } from "~/shared/lib/next/get-user-id-header";
 import { NxResponse } from "~/shared/lib/next/nx-response";
 
 type ContextParams = {
@@ -12,7 +12,7 @@ type ContextParams = {
 };
 
 export async function DELETE(_request: NextRequest, ctx: ContextParams) {
-  const userId = getUserIdCookie();
+  const userId = getUserIdHeader();
   const { catalogId } = ctx.params;
 
   const result = await deleteCatalog(userId, catalogId);
