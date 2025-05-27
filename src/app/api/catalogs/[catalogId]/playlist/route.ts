@@ -2,7 +2,7 @@ import { revalidatePath } from "next/cache";
 import { NextRequest } from "next/server";
 
 import { deletePlaylist, updateCatalogPlaylists } from "~/entities/catalogs";
-import { getUserIdCookie } from "~/shared/lib/next/get-cookie";
+import { getUserIdHeader } from "~/shared/lib/next/get-user-id-header";
 import { NxResponse } from "~/shared/lib/next/nx-response";
 import { PlaylistItem } from "~/shared/types-schema/types";
 
@@ -23,11 +23,11 @@ type ContextParams = {
  * @throws Will propagate any errors from playlist update process
  *
  * @remarks
- * This endpoint requires a valid user ID cookie and expects a JSON payload
+ * This endpoint requires a valid user session and expects a JSON payload
  * of playlist items to update for the specified catalog.
  */
 export async function PATCH(request: NextRequest, ctx: ContextParams) {
-  const userId = getUserIdCookie();
+  const userId = getUserIdHeader();
   const { catalogId } = ctx.params;
 
   if (!catalogId) {
@@ -57,7 +57,7 @@ export async function PATCH(request: NextRequest, ctx: ContextParams) {
  *
  * @remarks
  * This function requires an authenticated user and performs the following steps:
- * 1. Retrieves the user ID from cookies
+ * 1. Retrieves the user ID from request headers
  * 2. Extracts the catalog ID from the context
  * 3. Parses the request body to get playlists to delete
  * 4. Calls the delete playlist service method
@@ -66,7 +66,7 @@ export async function PATCH(request: NextRequest, ctx: ContextParams) {
  * @throws Will throw an error if playlist deletion fails
  */
 export async function DELETE(request: NextRequest, ctx: ContextParams) {
-  const userId = getUserIdCookie();
+  const userId = getUserIdHeader();
   const { catalogId } = ctx.params;
 
   const playlists = await request.json();

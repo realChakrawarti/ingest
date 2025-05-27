@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.6.4](https://github.com/realChakrawarti/yt-catalog/compare/v1.6.3...v1.6.4) (2025-05-27)
+
+
+### Features
+
+* use jwt token for user verification ([2b266d3](https://github.com/realChakrawarti/yt-catalog/commit/2b266d32e563e45b70f91987235dcac0538c94b3))
+* use jwt token for user verification ([08923cd](https://github.com/realChakrawarti/yt-catalog/commit/08923cdcdbb3943e18097a273dde5f0ad4db4782))
+
+
+### Bug Fixes
+
+* coderabbit suggestion ([2875275](https://github.com/realChakrawarti/yt-catalog/commit/2875275cf66f82d3bd2211fdfde85eb1ba01cdb1))
+
 ### [1.6.3](https://github.com/realChakrawarti/yt-catalog/compare/v1.6.2...v1.6.3) (2025-05-26)
 
 

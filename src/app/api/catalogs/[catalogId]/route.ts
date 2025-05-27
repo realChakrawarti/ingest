@@ -1,7 +1,7 @@
 import { NextRequest } from "next/server";
 
 import { getCatalogById } from "~/entities/catalogs";
-import { getUserIdCookie } from "~/shared/lib/next/get-cookie";
+import { getUserIdHeader } from "~/shared/lib/next/get-user-id-header";
 import { NxResponse } from "~/shared/lib/next/nx-response";
 
 type ContextParams = {
@@ -11,7 +11,7 @@ type ContextParams = {
 };
 
 export async function GET(_request: NextRequest, ctx: ContextParams) {
-  const userId = getUserIdCookie();
+  const userId = getUserIdHeader();
   const { catalogId } = ctx.params;
 
   try {

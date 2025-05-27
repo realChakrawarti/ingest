@@ -19,6 +19,7 @@ import {
 
 import { useToast } from "~/shared/hooks/use-toast";
 import fetchApi from "~/shared/lib/api/fetch";
+import { Routes } from "~/shared/lib/constants";
 import { auth } from "~/shared/lib/firebase/client";
 
 type UserContext = {
@@ -72,12 +73,13 @@ export default function AuthContextProvider({ children }: PropsWithChildren) {
       const response = await signInWithPopup(auth, provider);
       const user = response.user;
       if (user) {
+        const userToken = await user.getIdToken();
         const result = await fetchApi("/users", {
           method: "POST",
-          body: JSON.stringify({ uid: user.uid }),
+          body: JSON.stringify({ token: userToken }),
         });
         toast({ title: result.message });
-        router.push("/dashboard");
+        router.push(Routes.DASHBOARD);
       }
     } catch (err) {
       console.error(JSON.stringify(err));
@@ -90,7 +92,7 @@ export default function AuthContextProvider({ children }: PropsWithChildren) {
     window.localStorage.clear();
     const result = await fetchApi("/logout");
     toast({ title: result.message });
-    router.push("/");
+    router.push(Routes.ROOT);
   };
 
   return (
