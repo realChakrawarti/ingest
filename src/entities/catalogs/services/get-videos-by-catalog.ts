@@ -2,7 +2,7 @@ import { revalidatePath } from "next/cache";
 
 import appConfig from "~/shared/app-config";
 import { YOUTUBE_CHANNEL_PLAYLIST_VIDEOS } from "~/shared/lib/api/youtube-endpoints";
-import { timeMs } from "~/shared/lib/constants";
+import { TimeMs } from "~/shared/lib/constants";
 import { adminDb } from "~/shared/lib/firebase/admin";
 import { COLLECTION } from "~/shared/lib/firebase/collections";
 
@@ -88,7 +88,7 @@ export async function getVideosByCatalog(catalogId: string) {
   let recentUpdate = new Date(currentTime);
   let pageviews = 0;
 
-  if (currentTime - lastUpdatedTime > timeMs["4h"]) {
+  if (currentTime - lastUpdatedTime > TimeMs["4h"]) {
     try {
       pageviews = await getPageviewByCatalogId(catalogId);
     } catch (err) {
@@ -101,13 +101,7 @@ export async function getVideosByCatalog(catalogId: string) {
 
     const videoListPromise: Promise<VideoMetadata[]>[] = [];
 
-    // TODO: To update channel logo, we could perhaps create a array of channel id for playlist and channel for
-    // a catalog. Map that array so only unique id remains, if it is less than 50, we could use
-    // YOUTUBE_CHANNELS_INFORMATION endpoint to fetch and update the channel and playlist meta
-    // using catalog's `videoRef` field
-
-    // Or instead of making a single request less than 50, we could make 2 since schema for channel meta and playlist
-    // meta are different on firestore doc, time frame to check periodically could be once a week
+    // TODO: https://github.com/realChakrawarti/ingest/issues/137
 
     if (playlistData?.length) {
       playlistData?.forEach((playlist: any) => {
@@ -145,9 +139,9 @@ export async function getVideosByCatalog(catalogId: string) {
     for (const video of videoList) {
       const videoPublishedAt = new Date(video.publishedAt).getTime();
 
-      if (currentTime - videoPublishedAt < timeMs["1d"]) {
+      if (currentTime - videoPublishedAt < TimeMs["1d"]) {
         videoFilterData.day.push(video);
-      } else if (currentTime - videoPublishedAt < timeMs["1w"]) {
+      } else if (currentTime - videoPublishedAt < TimeMs["1w"]) {
         videoFilterData.week.push(video);
       } else {
         videoFilterData.month.push(video);
@@ -174,14 +168,14 @@ export async function getVideosByCatalog(catalogId: string) {
     recentUpdate = lastUpdated;
     console.log(
       `Returning cached data for the catalog ${catalogId}, next update on ${new Date(
-        lastUpdatedTime + timeMs["4h"]
+        lastUpdatedTime + TimeMs["4h"]
       )}`
     );
   }
 
   return {
     description: catalogSnapData?.description,
-    nextUpdate: new Date(recentUpdate.getTime() + timeMs["4h"]).toUTCString(),
+    nextUpdate: new Date(recentUpdate.getTime() + TimeMs["4h"]).toUTCString(),
     pageviews: catalogSnapData?.pageviews ?? 0,
     title: catalogSnapData?.title,
     totalVideos: totalVideos,
@@ -227,7 +221,7 @@ async function getPlaylistVideos(playlist: any) {
       if (
         item.status.privacyStatus === "private" ||
         item.status.privacyStatus === "privacyStatusUnspecified" ||
-        currentTime - new Date(videoPublished).getTime() > timeMs["1m"]
+        currentTime - new Date(videoPublished).getTime() > TimeMs["1m"]
       ) {
         continue;
       }
@@ -290,7 +284,7 @@ async function getChannelVideos(channel: any) {
       if (
         item.status.privacyStatus === "private" ||
         item.status.privacyStatus === "privacyStatusUnspecified" ||
-        currentTime - new Date(videoPublished).getTime() > timeMs["1m"]
+        currentTime - new Date(videoPublished).getTime() > TimeMs["1m"]
       ) {
         continue;
       }

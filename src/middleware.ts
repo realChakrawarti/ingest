@@ -42,14 +42,14 @@ export async function middleware(request: NextRequest) {
 export const config = {
   matcher: [
     // Archives Routes
-    "/api/archives/",
+    "/api/archives",
     "/api/archives/:archiveId/add-video",
     "/api/archives/:archiveId/delete",
     "/api/archives/:archiveId/remove-video",
     "/api/archives/:archiveId/update",
     // Catalogs Routes
-    "/api/catalogs/",
-    "/api/catalogs/:catalogId",
+    "/api/catalogs",
+    "/api/catalogs/:catalogId/",
     "/api/catalogs/:catalogId/channel",
     "/api/catalogs/:catalogId/delete",
     "/api/catalogs/:catalogId/playlist",

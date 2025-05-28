@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.6.6](https://github.com/realChakrawarti/yt-catalog/compare/v1.6.5...v1.6.6) (2025-05-28)
+
+
+### Bug Fixes
+
+* middleware matcher, player ui & constants update ([7a41720](https://github.com/realChakrawarti/yt-catalog/commit/7a4172051542d5ab7cca4b0f55e0e40a33cdf516))
+
 ### [1.6.5](https://github.com/realChakrawarti/yt-catalog/compare/v1.6.4...v1.6.5) (2025-05-28)
 
 

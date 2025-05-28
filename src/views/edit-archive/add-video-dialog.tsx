@@ -2,6 +2,7 @@ import { ChangeEvent, useState } from "react";
 
 import { toast } from "~/shared/hooks/use-toast";
 import fetchApi from "~/shared/lib/api/fetch";
+import { Regex } from "~/shared/lib/constants";
 import { Button } from "~/shared/ui/button";
 import {
   Dialog,
@@ -16,9 +17,6 @@ type VideoLink = {
   link: string;
   error: string;
 };
-
-const YouTubeVideoLinkRegex =
-  /^.*(?:(?:youtu\.be\/|v\/|vi\/|u\/\w\/|embed\/|shorts\/)|(?:(?:watch)?\?v(?:i)?=|\&v(?:i)?=))([^#\&\?]*).*/;
 
 export default function AddVideoDialog({
   archiveId,
@@ -37,7 +35,7 @@ export default function AddVideoDialog({
       link: e.target.value,
     }));
 
-    if (!YouTubeVideoLinkRegex.test(e.target.value)) {
+    if (!Regex.YOUTUBE_VIDEO_LINK.test(e.target.value)) {
       setVideoLink((prev) => ({
         ...prev,
         error: "Invalid YouTube video link.",
@@ -53,7 +51,7 @@ export default function AddVideoDialog({
   };
 
   const addVideoLink = async () => {
-    const found = videoLink.link.match(YouTubeVideoLinkRegex);
+    const found = videoLink.link.match(Regex.YOUTUBE_VIDEO_LINK);
     let videoId = "";
     if (found?.length) {
       videoId = found[1];

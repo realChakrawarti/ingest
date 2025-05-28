@@ -6,6 +6,7 @@ import { Inter } from "next/font/google";
 import Script from "next/script";
 
 import appConfig from "~/shared/app-config";
+import isDevelopment from "~/shared/lib/is-development";
 import { Toaster } from "~/shared/ui/toaster";
 import AppSidebar from "~/widgets/app-sidebar";
 import Footer from "~/widgets/footer";
@@ -31,7 +32,7 @@ export default function RootLayout({
 }>) {
   return (
     <html className="h-full" lang="en" suppressHydrationWarning>
-      {process.env.NODE_ENV === "development" ? <ReactScan /> : null}
+      {isDevelopment() ? <ReactScan /> : null}
       <head>
         <Script
           src="https://www.youtube.com/iframe_api"
