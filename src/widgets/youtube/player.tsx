@@ -134,7 +134,8 @@ export default function YoutubePlayer(
     <div
       className={cn(
         "rounded-lg overflow-hidden mx-[2px] md:mx-0",
-        "group-hover/player:shadow-primary group-hover/player:shadow-[0_0_0_2px]"
+        "group-hover/player:shadow-primary group-hover/player:shadow-[0_0_0_2px]",
+        "outline-none size-full"
       )}
       ref={containerRef}
       onMouseDown={loadIFrameElement}

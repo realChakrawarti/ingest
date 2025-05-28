@@ -6,6 +6,7 @@ import useSWR from "swr";
 
 import fetchApi from "~/shared/lib/api/fetch";
 import { getTimeDifference } from "~/shared/lib/date-time/time-diff";
+import isDevelopment from "~/shared/lib/is-development";
 import { Button } from "~/shared/ui/button";
 import { RefreshIcon } from "~/shared/ui/icons";
 import { Skeleton } from "~/shared/ui/skeleton";
@@ -69,10 +70,7 @@ export default function NextUpdate({ catalogId }: any) {
     error,
     isLoading,
   } = useSWR(
-    // TODO: Create a custom hook that gives whether the code is running on dev or on production server for client-only
-    catalogId && process.env.NODE_ENV !== "development"
-      ? `/catalogs/${catalogId}/next-update`
-      : null,
+    catalogId && !isDevelopment() ? `/catalogs/${catalogId}/next-update` : null,
     (url) => fetchApi<string>(url),
     {
       refreshInterval: POLLING_INTERVAL,
@@ -104,7 +102,7 @@ export default function NextUpdate({ catalogId }: any) {
 
   const [when, timeDiff] = getTimeDifference(nextUpdate?.data as string);
   const showTimeUpdate = () => {
-    if (process.env.NODE_ENV === "development") {
+    if (isDevelopment()) {
       return "Disabled during development";
     }
 

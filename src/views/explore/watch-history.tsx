@@ -25,8 +25,11 @@ export default function WatchHistory() {
         <GridContainer>
           {history.length ? (
             history.map((item) => (
-              // TODO: Track video progression
-              <YouTubeCard key={item.videoId} options={{}} video={item} />
+              <YouTubeCard
+                key={item.videoId}
+                options={{ enableJsApi: true }}
+                video={item}
+              />
             ))
           ) : (
             <div>No videos found.</div>

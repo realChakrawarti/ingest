@@ -5,6 +5,7 @@ import { ChangeEvent } from "react";
 
 import { toast } from "~/shared/hooks/use-toast";
 import fetchApi from "~/shared/lib/api/fetch";
+import { Regex } from "~/shared/lib/constants";
 import { Button } from "~/shared/ui/button";
 import { Input } from "~/shared/ui/input";
 import {
@@ -19,10 +20,6 @@ import { OutLink } from "~/widgets/out-link";
 
 import useCatalogStore from "./catalog-store";
 import ShowPlaylist from "./show-playlist";
-
-// TODO: Consider using a constant for the regex patterns
-const YouTubeVideoLinkRegex =
-  /^.*(?:(?:youtu\.be\/|v\/|vi\/|u\/\w\/|embed\/|shorts\/)|(?:(?:watch)?\?v(?:i)?=|\&v(?:i)?=))([^#\&\?]*).*/;
 
 export default function AddChannelPlaylist() {
   const {
@@ -44,7 +41,7 @@ export default function AddChannelPlaylist() {
       link: e.target.value,
     });
 
-    if (!YouTubeVideoLinkRegex.test(e.target.value)) {
+    if (!Regex.YOUTUBE_VIDEO_LINK.test(e.target.value)) {
       setVideoLink({
         error: "Invalid YouTube video link.",
       });
@@ -61,7 +58,7 @@ export default function AddChannelPlaylist() {
     // Reset playlist state
     resetLocalPlaylist();
 
-    const found = videoLink.link.match(YouTubeVideoLinkRegex);
+    const found = videoLink.link.match(Regex.YOUTUBE_VIDEO_LINK);
     let videoId = "";
     if (found?.length) {
       videoId = found[1];

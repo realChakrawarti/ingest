@@ -7,6 +7,8 @@ import {
 import { getAuth } from "firebase-admin/auth";
 import { getFirestore } from "firebase-admin/firestore";
 
+import isDevelopment from "../is-development";
+
 const appOptions: AppOptions = {
   credential: cert({
     clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
@@ -17,7 +19,7 @@ const appOptions: AppOptions = {
   }),
 };
 
-if (process.env.NODE_ENV === "development") {
+if (isDevelopment()) {
   process.env.FIRESTORE_EMULATOR_HOST = "localhost:8080";
   process.env.FIREBASE_AUTH_EMULATOR_HOST = "localhost:9099";
 }

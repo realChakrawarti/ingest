@@ -36,7 +36,11 @@ export default function LastWatched() {
           <GridContainer>
             {history.slice(0, 4).map((item) => (
               // TODO: Track video progression
-              <YouTubeCard key={item.videoId} options={{}} video={item} />
+              <YouTubeCard
+                key={item.videoId}
+                options={{ enableJsApi: true }}
+                video={item}
+              />
             ))}
           </GridContainer>
         </div>

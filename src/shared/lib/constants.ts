@@ -1,7 +1,7 @@
 /* eslint-disable sort-keys */
 const ONE_HOUR = 3_600_000;
 const ONE_DAY = ONE_HOUR * 24;
-export const timeMs = {
+export const TimeMs = {
   /**
    * Milliseconds in 1 hour
    */
@@ -34,3 +34,9 @@ export const Routes = {
   ROOT: "/",
   DASHBOARD: "/dashboard",
 } as const;
+
+export const Regex = {
+  // eslint-disable-next-line @stylistic/max-len
+  YOUTUBE_VIDEO_LINK:
+    /^.*(?:(?:youtu\.be\/|v\/|vi\/|u\/\w\/|embed\/|shorts\/)|(?:(?:watch)?\?v(?:i)?=|\&v(?:i)?=))([^#\&\?]*).*/,
+};

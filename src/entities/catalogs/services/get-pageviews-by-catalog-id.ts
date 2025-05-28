@@ -1,5 +1,7 @@
 import { BetaAnalyticsDataClient, protos } from "@google-analytics/data";
 
+import isDevelopment from "~/shared/lib/is-development";
+
 const analyticsDataClient = new BetaAnalyticsDataClient({
   credentials: {
     client_email: process.env.GOOGLE_CLIENT_EMAIL,
@@ -32,8 +34,7 @@ function transformAnalyticsData(
 export async function getPageviewByCatalogId(
   catalogId: string
 ): Promise<number> {
-  // TODO: Make a function to check if the code is running on development or on production server
-  if (process.env.NODE_ENV === "development") {
+  if (isDevelopment()) {
     return 69;
   }
 
