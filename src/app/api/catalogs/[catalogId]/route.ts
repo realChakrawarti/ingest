@@ -11,10 +11,10 @@ type ContextParams = {
 };
 
 export async function GET(_request: NextRequest, ctx: ContextParams) {
-  const userId = getUserIdHeader();
   const { catalogId } = ctx.params;
 
   try {
+    const userId = getUserIdHeader();
     const data = await getCatalogById(catalogId, userId);
 
     return NxResponse.success<any>(
