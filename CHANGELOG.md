@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.6.5](https://github.com/realChakrawarti/yt-catalog/compare/v1.6.4...v1.6.5) (2025-05-28)
+
+
+### Bug Fixes
+
+* **middleware:** authorization with `api/catalogs/valid` ([79541d3](https://github.com/realChakrawarti/yt-catalog/commit/79541d3bc9c27161c1b588aa1085ad8f906b9b11))
+
 ### [1.6.4](https://github.com/realChakrawarti/yt-catalog/compare/v1.6.3...v1.6.4) (2025-05-27)
 
 
