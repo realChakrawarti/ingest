@@ -6,6 +6,14 @@ import { verifyFirebaseSessionCookie } from "./shared/lib/firebase/verify-sessio
 import { NxResponse } from "./shared/lib/next/nx-response";
 
 export async function middleware(request: NextRequest) {
+  const { pathname } = request.nextUrl;
+
+  // Conditional logic to explicitly ignore /api/catalogs/valid
+  if (pathname === "/api/catalogs/valid") {
+    // Allow this specific path to bypass middleware logic
+    return NextResponse.next();
+  }
+
   const authSessionToken = cookies().get(SESSION_COOKIE_NAME)?.value;
 
   if (!authSessionToken) {
