@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.6.7](https://github.com/realChakrawarti/yt-catalog/compare/v1.6.6...v1.6.7) (2025-05-29)
+
+
+### Bug Fixes
+
+* conditionally exempt `/api/catalogs/valid` route ([aad2d68](https://github.com/realChakrawarti/yt-catalog/commit/aad2d68555836ebb4c61899b5ca24d129f330d9b))
+
 ### [1.6.6](https://github.com/realChakrawarti/yt-catalog/compare/v1.6.5...v1.6.6) (2025-05-28)
 
 
