@@ -8,17 +8,12 @@ import { useScrollTrigger } from "~/shared/hooks/use-scroll-trigger";
 import { cn } from "~/shared/lib/tailwind-merge";
 
 import AppIcon from "../../public/icon.png";
-import { useAuth } from "../features/auth/context-provider";
 import { Button } from "../shared/ui/button";
-import { LogoutIcon } from "../shared/ui/icons";
 import { SidebarTrigger } from "../shared/ui/sidebar";
-import Feedback from "./feedback";
 import { GitHubStargazer } from "./github-stargazers";
-import JustTip from "./just-the-tip";
 import ThemeToggle from "./theme-toggle";
 
 const Header = () => {
-  const { user, logout } = useAuth();
   const isHidden = useScrollTrigger();
 
   const headerStyles = cn(
@@ -70,14 +65,6 @@ const Header = () => {
         </div>
         <div className="flex gap-3 items-center">
           <GitHubStargazer owner="realChakrawarti" repo="yt-catalog" />
-          <Feedback />
-          {user ? (
-            <JustTip label="Logout">
-              <Button onClick={logout} variant="outline">
-                <LogoutIcon size={24} />
-              </Button>
-            </JustTip>
-          ) : null}
           <ThemeToggle />
         </div>
       </div>
