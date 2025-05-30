@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.6.8](https://github.com/realChakrawarti/yt-catalog/compare/v1.6.7...v1.6.8) (2025-05-30)
+
+
+### Features
+
+* move gh stargazers & feedback to sidebar ([4fe6996](https://github.com/realChakrawarti/yt-catalog/commit/4fe69965c299d6875d118be1751ad452e161a9a7))
+
 ### [1.6.7](https://github.com/realChakrawarti/yt-catalog/compare/v1.6.6...v1.6.7) (2025-05-29)
 
 
