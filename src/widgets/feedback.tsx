@@ -11,6 +11,7 @@ import { useState } from "react";
 
 import { toast } from "~/shared/hooks/use-toast";
 import fetchApi from "~/shared/lib/api/fetch";
+import { cn } from "~/shared/lib/tailwind-merge";
 
 import { Button } from "../shared/ui/button";
 import {
@@ -122,12 +123,15 @@ ${feedback}
       <Dialog>
         <DialogTrigger asChild>
           <Button
-            className="flex gap-2 group/feedback transition-all duration-200 ease-in"
-            variant="outline"
             aria-label="Open feedback modal"
+            variant="ghost"
+            className={cn(
+              "w-full justify-start px-2",
+              "hover:bg-primary/5 hover:text-primary/80"
+            )}
           >
-            <p className="hidden group-hover/feedback:block">Feedback</p>
-            <MailQuestion size={24} />{" "}
+            <MailQuestion className="mr-2 h-4 w-4" />
+            Feedback
           </Button>
         </DialogTrigger>
         <DialogContent>
