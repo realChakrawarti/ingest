@@ -18,12 +18,12 @@ Example:
 
 ## ✅ Checklist before merging
 
-- My changes follow the project’s code style and guidelines
-- I have tested my changes locally
-- No console errors or warnings
-- I’ve rebased with the latest `dev` branch
-- I’ve added relevant comments and documentation where necessary
-- I’ve updated unit or integration tests if required
+- [ ] My changes follow the project’s code style and guidelines
+- [ ] I have tested my changes locally
+- [ ] No console errors or warnings
+- [ ] I’ve rebased with the latest `dev` branch
+- [ ] I’ve added relevant comments and documentation where necessary
+- [ ] I’ve updated unit or integration tests if required
 
 ## 💡 Remarks / Suggestions
 
