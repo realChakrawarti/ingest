@@ -1,3 +1,4 @@
+import { CatalogList } from "~/entities/catalogs/models";
 import { Button } from "~/shared/ui/button";
 import { DeleteIcon } from "~/shared/ui/icons";
 import {
@@ -32,54 +33,59 @@ function ChannelTable({ channels, handleDelete }: any) {
             </TableCell>
           </TableRow>
         ) : (
-          channels?.map((channel: any, idx: number) => (
-            <TableRow key={channel?.id}>
-              <TableCell>{idx + 1}</TableCell>
-              <TableCell>
-                <div className="flex gap-2 items-center">
-                  {channel?.logo ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img
-                      src={channel?.logo}
-                      alt={channel?.title}
-                      className="size-6 rounded-lg"
-                    />
-                  ) : null}
+          channels?.map((catalogChannel: CatalogList, idx: number) => {
+            const { channelHandle, channelId, channelLogo, channelTitle } =
+              catalogChannel;
+            return (
+              <TableRow key={channelId}>
+                <TableCell>{idx + 1}</TableCell>
+                <TableCell>
+                  <div className="flex gap-2 items-center">
+                    {channelLogo ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        src={channelLogo}
+                        alt={channelTitle}
+                        className="size-6 rounded-lg"
+                      />
+                    ) : null}
 
-                  {channel?.handle ? (
-                    <OutLink
-                      className="text-indigo-600 hover:text-indigo-500 visited:text-indigo-700"
-                      href={`https://www.youtube.com/${channel?.handle}`}
-                    >
-                      <p>{channel?.title}</p>
-                    </OutLink>
-                  ) : (
-                    <p>{channel?.title}</p>
-                  )}
-                </div>
-              </TableCell>
-              <TableCell>{channel?.id}</TableCell>
-              <TableCell>
-                <DeleteModal
-                  label={
-                    <>
-                      This action cannot be undone. This will permanently remove{" "}
-                      <span className="text-primary">{channel.title}</span>{" "}
-                      channel from the catalog?
-                    </>
-                  }
-                  onDelete={() => handleDelete(channel?.id)}
-                >
-                  <Button variant="outline">
-                    <DeleteIcon
-                      size={24}
-                      className="text-red-700 hover:text-red-500 cursor-pointer"
-                    />
-                  </Button>
-                </DeleteModal>
-              </TableCell>
-            </TableRow>
-          ))
+                    {channelHandle ? (
+                      <OutLink
+                        className="text-indigo-600 hover:text-indigo-500 visited:text-indigo-700"
+                        href={`https://www.youtube.com/${channelHandle}`}
+                      >
+                        <p>{channelTitle}</p>
+                      </OutLink>
+                    ) : (
+                      <p>{channelTitle}</p>
+                    )}
+                  </div>
+                </TableCell>
+                <TableCell>{channelId}</TableCell>
+                <TableCell>
+                  <DeleteModal
+                    label={
+                      <>
+                        This action cannot be undone. This will permanently
+                        remove{" "}
+                        <span className="text-primary">{channelTitle}</span>{" "}
+                        channel from the catalog?
+                      </>
+                    }
+                    onDelete={() => handleDelete(channelId)}
+                  >
+                    <Button variant="outline">
+                      <DeleteIcon
+                        size={24}
+                        className="text-red-700 hover:text-red-500 cursor-pointer"
+                      />
+                    </Button>
+                  </DeleteModal>
+                </TableCell>
+              </TableRow>
+            );
+          })
         )}
       </TableBody>
     </Table>

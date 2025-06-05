@@ -82,10 +82,8 @@ export async function verifyFirebaseSessionCookie(
   // --- DEVELOPMENT-ONLY BYPASS FOR FIREBASE AUTH EMULATOR ---
   // IMPORTANT: This block MUST NOT be present in production code!
   // It trusts tokens from the emulator without cryptographic verification.
-  const isEmulatorActive =
-    isDevelopment() && process.env.FIREBASE_AUTH_EMULATOR_HOST;
 
-  if (isEmulatorActive) {
+  if (isDevelopment()) {
     try {
       // For emulator tokens, we can often just decode the payload directly.
       // They typically don't have a valid signature anyway.

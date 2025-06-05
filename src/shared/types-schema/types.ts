@@ -89,10 +89,3 @@ export type CatalogChannel = {
   logo: string;
   title: string;
 };
-
-export type CatalogByIdResponse = {
-  title: string;
-  description: string;
-  channelList: CatalogChannel[];
-  playlist: CatalogPlaylist[];
-};

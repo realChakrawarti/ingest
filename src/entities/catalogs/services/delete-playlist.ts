@@ -1,5 +1,9 @@
+import { FieldValue } from "firebase-admin/firestore";
+
 import { adminDb } from "~/shared/lib/firebase/admin";
 import { COLLECTION } from "~/shared/lib/firebase/collections";
+
+import { CatalogList } from "../models";
 
 /**
  * Removes specified playlists from a user's catalog.
@@ -15,14 +19,14 @@ import { COLLECTION } from "~/shared/lib/firebase/collections";
 export async function deletePlaylist(
   userId: string,
   catalogId: string,
-  playlists: any
+  playlistToDelete: CatalogList
 ) {
   const userRef = adminDb.collection(COLLECTION.users).doc(userId);
   const userCatalogRef = userRef.collection(COLLECTION.catalogs).doc(catalogId);
 
   try {
     await userCatalogRef.update({
-      playlists: playlists,
+      list: FieldValue.arrayRemove(playlistToDelete),
       updatedAt: new Date(),
     });
   } catch (err) {

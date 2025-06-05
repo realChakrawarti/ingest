@@ -69,10 +69,10 @@ export async function DELETE(request: NextRequest, ctx: ContextParams) {
   const userId = getUserIdHeader();
   const { catalogId } = ctx.params;
 
-  const playlists = await request.json();
+  const playlistToDelete = await request.json();
 
   try {
-    await deletePlaylist(userId, catalogId, playlists);
+    await deletePlaylist(userId, catalogId, playlistToDelete);
     revalidatePath(`/c/${catalogId}`);
     return NxResponse.success<any>("Playlist deleted successfully.", {}, 200);
   } catch (err) {

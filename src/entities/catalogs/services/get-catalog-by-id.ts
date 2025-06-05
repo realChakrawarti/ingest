@@ -1,10 +1,7 @@
 import { adminDb } from "~/shared/lib/firebase/admin";
 import { COLLECTION } from "~/shared/lib/firebase/collections";
-import {
-  CatalogByIdResponse,
-  CatalogChannel,
-  CatalogPlaylist,
-} from "~/shared/types-schema/types";
+
+import { CatalogByIdResponse, CatalogList } from "../models";
 
 /**
  * Retrieves detailed information for a specific catalog by its ID.
@@ -25,9 +22,8 @@ export async function getCatalogById(catalogId: string, userId: string) {
   const userRef = adminDb.collection(COLLECTION.users).doc(userId);
 
   let catalogResponseData: CatalogByIdResponse = {
-    channelList: [],
     description: "",
-    playlist: [],
+    list: [],
     title: "",
   };
 
@@ -36,17 +32,15 @@ export async function getCatalogById(catalogId: string, userId: string) {
 
   try {
     const userCatalogData = await userCatalogRef.get();
-    const channelListData: CatalogChannel[] = userCatalogData.data()?.channels;
-    const playlistData: CatalogPlaylist[] = userCatalogData.data()?.playlists;
+    const listData: CatalogList[] = userCatalogData.data()?.list;
 
     // Get title and description
     const catalogSnap = await catalogRef.get();
     const catalogData = catalogSnap.data();
 
     catalogResponseData = {
-      channelList: channelListData,
       description: catalogData?.description,
-      playlist: playlistData,
+      list: listData,
       title: catalogData?.title,
     };
   } catch (err) {

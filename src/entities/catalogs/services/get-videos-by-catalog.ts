@@ -6,6 +6,7 @@ import { TimeMs } from "~/shared/lib/constants";
 import { adminDb } from "~/shared/lib/firebase/admin";
 import { COLLECTION } from "~/shared/lib/firebase/collections";
 
+import { CatalogList } from "../models";
 import { getPageviewByCatalogId } from "./get-pageviews-by-catalog-id";
 
 type VideoMetadata = {
@@ -70,9 +71,13 @@ export async function getVideosByCatalog(catalogId: string) {
 
   const userCatalogSnap = await userRef.get();
   const userSnapData: any = userCatalogSnap.data();
-  const channelListData = userSnapData?.channels;
+  const channelListData: CatalogList<"channel">[] = userSnapData?.list.filter(
+    (item: CatalogList) => item.type === "channel"
+  );
 
-  const playlistData = userSnapData?.playlists;
+  const playlistData: CatalogList<"playlist">[] = userSnapData?.list.filter(
+    (item: CatalogList) => item.type === "playlist"
+  );
 
   if (!channelListData?.length && !playlistData?.length) {
     return "Catalog is empty. Channel or playlist is yet to be added!";
@@ -104,13 +109,13 @@ export async function getVideosByCatalog(catalogId: string) {
     // TODO: https://github.com/realChakrawarti/ingest/issues/137
 
     if (playlistData?.length) {
-      playlistData?.forEach((playlist: any) => {
+      playlistData?.forEach((playlist) => {
         videoListPromise.push(getPlaylistVideos(playlist));
       });
     }
 
     if (channelListData?.length) {
-      channelListData?.forEach((channel: any) => {
+      channelListData?.forEach((channel) => {
         videoListPromise.push(getChannelVideos(channel));
       });
     }
@@ -199,11 +204,14 @@ export async function getVideosByCatalog(catalogId: string) {
  *
  * @throws {Error} Logs any errors encountered during the API fetch process
  */
-async function getPlaylistVideos(playlist: any) {
+async function getPlaylistVideos(playlist: CatalogList<"playlist">) {
   const playlistItemData: VideoMetadata[] = [];
   try {
     const result = await fetch(
-      YOUTUBE_CHANNEL_PLAYLIST_VIDEOS(playlist.id, appConfig.catalogVideoLimit),
+      YOUTUBE_CHANNEL_PLAYLIST_VIDEOS(
+        playlist.playlistId,
+        appConfig.catalogVideoLimit
+      ),
       { cache: "no-store" }
     ).then((data) => data.json());
 
@@ -211,7 +219,7 @@ async function getPlaylistVideos(playlist: any) {
     const playlistVideoItems = result.items;
 
     if (!playlistVideoItems.length) {
-      console.warn(`No uploads found in the playlist: ${playlist.id}.`);
+      console.warn(`No uploads found in the playlist: ${playlist.playlistId}.`);
       return playlistItemData;
     }
 
@@ -240,9 +248,9 @@ async function getPlaylistVideos(playlist: any) {
   } catch (err) {
     console.error(err);
     throw new Error(
-      `Failed to fetch videos of playlist id: ${playlist.id}\n${JSON.stringify(
-        err
-      )}`
+      `Failed to fetch videos of playlist id: ${
+        playlist.playlistId
+      }\n${JSON.stringify(err)}`
     );
   }
 
@@ -261,8 +269,8 @@ async function getPlaylistVideos(playlist: any) {
  *
  * @throws {Error} Logs any errors encountered during the API request
  */
-async function getChannelVideos(channel: any) {
-  const playlistId = createPlaylistId(channel.id);
+async function getChannelVideos(channel: CatalogList<"channel">) {
+  const playlistId = createPlaylistId(channel.channelId);
   const playlistItemData: VideoMetadata[] = [];
   try {
     const result = await fetch(
@@ -291,7 +299,7 @@ async function getChannelVideos(channel: any) {
 
       playlistItemData.push({
         channelId: item.snippet.channelId,
-        channelLogo: channel.logo,
+        channelLogo: channel.channelLogo,
         channelTitle: item.snippet.channelTitle,
         description: item.snippet.description,
         publishedAt: item.contentDetails.videoPublishedAt,

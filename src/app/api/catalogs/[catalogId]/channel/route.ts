@@ -19,13 +19,13 @@ export async function DELETE(request: NextRequest, ctx: ContextParams) {
   const userId = getUserIdHeader();
   const { catalogId } = ctx.params;
 
-  const channels = await request.json();
+  const channelToDelete = await request.json();
 
-  await deleteChannel(userId, catalogId, channels);
+  await deleteChannel(userId, catalogId, channelToDelete);
 
   revalidatePath(`/c/${catalogId}`);
 
-  return NxResponse.success<any>("Channel deleted successfully.", {}, 201);
+  return NxResponse.success<any>("Channel deleted successfully.", {}, 200);
 }
 
 export async function PATCH(request: NextRequest, ctx: ContextParams) {
