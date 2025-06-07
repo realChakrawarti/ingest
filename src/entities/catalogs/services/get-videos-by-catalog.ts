@@ -1,12 +1,16 @@
+import { DocumentReference } from "firebase-admin/firestore";
 import { revalidatePath } from "next/cache";
 
 import appConfig from "~/shared/app-config";
-import { YOUTUBE_CHANNEL_PLAYLIST_VIDEOS } from "~/shared/lib/api/youtube-endpoints";
+import {
+  YOUTUBE_CHANNEL_PLAYLIST_VIDEOS,
+  YOUTUBE_CHANNELS_INFORMATION,
+} from "~/shared/lib/api/youtube-endpoints";
 import { TimeMs } from "~/shared/lib/constants";
 import { adminDb } from "~/shared/lib/firebase/admin";
 import { COLLECTION } from "~/shared/lib/firebase/collections";
 
-import { CatalogList } from "../models";
+import { CatalogList, UserCatalogDocument } from "../models";
 import { getPageviewByCatalogId } from "./get-pageviews-by-catalog-id";
 
 type VideoMetadata = {
@@ -25,6 +29,31 @@ type videoListData = {
   week: VideoMetadata[];
   month: VideoMetadata[];
 };
+
+async function updateChannelLogos(list: CatalogList[]): Promise<CatalogList[]> {
+  const channels = new Set<string>();
+  list.forEach((item) => channels.add(item.channelId));
+
+  const channelList = Array.from(channels);
+
+  const channelLogos = new Map();
+  if (channelList.length) {
+    const result = await fetch(YOUTUBE_CHANNELS_INFORMATION(channelList, 50));
+    const data = await result.json();
+
+    data.items.length &&
+      data.items.forEach((channel: any) => {
+        const id = channel.id;
+        const logo = channel.snippet.thumbnails.medium.url;
+
+        channelLogos.set(id, logo);
+      });
+  }
+
+  return list.map((channel) => {
+    return { ...channel, channelLogo: channelLogos.get(channel.channelId) };
+  });
+}
 
 /**
  * Retrieves and manages video metadata for a specific catalog.
@@ -63,30 +92,47 @@ export async function getVideosByCatalog(catalogId: string) {
 
   const catalogSnapData = catalogSnap.data();
 
-  const userRef = catalogSnapData?.videoRef;
+  const userRef: DocumentReference = catalogSnapData?.videoRef;
 
   if (!userRef) {
     return "Reference to the user doesn't exists";
   }
 
   const userCatalogSnap = await userRef.get();
-  const userSnapData: any = userCatalogSnap.data();
-  const channelListData: CatalogList<"channel">[] = userSnapData?.list.filter(
+  const userSnapData = userCatalogSnap.data() as UserCatalogDocument;
+  const catalogList = userSnapData?.list;
+
+  if (!catalogList.length) {
+    return "Catalog is empty. Channel or playlist is yet to be added!";
+  }
+
+  const channelListData: CatalogList<"channel">[] = catalogList.filter(
     (item: CatalogList) => item.type === "channel"
   );
 
-  const playlistData: CatalogList<"playlist">[] = userSnapData?.list.filter(
+  const playlistData: CatalogList<"playlist">[] = catalogList.filter(
     (item: CatalogList) => item.type === "playlist"
   );
 
-  if (!channelListData?.length && !playlistData?.length) {
-    return "Catalog is empty. Channel or playlist is yet to be added!";
+  const lastUpdatedCatalogList = new Date(
+    userSnapData.updatedAt.toDate()
+  ).getTime();
+
+  const currentTime = Date.now();
+
+  // TODO: https://github.com/realChakrawarti/ingest/issues/137
+
+  if (currentTime - lastUpdatedCatalogList > TimeMs["12h"]) {
+    // Get channel logos
+    const updatedList = await updateChannelLogos(catalogList);
+    await userRef.set({
+      list: updatedList,
+      updatedAt: new Date(),
+    });
   }
 
   // Get last updated, check if time has been 6 hours or not, if so make call to YouTube API,
   // if not fetch from firestore
-  const currentTime = Date.now();
-
   const lastUpdated = catalogSnapData?.data?.updatedAt.toDate();
   const lastUpdatedTime = new Date(lastUpdated).getTime();
 
@@ -105,8 +151,6 @@ export async function getVideosByCatalog(catalogId: string) {
     }
 
     const videoListPromise: Promise<VideoMetadata[]>[] = [];
-
-    // TODO: https://github.com/realChakrawarti/ingest/issues/137
 
     if (playlistData?.length) {
       playlistData?.forEach((playlist) => {

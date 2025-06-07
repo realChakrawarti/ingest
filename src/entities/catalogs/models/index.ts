@@ -1,3 +1,5 @@
+import { Timestamp } from "firebase-admin/firestore";
+
 interface ChannelBase {
   channelTitle: string;
   channelDescription: string;
@@ -29,4 +31,9 @@ export type CatalogByIdResponse = {
   title: string;
   description: string;
   list: CatalogList[];
+};
+
+export type UserCatalogDocument = {
+  list: CatalogList[];
+  updatedAt: Timestamp;
 };
