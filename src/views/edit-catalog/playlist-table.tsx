@@ -58,7 +58,7 @@ export default function PlaylistTable({
                 <TableCell>{playlistId}</TableCell>
                 <TableCell>
                   <div className="flex gap-2 items-center">
-                    {playlist?.channelLogo ? (
+                    {channelLogo ? (
                       // eslint-disable-next-line @next/next/no-img-element
                       <img
                         src={channelLogo}

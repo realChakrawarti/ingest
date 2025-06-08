@@ -38,20 +38,27 @@ async function updateChannelLogos(list: CatalogList[]): Promise<CatalogList[]> {
 
   const channelLogos = new Map();
   if (channelList.length) {
-    const result = await fetch(YOUTUBE_CHANNELS_INFORMATION(channelList, 50));
-    const data = await result.json();
+    try {
+      const result = await fetch(YOUTUBE_CHANNELS_INFORMATION(channelList, 50));
+      const data = await result.json();
 
-    data.items.length &&
-      data.items.forEach((channel: any) => {
-        const id = channel.id;
-        const logo = channel.snippet.thumbnails.medium.url;
+      data.items.length &&
+        data.items.forEach((channel: any) => {
+          const id = channel.id;
+          const logo = channel.snippet.thumbnails.medium.url;
 
-        channelLogos.set(id, logo);
-      });
+          channelLogos.set(id, logo);
+        });
+    } catch (err) {
+      console.log("Unable to fetch channel details", err);
+    }
   }
 
   return list.map((channel) => {
-    return { ...channel, channelLogo: channelLogos.get(channel.channelId) };
+    return {
+      ...channel,
+      channelLogo: channelLogos.get(channel.channelId) ?? channel.channelLogo,
+    };
   });
 }
 
@@ -92,17 +99,17 @@ export async function getVideosByCatalog(catalogId: string) {
 
   const catalogSnapData = catalogSnap.data();
 
-  const userRef: DocumentReference = catalogSnapData?.videoRef;
+  const userCatalogRef: DocumentReference = catalogSnapData?.videoRef;
 
-  if (!userRef) {
+  if (!userCatalogRef) {
     return "Reference to the user doesn't exists";
   }
 
-  const userCatalogSnap = await userRef.get();
+  const userCatalogSnap = await userCatalogRef.get();
   const userSnapData = userCatalogSnap.data() as UserCatalogDocument;
   const catalogList = userSnapData?.list;
 
-  if (!catalogList.length) {
+  if (!catalogList?.length) {
     return "Catalog is empty. Channel or playlist is yet to be added!";
   }
 
@@ -120,12 +127,11 @@ export async function getVideosByCatalog(catalogId: string) {
 
   const currentTime = Date.now();
 
-  // TODO: https://github.com/realChakrawarti/ingest/issues/137
-
+  // TODO: Consider moving this to a remote flag for runtime customization ??
   if (currentTime - lastUpdatedCatalogList > TimeMs["12h"]) {
     // Get channel logos
     const updatedList = await updateChannelLogos(catalogList);
-    await userRef.set({
+    await userCatalogRef.set({
       list: updatedList,
       updatedAt: new Date(),
     });
