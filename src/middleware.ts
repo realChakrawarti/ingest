@@ -4,6 +4,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { SESSION_COOKIE_NAME } from "./shared/lib/constants";
 import { verifyFirebaseSessionCookie } from "./shared/lib/firebase/verify-session-cookie";
 import { NxResponse } from "./shared/lib/next/nx-response";
+import TerminalLogger from "./shared/lib/terminal-logger";
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
@@ -32,7 +33,7 @@ export async function middleware(request: NextRequest) {
       request.headers.set("userId", userId);
     }
   } catch (err) {
-    console.error(err);
+    TerminalLogger.fatal(`Failed authorization on middleware ${err}`);
     return NxResponse.fail(
       "Unable to verify credentials.",
       { code: "VERIFICATION_FAILED", details: "Unable to verify credentials." },

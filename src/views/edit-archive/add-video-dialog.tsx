@@ -3,6 +3,7 @@ import { ChangeEvent, useState } from "react";
 import { toast } from "~/shared/hooks/use-toast";
 import fetchApi from "~/shared/lib/api/fetch";
 import { Regex } from "~/shared/lib/constants";
+import TerminalLogger from "~/shared/lib/terminal-logger";
 import { Button } from "~/shared/ui/button";
 import {
   Dialog,
@@ -89,7 +90,7 @@ export default function AddVideoDialog({
         error: "",
       });
     } catch (err) {
-      console.error(String(err));
+      TerminalLogger.fail(String(err));
       toast({ title: "Something went wrong." });
     }
   };

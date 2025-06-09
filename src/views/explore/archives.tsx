@@ -1,14 +1,21 @@
 import fetchApi from "~/shared/lib/api/fetch";
 import DetailsCard from "~/widgets/details-card";
 import GridContainer from "~/widgets/grid-container";
+import {
+  PublicContentContainer,
+  PublicHeaderTitle,
+  PublicMainContainer,
+} from "~/widgets/public-layout";
 
 export default async function Archives() {
   const archives = await fetchApi("/archives/valid");
 
   return (
-    <div className="p-3">
-      <h1 className="text-2xl font-semibold tracking-tight">Archives</h1>
-      <div className="w-full pt-7">
+    <PublicMainContainer>
+      <PublicHeaderTitle>
+        <h1 className="text-2xl font-semibold tracking-tight">Archives</h1>
+      </PublicHeaderTitle>
+      <PublicContentContainer>
         <GridContainer>
           {archives?.data?.length ? (
             archives?.data?.map((pageData: any) => {
@@ -26,7 +33,7 @@ export default async function Archives() {
             <div>No archives found.</div>
           )}
         </GridContainer>
-      </div>
-    </div>
+      </PublicContentContainer>
+    </PublicMainContainer>
   );
 }

@@ -21,6 +21,7 @@ import { useToast } from "~/shared/hooks/use-toast";
 import fetchApi from "~/shared/lib/api/fetch";
 import { Routes } from "~/shared/lib/constants";
 import { auth } from "~/shared/lib/firebase/client";
+import TerminalLogger from "~/shared/lib/terminal-logger";
 
 type UserContext = {
   user: User | null;
@@ -82,7 +83,7 @@ export default function AuthContextProvider({ children }: PropsWithChildren) {
         router.push(Routes.DASHBOARD);
       }
     } catch (err) {
-      console.error(JSON.stringify(err));
+      TerminalLogger.fail(JSON.stringify(err));
       setLoading(false);
     }
   }

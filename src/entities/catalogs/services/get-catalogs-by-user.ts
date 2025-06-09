@@ -1,6 +1,7 @@
 import { toUTCString } from "~/shared/lib/date-time/to-utc-string";
 import { adminDb } from "~/shared/lib/firebase/admin";
 import { COLLECTION } from "~/shared/lib/firebase/collections";
+import TerminalLogger from "~/shared/lib/terminal-logger";
 
 type UserCatalogs = {
   description: string;
@@ -51,7 +52,7 @@ export async function getCatalogByUser(userId: string) {
       })
     );
   } catch (err) {
-    console.error(err);
+    TerminalLogger.fail(String(err));
   }
 
   return userCatalogsData;

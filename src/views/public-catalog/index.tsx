@@ -12,7 +12,11 @@ import {
 } from "~/shared/ui/dropdown-menu";
 import { MonthIcon, ThreeDotIcon, WeekIcon } from "~/shared/ui/icons";
 import GridContainer from "~/widgets/grid-container";
-import Marker from "~/widgets/marker";
+import {
+  PublicHeaderTitle,
+  PublicMainContainer,
+  PublicMarker,
+} from "~/widgets/public-layout";
 import ScrollTop from "~/widgets/scroll-top";
 import YouTubeCard from "~/widgets/youtube/youtube-card";
 
@@ -56,8 +60,8 @@ export default async function PubliCatalog({
   return (
     <>
       <ShowNextUpdateBanner />
-      <div className="space-y-4 pb-6 pt-7">
-        <section className="px-2 md:px-3">
+      <PublicMainContainer className="space-y-4">
+        <PublicHeaderTitle>
           <div className="space-y-0">
             <div className="flex justify-between items-center">
               <div className="space-y-1">
@@ -100,7 +104,7 @@ export default async function PubliCatalog({
               </div>
             </div>
           </div>
-        </section>
+        </PublicHeaderTitle>
 
         <FilterChannel activeChannels={activeChannels} />
 
@@ -155,7 +159,7 @@ export default async function PubliCatalog({
           </VideoSection>
         ) : null}
         <ScrollTop />
-      </div>
+      </PublicMainContainer>
     </>
   );
 }
@@ -171,7 +175,7 @@ function VideoSection({ label, children, icon: Icon }: VideoSectionProps) {
   return (
     <section className="px-0 md:px-3 space-y-4">
       <div className="h-6 px-2 md:px-0 flex items-center gap-2 text-primary">
-        <Marker />
+        <PublicMarker />
         <h2 id={id} className="text-lg">
           <a href={`#${id}`}>{label}</a>
         </h2>

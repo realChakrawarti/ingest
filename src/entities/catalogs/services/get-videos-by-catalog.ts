@@ -9,6 +9,7 @@ import {
 import { TimeMs } from "~/shared/lib/constants";
 import { adminDb } from "~/shared/lib/firebase/admin";
 import { COLLECTION } from "~/shared/lib/firebase/collections";
+import TerminalLogger from "~/shared/lib/terminal-logger";
 
 import { CatalogList, UserCatalogDocument } from "../models";
 import { getPageviewByCatalogId } from "./get-pageviews-by-catalog-id";
@@ -39,7 +40,10 @@ async function updateChannelLogos(list: CatalogList[]): Promise<CatalogList[]> {
   const channelLogos = new Map();
   if (channelList.length) {
     try {
-      const result = await fetch(YOUTUBE_CHANNELS_INFORMATION(channelList, 50));
+      const result = await fetch(
+        YOUTUBE_CHANNELS_INFORMATION(channelList, 50),
+        { cache: "no-store" }
+      );
       const data = await result.json();
 
       data.items.length &&
@@ -50,7 +54,7 @@ async function updateChannelLogos(list: CatalogList[]): Promise<CatalogList[]> {
           channelLogos.set(id, logo);
         });
     } catch (err) {
-      console.log("Unable to fetch channel details", err);
+      TerminalLogger.fail(`Unable to fetch channel details ${err}`);
     }
   }
 
@@ -135,6 +139,8 @@ export async function getVideosByCatalog(catalogId: string) {
       list: updatedList,
       updatedAt: new Date(),
     });
+  } else {
+    TerminalLogger.info(`Too early to revalidate channels logo.`);
   }
 
   // Get last updated, check if time has been 6 hours or not, if so make call to YouTube API,
@@ -149,7 +155,7 @@ export async function getVideosByCatalog(catalogId: string) {
     try {
       pageviews = await getPageviewByCatalogId(catalogId);
     } catch (err) {
-      console.error(
+      TerminalLogger.fail(
         `Unable to fetch pageview for catalog id ${catalogId}\n${JSON.stringify(
           err
         )}`
@@ -176,9 +182,8 @@ export async function getVideosByCatalog(catalogId: string) {
       if (result.status === "fulfilled") {
         videoList.push(...result.value);
       } else {
-        console.error(
-          `Unable to retrieve all the videos from the catalog: ${catalogId}:`,
-          result.reason
+        TerminalLogger.fail(
+          `Unable to retrieve all the videos from the catalog: ${catalogId}: ${result.reason}`
         );
       }
     });
@@ -216,12 +221,12 @@ export async function getVideosByCatalog(catalogId: string) {
     await catalogRef.set(catalogVideos, { merge: true });
 
     revalidatePath(`/c/${catalogId}`);
-    console.log(`Cached invalidated /c/${catalogId}`);
+    TerminalLogger.info(`Cached invalidated /c/${catalogId}`);
   } else {
     videoFilterData = catalogSnapData?.data.videos;
     totalVideos = catalogSnapData?.data.totalVideos;
     recentUpdate = lastUpdated;
-    console.log(
+    TerminalLogger.info(
       `Returning cached data for the catalog ${catalogId}, next update on ${new Date(
         lastUpdatedTime + TimeMs["4h"]
       )}`
@@ -269,7 +274,9 @@ async function getPlaylistVideos(playlist: CatalogList<"playlist">) {
     const playlistVideoItems = result.items;
 
     if (!playlistVideoItems.length) {
-      console.warn(`No uploads found in the playlist: ${playlist.playlistId}.`);
+      TerminalLogger.warn(
+        `No uploads found in the playlist: ${playlist.playlistId}.`
+      );
       return playlistItemData;
     }
 
@@ -296,7 +303,7 @@ async function getPlaylistVideos(playlist: CatalogList<"playlist">) {
       });
     }
   } catch (err) {
-    console.error(err);
+    TerminalLogger.fail(String(err));
     throw new Error(
       `Failed to fetch videos of playlist id: ${
         playlist.playlistId
@@ -332,7 +339,7 @@ async function getChannelVideos(channel: CatalogList<"channel">) {
     const playlistVideoItems = result.items;
 
     if (!playlistVideoItems.length) {
-      console.warn(`No uploads found in the playlist: ${playlistId}.`);
+      TerminalLogger.warn(`No uploads found in the playlist: ${playlistId}.`);
       return playlistItemData;
     }
 
@@ -359,7 +366,7 @@ async function getChannelVideos(channel: CatalogList<"channel">) {
       });
     }
   } catch (err) {
-    console.error(err);
+    TerminalLogger.fail(String(err));
     throw new Error(
       `Failed to fetch videos of playlist id: ${playlistId}\n${JSON.stringify(
         err

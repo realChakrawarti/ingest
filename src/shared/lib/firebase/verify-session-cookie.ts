@@ -4,6 +4,7 @@
 import { importX509, jwtVerify, JWTVerifyResult } from "jose";
 
 import isDevelopment from "../is-development";
+import TerminalLogger from "../terminal-logger";
 
 const FIREBASE_PROJECT_ID = process.env.FIREBASE_PROJECT_ID;
 
@@ -60,7 +61,7 @@ async function getSessionCookieJwks(): Promise<Record<string, string>> {
     jwksCache = { keys, expiresAt };
     return keys;
   } catch (error) {
-    console.error("Error in getSessionCookieJwks:", error);
+    TerminalLogger.fail(`Error in getSessionCookieJwks: ${error}`);
     jwksCache = null; // Invalidate cache on error
     throw error;
   }
@@ -94,16 +95,15 @@ export async function verifyFirebaseSessionCookie(
         );
         // Basic check to ensure it looks like a Firebase token (has 'sub' claim)
         if (decodedPayload.sub) {
-          console.warn(
+          TerminalLogger.warn(
             "Firebase Auth Emulator detected. Bypassing full session cookie verification."
           );
           return decodedPayload;
         }
       }
     } catch (e) {
-      console.warn(
-        "Failed to parse emulator token directly, attempting full verification:",
-        e
+      TerminalLogger.fail(
+        `Failed to parse emulator token directly, attempting full verification: ${e}`
       );
       // Fall through to full verification if direct parsing fails
     }

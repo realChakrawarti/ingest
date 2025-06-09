@@ -1,6 +1,7 @@
 import { toUTCString } from "~/shared/lib/date-time/to-utc-string";
 import { adminDb } from "~/shared/lib/firebase/admin";
 import { COLLECTION } from "~/shared/lib/firebase/collections";
+import TerminalLogger from "~/shared/lib/terminal-logger";
 
 /**
  * This function returns all archive of a user
@@ -43,7 +44,7 @@ export async function getArchiveByUser(userId: string) {
       };
     });
   } catch (err) {
-    console.error(err);
+    TerminalLogger.fail(String(err));
   }
 
   return userArchivesData;

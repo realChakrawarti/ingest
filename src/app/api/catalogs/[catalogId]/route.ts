@@ -3,6 +3,7 @@ import { NextRequest } from "next/server";
 import { getCatalogById } from "~/entities/catalogs";
 import { getUserIdHeader } from "~/shared/lib/next/get-user-id-header";
 import { NxResponse } from "~/shared/lib/next/nx-response";
+import TerminalLogger from "~/shared/lib/terminal-logger";
 
 type ContextParams = {
   params: {
@@ -23,7 +24,7 @@ export async function GET(_request: NextRequest, ctx: ContextParams) {
       200
     );
   } catch (err) {
-    console.error(String(err));
+    TerminalLogger.fail(String(err));
     return NxResponse.fail(
       "Unable to fetch catalog details.",
       {
