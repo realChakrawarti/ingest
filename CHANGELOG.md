@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.7.2](https://github.com/realChakrawarti/yt-catalog/compare/v1.7.1...v1.7.2) (2025-06-09)
+
+
+### Bug Fixes
+
+* replace console logs with `TerminalLogger`, public UI layout ([25df327](https://github.com/realChakrawarti/yt-catalog/commit/25df327e7a46b0eb6fc5ee98b70682cdc9a9e142))
+
 ### [1.7.1](https://github.com/realChakrawarti/yt-catalog/compare/v1.7.0...v1.7.1) (2025-06-09)
 
 
