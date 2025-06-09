@@ -43,54 +43,64 @@ export default function PlaylistTable({
             </TableCell>
           </TableRow>
         ) : (
-          playlists?.map((playlist, idx: number) => (
-            <TableRow key={playlist?.id}>
-              <TableCell>{idx + 1}</TableCell>
-              <TableCell>{playlist?.title}</TableCell>
-              <TableCell>{playlist?.id}</TableCell>
-              <TableCell>
-                <div className="flex gap-2 items-center">
-                  {playlist?.channelLogo ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img
-                      src={playlist?.channelLogo}
-                      alt={playlist?.channelTitle}
-                      className="size-6 rounded-lg"
-                    />
-                  ) : null}
-                  {playlist?.channelHandle ? (
-                    <OutLink
-                      className="text-indigo-600 hover:text-indigo-500 visited:text-indigo-700"
-                      href={`https://www.youtube.com/${playlist?.channelHandle}`}
-                    >
-                      <p>{playlist?.channelTitle}</p>
-                    </OutLink>
-                  ) : (
-                    <p>{playlist?.channelTitle}</p>
-                  )}
-                </div>
-              </TableCell>
-              <TableCell>
-                <DeleteModal
-                  label={
-                    <>
-                      This action cannot be undone. This will permanently remove{" "}
-                      <span className="text-primary">{playlist.title}</span>{" "}
-                      playlist from the catalog?
-                    </>
-                  }
-                  onDelete={() => handleDelete(playlist?.id)}
-                >
-                  <Button variant="outline">
-                    <DeleteIcon
-                      size={24}
-                      className="text-red-700 hover:text-red-500 cursor-pointer"
-                    />
-                  </Button>
-                </DeleteModal>
-              </TableCell>
-            </TableRow>
-          ))
+          playlists?.map((playlist, idx: number) => {
+            const {
+              playlistTitle,
+              playlistId,
+              channelLogo,
+              channelTitle,
+              channelHandle,
+            } = playlist;
+            return (
+              <TableRow key={playlist?.id}>
+                <TableCell>{idx + 1}</TableCell>
+                <TableCell>{playlistTitle}</TableCell>
+                <TableCell>{playlistId}</TableCell>
+                <TableCell>
+                  <div className="flex gap-2 items-center">
+                    {channelLogo ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        src={channelLogo}
+                        alt={channelTitle}
+                        className="size-6 rounded-lg"
+                      />
+                    ) : null}
+                    {channelHandle ? (
+                      <OutLink
+                        className="text-indigo-600 hover:text-indigo-500 visited:text-indigo-700"
+                        href={`https://www.youtube.com/${channelHandle}`}
+                      >
+                        <p>{channelTitle}</p>
+                      </OutLink>
+                    ) : (
+                      <p>{channelTitle}</p>
+                    )}
+                  </div>
+                </TableCell>
+                <TableCell>
+                  <DeleteModal
+                    label={
+                      <>
+                        This action cannot be undone. This will permanently
+                        remove{" "}
+                        <span className="text-primary">{playlistTitle}</span>{" "}
+                        playlist from the catalog?
+                      </>
+                    }
+                    onDelete={() => handleDelete(playlistId)}
+                  >
+                    <Button variant="outline">
+                      <DeleteIcon
+                        size={24}
+                        className="text-red-700 hover:text-red-500 cursor-pointer"
+                      />
+                    </Button>
+                  </DeleteModal>
+                </TableCell>
+              </TableRow>
+            );
+          })
         )}
       </TableBody>
     </Table>

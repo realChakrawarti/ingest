@@ -1,9 +1,7 @@
 import { create } from "zustand";
 
-import type {
-  CatalogPlaylist,
-  PlaylistItem,
-} from "~/shared/types-schema/types";
+import { CatalogList } from "~/entities/catalogs/models";
+import type { PlaylistItem } from "~/shared/types-schema/types";
 
 export type LocalChannel = {
   title: string;
@@ -21,21 +19,21 @@ interface State {
   channelInfo: ChannelInfo;
   videoLink: VideoLink;
   localChannels: LocalChannel[];
-  savedChannels: any[];
+  savedChannels: CatalogList[];
   localPlaylists: PlaylistItem[];
   searchPlaylists: any[];
   channelPlaylists: any[];
   playlistInput: string;
-  savedPlaylists: CatalogPlaylist[];
+  savedPlaylists: CatalogList[];
   fetchedChannelPlaylists: boolean;
 }
 
 interface Actions {
   setChannelInfo: (_channelInfo: ChannelInfo) => void;
   setVideoLink: (_videoLink: Partial<VideoLink>) => void;
-  setSavedPlaylists: (_playlist: CatalogPlaylist[]) => void;
+  setSavedPlaylists: (_playlist: CatalogList[]) => void;
   setLocalChannels: (_localChannels: LocalChannel[]) => void;
-  setSavedChannels: (_channels: any[]) => void;
+  setSavedChannels: (_channels: CatalogList[]) => void;
   setLocalPlaylists: (_localPlaylists: PlaylistItem[]) => void;
   setSearchPlaylists: (_searchPlaylists: any[]) => void;
   setChannelPlaylists: (_channelPlaylists: any[]) => void;

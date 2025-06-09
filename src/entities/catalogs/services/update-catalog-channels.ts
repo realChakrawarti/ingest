@@ -1,7 +1,8 @@
 import { YOUTUBE_CHANNELS_INFORMATION } from "~/shared/lib/api/youtube-endpoints";
 import { adminDb } from "~/shared/lib/firebase/admin";
 import { COLLECTION } from "~/shared/lib/firebase/collections";
-import { CatalogChannel } from "~/shared/types-schema/types";
+
+import { CatalogList } from "../models";
 
 /**
  * This function updates the channels of a specific catalogId
@@ -23,7 +24,7 @@ export async function updateCatalogChannels(
     const channelsInfo = await getChannelsInfo(channels);
 
     await userCatalogRef.update({
-      channels: channelsInfo,
+      list: channelsInfo,
       updatedAt: new Date(),
     });
   } catch (err) {
@@ -47,7 +48,7 @@ export async function updateCatalogChannels(
  * @throws {Error} If there's an issue fetching channel information from the YouTube API
  */
 async function getChannelsInfo(channels: string[]) {
-  const channelsInfo: CatalogChannel[] = [];
+  const channelsInfo: CatalogList[] = [];
   // Create a separate doc with channels information, fetch from youtube API
   const response = await fetch(YOUTUBE_CHANNELS_INFORMATION(channels));
   const result = await response.json();
@@ -55,14 +56,15 @@ async function getChannelsInfo(channels: string[]) {
   const channelListItems = result?.items;
 
   for (let i = 0; i < channelListItems?.length; i++) {
-    const channelInfo = channelListItems[i];
+    const channelData = channelListItems[i];
 
     channelsInfo.push({
-      description: channelInfo.snippet.description,
-      handle: channelInfo.snippet.customUrl,
-      id: channelInfo.id,
-      logo: channelInfo.snippet.thumbnails.medium.url,
-      title: channelInfo.snippet.title,
+      channelDescription: channelData.snippet.description,
+      channelHandle: channelData.snippet.customUrl,
+      channelId: channelData.id,
+      channelLogo: channelData.snippet.thumbnails.medium.url,
+      channelTitle: channelData.snippet.title,
+      type: "channel",
     });
   }
 

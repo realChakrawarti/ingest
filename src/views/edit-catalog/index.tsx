@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import useSWR from "swr";
 
+import { CatalogList } from "~/entities/catalogs/models";
 import { useToast } from "~/shared/hooks/use-toast";
 import fetchApi from "~/shared/lib/api/fetch";
 import { Badge } from "~/shared/ui/badge";
@@ -55,29 +56,36 @@ export default function EditCatalog({ catalogId }: { catalogId: string }) {
 
   useEffect(() => {
     if (catalogData?.data) {
-      setSavedChannels(catalogData?.data?.channelList);
-      setSavedPlaylists(catalogData?.data?.playlist);
+      setSavedChannels(
+        catalogData?.data?.list.filter(
+          (item: CatalogList) => item.type === "channel"
+        )
+      );
+      setSavedPlaylists(
+        catalogData?.data?.list.filter(
+          (item: CatalogList) => item.type === "playlist"
+        )
+      );
     }
   }, [catalogData?.data, setSavedChannels, setSavedPlaylists]);
 
+  // TODO: Deleting item should be a single function as both doing the same thing, amd should use a single endpoint
   const handleDeleteSaved = async (id: string) => {
-    const deleteChannel = savedChannels.find((channel) => channel.id === id);
+    const deleteChannel = savedChannels.find(
+      (channel) => channel.channelId === id && channel.type === "channel"
+    );
     if (!deleteChannel) {
       return;
     }
 
-    const payload = savedChannels.filter(
-      (channel) => channel.id != deleteChannel.id
-    );
-
     const result = await fetchApi(`/catalogs/${catalogId}/channel`, {
       method: "DELETE",
-      body: JSON.stringify(payload),
+      body: JSON.stringify(deleteChannel),
     });
 
     if (result.success) {
       toast({
-        title: `${deleteChannel.title}'s channel deleted from the catalog.`,
+        title: `${deleteChannel.channelTitle}'s channel deleted from the catalog.`,
       });
       revalidateCatalog();
     } else {
@@ -86,23 +94,23 @@ export default function EditCatalog({ catalogId }: { catalogId: string }) {
   };
 
   const handleDeleteSavedPlaylist = async (id: string) => {
-    const deletePlaylist = savedPlaylists.find((channel) => channel.id === id);
+    const deletePlaylist = savedPlaylists.find(
+      (playlist) => playlist.type === "playlist" && playlist.playlistId === id
+    );
     if (!deletePlaylist) {
       return;
     }
 
-    const payload = savedPlaylists.filter(
-      (playlist) => playlist.id != deletePlaylist.id
-    );
-
     const result = await fetchApi(`/catalogs/${catalogId}/playlist`, {
       method: "DELETE",
-      body: JSON.stringify(payload),
+      body: JSON.stringify(deletePlaylist),
     });
 
     if (result.success) {
       toast({
-        title: `${deletePlaylist.title}'s playlist deleted from the catalog.`,
+        title: `${
+          deletePlaylist.type === "playlist" && deletePlaylist.playlistTitle
+        }'s playlist deleted from the catalog.`,
       });
       revalidateCatalog();
     } else {
@@ -127,9 +135,9 @@ export default function EditCatalog({ catalogId }: { catalogId: string }) {
   const handleAddPlaylistsToCatalog = async () => {
     // Check if channelId already exists in savedChannels
     const alreadyExists = savedChannels?.some((channel) => {
-      if (channel.id === localPlaylists[0].channelId) {
+      if (channel.channelId === localPlaylists[0].channelId) {
         toast({
-          title: `${channel.title}'s channel is already added to the catalog.`,
+          title: `${channel.channelTitle}'s channel is already added to the catalog.`,
           description:
             "Please remove the channel before proceeding to add specific playlist from the same channel.",
         });
@@ -158,7 +166,7 @@ export default function EditCatalog({ catalogId }: { catalogId: string }) {
 
   const handleSubmit = async () => {
     const payload: UpdateCatalogPayload = {
-      channels: savedChannels.map((channel) => channel.id),
+      channels: savedChannels.map((channel) => channel.channelId),
     };
 
     if (localChannels.length) {

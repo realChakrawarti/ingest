@@ -5,6 +5,8 @@ import { adminDb } from "~/shared/lib/firebase/admin";
 import { COLLECTION } from "~/shared/lib/firebase/collections";
 import { PlaylistItem } from "~/shared/types-schema/types";
 
+import { CatalogList } from "../models";
+
 /**
  * Updates the playlists for a specific user catalog by fetching additional channel information.
  *
@@ -29,7 +31,7 @@ export async function updateCatalogPlaylists(
   const userRef = adminDb.collection(COLLECTION.users).doc(userId);
   const userCatalogRef = userRef.collection(COLLECTION.catalogs).doc(catalogId);
 
-  const playlistList = [];
+  const playlistsInfo: CatalogList[] = [];
 
   // TODO: Refactor: This looks inefficient
   for (let i = 0; i < playlists.length; i++) {
@@ -37,25 +39,23 @@ export async function updateCatalogPlaylists(
     const response = await fetch(YOUTUBE_CHANNELS_INFORMATION([channelId]));
     const result = await response.json();
 
-    const channelInfo = result?.items[0];
+    const channelData = result?.items[0];
 
-    const playlistItem = {
-      channelDescription: channelInfo.snippet.description,
-      channelHandle: channelInfo.snippet.customUrl,
+    playlistsInfo.push({
+      channelDescription: channelData.snippet.description,
+      channelHandle: channelData.snippet.customUrl,
       channelId: playlists[i].channelId,
-      channelLogo: channelInfo.snippet.thumbnails.medium.url,
-      channelTitle: channelInfo.snippet.title,
-      description: playlists[i].description,
-      id: playlists[i].id,
-      publishedAt: playlists[i].publishedAt,
-      title: playlists[i].title,
-    };
-
-    playlistList.push(playlistItem);
+      channelLogo: channelData.snippet.thumbnails.medium.url,
+      channelTitle: channelData.snippet.title,
+      playlistDescription: playlists[i].description,
+      playlistId: playlists[i].id,
+      playlistTitle: playlists[i].title,
+      type: "playlist",
+    });
   }
 
   await userCatalogRef.update({
-    playlists: FieldValue.arrayUnion(...playlistList),
+    list: FieldValue.arrayUnion(...playlistsInfo),
     updatedAt: new Date(),
   });
 }
