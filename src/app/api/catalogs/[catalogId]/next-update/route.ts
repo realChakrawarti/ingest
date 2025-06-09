@@ -4,6 +4,7 @@ import { NextRequest } from "next/server";
 import { getNextUpdate } from "~/entities/catalogs";
 import { TimeMs } from "~/shared/lib/constants";
 import { NxResponse } from "~/shared/lib/next/nx-response";
+import TerminalLogger from "~/shared/lib/terminal-logger";
 
 type ContextParams = {
   params: {
@@ -20,7 +21,7 @@ export async function GET(_request: NextRequest, ctx: ContextParams) {
   const nextUpdate = new Date(lastUpdatedTime + TimeMs["4h"]).toUTCString();
 
   if (currentTime - lastUpdatedTime > TimeMs["4h"]) {
-    console.log(`Revalidating path: /c/${catalogId}`);
+    TerminalLogger.info(`Revalidating path: /c/${catalogId}`);
     revalidatePath(`/c/${catalogId}`);
   }
 

@@ -103,11 +103,11 @@ export default function NextUpdate({ catalogId }: any) {
   const [when, timeDiff] = getTimeDifference(nextUpdate?.data as string);
   const showTimeUpdate = () => {
     if (isDevelopment()) {
-      return "Disabled during development";
+      return "Disabled";
     }
 
     if (error) {
-      return "Please reload the page.";
+      return "Refresh page";
     }
 
     if ((when as number) < 0) {
@@ -117,15 +117,15 @@ export default function NextUpdate({ catalogId }: any) {
     }
   };
   return (
-    <>
+    <div className="hover:text-primary cursor-wait px-2">
       {isLoading ? (
-        <Skeleton className="h-8 w-full" />
+        <Skeleton className="w-full h-9" />
       ) : (
-        <span className="flex items-center gap-2">
+        <span className="py-2 flex items-center gap-2">
           <ClockIcon className="h-4 w-4" />
-          <p className="text-xs">Next update: {showTimeUpdate()}</p>
+          <p className="text-sm">{showTimeUpdate()}</p>
         </span>
       )}
-    </>
+    </div>
   );
 }

@@ -6,6 +6,7 @@ import { ChangeEvent } from "react";
 import { toast } from "~/shared/hooks/use-toast";
 import fetchApi from "~/shared/lib/api/fetch";
 import { Regex } from "~/shared/lib/constants";
+import TerminalLogger from "~/shared/lib/terminal-logger";
 import { Button } from "~/shared/ui/button";
 import { Input } from "~/shared/ui/input";
 import {
@@ -85,7 +86,7 @@ export default function AddChannelPlaylist() {
         title: channelTitle,
       });
     } catch (err) {
-      console.error(String(err));
+      TerminalLogger.fail(String(err));
     }
   };
 

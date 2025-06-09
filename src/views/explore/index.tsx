@@ -5,7 +5,12 @@ import fetchApi from "~/shared/lib/api/fetch";
 import type { ValidMetadata } from "~/shared/types-schema/types";
 import DetailsCard from "~/widgets/details-card";
 import GridContainer from "~/widgets/grid-container";
-import Marker from "~/widgets/marker";
+import {
+  PublicContentContainer,
+  PublicHeaderTitle,
+  PublicMainContainer,
+  PublicMarker,
+} from "~/widgets/public-layout";
 
 import LastWatched from "./last-watched";
 
@@ -24,14 +29,14 @@ export default async function Explore() {
   const ENABLE_FEATURED = true;
 
   return (
-    <div className="p-3 space-y-7">
+    <PublicMainContainer className="space-y-4">
       {/* Last watched */}
       <LastWatched />
       {/* Featured Catalogs */}
       {catalogsData?.length && ENABLE_FEATURED ? (
         <section>
           <Title label="Featured catalogs" link="/explore/catalogs" />
-          <div className="w-full pt-7">
+          <PublicContentContainer>
             <GridContainer>
               {catalogsData.slice(0, 4).map((catalog) => (
                 <DetailsCard
@@ -41,7 +46,7 @@ export default async function Explore() {
                 />
               ))}
             </GridContainer>
-          </div>
+          </PublicContentContainer>
         </section>
       ) : null}
 
@@ -49,7 +54,7 @@ export default async function Explore() {
       {archivesData?.length && ENABLE_FEATURED ? (
         <section>
           <Title label="Featured archives" link="/explore/archives" />
-          <div className="w-full pt-7">
+          <PublicContentContainer>
             <GridContainer>
               {archivesData.slice(0, 4).map((archive) => (
                 <DetailsCard
@@ -59,28 +64,30 @@ export default async function Explore() {
                 />
               ))}
             </GridContainer>
-          </div>
+          </PublicContentContainer>
         </section>
       ) : null}
-    </div>
+    </PublicMainContainer>
   );
 }
 
 function Title({ label, link }: { label: string; link?: string }) {
   return (
-    <h1
-      className="h-7 text-2xl font-semibold tracking-tight text-primary flex items-center gap-2"
-      aria-label={label}
-    >
-      <Marker />
-      <div className="flex items-end gap-2">
-        <p>{label}</p>
-        {link ? (
-          <Link className="cursor-pointer" href={link}>
-            <ChevronRightIcon className="size-7 text-primary stroke-[3]" />
-          </Link>
-        ) : null}
-      </div>
-    </h1>
+    <PublicHeaderTitle>
+      <h1
+        className="h-7 text-2xl font-semibold tracking-tight text-primary flex items-center gap-2"
+        aria-label={label}
+      >
+        <PublicMarker />
+        <div className="flex items-end gap-2">
+          <p>{label}</p>
+          {link ? (
+            <Link className="cursor-pointer" href={link}>
+              <ChevronRightIcon className="size-7 text-primary stroke-[3]" />
+            </Link>
+          ) : null}
+        </div>
+      </h1>
+    </PublicHeaderTitle>
   );
 }

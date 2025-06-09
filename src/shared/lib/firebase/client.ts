@@ -21,7 +21,7 @@ function getClientFirebaseApp() {
     try {
       return initializeApp(firebaseConfig, appInstanceName);
     } catch (err) {
-      console.error("Failed to initialize Firebase client app:", err);
+      TerminalLogger.fail(`Failed to initialize Firebase client app: ${err}`);
       throw err;
     }
   }
@@ -36,6 +36,7 @@ const db = getFirestore(app);
 
 import localFirebase from "../../../../firebase.json";
 import isDevelopment from "../is-development";
+import TerminalLogger from "../terminal-logger";
 
 const authPort = localFirebase.emulators.auth.port;
 const firestorePort = localFirebase.emulators.firestore.port;

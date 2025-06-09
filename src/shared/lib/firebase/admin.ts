@@ -8,6 +8,7 @@ import { getAuth } from "firebase-admin/auth";
 import { getFirestore } from "firebase-admin/firestore";
 
 import isDevelopment from "../is-development";
+import TerminalLogger from "../terminal-logger";
 
 const appOptions: AppOptions = {
   credential: cert({
@@ -33,9 +34,8 @@ function getServerFirebaseApp() {
     try {
       return initializeApp(appOptions, appInstanceName);
     } catch (err) {
-      console.error(
-        "Failed to initialize Firebase admin app:",
-        JSON.stringify(err)
+      TerminalLogger.fail(
+        `Failed to initialize Firebase admin app: ${String(err)}`
       );
 
       throw err;

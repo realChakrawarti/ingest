@@ -5,6 +5,11 @@ import { useEffect, useState } from "react";
 import { indexedDB } from "~/shared/lib/api/dexie";
 import type { History } from "~/shared/types-schema/types";
 import GridContainer from "~/widgets/grid-container";
+import {
+  PublicContentContainer,
+  PublicHeaderTitle,
+  PublicMainContainer,
+} from "~/widgets/public-layout";
 import YouTubeCard from "~/widgets/youtube/youtube-card";
 export default function WatchHistory() {
   const [history, setHistory] = useState<History[]>([]);
@@ -19,9 +24,11 @@ export default function WatchHistory() {
   }, []);
 
   return (
-    <div className="p-3">
-      <h1 className="text-2xl font-semibold tracking-tight">History</h1>
-      <div className="w-full pt-7">
+    <PublicMainContainer>
+      <PublicHeaderTitle>
+        <h1 className="text-2xl font-semibold tracking-tight">History</h1>
+      </PublicHeaderTitle>
+      <PublicContentContainer>
         <GridContainer>
           {history.length ? (
             history.map((item) => (
@@ -35,7 +42,7 @@ export default function WatchHistory() {
             <div>No videos found.</div>
           )}
         </GridContainer>
-      </div>
-    </div>
+      </PublicContentContainer>
+    </PublicMainContainer>
   );
 }

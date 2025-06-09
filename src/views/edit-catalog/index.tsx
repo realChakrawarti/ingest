@@ -7,6 +7,7 @@ import useSWR from "swr";
 import { CatalogList } from "~/entities/catalogs/models";
 import { useToast } from "~/shared/hooks/use-toast";
 import fetchApi from "~/shared/lib/api/fetch";
+import TerminalLogger from "~/shared/lib/terminal-logger";
 import { Badge } from "~/shared/ui/badge";
 import { Button } from "~/shared/ui/button";
 import { LinkIcon } from "~/shared/ui/icons";
@@ -203,9 +204,9 @@ export default function EditCatalog({ catalogId }: { catalogId: string }) {
       toast({ title: result.message });
     } catch (err) {
       if (err instanceof Error) {
-        console.error(err.message);
+        TerminalLogger.fail(err.message);
       } else {
-        console.error(err);
+        TerminalLogger.fail(String(err));
       }
     } finally {
       setIsSubmitting(false);
