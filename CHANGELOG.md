@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.7.1](https://github.com/realChakrawarti/yt-catalog/compare/v1.7.0...v1.7.1) (2025-06-09)
+
+
+### Features
+
+* **catalogs:** merge channels & playlist, update logos every 12 hours ([e537b80](https://github.com/realChakrawarti/yt-catalog/commit/e537b809e68de809a925310649bb68b0d291492d))
+* merge channels and playlists in catalog to list ([4018476](https://github.com/realChakrawarti/yt-catalog/commit/4018476b65b104db8e4666f06c685f6b93763495))
+* update channel logos every 12 hours ([34548f1](https://github.com/realChakrawarti/yt-catalog/commit/34548f134e81a6a8571d7ed08477acf27cf99d17))
+
+
+### Bug Fixes
+
+* coderabbit suggestion ([ddec3e6](https://github.com/realChakrawarti/yt-catalog/commit/ddec3e6f34c084baa8217ec323aa2b4adc953366))
+
 ## [1.7.0](https://github.com/realChakrawarti/yt-catalog/compare/v1.6.9...v1.7.0) (2025-06-02)
 
 ### [1.6.9](https://github.com/realChakrawarti/yt-catalog/compare/v1.6.8...v1.6.9) (2025-06-02)

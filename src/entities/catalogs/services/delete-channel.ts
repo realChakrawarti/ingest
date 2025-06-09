@@ -1,5 +1,9 @@
+import { FieldValue } from "firebase-admin/firestore";
+
 import { adminDb } from "~/shared/lib/firebase/admin";
 import { COLLECTION } from "~/shared/lib/firebase/collections";
+
+import { CatalogList } from "../models";
 
 /**
  * Removes specified channels from a user's catalog.
@@ -12,14 +16,14 @@ import { COLLECTION } from "~/shared/lib/firebase/collections";
 export async function deleteChannel(
   userId: string,
   catalogId: string,
-  channels: any[]
+  channelToDelete: CatalogList
 ) {
   const userRef = adminDb.collection(COLLECTION.users).doc(userId);
   const userCatalogRef = userRef.collection(COLLECTION.catalogs).doc(catalogId);
 
   try {
     await userCatalogRef.update({
-      channels: channels,
+      list: FieldValue.arrayRemove(channelToDelete),
       updatedAt: new Date(),
     });
   } catch (err) {
