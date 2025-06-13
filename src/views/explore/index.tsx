@@ -1,4 +1,4 @@
-import { ChevronRightIcon } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 
 import fetchApi from "~/shared/lib/api/fetch";
@@ -12,7 +12,7 @@ import {
   PublicMarker,
 } from "~/widgets/public-layout";
 
-import LastWatched from "./last-watched";
+import ContinueWatching from "./continue-watching";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 60 * 5; // Cache the page for 5 minutes, unless revalidated on updates
@@ -30,12 +30,12 @@ export default async function Explore() {
 
   return (
     <PublicMainContainer className="space-y-4">
-      {/* Last watched */}
-      <LastWatched />
+      {/* Continue Watching */}
+      <ContinueWatching />
       {/* Featured Catalogs */}
       {catalogsData?.length && ENABLE_FEATURED ? (
         <section>
-          <Title label="Featured catalogs" link="/explore/catalogs" />
+          <Title label="Featured Catalogs" type="catalogs" />
           <PublicContentContainer>
             <GridContainer>
               {catalogsData.slice(0, 4).map((catalog) => (
@@ -53,7 +53,7 @@ export default async function Explore() {
       {/* Featured Archives */}
       {archivesData?.length && ENABLE_FEATURED ? (
         <section>
-          <Title label="Featured archives" link="/explore/archives" />
+          <Title label="Featured Archives" type="archives" />
           <PublicContentContainer>
             <GridContainer>
               {archivesData.slice(0, 4).map((archive) => (
@@ -71,22 +71,25 @@ export default async function Explore() {
   );
 }
 
-function Title({ label, link }: { label: string; link?: string }) {
+function Title({ label, type }: { label: string; type?: string }) {
   return (
     <PublicHeaderTitle>
-      <h1
-        className="h-7 text-2xl font-semibold tracking-tight text-primary flex items-center gap-2"
-        aria-label={label}
-      >
-        <PublicMarker />
-        <div className="flex items-end gap-2">
-          <p>{label}</p>
-          {link ? (
-            <Link className="cursor-pointer" href={link}>
-              <ChevronRightIcon className="size-7 text-primary stroke-[3]" />
-            </Link>
-          ) : null}
+      <h1 className=" flex items-end gap-2 justify-between" aria-label={label}>
+        <div className="h-7 text-lg md:text-2xl font-semibold tracking-tight flex gap-2">
+          <PublicMarker />
+          <div>
+            <p>{label}</p>
+          </div>
         </div>
+        {type ? (
+          <Link
+            className="cursor-pointer hover:text-primary/80 flex gap-2 items-center"
+            href={`/explore/${type}`}
+          >
+            <p className="text-sm">Explore {type}</p>
+            <ArrowRight className="size-4 stroke-[3]" />
+          </Link>
+        ) : null}
       </h1>
     </PublicHeaderTitle>
   );

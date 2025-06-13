@@ -1,5 +1,6 @@
 import useSWR from "swr";
 
+import appConfig from "~/shared/app-config";
 import { toast } from "~/shared/hooks/use-toast";
 import fetchApi from "~/shared/lib/api/fetch";
 import { getTimeDifference } from "~/shared/lib/date-time/time-diff";
@@ -11,8 +12,6 @@ import NoItemCard from "~/widgets/no-item-card";
 import Spinner from "~/widgets/spinner";
 
 import CreateArchiveDialog from "./create-archive-dialog";
-
-const LIMIT_ARCHIVES = 10;
 
 export default function ArchiveView() {
   const {
@@ -41,11 +40,11 @@ export default function ArchiveView() {
           <ArchiveIcon />
           <p>Archives</p>
           <Badge className="text-lg lg:text-xl text-primary" variant="outline">
-            {archives?.data.length}/{LIMIT_ARCHIVES}
+            {archives?.data.length}/{appConfig.limitArchives}
           </Badge>
         </h1>
         <CreateArchiveDialog
-          disabled={archives?.data.length >= LIMIT_ARCHIVES}
+          disabled={archives?.data.length >= appConfig.limitArchives}
           revalidateCatalogs={mutate}
         />
       </div>

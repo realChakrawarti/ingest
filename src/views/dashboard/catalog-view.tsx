@@ -2,6 +2,7 @@
 
 import useSWR from "swr";
 
+import appConfig from "~/shared/app-config";
 import { toast } from "~/shared/hooks/use-toast";
 import fetchApi from "~/shared/lib/api/fetch";
 import { getTimeDifference } from "~/shared/lib/date-time/time-diff";
@@ -13,8 +14,6 @@ import NoItemCard from "~/widgets/no-item-card";
 import Spinner from "~/widgets/spinner";
 
 import CreateCatalogDialog from "./create-catalog-dialog";
-
-const LIMIT_CATALOGS = 5;
 
 export default function CatalogView() {
   const {
@@ -43,12 +42,12 @@ export default function CatalogView() {
           <BookOpenIcon />
           <p>Catalogs</p>
           <Badge className="text-lg lg:text-xl text-primary" variant="outline">
-            {catalogs?.data.length}/{LIMIT_CATALOGS}
+            {catalogs?.data.length}/{appConfig.limitCatalogs}
           </Badge>
         </h1>
         <div className="flex items-center gap-3">
           <CreateCatalogDialog
-            disabled={catalogs?.data.length >= LIMIT_CATALOGS}
+            disabled={catalogs?.data.length >= appConfig.limitCatalogs}
             revalidateCatalogs={mutate}
           />
         </div>

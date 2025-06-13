@@ -26,7 +26,7 @@ export default function WatchHistory() {
   return (
     <PublicMainContainer>
       <PublicHeaderTitle>
-        <h1 className="text-2xl font-semibold tracking-tight">History</h1>
+        <h1 className="text-2xl font-semibold tracking-tight">Watch history</h1>
       </PublicHeaderTitle>
       <PublicContentContainer>
         <GridContainer>

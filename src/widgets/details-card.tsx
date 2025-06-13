@@ -3,7 +3,7 @@
 import { EyeIcon, Pause, Play, VideoIcon } from "lucide-react";
 import Link from "next/link";
 import { MouseEvent, useRef, useState } from "react";
-import Slider from "react-slick";
+import type Slider from "react-slick";
 
 import { cn } from "~/shared/lib/tailwind-merge";
 import { ValidMetadata } from "~/shared/types-schema/types";
