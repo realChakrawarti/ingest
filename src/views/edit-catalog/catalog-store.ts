@@ -13,6 +13,8 @@ type VideoLink = {
   error: string;
 };
 
+type Step = "url" | "channel" | "playlists";
+
 type ChannelInfo = { title: string; id: string };
 
 interface State {
@@ -26,6 +28,7 @@ interface State {
   playlistInput: string;
   savedPlaylists: CatalogList[];
   fetchedChannelPlaylists: boolean;
+  formStep: Step;
 }
 
 interface Actions {
@@ -40,6 +43,7 @@ interface Actions {
   setPlaylistInput: (_input: string) => void;
   resetLocalPlaylist: () => void;
   setFetchedChannelPlaylists: (_arg: boolean) => void;
+  setFormStep: (_step: Step) => void;
 }
 
 const initialState: State = {
@@ -49,6 +53,7 @@ const initialState: State = {
   },
   channelPlaylists: [],
   fetchedChannelPlaylists: false,
+  formStep: "url",
   localChannels: [],
   localPlaylists: [],
   playlistInput: "",
@@ -77,6 +82,7 @@ const useCatalogStore = create<State & Actions>((set) => ({
   setChannelPlaylists: (channelPlaylists) =>
     set({ channelPlaylists: channelPlaylists }),
   setFetchedChannelPlaylists: (arg) => set({ fetchedChannelPlaylists: arg }),
+  setFormStep: (step) => set({ formStep: step }),
   setLocalChannels: (localChannels) => set({ localChannels }),
   setLocalPlaylists: (localPlaylists) =>
     set({ localPlaylists: localPlaylists }),

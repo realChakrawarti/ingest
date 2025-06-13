@@ -23,6 +23,7 @@ import {
   CollapsibleTrigger,
 } from "~/shared/ui/collapsible";
 import { HeartListIcon, LogoutIcon } from "~/shared/ui/icons";
+import { Separator } from "~/shared/ui/separator";
 import NextUpdate from "~/views/public-catalog/next-update";
 
 import { Avatar, AvatarFallback, AvatarImage } from "../shared/ui/avatar";
@@ -41,54 +42,47 @@ import {
   SidebarMenuItem,
   SidebarMenuSub,
   SidebarMenuSubItem,
-  SidebarSeparator,
   useSidebar,
 } from "../shared/ui/sidebar";
 import AuthButton from "./auth-buttons";
 import Feedback from "./feedback";
 
-function FooterNextUpdate() {
+export default function AppSidebar() {
+  const { user, logout } = useAuth();
   const pathname = usePathname();
 
   const catalogId = pathname.includes("/c/") && pathname.split("/c/")[1];
-  if (catalogId) {
-    return (
-      <>
-        <SidebarSeparator />
-        <NextUpdate catalogId={catalogId} />
-      </>
-    );
-  }
 
-  return <></>;
-}
-
-export default function AppSidebar() {
-  const { user, logout } = useAuth();
   return (
     <Sidebar className="border-r">
       <SidebarContent>
         <UserGroup />
         <ExploreGroup />
-        <SidebarSeparator />
+        <Separator />
         <LocalGroup />
       </SidebarContent>
-      <SidebarFooter>
-        {user ? (
-          <Button
-            variant="ghost"
-            onClick={logout}
-            className={cn(
-              "w-full justify-start px-2",
-              "hover:bg-primary/5 hover:text-primary/80"
-            )}
-          >
-            <LogoutIcon className="mr-2 h-4 w-4" />
-            Logout
-          </Button>
-        ) : null}
-        <Feedback />
-        <FooterNextUpdate />
+      <SidebarFooter className="px-0">
+        <div className="px-2">
+          {user ? (
+            <Button
+              variant="ghost"
+              onClick={logout}
+              className={cn(
+                "w-full justify-start px-2",
+                "hover:bg-primary/5 hover:text-primary/80"
+              )}
+            >
+              <LogoutIcon className="mr-2 h-4 w-4" />
+              Logout
+            </Button>
+          ) : null}
+          <Feedback />
+        </div>
+
+        {catalogId ? <Separator /> : <></>}
+        <div className="px-2">
+          {catalogId ? <NextUpdate catalogId={catalogId} /> : <></>}
+        </div>
       </SidebarFooter>
     </Sidebar>
   );

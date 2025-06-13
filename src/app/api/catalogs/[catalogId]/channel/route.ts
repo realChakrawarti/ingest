@@ -43,7 +43,7 @@ export async function PATCH(request: NextRequest, ctx: ContextParams) {
     );
   }
 
-  const catalogPayload = await request.json();
+  const catalogPayload: { channel: string[] } = await request.json();
 
   await updateCatalogChannels(userId, catalogId, catalogPayload);
 

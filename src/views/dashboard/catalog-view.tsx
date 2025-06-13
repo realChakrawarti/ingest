@@ -36,7 +36,7 @@ export default function CatalogView() {
   };
 
   return (
-    <div className="space-y-4">
+    <div className="px-3 space-y-4">
       <div className="flex justify-between items-center">
         <h1 className="text-lg lg:text-xl flex items-center gap-3">
           <BookOpenIcon />

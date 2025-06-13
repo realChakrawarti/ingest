@@ -7,11 +7,11 @@ import CatalogView from "./catalog-view";
 
 export default function Dashboard() {
   return (
-    <div className="p-3 flex flex-col gap-3">
-      <h1 className="text-2xl font-semibold tracking-tight">Dashboard</h1>
-      <Separator className="my-3" />
+    <div className="flex first:pt-3 last:pb-3 flex-col gap-3">
+      <h1 className="px-3 text-2xl font-semibold tracking-tight">Dashboard</h1>
+      <Separator />
       <CatalogView />
-      <Separator className="my-3" />
+      <Separator />
       <ArchiveView />
     </div>
   );

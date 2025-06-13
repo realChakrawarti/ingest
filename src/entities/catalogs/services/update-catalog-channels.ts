@@ -1,3 +1,5 @@
+import { FieldValue } from "firebase-admin/firestore";
+
 import { YOUTUBE_CHANNELS_INFORMATION } from "~/shared/lib/api/youtube-endpoints";
 import { adminDb } from "~/shared/lib/firebase/admin";
 import { COLLECTION } from "~/shared/lib/firebase/collections";
@@ -13,18 +15,18 @@ import { CatalogList } from "../models";
 export async function updateCatalogChannels(
   userId: string,
   catalogId: string,
-  catalogPayload: any
+  catalogPayload: { channel: string[] }
 ) {
   const userRef = adminDb.collection(COLLECTION.users).doc(userId);
   const userCatalogRef = userRef.collection(COLLECTION.catalogs).doc(catalogId);
 
-  const { channels } = catalogPayload;
+  const { channel } = catalogPayload;
 
   try {
-    const channelsInfo = await getChannelsInfo(channels);
+    const channelInfo = await getChannelsInfo(channel);
 
     await userCatalogRef.update({
-      list: channelsInfo,
+      list: FieldValue.arrayUnion(...channelInfo),
       updatedAt: new Date(),
     });
   } catch (err) {
