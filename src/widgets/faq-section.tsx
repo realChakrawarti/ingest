@@ -65,7 +65,7 @@ const faqs: FAQItem[] = [
 export default function FAQSection() {
   return (
     <Sheet>
-      <SheetTrigger className="absolute top-2 right-2 z-50">
+      <SheetTrigger className="absolute top-2 right-2 z-50" asChild>
         <Button variant="outline">FAQ</Button>
       </SheetTrigger>
       <SheetContent className="overflow-y-auto w-full md:max-w-[450px] space-y-2">

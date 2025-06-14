@@ -34,17 +34,17 @@ export default function ArchiveView() {
   };
 
   return (
-    <div className="space-y-4">
+    <div className="px-3 space-y-4">
       <div className="flex justify-between items-center">
         <h1 className="text-lg lg:text-xl flex items-center gap-3">
           <ArchiveIcon />
           <p>Archives</p>
           <Badge className="text-lg lg:text-xl text-primary" variant="outline">
-            {archives?.data.length}/{appConfig.limitArchives}
+            {archives?.data.length ?? 0}/{appConfig.limitArchives}
           </Badge>
         </h1>
         <CreateArchiveDialog
-          disabled={archives?.data.length >= appConfig.limitArchives}
+          disabled={(archives?.data.length ?? 0) >= appConfig.limitArchives}
           revalidateCatalogs={mutate}
         />
       </div>

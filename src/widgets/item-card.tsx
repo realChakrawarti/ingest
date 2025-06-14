@@ -31,11 +31,14 @@ function CopyButton({ id, type }: { id: string; type: "catalog" | "archive" }) {
 
   const copyToClipboard = () => {
     const exploreType = type === "catalog" ? "c" : "a";
+    const exploreName = type === "catalog" ? "Catalog" : "Archive";
     navigator.clipboard
       .writeText(`${appConfig.url}/${exploreType}/${id}`)
       .then(() => {
         setCopied(true);
-        toast({ title: "Catalog link has been copied to your clipboard." });
+        toast({
+          title: `${exploreName} link has been copied to your clipboard.`,
+        });
         setTimeout(() => setCopied(false), 2000);
       });
   };
@@ -62,8 +65,7 @@ function CopyButton({ id, type }: { id: string; type: "catalog" | "archive" }) {
 const cardContainerStyles = cn(
   "flex flex-col h-[200px]",
   "overflow-hidden border-none",
-  "group-hover/card-item:shadow-sm group-hover/card-item:shadow-primary/70",
-  "bg-primary/5"
+  "hover:bg-primary/10 bg-primary/5 transition-colors"
 );
 
 const cardContentStyles = cn("flex-grow outline-none ", "rounded-b-none");
@@ -94,7 +96,7 @@ export default function ItemCard({
         <Link className={cardContentStyles} href={editLink} prefetch>
           <CardHeader className="space-y-1 pb-2">
             <CardTitle className="flex items-start justify-between">
-              <span className="text-lg line-clamp-2 flex-grow mr-2">
+              <span className="text-lg line-clamp-2 flex-grow mr-2 group-hover/card-item:text-primary tracking-wide">
                 {title}
               </span>
             </CardTitle>

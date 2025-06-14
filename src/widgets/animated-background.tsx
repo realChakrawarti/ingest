@@ -6,6 +6,7 @@ export default function AnimatedBackground() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
+    let animationId: number;
     const canvas = canvasRef.current;
     if (!canvas) return;
 
@@ -85,13 +86,14 @@ export default function AnimatedBackground() {
         ctx.fill();
       });
 
-      requestAnimationFrame(animate);
+      animationId = requestAnimationFrame(animate);
     };
 
     animate();
 
     return () => {
       window.removeEventListener("resize", resizeCanvas);
+      cancelAnimationFrame(animationId);
     };
   }, []);
 

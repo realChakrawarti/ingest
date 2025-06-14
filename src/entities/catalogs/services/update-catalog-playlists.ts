@@ -1,9 +1,9 @@
 import { FieldValue } from "firebase-admin/firestore";
 
+import { ChannelPlaylist } from "~/entities/youtube/models";
 import { YOUTUBE_CHANNELS_INFORMATION } from "~/shared/lib/api/youtube-endpoints";
 import { adminDb } from "~/shared/lib/firebase/admin";
 import { COLLECTION } from "~/shared/lib/firebase/collections";
-import { PlaylistItem } from "~/shared/types-schema/types";
 
 import { CatalogList } from "../models";
 
@@ -26,14 +26,13 @@ import { CatalogList } from "../models";
 export async function updateCatalogPlaylists(
   userId: string,
   catalogId: string,
-  playlists: PlaylistItem[]
+  playlists: ChannelPlaylist[]
 ) {
   const userRef = adminDb.collection(COLLECTION.users).doc(userId);
   const userCatalogRef = userRef.collection(COLLECTION.catalogs).doc(catalogId);
-
   const playlistsInfo: CatalogList[] = [];
 
-  // TODO: Refactor: This looks inefficient
+  // TODO: Refactor: This looks inefficient, since channelID doesn't change, we could call the API once for details
   for (let i = 0; i < playlists.length; i++) {
     const { channelId } = playlists[i];
     const response = await fetch(YOUTUBE_CHANNELS_INFORMATION([channelId]));
@@ -41,15 +40,16 @@ export async function updateCatalogPlaylists(
 
     const channelData = result?.items[0];
 
+    // TODO: Prior to adding, we could fetch channel details on UI /youtube endpoint 
     playlistsInfo.push({
       channelDescription: channelData.snippet.description,
       channelHandle: channelData.snippet.customUrl,
       channelId: playlists[i].channelId,
       channelLogo: channelData.snippet.thumbnails.medium.url,
       channelTitle: channelData.snippet.title,
-      playlistDescription: playlists[i].description,
-      playlistId: playlists[i].id,
-      playlistTitle: playlists[i].title,
+      playlistDescription: playlists[i].playlistDescription,
+      playlistId: playlists[i].playlistId,
+      playlistTitle: playlists[i].playlistTitle,
       type: "playlist",
     });
   }

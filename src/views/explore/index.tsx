@@ -74,7 +74,7 @@ export default async function Explore() {
 function Title({ label, type }: { label: string; type?: string }) {
   return (
     <PublicHeaderTitle>
-      <h1 className=" flex items-end gap-2 justify-between" aria-label={label}>
+      <h2 className=" flex items-end gap-2 justify-between" aria-label={label}>
         <div className="h-7 text-lg md:text-2xl font-semibold tracking-tight flex gap-2">
           <PublicMarker />
           <div>
@@ -90,7 +90,7 @@ function Title({ label, type }: { label: string; type?: string }) {
             <ArrowRight className="size-4 stroke-[3]" />
           </Link>
         ) : null}
-      </h1>
+      </h2>
     </PublicHeaderTitle>
   );
 }

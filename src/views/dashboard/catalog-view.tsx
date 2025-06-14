@@ -36,18 +36,18 @@ export default function CatalogView() {
   };
 
   return (
-    <div className="space-y-4">
+    <div className="px-3 space-y-4">
       <div className="flex justify-between items-center">
         <h1 className="text-lg lg:text-xl flex items-center gap-3">
           <BookOpenIcon />
           <p>Catalogs</p>
           <Badge className="text-lg lg:text-xl text-primary" variant="outline">
-            {catalogs?.data.length}/{appConfig.limitCatalogs}
+            {catalogs?.data.length ?? 0}/{appConfig.limitCatalogs}
           </Badge>
         </h1>
         <div className="flex items-center gap-3">
           <CreateCatalogDialog
-            disabled={catalogs?.data.length >= appConfig.limitCatalogs}
+            disabled={(catalogs?.data.length ?? 0) >= appConfig.limitCatalogs}
             revalidateCatalogs={mutate}
           />
         </div>
