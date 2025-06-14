@@ -2,6 +2,8 @@
 
 import { YOUTUBE_CHANNEL_PLAYLISTS } from "~/shared/lib/api/youtube-endpoints";
 
+import { ChannelPlaylist } from "../models";
+
 /**
  * Recursively retrieves all playlists for a given YouTube channel using pagination.
  *
@@ -58,7 +60,22 @@ export async function getPlaylistsByChannel(channelId: string) {
       playlistItems
     );
 
-    return allPlaylistItems;
+    const structuredResponse: ChannelPlaylist[] = allPlaylistItems.map(
+      (item) => {
+        return {
+          channelId: item.snippet.channelId,
+          channelTitle: item.snippet.channelTitle,
+          playlistDescription: item.snippet.description,
+          playlistId: item.id,
+          playlistTitle: item.snippet.title,
+          publishedAt: item.snippet.publishedAt,
+          thumbnail: item.snippet.thumbnails.medium.url,
+          videoCount: item.contentDetails.itemCount,
+        };
+      }
+    );
+
+    return structuredResponse;
   } else {
     throw Error(firstPageData.error.message);
   }

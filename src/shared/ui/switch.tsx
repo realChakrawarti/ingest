@@ -2,7 +2,7 @@
 
 "use client"
 
-import * as SwitchPrimitives from "@radix-ui/react-switch"
+import { Switch as SwitchPrimitives } from "radix-ui"
 import * as React from "react"
 
 import { cn } from "~/shared/lib/tailwind-merge"

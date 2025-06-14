@@ -1,12 +1,23 @@
 /* eslint-disable @stylistic/max-len */
-"use client";
 
 import Linkify from "linkify-react";
-import { ChevronDownIcon } from "lucide-react";
-import { useState } from "react";
 
 import appConfig from "~/shared/app-config";
-import { cn } from "~/shared/lib/tailwind-merge";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "~/shared/ui/accordion";
+import { Button } from "~/shared/ui/button";
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "~/shared/ui/sheet";
 
 interface FAQItem {
   question: string;
@@ -52,49 +63,33 @@ const faqs: FAQItem[] = [
 ];
 
 export default function FAQSection() {
-  const [openIndex, setOpenIndex] = useState<number | null>(null);
-
   return (
-    <section className="w-full py-24 lg:py-32 bg-transparent">
-      <div className="container">
-        <div className="flex flex-col items-center justify-center space-y-4 text-center">
-          <div className="space-y-2">
-            <h2 className="text-3xl font-bold tracking-normal sm:text-5xl">
-              Frequently Asked Questions
-            </h2>
-            <p className="max-w-[900px] md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed text-neutral-600 dark:text-neutral-400">
-              Everything you need to know about organizing your YouTube
-              experience
-            </p>
-          </div>
-        </div>
-        <div className="mx-auto max-w-3xl mt-8 space-y-1">
+    <Sheet>
+      <SheetTrigger className="absolute top-2 right-2 z-50" asChild>
+        <Button variant="outline">FAQ</Button>
+      </SheetTrigger>
+      <SheetContent className="overflow-y-auto w-full md:max-w-[450px] space-y-2">
+        <SheetHeader className="text-left">
+          <SheetTitle>Frequently Asked Questions</SheetTitle>
+          <SheetDescription>
+            Everything you need to know about organizing your YouTube experience
+          </SheetDescription>
+        </SheetHeader>
+        <Accordion
+          type="single"
+          collapsible
+          className="w-full"
+          defaultValue="faq-0"
+        >
           {faqs.map((faq, index) => (
-            <div key={index} className="transition-colors">
-              <button
-                className="flex w-full items-start justify-between p-6"
-                onClick={() => setOpenIndex(openIndex === index ? null : index)}
-                aria-expanded={openIndex === index}
-                aria-controls={`faq-${index}`}
-              >
-                <span className="font-medium text-left">{faq.question}</span>
-                <span className="font-medium">
-                  <ChevronDownIcon
-                    className={cn(
-                      "h-5 w-5 transition-transform duration-200",
-                      openIndex === index && "rotate-180"
-                    )}
-                  />
-                </span>
-              </button>
-              <div
-                id={`faq-${index}`}
-                className={cn(
-                  "overflow-hidden text-neutral-600 dark:text-neutral-400 transition-all duration-200",
-                  openIndex === index ? "max-h-96 pb-6" : "max-h-0"
-                )}
-              >
-                <p className="px-6">
+            <AccordionItem
+              className="transition-colors"
+              key={`faq-${index}`}
+              value={`faq-${index}`}
+            >
+              <AccordionTrigger>{faq.question}</AccordionTrigger>
+              <AccordionContent className="flex flex-col gap-4 text-balance">
+                <p>
                   <Linkify
                     options={{
                       target: "_blank",
@@ -105,11 +100,11 @@ export default function FAQSection() {
                     {faq.answer}
                   </Linkify>
                 </p>
-              </div>
-            </div>
+              </AccordionContent>
+            </AccordionItem>
           ))}
-        </div>
-      </div>
-    </section>
+        </Accordion>
+      </SheetContent>
+    </Sheet>
   );
 }

@@ -1,21 +1,20 @@
-// Reference: https://shadcn-ui-blocks.vercel.app/blocks/hero-sections
-
 import Link from "next/link";
 
-import { Button } from "../shared/ui/button";
+import { Button } from "~/shared/ui/button";
 
 export default function HeroSection() {
   return (
     <>
       {/* Hero */}
-      <div className="relative overflow-hidden py-24 lg:py-32">
-        {/* Background Video */}
-        {/* <GlobeBackground /> */}
-        {/* End Background Video */}
+      <div className="relative overflow-hidden py-12 md:py-8">
         <div className="relative z-10">
           <div className="container py-16 lg:py-20 pb-0">
             <div className="max-w-2xl text-center mx-auto">
-              <p className="">Simplify Your YouTube</p>
+              <div className="animate-bounce-slow mb-4">
+                <p className="text-primary mb-2 text-sm font-medium tracking-wider uppercase animate-pulse">
+                  Simplify Your YouTube
+                </p>
+              </div>
               {/* Title */}
               <div className="mt-5 max-w-2xl">
                 <h1 className="scroll-m-20 text-4xl font-extrabold tracking-normal lg:text-5xl">
@@ -32,7 +31,7 @@ export default function HeroSection() {
               {/* Buttons */}
               <div className="mt-8 gap-3 flex flex-col items-center">
                 <Link href="/explore">
-                  <Button className="px-4 w-24">Explore</Button>
+                  <Button className="px-4 w-24 btn-drop-shadow">Explore</Button>
                 </Link>
               </div>
               {/* End Buttons */}

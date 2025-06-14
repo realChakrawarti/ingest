@@ -1,45 +1,40 @@
 import { create } from "zustand";
 
 import { CatalogList } from "~/entities/catalogs/models";
-import type { PlaylistItem } from "~/shared/types-schema/types";
-
-export type LocalChannel = {
-  title: string;
-  id: string;
-};
+import { ChannelPlaylist } from "~/entities/youtube/models";
 
 type VideoLink = {
   link: string;
   error: string;
 };
 
+type Step = "url" | "channel" | "playlists";
+
 type ChannelInfo = { title: string; id: string };
 
 interface State {
   channelInfo: ChannelInfo;
   videoLink: VideoLink;
-  localChannels: LocalChannel[];
-  savedChannels: CatalogList[];
-  localPlaylists: PlaylistItem[];
-  searchPlaylists: any[];
-  channelPlaylists: any[];
+  savedChannels: CatalogList<"channel">[];
+  selectedPlaylists: ChannelPlaylist[];
+  searchPlaylists: ChannelPlaylist[];
+  channelPlaylists: ChannelPlaylist[];
   playlistInput: string;
-  savedPlaylists: CatalogList[];
-  fetchedChannelPlaylists: boolean;
+  savedPlaylists: CatalogList<"playlist">[];
+  formStep: Step;
 }
 
 interface Actions {
   setChannelInfo: (_channelInfo: ChannelInfo) => void;
   setVideoLink: (_videoLink: Partial<VideoLink>) => void;
-  setSavedPlaylists: (_playlist: CatalogList[]) => void;
-  setLocalChannels: (_localChannels: LocalChannel[]) => void;
-  setSavedChannels: (_channels: CatalogList[]) => void;
-  setLocalPlaylists: (_localPlaylists: PlaylistItem[]) => void;
-  setSearchPlaylists: (_searchPlaylists: any[]) => void;
-  setChannelPlaylists: (_channelPlaylists: any[]) => void;
+  setSavedPlaylists: (_playlist: CatalogList<"playlist">[]) => void;
+  setSavedChannels: (_channels: CatalogList<"channel">[]) => void;
+  setSelectedPlaylists: (_selectedPlaylists: ChannelPlaylist[]) => void;
+  setSearchPlaylists: (_searchPlaylists: ChannelPlaylist[]) => void;
+  setChannelPlaylists: (_channelPlaylists: ChannelPlaylist[]) => void;
   setPlaylistInput: (_input: string) => void;
-  resetLocalPlaylist: () => void;
-  setFetchedChannelPlaylists: (_arg: boolean) => void;
+  resetTempData: () => void;
+  setFormStep: (_step: Step) => void;
 }
 
 const initialState: State = {
@@ -48,43 +43,41 @@ const initialState: State = {
     id: "",
   },
   channelPlaylists: [],
-  fetchedChannelPlaylists: false,
-  localChannels: [],
-  localPlaylists: [],
+  formStep: "url",
   playlistInput: "",
   savedChannels: [],
   savedPlaylists: [],
   searchPlaylists: [],
+  selectedPlaylists: [],
   videoLink: { error: "", link: "" },
 };
 
 const useCatalogStore = create<State & Actions>((set) => ({
   ...initialState,
-  resetLocalPlaylist: () =>
+  resetTempData: () =>
     set({
       channelInfo: {
         title: "",
         id: "",
       },
       channelPlaylists: [],
-      fetchedChannelPlaylists: false,
-      localPlaylists: [],
+      formStep: "url",
       playlistInput: "",
       searchPlaylists: [],
+      selectedPlaylists: [],
       videoLink: { error: "", link: "" },
     }),
   setChannelInfo: (channelInfo) => set({ channelInfo: channelInfo }),
   setChannelPlaylists: (channelPlaylists) =>
     set({ channelPlaylists: channelPlaylists }),
-  setFetchedChannelPlaylists: (arg) => set({ fetchedChannelPlaylists: arg }),
-  setLocalChannels: (localChannels) => set({ localChannels }),
-  setLocalPlaylists: (localPlaylists) =>
-    set({ localPlaylists: localPlaylists }),
+  setFormStep: (step) => set({ formStep: step }),
   setPlaylistInput: (inputValue) => set({ playlistInput: inputValue }),
   setSavedChannels: (channels) => set({ savedChannels: channels }),
   setSavedPlaylists: (playlists) => set({ savedPlaylists: playlists }),
   setSearchPlaylists: (searchPlaylists) =>
     set({ searchPlaylists: searchPlaylists }),
+  setSelectedPlaylists: (selectedPlaylists) =>
+    set({ selectedPlaylists: selectedPlaylists }),
   setVideoLink: (link) => {
     return set((state) => ({
       videoLink: {

@@ -113,3 +113,13 @@ a[href^="https://stoplight.io/"]
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
 }
+
+.btn-drop-shadow {
+  transition-property: filter;
+  transition-duration: .3s;
+  will-change: filter;
+}
+
+.btn-drop-shadow:hover {
+  filter: drop-shadow(0 0 24px hsl(var(--primary)));
+}

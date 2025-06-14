@@ -3,7 +3,7 @@
 import { EyeIcon, Pause, Play, VideoIcon } from "lucide-react";
 import Link from "next/link";
 import { MouseEvent, useRef, useState } from "react";
-import Slider from "react-slick";
+import type Slider from "react-slick";
 
 import { cn } from "~/shared/lib/tailwind-merge";
 import { ValidMetadata } from "~/shared/types-schema/types";
@@ -35,8 +35,9 @@ export default function DetailsCard({ pageData, path }: DetailsCardProps) {
   return (
     <section
       className={cn(
+        "border-none",
         "flex flex-col gap-0 relative overflow-hidden",
-        "rounded-lg border bg-card transition-colors hover:bg-accent"
+        "rounded-lg hover:bg-primary/10 bg-primary/5 transition-colors"
       )}
     >
       <div className="relative aspect-video">
@@ -85,7 +86,7 @@ export default function DetailsCard({ pageData, path }: DetailsCardProps) {
           <div>
             <h2
               id={pageData?.id}
-              className="font-semibold group-hover:text-primary"
+              className="font-semibold group-hover:text-primary tracking-wide"
             >
               {pageData?.title}
             </h2>

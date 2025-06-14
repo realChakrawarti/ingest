@@ -13,7 +13,7 @@ import {
 } from "~/widgets/public-layout";
 import YouTubeCard from "~/widgets/youtube/youtube-card";
 
-export default function LastWatched() {
+export default function ContinueWatching() {
   const [history, setHistory] = useState<History[]>([]);
 
   useEffect(() => {
@@ -38,7 +38,7 @@ export default function LastWatched() {
       <PublicMainContainer>
         <PublicHeaderTitle>
           <h1 className="text-2xl font-semibold tracking-tight">
-            Watch history
+            Continue Watching
           </h1>
         </PublicHeaderTitle>
         <PublicContentContainer>

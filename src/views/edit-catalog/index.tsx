@@ -1,13 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import useSWR from "swr";
 
 import { CatalogList } from "~/entities/catalogs/models";
 import { useToast } from "~/shared/hooks/use-toast";
 import fetchApi from "~/shared/lib/api/fetch";
-import TerminalLogger from "~/shared/lib/terminal-logger";
 import { Badge } from "~/shared/ui/badge";
 import { Button } from "~/shared/ui/button";
 import { LinkIcon } from "~/shared/ui/icons";
@@ -15,15 +14,11 @@ import { Separator } from "~/shared/ui/separator";
 import JustTip from "~/widgets/just-the-tip";
 import Spinner from "~/widgets/spinner";
 
-import AddChannelPlaylist from "./add-channel-playlist";
+import AddChannelPlaylistDialog from "./add-channel-playlist-dialog";
 import useCatalogStore from "./catalog-store";
 import ChannelTable from "./channel-table";
 import PlaylistTable from "./playlist-table";
 import UpdateCatalogMeta from "./update-catalog-meta";
-
-type UpdateCatalogPayload = {
-  channels?: string[];
-};
 
 // TODO: Instead of table for rendering saved and unsaved channels/playlist, consider using cards
 // This will simplify the UI/UX. Against each unsaved, add a button to saved.
@@ -43,17 +38,8 @@ export default function EditCatalog({ catalogId }: { catalogId: string }) {
     { revalidateOnFocus: false }
   );
 
-  const {
-    localChannels,
-    setLocalChannels,
-    savedChannels,
-    setSavedChannels,
-    localPlaylists,
-    setLocalPlaylists,
-    resetLocalPlaylist,
-    setSavedPlaylists,
-    savedPlaylists,
-  } = useCatalogStore();
+  const { savedChannels, setSavedChannels, setSavedPlaylists, savedPlaylists } =
+    useCatalogStore();
 
   useEffect(() => {
     if (catalogData?.data) {
@@ -70,7 +56,7 @@ export default function EditCatalog({ catalogId }: { catalogId: string }) {
     }
   }, [catalogData?.data, setSavedChannels, setSavedPlaylists]);
 
-  // TODO: Deleting item should be a single function as both doing the same thing, amd should use a single endpoint
+  // TODO: Deleting item should be a single function as both doing the same thing, and should use a single endpoint
   const handleDeleteSaved = async (id: string) => {
     const deleteChannel = savedChannels.find(
       (channel) => channel.channelId === id && channel.type === "channel"
@@ -119,100 +105,6 @@ export default function EditCatalog({ catalogId }: { catalogId: string }) {
     }
   };
 
-  const handleDeleteLocal = (id: string) => {
-    const filteredChannels = localChannels.filter(
-      (channel) => channel.id !== id
-    );
-    setLocalChannels(filteredChannels || []);
-  };
-
-  const handleDeleteLocalPlaylist = (id: string) => {
-    const filteredPlaylists = localPlaylists.filter(
-      (playlist) => playlist.id !== id
-    );
-    setLocalPlaylists(filteredPlaylists);
-  };
-
-  const handleAddPlaylistsToCatalog = async () => {
-    // Check if channelId already exists in savedChannels
-    const alreadyExists = savedChannels?.some((channel) => {
-      if (channel.channelId === localPlaylists[0].channelId) {
-        toast({
-          title: `${channel.channelTitle}'s channel is already added to the catalog.`,
-          description:
-            "Please remove the channel before proceeding to add specific playlist from the same channel.",
-        });
-        return true;
-      }
-      return false;
-    });
-
-    if (alreadyExists) return;
-
-    const result = await fetchApi(`/catalogs/${catalogId}/playlist`, {
-      method: "PATCH",
-      body: JSON.stringify(localPlaylists),
-    });
-
-    if (result.success) {
-      toast({ title: "Catalog has been updated with new playlists." });
-      resetLocalPlaylist();
-      revalidateCatalog();
-    } else {
-      toast({ title: "Something went wrong!" });
-    }
-  };
-
-  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
-
-  const handleSubmit = async () => {
-    const payload: UpdateCatalogPayload = {
-      channels: savedChannels.map((channel) => channel.channelId),
-    };
-
-    if (localChannels.length) {
-      payload.channels?.push(...localChannels.map((item) => item.id));
-    }
-
-    // Check if any playlist is already added of the channel, if so ask to remove the playlists
-    const playlistExists = localChannels?.some((channel) => {
-      return savedPlaylists?.some((playlist) => {
-        if (playlist.channelId === channel.id) {
-          toast({
-            title: `${channel.title} has already added specific playlists.`,
-            description: `Remove ${channel.title} playlists to add this channel.`,
-          });
-          return true;
-        }
-      });
-    });
-
-    if (playlistExists) return;
-
-    try {
-      setIsSubmitting(true);
-      const result = await fetchApi(`/catalogs/${catalogId}/channel`, {
-        method: "PATCH",
-        body: JSON.stringify(payload),
-      });
-
-      if (result.success) {
-        revalidateCatalog();
-        setLocalChannels([]);
-      }
-
-      toast({ title: result.message });
-    } catch (err) {
-      if (err instanceof Error) {
-        TerminalLogger.fail(err.message);
-      } else {
-        TerminalLogger.fail(String(err));
-      }
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
   return (
     <div>
       <div className="flex flex-col md:flex-row gap-2 md:items-center justify-between p-3">
@@ -240,7 +132,7 @@ export default function EditCatalog({ catalogId }: { catalogId: string }) {
               </JustTip>
             </Link>
           ) : null}
-          <AddChannelPlaylist />
+          <AddChannelPlaylistDialog revalidateCatalog={revalidateCatalog} />
         </div>
       </div>
       <Separator className="my-3" />
@@ -252,45 +144,6 @@ export default function EditCatalog({ catalogId }: { catalogId: string }) {
       )}
       {!isLoading && !error && (
         <div className="space-y-7 p-3">
-          {localChannels?.length ? (
-            <div className="space-y-3">
-              <div className="flex items-center justify-between">
-                <h2 className="text-xl font-semibold">Unsaved Channels</h2>
-                <div className="flex gap-2 mt-5 justify-end">
-                  <Button
-                    disabled={Boolean(
-                      !localChannels.length &&
-                        !localPlaylists.length &&
-                        isSubmitting
-                    )}
-                    onClick={handleSubmit}
-                  >
-                    {isSubmitting ? <Spinner className="size-4" /> : null}
-                    Submit
-                  </Button>
-                </div>
-              </div>
-              <ChannelTable
-                channels={localChannels}
-                handleDelete={handleDeleteLocal}
-              />
-            </div>
-          ) : null}
-          {localPlaylists?.length ? (
-            <div className="space-y-3">
-              <div className="flex items-center justify-between">
-                <h2 className="text-xl font-semibold">Unsaved Playlists</h2>
-                <Button onClick={handleAddPlaylistsToCatalog}>
-                  Add to catalog
-                </Button>
-              </div>
-              <PlaylistTable
-                playlists={localPlaylists}
-                handleDelete={handleDeleteLocalPlaylist}
-              />
-            </div>
-          ) : null}
-
           {savedChannels?.length ? (
             <div className="space-y-3">
               <div className="flex items-center justify-between">

@@ -2,9 +2,9 @@ import { revalidatePath } from "next/cache";
 import { NextRequest } from "next/server";
 
 import { deletePlaylist, updateCatalogPlaylists } from "~/entities/catalogs";
+import { ChannelPlaylist } from "~/entities/youtube/models";
 import { getUserIdHeader } from "~/shared/lib/next/get-user-id-header";
 import { NxResponse } from "~/shared/lib/next/nx-response";
-import { PlaylistItem } from "~/shared/types-schema/types";
 
 type ContextParams = {
   params: {
@@ -41,9 +41,9 @@ export async function PATCH(request: NextRequest, ctx: ContextParams) {
     );
   }
 
-  const playlistPayload: PlaylistItem[] = await request.json();
+  const payload: { playlists: ChannelPlaylist[] } = await request.json();
 
-  await updateCatalogPlaylists(userId, catalogId, playlistPayload);
+  await updateCatalogPlaylists(userId, catalogId, payload.playlists);
 
   return NxResponse.success<any>("Playlist update successfully.", {}, 200);
 }

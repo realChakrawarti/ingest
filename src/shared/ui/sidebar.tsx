@@ -2,9 +2,9 @@
 
 "use client";
 
-import { Slot } from "@radix-ui/react-slot";
 import { cva, VariantProps } from "class-variance-authority";
 import { PanelLeft } from "lucide-react";
+import { Slot as SlotPrimitive } from "radix-ui";
 import * as React from "react";
 
 import { useIsMobile } from "~/shared/hooks/use-mobile";
@@ -434,7 +434,7 @@ const SidebarGroupLabel = React.forwardRef<
   HTMLDivElement,
   React.ComponentProps<"div"> & { asChild?: boolean }
 >(({ className, asChild = false, ...props }, ref) => {
-  const Comp = asChild ? Slot : "div";
+  const Comp = asChild ? SlotPrimitive.Slot : "div";
 
   return (
     <Comp
@@ -455,7 +455,7 @@ const SidebarGroupAction = React.forwardRef<
   HTMLButtonElement,
   React.ComponentProps<"button"> & { asChild?: boolean }
 >(({ className, asChild = false, ...props }, ref) => {
-  const Comp = asChild ? Slot : "button";
+  const Comp = asChild ? SlotPrimitive.Slot : "button";
 
   return (
     <Comp
@@ -555,7 +555,7 @@ const SidebarMenuButton = React.forwardRef<
     },
     ref
   ) => {
-    const Comp = asChild ? Slot : "button";
+    const Comp = asChild ? SlotPrimitive.Slot : "button";
     const { isMobile, state } = useSidebar();
 
     const button = (
@@ -601,7 +601,7 @@ const SidebarMenuAction = React.forwardRef<
     showOnHover?: boolean;
   }
 >(({ className, asChild = false, showOnHover = false, ...props }, ref) => {
-  const Comp = asChild ? Slot : "button";
+  const Comp = asChild ? SlotPrimitive.Slot : "button";
 
   return (
     <Comp
@@ -715,7 +715,7 @@ const SidebarMenuSubButton = React.forwardRef<
     isActive?: boolean;
   }
 >(({ asChild = false, size = "md", isActive, className, ...props }, ref) => {
-  const Comp = asChild ? Slot : "a";
+  const Comp = asChild ? SlotPrimitive.Slot : "a";
 
   return (
     <Comp
