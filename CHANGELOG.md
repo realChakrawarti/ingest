@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.7.3](https://github.com/realChakrawarti/yt-catalog/compare/v1.7.2...v1.7.3) (2025-06-15)
+
+
+### Features
+
+* add dialog for adding channel/playlist to catalog ([d64f8dc](https://github.com/realChakrawarti/yt-catalog/commit/d64f8dc143050dcb45a5552fa9b917383cc02e31))
+* update homescreen, faq section, use radix-ui core package ([7731102](https://github.com/realChakrawarti/yt-catalog/commit/773110219ae5b8a33b15dfbeaa2b6ab52688b84a))
+* update homescreen, faq section, use radix-ui core package ([1f755e4](https://github.com/realChakrawarti/yt-catalog/commit/1f755e428aca9c60d6ee837936d461d30cb0d469))
+
+
+### Bug Fixes
+
+* coderabbit suggestion ([47e70fe](https://github.com/realChakrawarti/yt-catalog/commit/47e70fec367d7597d4973ecd66263361d190221c))
+
 ### [1.7.2](https://github.com/realChakrawarti/yt-catalog/compare/v1.7.1...v1.7.2) (2025-06-09)
 
 
