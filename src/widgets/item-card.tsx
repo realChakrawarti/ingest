@@ -26,16 +26,19 @@ import {
 import { WarningIcon } from "~/shared/ui/icons";
 import JustTip from "~/widgets/just-the-tip";
 
-function CopyButton({ id, type }: any) {
+function CopyButton({ id, type }: { id: string; type: "catalog" | "archive" }) {
   const [copied, setCopied] = useState(false);
 
   const copyToClipboard = () => {
     const exploreType = type === "catalog" ? "c" : "a";
+    const exploreName = type === "catalog" ? "Catalog" : "Archive";
     navigator.clipboard
       .writeText(`${appConfig.url}/${exploreType}/${id}`)
       .then(() => {
         setCopied(true);
-        toast({ title: "Catalog link has been copied to your clipboard." });
+        toast({
+          title: `${exploreName} link has been copied to your clipboard.`,
+        });
         setTimeout(() => setCopied(false), 2000);
       });
   };
@@ -45,7 +48,7 @@ function CopyButton({ id, type }: any) {
       <Button
         variant="ghost"
         size="icon"
-        className="h-8 w-8 relative group"
+        className="h-8 w-8 relative hover:bg-primary/5 text-primary/80 hover:text-primary"
         onClick={copyToClipboard}
       >
         {copied ? (
@@ -61,14 +64,11 @@ function CopyButton({ id, type }: any) {
 
 const cardContainerStyles = cn(
   "flex flex-col h-[200px]",
-  "rounded-md group overflow-hidden"
+  "overflow-hidden border-none",
+  "hover:bg-primary/10 bg-primary/5 transition-colors"
 );
 
-const cardContentStyles = cn(
-  "flex-grow outline-none ",
-  "hover:-outline-offset-1 hover:outline-primary hover:outline-8",
-  "focus:-outline-offset-1 focus:outline-primary focus:outline-8"
-);
+const cardContentStyles = cn("flex-grow outline-none ", "rounded-b-none");
 
 type ItemCardProps = {
   type: "archive" | "catalog";
@@ -91,39 +91,48 @@ export default function ItemCard({
     type === "archive" ? `/archives/${id}/edit` : `/catalogs/${id}/edit`;
 
   return (
-    <Card className={cardContainerStyles}>
-      <Link className={cardContentStyles} href={editLink} prefetch>
-        <CardHeader className="space-y-1 pb-2">
-          <CardTitle className="flex items-start justify-between">
-            <span className="text-lg line-clamp-2 flex-grow mr-2">{title}</span>
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="flex-grow overflow-hidden">
-          <p className="text-sm text-muted-foreground line-clamp-3">
-            {description}
-          </p>
-        </CardContent>
-      </Link>
-      <CardFooter className="justify-between items-center py-4 border-t h-[52px]">
-        <div className="flex items-center text-xs text-muted-foreground">
-          <Clock className="w-3 h-3 mr-1 flex-shrink-0" />
-          <span className="truncate max-w-[100px]">{lastUpdated}</span>
-        </div>
-        <div className="flex gap-1 flex-shrink-0">
-          <CopyButton id={id} type={type} />
-          <DeleteModal handleDelete={() => onDelete(id)}>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="h-8 w-8 text-primary/80 hover:text-primary"
-            >
-              <Trash2 className="w-4 h-4" />
-              <span className="sr-only">Delete catalog</span>
-            </Button>
-          </DeleteModal>
-        </div>
-      </CardFooter>
-    </Card>
+    <div className="group/card-item rounded-md">
+      <Card className={cardContainerStyles}>
+        <Link className={cardContentStyles} href={editLink} prefetch>
+          <CardHeader className="space-y-1 pb-2">
+            <CardTitle className="flex items-start justify-between">
+              <span className="text-lg line-clamp-2 flex-grow mr-2 group-hover/card-item:text-primary tracking-wide">
+                {title}
+              </span>
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="flex-grow overflow-hidden">
+            <p className="text-sm text-muted-foreground line-clamp-3">
+              {description}
+            </p>
+          </CardContent>
+        </Link>
+        <CardFooter
+          className={cn(
+            "justify-between items-center py-4 h-[52px]",
+            "border border-x-0 border-y-0 border-t-2 border-t-primary/30"
+          )}
+        >
+          <div className="flex items-center text-xs text-muted-foreground">
+            <Clock className="w-3 h-3 mr-1 flex-shrink-0" />
+            <span className="truncate max-w-[100px]">{lastUpdated}</span>
+          </div>
+          <div className="flex gap-1 flex-shrink-0">
+            <CopyButton id={id} type={type} />
+            <DeleteModal handleDelete={() => onDelete(id)}>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-8 w-8 hover:bg-primary/5 text-primary/80 hover:text-primary"
+              >
+                <Trash2 className="w-4 h-4 bg-primary/5" />
+                <span className="sr-only">Delete catalog</span>
+              </Button>
+            </DeleteModal>
+          </div>
+        </CardFooter>
+      </Card>
+    </div>
   );
 }
 

@@ -1,5 +1,7 @@
 import { YOUTUBE_VIDEO_DATA } from "~/shared/lib/api/youtube-endpoints";
 
+import { VideoDetails } from "../models";
+
 // TODO: Parse only the data required and sent it down
 export async function getVideoDetails(videoIdParam: string) {
   const response = await fetch(YOUTUBE_VIDEO_DATA(videoIdParam));
@@ -7,13 +9,13 @@ export async function getVideoDetails(videoIdParam: string) {
 
   const videoData = result.items[0].snippet;
 
-  const data = {
+  const data: VideoDetails = {
     channelId: videoData.channelId,
     channelTitle: videoData.channelTitle,
-    description: videoData.description,
     publishedAt: videoData.publishedAt,
-    thumbnail: videoData.thumbnails.medium.url,
-    title: videoData.title,
+    videoDescription: videoData.description,
+    videoThumbnail: videoData.thumbnails.medium.url,
+    videoTitle: videoData.title,
   };
   return data;
 }
