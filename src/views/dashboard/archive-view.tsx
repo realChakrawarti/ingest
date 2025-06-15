@@ -1,5 +1,6 @@
 import useSWR from "swr";
 
+import appConfig from "~/shared/app-config";
 import { toast } from "~/shared/hooks/use-toast";
 import fetchApi from "~/shared/lib/api/fetch";
 import { getTimeDifference } from "~/shared/lib/date-time/time-diff";
@@ -11,8 +12,6 @@ import NoItemCard from "~/widgets/no-item-card";
 import Spinner from "~/widgets/spinner";
 
 import CreateArchiveDialog from "./create-archive-dialog";
-
-const LIMIT_ARCHIVES = 10;
 
 export default function ArchiveView() {
   const {
@@ -35,17 +34,17 @@ export default function ArchiveView() {
   };
 
   return (
-    <div className="space-y-4">
+    <div className="px-3 space-y-4">
       <div className="flex justify-between items-center">
         <h1 className="text-lg lg:text-xl flex items-center gap-3">
           <ArchiveIcon />
           <p>Archives</p>
           <Badge className="text-lg lg:text-xl text-primary" variant="outline">
-            {archives?.data.length}/{LIMIT_ARCHIVES}
+            {archives?.data.length ?? 0}/{appConfig.limitArchives}
           </Badge>
         </h1>
         <CreateArchiveDialog
-          disabled={archives?.data.length >= LIMIT_ARCHIVES}
+          disabled={(archives?.data.length ?? 0) >= appConfig.limitArchives}
           revalidateCatalogs={mutate}
         />
       </div>

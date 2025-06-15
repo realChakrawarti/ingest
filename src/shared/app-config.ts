@@ -10,6 +10,8 @@ class AppConfig {
   private _githubRepo = "https://github.com/realChakrawarti/yt-catalog";
   private _catalogVideoLimit = 10;
   private _watchedPercentage = 95;
+  private _limitCatalogs = 5;
+  private _limitArchives = 10;
 
   get watchedPercentage(): number {
     return this._watchedPercentage;
@@ -49,6 +51,14 @@ class AppConfig {
 
   get githubRepo(): string {
     return this._githubRepo;
+  }
+
+  get limitCatalogs(): number {
+    return this._limitCatalogs;
+  }
+
+  get limitArchives(): number {
+    return this._limitArchives;
   }
 }
 

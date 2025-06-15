@@ -39,4 +39,7 @@ export const Regex = {
   // eslint-disable-next-line @stylistic/max-len
   YOUTUBE_VIDEO_LINK:
     /^.*(?:(?:youtu\.be\/|v\/|vi\/|u\/\w\/|embed\/|shorts\/)|(?:(?:watch)?\?v(?:i)?=|\&v(?:i)?=))([^#\&\?]*).*/,
+
+  YOUTUBE_USER_CHANNEL:
+    /^https?:\/\/(www\.)?youtube\.com\/(channel\/UC[\w-]{21}[AQgw]|(c\/|user\/)?[\w@-]+)$/,
 };

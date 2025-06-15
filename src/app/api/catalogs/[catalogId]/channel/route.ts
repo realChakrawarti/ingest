@@ -1,11 +1,7 @@
 import { revalidatePath } from "next/cache";
 import { NextRequest } from "next/server";
 
-import {
-  deleteChannel,
-  getVideosByCatalog,
-  updateCatalogChannels,
-} from "~/entities/catalogs";
+import { deleteChannel, updateCatalogChannels } from "~/entities/catalogs";
 import { getUserIdHeader } from "~/shared/lib/next/get-user-id-header";
 import { NxResponse } from "~/shared/lib/next/nx-response";
 
@@ -43,16 +39,16 @@ export async function PATCH(request: NextRequest, ctx: ContextParams) {
     );
   }
 
-  const catalogPayload = await request.json();
+  const payload: { channel: string[] } = await request.json();
 
-  await updateCatalogChannels(userId, catalogId, catalogPayload);
+  await updateCatalogChannels(userId, catalogId, payload.channel);
 
-  // Update the catalog
-  getVideosByCatalog(catalogId);
+  // TODO: Check why this was done, and is this required?
+  // getVideosByCatalog(catalogId);
 
-  // Revalidate the /explore route
-  revalidatePath("/explore/catalogs");
-  revalidatePath(`/c/${catalogId}`);
+  // // Revalidate the /explore route
+  // revalidatePath("/explore/catalogs");
+  // revalidatePath(`/c/${catalogId}`);
 
   return NxResponse.success<any>("Channel list updated successfully.", {}, 201);
 }

@@ -123,11 +123,19 @@ function DescriptionSheet({
 
 function CopyLink({ videoId }: Pick<VideoData, "videoId">) {
   function copyLink(id: string) {
-    navigator.clipboard.writeText(`https://www.youtube.com/watch?v=${id}`);
-    toast({
-      title: "Link copied",
-      description: "The video link has been copied to your clipboard.",
-    });
+    navigator.clipboard
+      .writeText(`https://www.youtube.com/watch?v=${id}`)
+      .then(() => {
+        toast({
+          title: "Link copied",
+          description: "The video link has been copied to your clipboard.",
+        });
+      })
+      .catch(() => {
+        toast({
+          title: "Unable to access clipboard. Please copy manually.",
+        });
+      });
   }
   return (
     <Button
