@@ -161,8 +161,8 @@ export default function FeatureCarousel() {
         </div>
 
         {/* Gradient overlays for seamless scroll effect */}
-        <div className="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r pointer-events-none z-10" />
-        <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l pointer-events-none z-10" />
+        <div className="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-background to-transparent pointer-events-none z-10" />
+        <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-background to-transparent pointer-events-none z-10" />
       </div>
 
       {/* Description box that appears below the carousel */}

@@ -1,6 +1,6 @@
 import Fuse from "fuse.js";
 import { Check, Loader2, Search } from "lucide-react";
-import { usePathname } from "next/navigation";
+import { useParams } from "next/navigation";
 import { ChangeEvent, useEffect, useState } from "react";
 import { KeyedMutator } from "swr";
 
@@ -39,7 +39,7 @@ export default function PlaylistSelectionForm({
 
   const [isLoading, setIsLoading] = useState(false);
 
-  const catalogId = usePathname().split("/")[2];
+  const { catalogId } = useParams<{ catalogId: string }>();
 
   function fuzzySearchPlaylist(e: ChangeEvent<HTMLInputElement>) {
     const { value } = e.target;

@@ -62,10 +62,10 @@ export default function InputURLForm() {
         title: channelTitle || "",
       });
       setFormStep("channel");
-      setIsLoading(false);
     } catch (err) {
-      setIsLoading(false);
       TerminalLogger.fail(String(err));
+    } finally {
+      setIsLoading(false);
     }
   };
 

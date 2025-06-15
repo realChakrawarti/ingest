@@ -1,5 +1,5 @@
 import { Loader2, Youtube } from "lucide-react";
-import { usePathname } from "next/navigation";
+import { useParams } from "next/navigation";
 import { useState } from "react";
 import { KeyedMutator } from "swr";
 
@@ -32,7 +32,7 @@ export default function SelectForm({
     resetTempData,
   } = useCatalogStore();
 
-  const catalogId = usePathname().split("/")[2];
+  const { catalogId } = useParams<{ catalogId: string }>();
 
   const handleAddChannel = async () => {
     // 1. Check channelInfo.title and channelInfo.id
@@ -55,6 +55,7 @@ export default function SelectForm({
         description: `Remove ${channelInfo.title} playlists to add this channel.`,
       });
 
+      setSelectionType(null);
       return;
     }
 
@@ -62,7 +63,7 @@ export default function SelectForm({
       toast({
         title: `${channelInfo.title}'s channel is already added.`,
       });
-
+      setSelectionType(null);
       return;
     }
 
@@ -82,10 +83,10 @@ export default function SelectForm({
       if (result.success) {
         revalidateCatalog();
         resetTempData();
+        setIsDialogOpen(false);
       }
-      
+
       toast({ title: result.message });
-      setIsDialogOpen(false);
     } catch (err) {
       if (err instanceof Error) {
         TerminalLogger.fail(err.message);
@@ -112,6 +113,7 @@ export default function SelectForm({
         description:
           "Please remove the channel before proceeding to add specific playlist from the same channel.",
       });
+      setSelectionType(null);
       return;
     }
 

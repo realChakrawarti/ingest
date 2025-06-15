@@ -32,15 +32,18 @@ export async function updateCatalogPlaylists(
   const userCatalogRef = userRef.collection(COLLECTION.catalogs).doc(catalogId);
   const playlistsInfo: CatalogList[] = [];
 
-  // TODO: Refactor: This looks inefficient, since channelID doesn't change, we could call the API once for details
+  if (!playlists[0].channelId) {
+    throw Error("Provided playlist doesn't contain any channel");
+  }
+
+  // TODO: Prior to adding, we could fetch channel details on UI /youtube endpoint
+  const { channelId } = playlists[0];
+  const response = await fetch(YOUTUBE_CHANNELS_INFORMATION([channelId]));
+  const result = await response.json();
+
+  const channelData = result?.items[0];
+
   for (let i = 0; i < playlists.length; i++) {
-    const { channelId } = playlists[i];
-    const response = await fetch(YOUTUBE_CHANNELS_INFORMATION([channelId]));
-    const result = await response.json();
-
-    const channelData = result?.items[0];
-
-    // TODO: Prior to adding, we could fetch channel details on UI /youtube endpoint 
     playlistsInfo.push({
       channelDescription: channelData.snippet.description,
       channelHandle: channelData.snippet.customUrl,

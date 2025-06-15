@@ -48,7 +48,7 @@ function CopyButton({ id, type }: { id: string; type: "catalog" | "archive" }) {
       <Button
         variant="ghost"
         size="icon"
-        className="h-8 w-8 relative group hover:bg-primary/5 text-primary/80 hover:text-primary"
+        className="h-8 w-8 relative hover:bg-primary/5 text-primary/80 hover:text-primary"
         onClick={copyToClipboard}
       >
         {copied ? (

@@ -49,20 +49,20 @@ export default function AnimatedBackground() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
       // Draw gradient background
-      const gradient = ctx.createRadialGradient(
-        canvas.width / 2,
-        canvas.height / 2,
-        0,
-        canvas.width / 2,
-        canvas.height / 2,
-        canvas.width / 2
-      );
-      gradient.addColorStop(0, "rgba(236, 72, 153, 0.03)");
-      gradient.addColorStop(0.5, "rgba(139, 92, 246, 0.02)");
-      gradient.addColorStop(1, "rgba(0, 0, 0, 0)");
+      // const gradient = ctx.createRadialGradient(
+      //   canvas.width / 2,
+      //   canvas.height / 2,
+      //   0,
+      //   canvas.width / 2,
+      //   canvas.height / 2,
+      //   canvas.width / 2
+      // );
+      // gradient.addColorStop(0, "rgba(236, 72, 153, 0.03)");
+      // gradient.addColorStop(0.5, "rgba(139, 92, 246, 0.02)");
+      // gradient.addColorStop(1, "rgba(0, 0, 0, 0)");
 
-      ctx.fillStyle = gradient;
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      // ctx.fillStyle = gradient;
+      // ctx.fillRect(0, 0, canvas.width, canvas.height);
 
       // Update and draw particles
       particles.forEach((particle) => {

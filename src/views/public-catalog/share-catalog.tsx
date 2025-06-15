@@ -51,7 +51,7 @@ export default function ShareCatalog(props: any) {
     return (
       <span className="flex items-center gap-2 text-xs" onClick={copyLink}>
         <CopyIcon className="size-4" />
-        Copy to Clipbaord
+        Copy to Clipboard
       </span>
     );
   }

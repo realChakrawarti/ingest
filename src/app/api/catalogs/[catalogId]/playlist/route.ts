@@ -43,9 +43,26 @@ export async function PATCH(request: NextRequest, ctx: ContextParams) {
 
   const payload: { playlists: ChannelPlaylist[] } = await request.json();
 
-  await updateCatalogPlaylists(userId, catalogId, payload.playlists);
-
-  return NxResponse.success<any>("Playlist update successfully.", {}, 200);
+  try {
+    await updateCatalogPlaylists(userId, catalogId, payload.playlists);
+    return NxResponse.success<any>("Playlist update successfully.", {}, 200);
+  } catch (err) {
+    if (err instanceof Error) {
+      return NxResponse.fail(
+        err.message,
+        { code: "CATALOG_PLAYLIST_UPDATE", details: err.message },
+        400
+      );
+    }
+    return NxResponse.fail(
+      "Unable to update catalog playlists",
+      {
+        code: "CATALOG_PLAYLIST_UPDATE",
+        details: "Unable to update catalog playlists",
+      },
+      400
+    );
+  }
 }
 
 /**
