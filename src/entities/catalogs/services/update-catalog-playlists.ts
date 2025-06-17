@@ -13,7 +13,7 @@ export async function updateCatalogPlaylists(
   const userRef = adminDb.collection(COLLECTION.users).doc(userId);
   const userCatalogRef = userRef.collection(COLLECTION.catalogs).doc(catalogId);
 
-  if (!playlists[0].channelId) {
+  if (!playlists[0]?.channelId) {
     throw Error("Provided playlist doesn't contain any channel");
   }
 

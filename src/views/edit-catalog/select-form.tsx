@@ -17,8 +17,8 @@ function formatSubscribers(subs: number) {
   const K = 1_000;
   const M = 1_000_000;
 
-  if (subs > M) return (subs / M).toFixed(2) + "M";
-  if (subs > K) return (subs / M).toFixed(2) + "K";
+  if (subs >= M) return `${(subs / M).toFixed(2)}M`;
+  if (subs >= K) return `${(subs / K).toFixed(2)}K`;
 
   return subs.toString();
 }
@@ -170,8 +170,8 @@ export default function SelectForm({
       <div className="flex items-center gap-3 p-4 border rounded-lg">
         <img
           className="size-12 rounded-md"
-          src={channelInfo.channelLogo}
-          alt={channelInfo.channelTitle}
+          src={channelInfo?.channelLogo}
+          alt={channelInfo?.channelTitle}
         />
         <div className="flex-1 min-w-0">
           <h3 className="font-semibold text-lg">{channelInfo.channelTitle}</h3>

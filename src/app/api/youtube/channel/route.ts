@@ -7,6 +7,17 @@ export async function GET(request: NextRequest) {
   const channelId = request.nextUrl.searchParams.get("channelId") ?? "";
   const channelHandle = request.nextUrl.searchParams.get("channelHandle") ?? "";
 
+  if (!channelId && !channelHandle) {
+    return NxResponse.fail(
+      "No channel Id or channel handle provided.",
+      {
+        code: "YOUTUBE_API_CHANNEL",
+        details: "No channel Id or channel handle provided.",
+      },
+      400
+    );
+  }
+
   try {
     const data = await getChannelDetails({ channelHandle, channelId });
     return NxResponse.success(

@@ -34,9 +34,6 @@ export default function InputURLForm() {
       return;
     }
 
-    // Reset playlist state
-    resetTempData();
-
     if (inputMode === "video") {
       const found = videoLink.link.match(Regex.YOUTUBE_VIDEO_LINK);
       let videoId = "";
@@ -65,19 +62,24 @@ export default function InputURLForm() {
           setChannelInfo(channelDetails);
         }
         setFormStep("channel");
+        // Reset playlist state
+        resetTempData();
       } catch (err) {
         TerminalLogger.fail(String(err));
       } finally {
         setIsLoading(false);
       }
-    }
-
-    if (inputMode === "channel") {
+    } else if (inputMode === "channel") {
       const found = videoLink.link.match(Regex.YOUTUBE_USER_CHANNEL);
       let channel = "";
       if (found?.length) {
         // Channel handle is found at 1 and channel id at 2
         channel = found[1] ?? found[2];
+      }
+
+      if (!channel) {
+        setVideoLink({ error: "Unable to parse channel link." });
+        return;
       }
 
       let endpoint;
@@ -103,6 +105,8 @@ export default function InputURLForm() {
         }
 
         setFormStep("channel");
+        // Reset playlist state
+        resetTempData();
       } catch (err) {
         TerminalLogger.fail(String(err));
       } finally {
