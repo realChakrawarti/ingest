@@ -9,11 +9,13 @@ export type ChannelPlaylist = {
   videoCount: number;
 };
 
-export type VideoDetails = {
+export type ChannelDetails = {
+  channelViewCount: number;
+  channelVideoCount: number;
+  channelSubscriberCount: number;
+  channelHandle: string;
+  channelLogo: string;
   channelId: string;
   channelTitle: string;
-  publishedAt: string;
-  videoDescription: string;
-  videoThumbnail: string;
-  videoTitle: string;
+  channelDescription: string;
 };

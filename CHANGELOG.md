@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.7.4](https://github.com/realChakrawarti/yt-catalog/compare/v1.7.3...v1.7.4) (2025-06-17)
+
+
+### Features
+
+* channel handle & id for adding channels/playlist in catalog ([87447b1](https://github.com/realChakrawarti/yt-catalog/commit/87447b171fc83f5a0fd0ffee1fd1d0077a9e3213))
+* support channel handle and channel id for adding channels/playlists in catalogs ([ce13a74](https://github.com/realChakrawarti/yt-catalog/commit/ce13a747aa3012f212b6e4552b1f7c7923c9b1cd))
+
+
+### Bug Fixes
+
+* coderabbit suggestion ([300793b](https://github.com/realChakrawarti/yt-catalog/commit/300793b2c669f29f7ce09188ade2c9cd312f9f14))
+
 ### [1.7.3](https://github.com/realChakrawarti/yt-catalog/compare/v1.7.2...v1.7.3) (2025-06-15)
 
 

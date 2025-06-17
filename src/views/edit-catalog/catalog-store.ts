@@ -1,7 +1,7 @@
 import { create } from "zustand";
 
 import { CatalogList } from "~/entities/catalogs/models";
-import { ChannelPlaylist } from "~/entities/youtube/models";
+import { ChannelDetails, ChannelPlaylist } from "~/entities/youtube/models";
 
 type VideoLink = {
   link: string;
@@ -10,10 +10,8 @@ type VideoLink = {
 
 type Step = "url" | "channel" | "playlists";
 
-type ChannelInfo = { title: string; id: string };
-
 interface State {
-  channelInfo: ChannelInfo;
+  channelInfo: ChannelDetails;
   videoLink: VideoLink;
   savedChannels: CatalogList<"channel">[];
   selectedPlaylists: ChannelPlaylist[];
@@ -25,7 +23,7 @@ interface State {
 }
 
 interface Actions {
-  setChannelInfo: (_channelInfo: ChannelInfo) => void;
+  setChannelInfo: (_channelInfo: ChannelDetails) => void;
   setVideoLink: (_videoLink: Partial<VideoLink>) => void;
   setSavedPlaylists: (_playlist: CatalogList<"playlist">[]) => void;
   setSavedChannels: (_channels: CatalogList<"channel">[]) => void;
@@ -39,8 +37,14 @@ interface Actions {
 
 const initialState: State = {
   channelInfo: {
-    title: "",
-    id: "",
+    channelDescription: "",
+    channelHandle: "",
+    channelId: "",
+    channelLogo: "",
+    channelSubscriberCount: 0,
+    channelTitle: "",
+    channelVideoCount: 0,
+    channelViewCount: 0,
   },
   channelPlaylists: [],
   formStep: "url",
@@ -56,10 +60,7 @@ const useCatalogStore = create<State & Actions>((set) => ({
   ...initialState,
   resetTempData: () =>
     set({
-      channelInfo: {
-        title: "",
-        id: "",
-      },
+      channelInfo: initialState.channelInfo,
       channelPlaylists: [],
       formStep: "url",
       playlistInput: "",

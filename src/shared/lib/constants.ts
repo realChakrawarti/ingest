@@ -41,5 +41,5 @@ export const Regex = {
     /^.*(?:(?:youtu\.be\/|v\/|vi\/|u\/\w\/|embed\/|shorts\/)|(?:(?:watch)?\?v(?:i)?=|\&v(?:i)?=))([^#\&\?]*).*/,
 
   YOUTUBE_USER_CHANNEL:
-    /^https?:\/\/(www\.)?youtube\.com\/(channel\/UC[\w-]{21}[AQgw]|(c\/|user\/)?[\w@-]+)$/,
+    /https?:\/\/(?:www\.)?youtube\.com\/(?:(@[a-zA-Z0-9_-]+)(?:\/.*)?|channel\/([a-zA-Z0-9_-]+)(?:\/.*)?)/,
 };
