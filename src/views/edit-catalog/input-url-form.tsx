@@ -58,12 +58,13 @@ export default function InputURLForm() {
 
         const channelDetails = result.data;
 
+        // Reset playlist state
+        resetTempData();
+
         if (channelDetails) {
           setChannelInfo(channelDetails);
         }
         setFormStep("channel");
-        // Reset playlist state
-        resetTempData();
       } catch (err) {
         TerminalLogger.fail(String(err));
       } finally {
@@ -100,13 +101,13 @@ export default function InputURLForm() {
 
         const channelDetails = result.data;
 
+        // Reset playlist state
+        resetTempData();
+
         if (channelDetails) {
           setChannelInfo(channelDetails);
         }
-
         setFormStep("channel");
-        // Reset playlist state
-        resetTempData();
       } catch (err) {
         TerminalLogger.fail(String(err));
       } finally {
