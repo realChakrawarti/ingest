@@ -4,6 +4,7 @@ import { useParams } from "next/navigation";
 import { ChangeEvent, useEffect, useState } from "react";
 import { KeyedMutator } from "swr";
 
+import { CatalogList } from "~/entities/catalogs/models";
 import { ChannelPlaylist } from "~/entities/youtube/models";
 import { toast } from "~/shared/hooks/use-toast";
 import fetchApi from "~/shared/lib/api/fetch";
@@ -35,6 +36,7 @@ export default function PlaylistSelectionForm({
     selectedPlaylists,
     searchPlaylists,
     resetTempData,
+    channelInfo,
   } = useCatalogStore();
 
   const [isLoading, setIsLoading] = useState(false);
@@ -56,9 +58,28 @@ export default function PlaylistSelectionForm({
   const handleAddPlaylists = async () => {
     try {
       setIsLoading(true);
+
+      const playlistDetails: CatalogList<"playlist">[] = selectedPlaylists.map(
+        (item: ChannelPlaylist): CatalogList<"playlist"> => ({
+          channelDescription: channelInfo.channelDescription,
+          channelHandle: channelInfo.channelHandle,
+          channelId: channelInfo.channelId,
+          channelLogo: channelInfo.channelLogo,
+          channelTitle: channelInfo.channelTitle,
+          playlistDescription: item.playlistDescription,
+          playlistId: item.playlistId,
+          playlistTitle: item.playlistTitle,
+          type: "playlist",
+        })
+      );
+
+      const payload = {
+        playlists: playlistDetails,
+      };
+
       const result = await fetchApi(`/catalogs/${catalogId}/playlist`, {
         method: "PATCH",
-        body: JSON.stringify({ playlists: selectedPlaylists }),
+        body: JSON.stringify(payload),
       });
 
       if (result.success) {

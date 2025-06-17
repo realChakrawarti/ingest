@@ -128,6 +128,7 @@ export default function YoutubePlayer(
       stopTracking();
       playerRef.current?.removeEventListener("onStateChange", _onStateChange);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

@@ -3,8 +3,8 @@ import { revalidatePath } from "next/cache";
 
 import appConfig from "~/shared/app-config";
 import {
+  YOUTUBE_CHANNEL_INFORMATION_BY_IDS,
   YOUTUBE_CHANNEL_PLAYLIST_VIDEOS,
-  YOUTUBE_CHANNELS_INFORMATION,
 } from "~/shared/lib/api/youtube-endpoints";
 import { TimeMs } from "~/shared/lib/constants";
 import { adminDb } from "~/shared/lib/firebase/admin";
@@ -41,7 +41,7 @@ async function updateChannelLogos(list: CatalogList[]): Promise<CatalogList[]> {
   if (channelList.length) {
     try {
       const result = await fetch(
-        YOUTUBE_CHANNELS_INFORMATION(channelList, 50),
+        YOUTUBE_CHANNEL_INFORMATION_BY_IDS(channelList, 50),
         { cache: "no-store" }
       );
       const data = await result.json();

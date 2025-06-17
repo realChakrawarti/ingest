@@ -4,12 +4,17 @@ export const YOUTUBE_CHANNEL_PLAYLIST_VIDEOS = (
 ) =>
   `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet,contentDetails,status&playlistId=${playlistId}&maxResults=${limit}&key=${process.env.YOUTUBE_API_KEY}`;
 
-export const YOUTUBE_CHANNELS_INFORMATION = (
+export const YOUTUBE_CHANNEL_INFORMATION_BY_IDS = (
   channelIds: string[],
   limit: number = 25
 ) => {
   const ids = channelIds.join(",");
-  return `https://www.googleapis.com/youtube/v3/channels?part=brandingSettings,contentDetails,id,snippet,topicDetails&maxResults=${limit}&id=${ids}&key=${process.env.YOUTUBE_API_KEY}`;
+  return `https://www.googleapis.com/youtube/v3/channels?part=brandingSettings,contentDetails,id,snippet,statistics&maxResults=${limit}&id=${ids}&key=${process.env.YOUTUBE_API_KEY}`;
+};
+export const YOUTUBE_CHANNEL_INFORMATION_BY_HANDLE = (
+  channelHandle: string
+) => {
+  return `https://www.googleapis.com/youtube/v3/channels?part=brandingSettings,contentDetails,id,snippet,statistics&forHandle=${channelHandle}&key=${process.env.YOUTUBE_API_KEY}`;
 };
 
 export const YOUTUBE_VIDEO_DATA = (videoId: string) =>

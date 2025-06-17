@@ -2,7 +2,7 @@ import { revalidatePath } from "next/cache";
 import { NextRequest } from "next/server";
 
 import { deletePlaylist, updateCatalogPlaylists } from "~/entities/catalogs";
-import { ChannelPlaylist } from "~/entities/youtube/models";
+import { CatalogList } from "~/entities/catalogs/models";
 import { getUserIdHeader } from "~/shared/lib/next/get-user-id-header";
 import { NxResponse } from "~/shared/lib/next/nx-response";
 
@@ -12,20 +12,6 @@ type ContextParams = {
   };
 };
 
-/**
- * Updates playlists for a specific catalog.
- *
- * @param request - The incoming HTTP request containing playlist update data
- * @param ctx - Context parameters including the catalog identifier
- * @returns A response indicating the result of the playlist update operation
- *
- * @throws Will return a 400 error if the catalog ID is missing
- * @throws Will propagate any errors from playlist update process
- *
- * @remarks
- * This endpoint requires a valid user session and expects a JSON payload
- * of playlist items to update for the specified catalog.
- */
 export async function PATCH(request: NextRequest, ctx: ContextParams) {
   const userId = getUserIdHeader();
   const { catalogId } = ctx.params;
@@ -41,7 +27,8 @@ export async function PATCH(request: NextRequest, ctx: ContextParams) {
     );
   }
 
-  const payload: { playlists: ChannelPlaylist[] } = await request.json();
+  const payload: { playlists: CatalogList<"playlist">[] } =
+    await request.json();
 
   try {
     await updateCatalogPlaylists(userId, catalogId, payload.playlists);
