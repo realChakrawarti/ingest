@@ -1,8 +1,10 @@
-import { Loader2, Youtube } from "lucide-react";
+/* eslint-disable @next/next/no-img-element */
+import { Loader2 } from "lucide-react";
 import { useParams } from "next/navigation";
 import { useState } from "react";
 import { KeyedMutator } from "swr";
 
+import { CatalogList } from "~/entities/catalogs/models";
 import { toast } from "~/shared/hooks/use-toast";
 import fetchApi from "~/shared/lib/api/fetch";
 import { ApiResponse } from "~/shared/lib/next/nx-response";
@@ -10,6 +12,16 @@ import TerminalLogger from "~/shared/lib/terminal-logger";
 import { Button } from "~/shared/ui/button";
 
 import useCatalogStore from "./catalog-store";
+
+function formatSubscribers(subs: number) {
+  const K = 1_000;
+  const M = 1_000_000;
+
+  if (subs > M) return (subs / M).toFixed(2) + "M";
+  if (subs > K) return (subs / M).toFixed(2) + "K";
+
+  return subs.toString();
+}
 
 export default function SelectForm({
   revalidateCatalog,
@@ -37,22 +49,22 @@ export default function SelectForm({
   const handleAddChannel = async () => {
     // 1. Check channelInfo.title and channelInfo.id
 
-    if (!channelInfo.title || !channelInfo.id) {
+    if (!channelInfo) {
       return;
     }
 
     const channelExists = savedChannels.find(
-      (item) => item.channelId === channelInfo.id
+      (item) => item.channelId === channelInfo.channelId
     );
 
     const playlistWithChannelExists = savedPlaylists.find(
-      (item) => item.channelId === channelInfo.id
+      (item) => item.channelId === channelInfo.channelId
     );
 
     if (playlistWithChannelExists) {
       toast({
-        title: `${channelInfo.title} has already added specific playlists.`,
-        description: `Remove ${channelInfo.title} playlists to add this channel.`,
+        title: `${channelInfo.channelTitle} has already added specific playlists.`,
+        description: `Remove ${channelInfo.channelTitle} playlists to add this channel.`,
       });
 
       setSelectionType(null);
@@ -61,7 +73,7 @@ export default function SelectForm({
 
     if (channelExists) {
       toast({
-        title: `${channelInfo.title}'s channel is already added.`,
+        title: `${channelInfo.channelTitle}'s channel is already added.`,
       });
       setSelectionType(null);
       return;
@@ -69,8 +81,17 @@ export default function SelectForm({
 
     // 3. Create the payload, push it, clear all state and close dialog on success with a notification
 
+    const channelDetails: CatalogList<"channel"> = {
+      channelDescription: channelInfo.channelDescription,
+      channelHandle: channelInfo.channelHandle,
+      channelId: channelInfo.channelId,
+      channelLogo: channelInfo.channelLogo,
+      channelTitle: channelInfo.channelTitle,
+      type: "channel",
+    };
+
     const payload = {
-      channel: [channelInfo.id],
+      channel: channelDetails,
     };
 
     try {
@@ -104,12 +125,12 @@ export default function SelectForm({
     // Check if the channel is already added
 
     const channelExists = savedChannels.find(
-      (item) => item.channelId === channelInfo.id
+      (item) => item.channelId === channelInfo.channelId
     );
 
     if (channelExists) {
       toast({
-        title: `${channelInfo.title}'s channel is already added to the catalog.`,
+        title: `${channelInfo.channelTitle}'s channel is already added to the catalog.`,
         description:
           "Please remove the channel before proceeding to add specific playlist from the same channel.",
       });
@@ -120,7 +141,7 @@ export default function SelectForm({
     setIsLoading(true);
     try {
       const result = await fetchApi(
-        `/youtube/playlists?channelId=${channelInfo.id}`
+        `/youtube/playlists?channelId=${channelInfo.channelId}`
       );
 
       if (!result.success) {
@@ -131,7 +152,7 @@ export default function SelectForm({
       const playlists = result.data;
 
       if (!playlists.length) {
-        toast({ title: `No playlist created by ${channelInfo.title}` });
+        toast({ title: `No playlist created by ${channelInfo.channelTitle}` });
         return;
       }
 
@@ -147,13 +168,15 @@ export default function SelectForm({
   return (
     <div className="space-y-6">
       <div className="flex items-center gap-3 p-4 border rounded-lg">
-        <div className="w-12 h-12 bg-red-500 rounded-full flex items-center justify-center flex-shrink-0">
-          <Youtube className="w-6 h-6 text-white" />
-        </div>
+        <img
+          className="size-12 rounded-md"
+          src={channelInfo.channelLogo}
+          alt={channelInfo.channelTitle}
+        />
         <div className="flex-1 min-w-0">
-          <h3 className="font-semibold text-lg">{channelInfo.title}</h3>
+          <h3 className="font-semibold text-lg">{channelInfo.channelTitle}</h3>
           <p className="text-sm text-muted-foreground">
-            Channel ID: {channelInfo.id}
+            Subscribers: {formatSubscribers(channelInfo.channelSubscriberCount)}
           </p>
         </div>
       </div>

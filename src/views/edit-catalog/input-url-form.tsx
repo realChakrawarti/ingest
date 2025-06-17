@@ -1,7 +1,12 @@
 import { Loader2 } from "lucide-react";
-import { type ChangeEvent, type KeyboardEvent, useState } from "react";
+import {
+  type ChangeEvent,
+  type KeyboardEvent,
+  useEffect,
+  useState,
+} from "react";
 
-import { VideoDetails } from "~/entities/youtube/models";
+import { ChannelDetails } from "~/entities/youtube/models";
 import { toast } from "~/shared/hooks/use-toast";
 import fetchApi from "~/shared/lib/api/fetch";
 import { Regex } from "~/shared/lib/constants";
@@ -32,52 +37,85 @@ export default function InputURLForm() {
     // Reset playlist state
     resetTempData();
 
-    const found = videoLink.link.match(Regex.YOUTUBE_VIDEO_LINK);
-    let videoId = "";
-    if (found?.length) {
-      videoId = found[1];
-    }
+    if (inputMode === "video") {
+      const found = videoLink.link.match(Regex.YOUTUBE_VIDEO_LINK);
+      let videoId = "";
+      if (found?.length) {
+        videoId = found[1];
+      }
 
-    if (!videoId) {
-      return;
-    }
-
-    try {
-      setIsLoading(true);
-      const result = await fetchApi<VideoDetails>(
-        `/youtube/video?videoId=${videoId}`
-      );
-
-      if (!result.success) {
-        toast({ title: result.message });
+      if (!videoId) {
         return;
       }
 
-      const videoData = result.data;
-      const channelId = videoData?.channelId;
-      const channelTitle = videoData?.channelTitle;
+      try {
+        setIsLoading(true);
+        const result = await fetchApi<ChannelDetails>(
+          `/youtube/video?videoId=${videoId}`
+        );
 
-      setChannelInfo({
-        id: channelId || "",
-        title: channelTitle || "",
-      });
-      setFormStep("channel");
-    } catch (err) {
-      TerminalLogger.fail(String(err));
-    } finally {
-      setIsLoading(false);
+        if (!result.success) {
+          toast({ title: result.message });
+          return;
+        }
+
+        const channelDetails = result.data;
+
+        if (channelDetails) {
+          setChannelInfo(channelDetails);
+        }
+        setFormStep("channel");
+      } catch (err) {
+        TerminalLogger.fail(String(err));
+      } finally {
+        setIsLoading(false);
+      }
+    }
+
+    if (inputMode === "channel") {
+      const found = videoLink.link.match(Regex.YOUTUBE_USER_CHANNEL);
+      let channel = "";
+      if (found?.length) {
+        // Channel handle is found at 1 and channel id at 2
+        channel = found[1] ?? found[2];
+      }
+
+      let endpoint;
+      if (channel?.startsWith("@")) {
+        endpoint = `/youtube/channel?channelHandle=${channel}`;
+      } else {
+        endpoint = `/youtube/channel?channelId=${channel}`;
+      }
+
+      try {
+        setIsLoading(true);
+        const result = await fetchApi<ChannelDetails>(endpoint);
+
+        if (!result.success) {
+          toast({ title: result.message });
+          return;
+        }
+
+        const channelDetails = result.data;
+
+        if (channelDetails) {
+          setChannelInfo(channelDetails);
+        }
+
+        setFormStep("channel");
+      } catch (err) {
+        TerminalLogger.fail(String(err));
+      } finally {
+        setIsLoading(false);
+      }
     }
   };
 
-  const handleVideoLink = (e: ChangeEvent<HTMLInputElement>) => {
-    const inputValue = e.target.value.trim();
-
-    setVideoLink({
-      link: inputValue,
-    });
+  function validateLink(inputValue: string) {
+    const mode = inputMode;
 
     if (
-      inputMode === "video" &&
+      mode === "video" &&
       inputValue &&
       !Regex.YOUTUBE_VIDEO_LINK.test(inputValue)
     ) {
@@ -87,7 +125,7 @@ export default function InputURLForm() {
 
       return;
     } else if (
-      inputMode === "channel" &&
+      mode === "channel" &&
       inputValue &&
       !Regex.YOUTUBE_USER_CHANNEL.test(inputValue)
     ) {
@@ -101,7 +139,26 @@ export default function InputURLForm() {
         error: "",
       });
     }
+  }
+
+  const handleVideoLink = (e: ChangeEvent<HTMLInputElement>) => {
+    const inputValue = e.target.value.trim();
+
+    setVideoLink({
+      link: inputValue,
+    });
+
+    validateLink(inputValue);
   };
+
+  const handleCheckboxChange = (mode: "video" | "channel") => {
+    setInputMode(mode);
+  };
+
+  useEffect(() => {
+    validateLink(videoLink.link);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [inputMode]);
 
   return (
     <div className="space-y-4">
@@ -113,7 +170,7 @@ export default function InputURLForm() {
                 <Checkbox
                   id="video-url-checkbox"
                   checked={inputMode === "video"}
-                  onCheckedChange={() => setInputMode("video")}
+                  onCheckedChange={() => handleCheckboxChange("video")}
                 />
                 <Label
                   htmlFor="video-url-checkbox"
@@ -130,9 +187,8 @@ export default function InputURLForm() {
               <div className="flex items-center space-x-2">
                 <Checkbox
                   id="channel-url-checkbox"
-                  disabled
                   checked={inputMode === "channel"}
-                  onCheckedChange={() => setInputMode("channel")}
+                  onCheckedChange={() => handleCheckboxChange("channel")}
                 />
                 <Label
                   htmlFor="channel-url-checkbox"
@@ -157,6 +213,7 @@ export default function InputURLForm() {
             : "YouTube Channel URL or Handle"}
         </Label>
         <Input
+          autoComplete="off"
           className="input-search-icon"
           type="search"
           id="url-input"
