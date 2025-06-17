@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.7.5](https://github.com/realChakrawarti/yt-catalog/compare/v1.7.4...v1.7.5) (2025-06-17)
+
+
+### Bug Fixes
+
+* cleanup state prior to setting form state ([7717df9](https://github.com/realChakrawarti/yt-catalog/commit/7717df96bf641ff9f4cbcc39479371ff43d604bc))
+
 ### [1.7.4](https://github.com/realChakrawarti/yt-catalog/compare/v1.7.3...v1.7.4) (2025-06-17)
 
 
