@@ -1,5 +1,8 @@
 import { adminDb } from "~/shared/lib/firebase/admin";
 import { COLLECTION } from "~/shared/lib/firebase/collections";
+import TerminalLogger from "~/shared/lib/terminal-logger";
+
+import { ArchiveByIdResponse } from "../models";
 
 /**
  * This function sends the response of a specific catalog provided a valid catalogId
@@ -11,8 +14,6 @@ import { COLLECTION } from "~/shared/lib/firebase/collections";
 // TODO: How would I handle the data? VideoId as an array in userArchive and data
 // retrived from API stored as an object in the main archive?
 export async function getArchiveById(archiveId: string) {
-  let archiveResponseData = {};
-
   const archiveRef = adminDb.collection(COLLECTION.archives).doc(archiveId);
 
   try {
@@ -20,17 +21,14 @@ export async function getArchiveById(archiveId: string) {
     const archiveSnap = await archiveRef.get();
     const archiveData = archiveSnap.data();
 
-    archiveResponseData = {
+    const archiveResponseData: ArchiveByIdResponse = {
       description: archiveData?.description,
       title: archiveData?.title,
       videos: archiveData?.data.videos,
     };
-  } catch (err) {
-    if (err instanceof Error) {
-      return err.message;
-    }
-    return "Unable to retrieve archive by id.";
-  }
 
-  return archiveResponseData;
+    return archiveResponseData;
+  } catch (err) {
+    TerminalLogger.fatal("Unable to retrieve archive by id.", err);
+  }
 }

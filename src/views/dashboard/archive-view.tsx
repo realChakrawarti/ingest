@@ -45,7 +45,7 @@ export default function ArchiveView() {
         </h1>
         <CreateArchiveDialog
           disabled={(archives?.data.length ?? 0) >= appConfig.limitArchives}
-          revalidateCatalogs={mutate}
+          revalidateArchives={mutate}
         />
       </div>
       {isArchiveError && <p>Error loading archives</p>}
@@ -67,7 +67,6 @@ export default function ArchiveView() {
                     type="archive"
                     key={archive.id}
                     onDelete={handleArchiveDelete}
-                    // onEdit={handleArchiveEdit}
                     id={archive?.id}
                     title={archive?.title}
                     description={archive?.description}

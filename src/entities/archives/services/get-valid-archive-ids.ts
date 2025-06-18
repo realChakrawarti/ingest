@@ -1,6 +1,7 @@
 import { DocumentData } from "firebase-admin/firestore";
 import { unstable_noStore } from "next/cache";
 
+import { VideoDetails } from "~/entities/youtube/models";
 import { adminDb } from "~/shared/lib/firebase/admin";
 import { COLLECTION } from "~/shared/lib/firebase/collections";
 import { ValidMetadata } from "~/shared/types-schema/types";
@@ -13,8 +14,8 @@ const getArchiveMetadata = async (archiveId: string) => {
 };
 
 const getVideoThumbnails = (archiveData: DocumentData) => {
-  const videos = archiveData.data.videos;
-  const thumbnails = videos.map((video: any) => video.thumbnail);
+  const videos: VideoDetails[] = archiveData.videos;
+  const thumbnails = videos.map((video) => video.videoThumbnail);
   return thumbnails;
 };
 
@@ -45,9 +46,9 @@ export async function getValidArchiveIds() {
         const metaData: Omit<ValidMetadata, "pageviews"> = {
           description: archiveData?.description,
           id: archiveId,
-          thumbnails: getVideoThumbnails(archiveData),
+          thumbnails: getVideoThumbnails(archiveData.data),
           title: archiveData?.title,
-          totalVideos: archiveData?.data?.totalVideos,
+          totalVideos: archiveData?.data.totalVideos,
           updatedAt: archiveData?.data.updatedAt.toDate(),
         };
 

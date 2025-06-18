@@ -2,6 +2,7 @@
 
 import useSWR from "swr";
 
+import { ArchiveByIdResponse } from "~/entities/archives/models";
 import { toast } from "~/shared/hooks/use-toast";
 import fetchApi from "~/shared/lib/api/fetch";
 import { Separator } from "~/shared/ui/separator";
@@ -20,7 +21,7 @@ export default function EditArchive({ archiveId }: { archiveId: string }) {
     mutate: revalidateArchive,
   } = useSWR(
     archiveId ? `/archives/${archiveId}` : null,
-    (url) => fetchApi(url, { cache: "no-store" }),
+    (url) => fetchApi<ArchiveByIdResponse>(url, { cache: "no-store" }),
     { revalidateOnFocus: false }
   );
 
@@ -54,8 +55,8 @@ export default function EditArchive({ archiveId }: { archiveId: string }) {
           <UpdateArchiveMeta
             revalidateArchive={revalidateArchive}
             archiveId={archiveId}
-            title={archiveData?.data?.title}
-            description={archiveData?.data?.description}
+            title={archiveData?.data?.title || ""}
+            description={archiveData?.data?.description || ""}
           />
           <AddVideoDialog
             archiveId={archiveId}
@@ -70,7 +71,7 @@ export default function EditArchive({ archiveId }: { archiveId: string }) {
           <Spinner className="size-8" />
         ) : archiveData?.data?.videos ? (
           <GridContainer>
-            {archiveData?.data?.videos.map((item: any) => {
+            {archiveData?.data?.videos.map((item) => {
               return (
                 <VideoCard
                   key={item.videoId}

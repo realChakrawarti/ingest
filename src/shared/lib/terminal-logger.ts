@@ -6,8 +6,11 @@ export default class TerminalLogger {
     TerminalLogger.log("🟩", text);
   }
 
-  static fatal(text: string): void {
+  static fatal(text: string, err: Error | unknown): void {
     TerminalLogger.log("🟥", text);
+    if (err instanceof Error) {
+      TerminalLogger.log("🟥", err.message);
+    }
   }
 
   static fail(text: string): void {
