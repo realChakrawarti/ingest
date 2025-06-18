@@ -33,7 +33,7 @@ export async function middleware(request: NextRequest) {
       request.headers.set("userId", userId);
     }
   } catch (err) {
-    TerminalLogger.fatal(`Failed authorization on middleware ${err}`);
+    TerminalLogger.fatal("Failed authorization on middleware", err);
     return NxResponse.fail(
       "Unable to verify credentials.",
       { code: "VERIFICATION_FAILED", details: "Unable to verify credentials." },

@@ -22,12 +22,12 @@ import { useMetaValidate } from "~/widgets/use-meta-validate";
 
 interface CreateArchiveDialogProps {
   disabled: boolean;
-  revalidateCatalogs: KeyedMutator<ApiResponse<any>>;
+  revalidateArchives: KeyedMutator<ApiResponse<any>>;
 }
 
 // TODO: Consider using reducer to handle state updates, revalidate and show notification
 export default function CreateArchiveDialog({
-  revalidateCatalogs,
+  revalidateArchives,
   disabled,
 }: CreateArchiveDialogProps) {
   const { meta, metaError, handleOnChange, submitDisabled, resetState } =
@@ -46,7 +46,7 @@ export default function CreateArchiveDialog({
     });
 
     if (result.success) {
-      revalidateCatalogs();
+      revalidateArchives();
       toast({ title: result.message });
       resetState();
       triggerConfetti();

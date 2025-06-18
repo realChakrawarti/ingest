@@ -1,3 +1,4 @@
+import { ArchiveByIdResponse } from "~/entities/archives/models";
 import fetchApi from "~/shared/lib/api/fetch";
 import GridContainer from "~/widgets/grid-container";
 import YouTubeCard from "~/widgets/youtube/youtube-card";
@@ -7,11 +8,11 @@ export default async function PublicArchive({
 }: {
   archiveId: string;
 }) {
-  const result = await fetchApi(`/archives/${archiveId}`);
+  const result = await fetchApi<ArchiveByIdResponse>(`/archives/${archiveId}`);
   const archiveData = result.data;
 
-  const archiveTitle = archiveData.title;
-  const archiveDescription = archiveData.description;
+  const archiveTitle = archiveData?.title;
+  const archiveDescription = archiveData?.description;
 
   return (
     <div className="space-y-4 pb-6 pt-7">
@@ -26,18 +27,35 @@ export default async function PublicArchive({
         </div>
       </section>
 
-      {archiveData.videos.length ? (
+      {archiveData?.videos.length ? (
         <section className="px-0 md:px-3">
           <GridContainer>
-            {archiveData.videos.map((item: any) => {
-              return (
-                <YouTubeCard
-                  key={item.id}
-                  video={item}
-                  options={{ hideAvatar: true }}
-                />
-              );
-            })}
+            {archiveData.videos.map(
+              ({
+                videoId,
+                videoTitle,
+                channelTitle,
+                channelId,
+                videoDescription,
+                publishedAt,
+              }) => {
+                return (
+                  <YouTubeCard
+                    key={videoId}
+                    video={{
+                      channelId: channelId,
+                      channelLogo: "",
+                      channelTitle: channelTitle,
+                      description: videoDescription,
+                      publishedAt: publishedAt,
+                      title: videoTitle,
+                      videoId: videoId,
+                    }}
+                    options={{ hideAvatar: true }}
+                  />
+                );
+              }
+            )}
           </GridContainer>
         </section>
       ) : (

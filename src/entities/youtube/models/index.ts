@@ -19,3 +19,13 @@ export type ChannelDetails = {
   channelTitle: string;
   channelDescription: string;
 };
+
+export type VideoDetails = {
+  channelId: string;
+  channelTitle: string;
+  publishedAt: string;
+  videoDescription: string;
+  videoId: string;
+  videoThumbnail: string;
+  videoTitle: string;
+};

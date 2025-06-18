@@ -1,4 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
+import { VideoDetails } from "~/entities/youtube/models";
 import { VideoData, YouTubeCardOptions } from "~/shared/types-schema/types";
 import { Button } from "~/shared/ui/button";
 import { DeleteIcon, ThreeDotIcon } from "~/shared/ui/icons";
@@ -24,18 +25,25 @@ function RemoveVideo({
 }
 
 interface VideoCardProps {
-  video: VideoData & { thumbnail: string };
+  video: VideoDetails;
   removeVideo: (_videoId: string) => Promise<void>;
 }
 
 export default function VideoCard({ video, removeVideo }: VideoCardProps) {
-  const { videoId, title, thumbnail } = video;
+  const {
+    videoId,
+    videoTitle,
+    videoThumbnail,
+    channelTitle,
+    channelId,
+    publishedAt,
+  } = video;
 
   return (
     <div className="flex flex-col gap-3">
       <div key={videoId} className="relative overflow-hidden rounded-lg">
         <div className="relative aspect-video overflow-hidden">
-          <img src={thumbnail} alt={title} />
+          <img src={videoThumbnail} alt={videoTitle} />
         </div>
         <Popover>
           <PopoverTrigger asChild>
@@ -55,11 +63,19 @@ export default function VideoCard({ video, removeVideo }: VideoCardProps) {
             align="end"
             className="w-[200px] border-none rounded-lg p-1"
           >
-            <RemoveVideo videoId={video.videoId} removeVideo={removeVideo} />
+            <RemoveVideo videoId={videoId} removeVideo={removeVideo} />
           </PopoverContent>
         </Popover>
         <div className="p-3">
-          <ChannelMeta hideAvatar {...video} />
+          <ChannelMeta
+            hideAvatar
+            channelTitle={channelTitle}
+            channelLogo=""
+            channelId={channelId}
+            title={videoTitle}
+            publishedAt={publishedAt}
+            videoId={videoId}
+          />
         </div>
       </div>
     </div>

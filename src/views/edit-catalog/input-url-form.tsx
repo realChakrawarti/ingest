@@ -48,7 +48,7 @@ export default function InputURLForm() {
       try {
         setIsLoading(true);
         const result = await fetchApi<ChannelDetails>(
-          `/youtube/video?videoId=${videoId}`
+          `/youtube/channel?videoId=${videoId}`
         );
 
         if (!result.success) {

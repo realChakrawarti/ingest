@@ -70,14 +70,9 @@ export default function AddVideoDialog({
         return;
       }
 
-      const videoMeta = {
-        ...result.data,
-        videoId: videoId,
-      };
-
       const resultAdd = await fetchApi(`/archives/${archiveId}/add-video`, {
         method: "PATCH",
-        body: JSON.stringify(videoMeta),
+        body: JSON.stringify(result.data),
       });
 
       if (resultAdd.success) {
