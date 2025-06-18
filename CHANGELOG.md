@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.7.6](https://github.com/realChakrawarti/yt-catalog/compare/v1.7.5...v1.7.6) (2025-06-18)
+
+
+### Bug Fixes
+
+* archive erroring out due to wrong response from the endpoint ([0a6dd29](https://github.com/realChakrawarti/yt-catalog/commit/0a6dd293cbc089a41297217a6dde6f55f5994e95))
+
 ### [1.7.5](https://github.com/realChakrawarti/yt-catalog/compare/v1.7.4...v1.7.5) (2025-06-17)
 
 
