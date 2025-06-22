@@ -3,12 +3,12 @@
 import { ArrowUpIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 
-import { cn } from "~/shared/lib/tailwind-merge";
+import { cn } from "~/shared/utils/tailwind-merge";
 
 import { Button } from "../shared/ui/button";
 
 const scrollToTop = () => {
-  window.scrollTo({ top: 0, behavior: "smooth" });
+  window.scrollTo({ behavior: "smooth", top: 0 });
 };
 
 export default function ScrollTop() {

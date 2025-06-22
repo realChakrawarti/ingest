@@ -2,7 +2,7 @@
 
 import useSWR from "swr";
 
-import { ArchiveByIdResponse } from "~/entities/archives/models";
+import type { ArchiveByIdResponse } from "~/entities/archives/models";
 import { toast } from "~/shared/hooks/use-toast";
 import fetchApi from "~/shared/lib/api/fetch";
 import { Separator } from "~/shared/ui/separator";

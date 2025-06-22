@@ -11,7 +11,7 @@ import { useState } from "react";
 
 import { toast } from "~/shared/hooks/use-toast";
 import fetchApi from "~/shared/lib/api/fetch";
-import { cn } from "~/shared/lib/tailwind-merge";
+import { cn } from "~/shared/utils/tailwind-merge";
 
 import { Button } from "../shared/ui/button";
 import {
@@ -89,18 +89,17 @@ ${feedback}
 `;
 
     const payload = {
-      title: `[${type.toUpperCase()}] ${title}`,
       description: description,
+      title: `[${type.toUpperCase()}] ${title}`,
     };
 
     const result = await fetchApi("/feedback", {
-      method: "POST",
       body: JSON.stringify(payload),
+      method: "POST",
     });
 
     if (result.success) {
       toast({
-        title: result.message,
         description: (
           <p>
             Issue link:{" "}
@@ -112,6 +111,7 @@ ${feedback}
             </OutLink>
           </p>
         ),
+        title: result.message,
       });
       setFeedbackData(initialFeedbackData);
     } else {

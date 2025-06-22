@@ -1,15 +1,15 @@
-/* eslint-disable @next/next/no-img-element */
 import { Loader2 } from "lucide-react";
 import { useParams } from "next/navigation";
 import { useState } from "react";
-import { KeyedMutator } from "swr";
+import type { KeyedMutator } from "swr";
 
-import { CatalogList } from "~/entities/catalogs/models";
+import type { CatalogList } from "~/entities/catalogs/models";
+
 import { toast } from "~/shared/hooks/use-toast";
 import fetchApi from "~/shared/lib/api/fetch";
-import { ApiResponse } from "~/shared/lib/next/nx-response";
-import TerminalLogger from "~/shared/lib/terminal-logger";
+import type { ApiResponse } from "~/shared/lib/next/nx-response";
 import { Button } from "~/shared/ui/button";
+import Log from "~/shared/utils/terminal-logger";
 
 import useCatalogStore from "./catalog-store";
 
@@ -63,8 +63,8 @@ export default function SelectForm({
 
     if (playlistWithChannelExists) {
       toast({
-        title: `${channelInfo.channelTitle} has already added specific playlists.`,
         description: `Remove ${channelInfo.channelTitle} playlists to add this channel.`,
+        title: `${channelInfo.channelTitle} has already added specific playlists.`,
       });
 
       setSelectionType(null);
@@ -97,8 +97,8 @@ export default function SelectForm({
     try {
       setIsLoading(true);
       const result = await fetchApi(`/catalogs/${catalogId}/channel`, {
-        method: "PATCH",
         body: JSON.stringify(payload),
+        method: "PATCH",
       });
 
       if (result.success) {
@@ -110,9 +110,9 @@ export default function SelectForm({
       toast({ title: result.message });
     } catch (err) {
       if (err instanceof Error) {
-        TerminalLogger.fail(err.message);
+        Log.fail(err.message);
       } else {
-        TerminalLogger.fail(String(err));
+        Log.fail(String(err));
       }
     } finally {
       setIsLoading(false);
@@ -130,9 +130,9 @@ export default function SelectForm({
 
     if (channelExists) {
       toast({
-        title: `${channelInfo.channelTitle}'s channel is already added to the catalog.`,
         description:
           "Please remove the channel before proceeding to add specific playlist from the same channel.",
+        title: `${channelInfo.channelTitle}'s channel is already added to the catalog.`,
       });
       setSelectionType(null);
       return;
@@ -159,7 +159,7 @@ export default function SelectForm({
       setChannelPlaylists(playlists);
       setFormStep("playlists");
     } catch (err) {
-      TerminalLogger.fail(`${err}`);
+      Log.fail(`${err}`);
     } finally {
       setIsLoading(false);
     }

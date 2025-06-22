@@ -12,7 +12,7 @@ import {
 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
-import { cn } from "~/shared/lib/tailwind-merge";
+import { cn } from "~/shared/utils/tailwind-merge";
 
 const features = [
   {
@@ -123,23 +123,24 @@ export default function FeatureCarousel() {
         <div
           ref={carouselRef}
           className="flex overflow-x-auto scrollbar-hide gap-6 py-4"
-          style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
-          onMouseLeave={handleMouseLeave}
+          style={{ msOverflowStyle: "none", scrollbarWidth: "none" }}
         >
-          {duplicatedFeatures.map((feature, index) => (
-            <div
-              key={index}
+          {duplicatedFeatures.map((feature, idx) => (
+            <button
+              type="button"
+              key={`${feature.title}-${idx}`}
               className={cn(
                 "flex-none w-fit rounded-2xl transition-all duration-300 ease-out",
                 "border",
                 "pl-1 pr-3 py-2 cursor-pointer",
                 "animate-fade-in-up",
-                activeFeature === index % features.length &&
+                activeFeature === idx % features.length &&
                   "ring-2 ring-primary/30 border-primary/50"
               )}
-              onMouseEnter={() => handleMouseEnter(index % features.length)}
+              onMouseLeave={handleMouseLeave}
+              onMouseEnter={() => handleMouseEnter(idx % features.length)}
               style={{
-                animationDelay: `${(index % features.length) * 100}ms`,
+                animationDelay: `${(idx % features.length) * 100}ms`,
               }}
             >
               {/* Icon and Title inline */}
@@ -147,7 +148,7 @@ export default function FeatureCarousel() {
                 <div
                   className={cn(
                     "rounded-md p-1 transition-all duration-300",
-                    activeFeature === index % features.length
+                    activeFeature === idx % features.length
                       ? "animate-pulse-slow"
                       : ""
                   )}
@@ -156,7 +157,7 @@ export default function FeatureCarousel() {
                 </div>
                 <h3 className="text-sm leading-tight">{feature.title}</h3>
               </div>
-            </div>
+            </button>
           ))}
         </div>
 

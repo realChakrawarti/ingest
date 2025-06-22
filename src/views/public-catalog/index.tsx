@@ -1,7 +1,6 @@
-/* eslint-disable @next/next/no-img-element */
 import { ClockIcon, type LucideIcon } from "lucide-react";
 import dynamic from "next/dynamic";
-import { ReactNode } from "react";
+import type { ReactNode } from "react";
 
 import fetchApi from "~/shared/lib/api/fetch";
 import {
@@ -11,6 +10,7 @@ import {
   DropdownMenuTrigger,
 } from "~/shared/ui/dropdown-menu";
 import { MonthIcon, ThreeDotIcon, WeekIcon } from "~/shared/ui/icons";
+
 import GridContainer from "~/widgets/grid-container";
 import {
   PublicHeaderTitle,

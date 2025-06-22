@@ -1,8 +1,7 @@
-/* eslint-disable @next/next/no-img-element */
 "use client";
 
 import Link from "next/link";
-import React, { MutableRefObject } from "react";
+import type { MutableRefObject } from "react";
 import Slider, { type Settings } from "react-slick";
 
 function ThumbnailCarousel({

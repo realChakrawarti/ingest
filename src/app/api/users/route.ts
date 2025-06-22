@@ -1,15 +1,17 @@
-import { NextRequest } from "next/server";
+import type { NextRequest } from "next/server";
 
 import { createUser } from "~/entities/users";
-import { SESSION_COOKIE_NAME, TimeMs } from "~/shared/lib/constants";
+
+import { SESSION_COOKIE_NAME } from "~/shared/lib/constants";
 import { adminAuth } from "~/shared/lib/firebase/admin";
 import { NxResponse } from "~/shared/lib/next/nx-response";
+import { time } from "~/shared/utils/time";
 
 export async function POST(request: NextRequest) {
   const { token } = await request.json();
 
   const sessionCookieOptions = {
-    maxAge: TimeMs["12h"] / 1000, // 12 hours in seconds
+    maxAge: time.hours(12) / 1000, // 12 hours in seconds
     path: "/",
   };
 
@@ -19,7 +21,7 @@ export async function POST(request: NextRequest) {
     const response = NxResponse.success<any>(message, {}, 201);
 
     const session = await adminAuth.createSessionCookie(token, {
-      expiresIn: TimeMs["12h"],
+      expiresIn: time.hours(12),
     });
 
     response.cookies.set(SESSION_COOKIE_NAME, session, sessionCookieOptions);

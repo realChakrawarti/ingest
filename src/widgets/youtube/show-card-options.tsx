@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 
-import { VideoData, YouTubeCardOptions } from "~/shared/types-schema/types";
+import type { VideoData, YouTubeCardOptions } from "~/shared/types-schema/types";
 import { Button } from "~/shared/ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "~/shared/ui/popover";
 

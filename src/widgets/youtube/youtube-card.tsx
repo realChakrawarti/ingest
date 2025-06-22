@@ -1,6 +1,6 @@
 import dynamic from "next/dynamic";
 
-import { YouTubeCardProps } from "~/shared/types-schema/types";
+import type { YouTubeCardProps } from "~/shared/types-schema/types";
 
 import { ChannelMeta, DescriptionSheet } from "./components";
 import ShowCardOption from "./show-card-options";

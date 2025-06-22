@@ -1,4 +1,4 @@
-import { Metadata } from "next/types";
+import type { Metadata } from "next/types";
 
 import appConfig from "~/shared/app-config";
 import fetchApi from "~/shared/lib/api/fetch";

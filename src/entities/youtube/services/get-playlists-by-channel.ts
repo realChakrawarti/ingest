@@ -2,7 +2,7 @@
 
 import { YOUTUBE_CHANNEL_PLAYLISTS } from "~/shared/lib/api/youtube-endpoints";
 
-import { ChannelPlaylist } from "../models";
+import type { ChannelPlaylist } from "../models";
 
 /**
  * Recursively retrieves all playlists for a given YouTube channel using pagination.

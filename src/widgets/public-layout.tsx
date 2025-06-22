@@ -1,6 +1,6 @@
-import { PropsWithChildren } from "react";
+import type { PropsWithChildren } from "react";
 
-import { cn } from "~/shared/lib/tailwind-merge";
+import { cn } from "~/shared/utils/tailwind-merge";
 
 type ContainerType = { className?: string } & PropsWithChildren;
 

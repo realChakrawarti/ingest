@@ -1,4 +1,5 @@
-import { CatalogList } from "~/entities/catalogs/models";
+import type { CatalogList } from "~/entities/catalogs/models";
+
 import { Button } from "~/shared/ui/button";
 import { DeleteIcon } from "~/shared/ui/icons";
 import {
@@ -10,6 +11,7 @@ import {
   TableHeader,
   TableRow,
 } from "~/shared/ui/table";
+
 import { DeleteModal } from "~/widgets/delete-modal";
 import { OutLink } from "~/widgets/out-link";
 
@@ -42,7 +44,6 @@ function ChannelTable({ channels, handleDelete }: any) {
                 <TableCell>
                   <div className="flex gap-2 items-center">
                     {channelLogo ? (
-                      // eslint-disable-next-line @next/next/no-img-element
                       <img
                         src={channelLogo}
                         alt={channelTitle}

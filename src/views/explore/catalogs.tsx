@@ -1,5 +1,5 @@
 import fetchApi from "~/shared/lib/api/fetch";
-import { ValidMetadata } from "~/shared/types-schema/types";
+import type { ValidMetadata } from "~/shared/types-schema/types";
 import DetailsCard from "~/widgets/details-card";
 import GridContainer from "~/widgets/grid-container";
 import {

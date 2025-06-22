@@ -7,15 +7,14 @@ import {
 import { getAuth } from "firebase-admin/auth";
 import { getFirestore } from "firebase-admin/firestore";
 
-import isDevelopment from "../is-development";
-import TerminalLogger from "../terminal-logger";
+import isDevelopment from "../../utils/is-development";
+import Log from "../../utils/terminal-logger";
 
 const appOptions: AppOptions = {
   credential: cert({
     clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
-    privateKey: process.env
-      .FIREBASE_PRIVATE_KEY!.split(String.raw`\n`)
-      .join("\n"),
+    privateKey:
+      process.env.FIREBASE_PRIVATE_KEY.split(String.raw`\n`).join("\n"),
     projectId: process.env.FIREBASE_PROJECT_ID,
   }),
 };
@@ -34,9 +33,7 @@ function getServerFirebaseApp() {
     try {
       return initializeApp(appOptions, appInstanceName);
     } catch (err) {
-      TerminalLogger.fail(
-        `Failed to initialize Firebase admin app: ${String(err)}`
-      );
+      Log.fail(`Failed to initialize Firebase admin app: ${String(err)}`);
 
       throw err;
     }

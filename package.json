@@ -9,13 +9,13 @@
     "emulate-firebase:export-seed": "firebase --project ytcatalog707 emulators:export seed",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint .",
+    "lint": "pnpm exec biome lint --diagnostic-level=warn --log-kind=compact",
     "prepare": "husky",
     "release": "standard-version",
     "release:minor": "standard-version --release-as minor",
     "release:patch": "standard-version --release-as patch",
     "release:major": "standard-version --release-as major",
-    "create:deps": "pnpx dependex"
+    "deps": "pnpx dependex"
   },
   "engines": {
     "node": ">=22.0.0"
@@ -58,25 +58,23 @@
     "zustand": "^5.0.3"
   },
   "devDependencies": {
+    "@biomejs/biome": "2.0.0",
     "@commitlint/cli": "^19.7.1",
     "@commitlint/config-conventional": "^19.7.1",
-    "@stylistic/eslint-plugin": "3",
     "@types/canvas-confetti": "^1.9.0",
     "@types/node": "^20.17.19",
     "@types/react": "^18.3.18",
     "@types/react-dom": "^18.3.5",
     "@types/react-slick": "^0.23.13",
     "concurrently": "^9.1.2",
-    "eslint": "^8.57.1",
-    "eslint-config-next": "14.2.7",
-    "eslint-plugin-simple-import-sort": "^12.1.1",
     "firebase-tools": "^13.31.1",
     "husky": "^9.1.7",
     "postcss": "^8.5.2",
     "react-scan": "^0.3.3",
     "standard-version": "^9.5.0",
     "tailwindcss": "^3.4.17",
-    "typescript": "^5.7.3"
+    "typescript": "^5.7.3",
+    "vitest": "^3.2.4"
   },
   "packageManager": "pnpm@10.9.0+sha512.0486e394640d3c1fb3c9d43d49cf92879ff74f8516959c235308f5a8f62e2e19528a65cdc2a3058f587cde71eba3d5b56327c8c33a97e4c4051ca48a10ca2d5f"
 }

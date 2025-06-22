@@ -5,11 +5,11 @@ import { createPortal } from "react-dom";
 import useSWR from "swr";
 
 import fetchApi from "~/shared/lib/api/fetch";
-import { getTimeDifference } from "~/shared/lib/date-time/time-diff";
-import isDevelopment from "~/shared/lib/is-development";
 import { Button } from "~/shared/ui/button";
 import { RefreshIcon } from "~/shared/ui/icons";
 import { Skeleton } from "~/shared/ui/skeleton";
+import isDevelopment from "~/shared/utils/is-development";
+import { getTimeDifference } from "~/shared/utils/time-diff";
 
 import useNextUpdateStore from "./next-update-store";
 
@@ -20,7 +20,7 @@ export function ShowNextUpdateBanner() {
   >(null);
 
   useEffect(() => {
-    if (typeof document !== undefined) {
+    if (document) {
       setBodyElement(document.body);
     }
   }, []);

@@ -2,9 +2,9 @@
 
 import { ChevronLeft, ListPlusIcon } from "lucide-react";
 import { useState } from "react";
-import { KeyedMutator } from "swr";
+import type { KeyedMutator } from "swr";
 
-import { ApiResponse } from "~/shared/lib/next/nx-response";
+import type { ApiResponse } from "~/shared/lib/next/nx-response";
 import { Button } from "~/shared/ui/button";
 import {
   Dialog,

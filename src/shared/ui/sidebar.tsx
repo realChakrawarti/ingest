@@ -1,14 +1,11 @@
-/* eslint-disable @stylistic/max-len */
-
 "use client";
 
-import { cva, VariantProps } from "class-variance-authority";
+import { cva, type VariantProps } from "class-variance-authority";
 import { PanelLeft } from "lucide-react";
 import { Slot as SlotPrimitive } from "radix-ui";
 import * as React from "react";
 
 import { useIsMobile } from "~/shared/hooks/use-mobile";
-import { cn } from "~/shared/lib/tailwind-merge";
 import { Button } from "~/shared/ui/button";
 import { Input } from "~/shared/ui/input";
 import { Separator } from "~/shared/ui/separator";
@@ -20,6 +17,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "~/shared/ui/tooltip";
+import { cn } from "~/shared/utils/tailwind-merge";
 
 const SIDEBAR_COOKIE_NAME = "sidebar:state";
 const SIDEBAR_COOKIE_MAX_AGE = 60 * 60 * 24 * 7;
@@ -516,21 +514,21 @@ SidebarMenuItem.displayName = "SidebarMenuItem";
 const sidebarMenuButtonVariants = cva(
   "peer/menu-button flex w-full items-center gap-2 overflow-hidden rounded-md p-2 text-left text-sm outline-none ring-sidebar-ring transition-[width,height,padding] hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-2 active:bg-sidebar-accent active:text-sidebar-accent-foreground disabled:pointer-events-none disabled:opacity-50 group-has-[[data-sidebar=menu-action]]/menu-item:pr-8 aria-disabled:pointer-events-none aria-disabled:opacity-50 data-[active=true]:bg-sidebar-accent data-[active=true]:font-medium data-[active=true]:text-sidebar-accent-foreground data-[state=open]:hover:bg-sidebar-accent data-[state=open]:hover:text-sidebar-accent-foreground group-data-[collapsible=icon]:!size-8 group-data-[collapsible=icon]:!p-2 [&>span:last-child]:truncate [&>svg]:size-4 [&>svg]:shrink-0",
   {
+    defaultVariants: {
+      size: "default",
+      variant: "default",
+    },
     variants: {
-      variant: {
-        default: "hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
-        outline:
-          "bg-background shadow-[0_0_0_1px_hsl(var(--sidebar-border))] hover:bg-sidebar-accent hover:text-sidebar-accent-foreground hover:shadow-[0_0_0_1px_hsl(var(--sidebar-accent))]",
-      },
       size: {
         default: "h-8 text-sm",
         lg: "h-12 text-sm group-data-[collapsible=icon]:!p-0",
         sm: "h-7 text-xs",
       },
-    },
-    defaultVariants: {
-      variant: "default",
-      size: "default",
+      variant: {
+        default: "hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
+        outline:
+          "bg-background shadow-[0_0_0_1px_hsl(var(--sidebar-border))] hover:bg-sidebar-accent hover:text-sidebar-accent-foreground hover:shadow-[0_0_0_1px_hsl(var(--sidebar-accent))]",
+      },
     },
   }
 );
@@ -564,7 +562,7 @@ const SidebarMenuButton = React.forwardRef<
         data-sidebar="menu-button"
         data-size={size}
         data-active={isActive}
-        className={cn(sidebarMenuButtonVariants({ variant, size }), className)}
+        className={cn(sidebarMenuButtonVariants({ size, variant }), className)}
         {...props}
       />
     );

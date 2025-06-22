@@ -6,15 +6,16 @@ import {
   useState,
 } from "react";
 
-import { ChannelDetails } from "~/entities/youtube/models";
+import type { ChannelDetails } from "~/entities/youtube/models";
+
 import { toast } from "~/shared/hooks/use-toast";
 import fetchApi from "~/shared/lib/api/fetch";
 import { Regex } from "~/shared/lib/constants";
-import TerminalLogger from "~/shared/lib/terminal-logger";
 import { Button } from "~/shared/ui/button";
 import { Checkbox } from "~/shared/ui/checkbox";
 import { Input } from "~/shared/ui/input";
 import { Label } from "~/shared/ui/label";
+import Log from "~/shared/utils/terminal-logger";
 
 import useCatalogStore from "./catalog-store";
 
@@ -66,7 +67,7 @@ export default function InputURLForm() {
         }
         setFormStep("channel");
       } catch (err) {
-        TerminalLogger.fail(String(err));
+        Log.fail(String(err));
       } finally {
         setIsLoading(false);
       }
@@ -83,7 +84,7 @@ export default function InputURLForm() {
         return;
       }
 
-      let endpoint;
+      let endpoint: string;
       if (channel?.startsWith("@")) {
         endpoint = `/youtube/channel?channelHandle=${channel}`;
       } else {
@@ -109,7 +110,7 @@ export default function InputURLForm() {
         }
         setFormStep("channel");
       } catch (err) {
-        TerminalLogger.fail(String(err));
+        Log.fail(String(err));
       } finally {
         setIsLoading(false);
       }
@@ -160,9 +161,9 @@ export default function InputURLForm() {
     setInputMode(mode);
   };
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: Only when input mode is changed, validate the link
   useEffect(() => {
     validateLink(videoLink.link);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [inputMode]);
 
   return (

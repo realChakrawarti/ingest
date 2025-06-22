@@ -1,15 +1,15 @@
-# <img src="https://github.com/realChakrawarti/yt-catalog/blob/main/public/icon.png" alt="Dev.to Rater" height="30"/> YTCatalog: Organize Your YouTube Experience
+# <img src="https://github.com/realChakrawarti/ingest/blob/main/public/icon.png" alt="Dev.to Rater" height="30"/> Ingest: Organize Your YouTube Experience
 
 ## Project Stats
 
-![Project Analytics](https://repobeats.axiom.co/api/embed/884a306b91bf19b90cfa6d5e8e6b24454a96078c.svg "Repobeats analytics image")
+![Project Analytics](https://repobeats.axiom.co/api/embed/aa9709544fd4bfdfd08f689d869b2be6d75bdfd9.svg "Repobeats analytics image")
 
 <div style="display: flex; justify-content: center; gap: 10px; flex-wrap: wrap;">
-<img src="https://img.shields.io/github/stars/realChakrawarti/yt-catalog" alt="GitHub Repo stars" />
-<img src="https://img.shields.io/github/license/realChakrawarti/yt-catalog" alt="GitHub License" />
-<img src="https://img.shields.io/github/issues/realChakrawarti/yt-catalog" alt="GitHub Issues" />
-<img src="https://img.shields.io/github/commit-activity/m/realChakrawarti/yt-catalog" alt="Commit Activity" />
-<img alt="GitHub top language" src="https://img.shields.io/github/languages/top/realChakrawarti/yt-catalog">
+<img src="https://img.shields.io/github/stars/realChakrawarti/ingest" alt="GitHub Repo stars" />
+<img src="https://img.shields.io/github/license/realChakrawarti/ingest" alt="GitHub License" />
+<img src="https://img.shields.io/github/issues/realChakrawarti/ingest" alt="GitHub Issues" />
+<img src="https://img.shields.io/github/commit-activity/m/realChakrawarti/ingest" alt="Commit Activity" />
+<img alt="GitHub top language" src="https://img.shields.io/github/languages/top/realChakrawarti/ingest">
 </div>
 
 ## Introduction

@@ -1,10 +1,10 @@
 import { Edit } from "lucide-react";
-import { FormEvent } from "react";
-import { KeyedMutator } from "swr";
+import type { FormEvent } from "react";
+import type { KeyedMutator } from "swr";
 
 import { toast } from "~/shared/hooks/use-toast";
 import fetchApi from "~/shared/lib/api/fetch";
-import { ApiResponse } from "~/shared/lib/next/nx-response";
+import type { ApiResponse } from "~/shared/lib/next/nx-response";
 import { Button } from "~/shared/ui/button";
 import {
   Dialog,

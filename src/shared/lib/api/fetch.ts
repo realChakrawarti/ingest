@@ -1,11 +1,11 @@
 // TODO: Retry, throttle, cancel after 10 seconds
 
-import { ApiResponse } from "../next/nx-response";
-import TerminalLogger from "../terminal-logger";
+import Log from "../../utils/terminal-logger";
+import type { ApiResponse } from "../next/nx-response";
 
 async function fetchApi<T = any>(endpoint: string, options?: RequestInit) {
   if (!endpoint.startsWith("/")) {
-    TerminalLogger.fail("Please append a trailing '/' on the endpoint");
+    Log.fail("Please append a trailing '/' on the endpoint");
     throw new Error("Please append a trailing '/' on the endpoint");
   }
 
@@ -14,7 +14,7 @@ async function fetchApi<T = any>(endpoint: string, options?: RequestInit) {
   const response: Promise<ApiResponse<T>> = fetch(URL, options)
     .then((data) => data.json())
     .catch((err) => {
-      TerminalLogger.fail(String(err));
+      Log.fail(String(err));
       throw new Error(err?.message);
     });
   const awaitedResponse = await response;

@@ -3,9 +3,9 @@
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 
-import { cn } from "~/shared/lib/tailwind-merge";
 import { Avatar, AvatarFallback, AvatarImage } from "~/shared/ui/avatar";
 import { Badge } from "~/shared/ui/badge";
+import { cn } from "~/shared/utils/tailwind-merge";
 
 export default function FilterChannel({
   activeChannels,

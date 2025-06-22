@@ -1,9 +1,9 @@
-import { NextRequest } from "next/server";
-
 import { getValidArchiveIds } from "~/entities/archives";
-import { NxResponse } from "~/shared/lib/next/nx-response";
 
-export async function GET(_request: NextRequest) {
+import { NxResponse } from "~/shared/lib/next/nx-response";
+import Log from "~/shared/utils/terminal-logger";
+
+export async function GET() {
   try {
     const pageListData = await getValidArchiveIds();
     return NxResponse.success(
@@ -12,6 +12,7 @@ export async function GET(_request: NextRequest) {
       200
     );
   } catch (err) {
+    Log.fail(err);
     return NxResponse.fail(
       "Unable to parse valid archive ids.",
       { code: "ARCHIVE_VALID", details: "Unable to parse valid archive ids." },

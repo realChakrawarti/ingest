@@ -2,11 +2,11 @@
 
 import { EyeIcon, Pause, Play, VideoIcon } from "lucide-react";
 import Link from "next/link";
-import { MouseEvent, useRef, useState } from "react";
+import { type MouseEvent, useRef, useState } from "react";
 import type Slider from "react-slick";
 
-import { cn } from "~/shared/lib/tailwind-merge";
-import { ValidMetadata } from "~/shared/types-schema/types";
+import type { ValidMetadata } from "~/shared/types-schema/types";
+import { cn } from "~/shared/utils/tailwind-merge";
 
 import ThumbnailCarousel from "./carousel-thumbnails";
 import OverlayTip from "./overlay-tip";

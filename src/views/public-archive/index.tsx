@@ -1,4 +1,4 @@
-import { ArchiveByIdResponse } from "~/entities/archives/models";
+import type { ArchiveByIdResponse } from "~/entities/archives/models";
 import fetchApi from "~/shared/lib/api/fetch";
 import GridContainer from "~/widgets/grid-container";
 import YouTubeCard from "~/widgets/youtube/youtube-card";

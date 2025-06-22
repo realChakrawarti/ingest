@@ -1,4 +1,4 @@
-import { DocumentReference } from "firebase-admin/firestore";
+import type { DocumentReference } from "firebase-admin/firestore";
 import { revalidatePath } from "next/cache";
 
 import appConfig from "~/shared/app-config";
@@ -6,12 +6,12 @@ import {
   YOUTUBE_CHANNEL_INFORMATION_BY_IDS,
   YOUTUBE_CHANNEL_PLAYLIST_VIDEOS,
 } from "~/shared/lib/api/youtube-endpoints";
-import { TimeMs } from "~/shared/lib/constants";
 import { adminDb } from "~/shared/lib/firebase/admin";
 import { COLLECTION } from "~/shared/lib/firebase/collections";
-import TerminalLogger from "~/shared/lib/terminal-logger";
+import Log from "~/shared/utils/terminal-logger";
+import { time } from "~/shared/utils/time";
 
-import { CatalogList, UserCatalogDocument } from "../models";
+import type { CatalogList, UserCatalogDocument } from "../models";
 import { getPageviewByCatalogId } from "./get-pageviews-by-catalog-id";
 
 type VideoMetadata = {
@@ -54,7 +54,7 @@ async function updateChannelLogos(list: CatalogList[]): Promise<CatalogList[]> {
           channelLogos.set(id, logo);
         });
     } catch (err) {
-      TerminalLogger.fail(`Unable to fetch channel details ${err}`);
+      Log.fail(`Unable to fetch channel details ${err}`);
     }
   }
 
@@ -85,7 +85,7 @@ async function updateChannelLogos(list: CatalogList[]): Promise<CatalogList[]> {
  * @beta
  */
 export async function getVideosByCatalog(catalogId: string) {
-  let videoList: VideoMetadata[] = [];
+  const videoList: VideoMetadata[] = [];
   let totalVideos: number = 0;
 
   let videoFilterData: videoListData = {
@@ -132,7 +132,7 @@ export async function getVideosByCatalog(catalogId: string) {
   const currentTime = Date.now();
 
   // TODO: Consider moving this to a remote flag for runtime customization ??
-  if (currentTime - lastUpdatedCatalogList > TimeMs["12h"]) {
+  if (currentTime - lastUpdatedCatalogList > time.hours(12)) {
     // Get channel logos
     const updatedList = await updateChannelLogos(catalogList);
     await userCatalogRef.set({
@@ -140,7 +140,7 @@ export async function getVideosByCatalog(catalogId: string) {
       updatedAt: new Date(),
     });
   } else {
-    TerminalLogger.info(`Too early to revalidate channels logo.`);
+    Log.info(`Too early to revalidate channels logo.`);
   }
 
   // Get last updated, check if time has been 6 hours or not, if so make call to YouTube API,
@@ -151,11 +151,11 @@ export async function getVideosByCatalog(catalogId: string) {
   let recentUpdate = new Date(currentTime);
   let pageviews = 0;
 
-  if (currentTime - lastUpdatedTime > TimeMs["4h"]) {
+  if (currentTime - lastUpdatedTime > time.hours(4)) {
     try {
       pageviews = await getPageviewByCatalogId(catalogId);
     } catch (err) {
-      TerminalLogger.fail(
+      Log.fail(
         `Unable to fetch pageview for catalog id ${catalogId}\n${JSON.stringify(
           err
         )}`
@@ -182,7 +182,7 @@ export async function getVideosByCatalog(catalogId: string) {
       if (result.status === "fulfilled") {
         videoList.push(...result.value);
       } else {
-        TerminalLogger.fail(
+        Log.fail(
           `Unable to retrieve all the videos from the catalog: ${catalogId}: ${result.reason}`
         );
       }
@@ -199,13 +199,12 @@ export async function getVideosByCatalog(catalogId: string) {
     for (const video of videoList) {
       const videoPublishedAt = new Date(video.publishedAt).getTime();
 
-      if (currentTime - videoPublishedAt < TimeMs["1d"]) {
+      if (currentTime - videoPublishedAt < time.days(1)) {
         videoFilterData.day.push(video);
-      } else if (currentTime - videoPublishedAt < TimeMs["1w"]) {
+      } else if (currentTime - videoPublishedAt < time.weeks(1)) {
         videoFilterData.week.push(video);
       } else {
         videoFilterData.month.push(video);
-        continue;
       }
     }
 
@@ -221,21 +220,21 @@ export async function getVideosByCatalog(catalogId: string) {
     await catalogRef.set(catalogVideos, { merge: true });
 
     revalidatePath(`/c/${catalogId}`);
-    TerminalLogger.info(`Cached invalidated /c/${catalogId}`);
+    Log.info(`Cached invalidated /c/${catalogId}`);
   } else {
     videoFilterData = catalogSnapData?.data.videos;
     totalVideos = catalogSnapData?.data.totalVideos;
     recentUpdate = lastUpdated;
-    TerminalLogger.info(
+    Log.info(
       `Returning cached data for the catalog ${catalogId}, next update on ${new Date(
-        lastUpdatedTime + TimeMs["4h"]
+        lastUpdatedTime + time.hours(4)
       )}`
     );
   }
 
   return {
     description: catalogSnapData?.description,
-    nextUpdate: new Date(recentUpdate.getTime() + TimeMs["4h"]).toUTCString(),
+    nextUpdate: new Date(recentUpdate.getTime() + time.hours(4)).toUTCString(),
     pageviews: catalogSnapData?.pageviews ?? 0,
     title: catalogSnapData?.title,
     totalVideos: totalVideos,
@@ -274,7 +273,7 @@ async function getPlaylistVideos(playlist: CatalogList<"playlist">) {
     const playlistVideoItems = result.items;
 
     if (!playlistVideoItems.length) {
-      TerminalLogger.warn(
+      Log.warn(
         `No uploads found in the playlist: ${playlist.playlistId}.`
       );
       return playlistItemData;
@@ -286,7 +285,7 @@ async function getPlaylistVideos(playlist: CatalogList<"playlist">) {
       if (
         item.status.privacyStatus === "private" ||
         item.status.privacyStatus === "privacyStatusUnspecified" ||
-        currentTime - new Date(videoPublished).getTime() > TimeMs["1m"]
+        currentTime - new Date(videoPublished).getTime() > time.days(30)
       ) {
         continue;
       }
@@ -303,7 +302,7 @@ async function getPlaylistVideos(playlist: CatalogList<"playlist">) {
       });
     }
   } catch (err) {
-    TerminalLogger.fail(String(err));
+    Log.fail(String(err));
     throw new Error(
       `Failed to fetch videos of playlist id: ${
         playlist.playlistId
@@ -339,7 +338,7 @@ async function getChannelVideos(channel: CatalogList<"channel">) {
     const playlistVideoItems = result.items;
 
     if (!playlistVideoItems.length) {
-      TerminalLogger.warn(`No uploads found in the playlist: ${playlistId}.`);
+      Log.warn(`No uploads found in the playlist: ${playlistId}.`);
       return playlistItemData;
     }
 
@@ -349,7 +348,7 @@ async function getChannelVideos(channel: CatalogList<"channel">) {
       if (
         item.status.privacyStatus === "private" ||
         item.status.privacyStatus === "privacyStatusUnspecified" ||
-        currentTime - new Date(videoPublished).getTime() > TimeMs["1m"]
+        currentTime - new Date(videoPublished).getTime() > time.days(30)
       ) {
         continue;
       }
@@ -366,7 +365,7 @@ async function getChannelVideos(channel: CatalogList<"channel">) {
       });
     }
   } catch (err) {
-    TerminalLogger.fail(String(err));
+    Log.fail(String(err));
     throw new Error(
       `Failed to fetch videos of playlist id: ${playlistId}\n${JSON.stringify(
         err

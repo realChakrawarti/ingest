@@ -1,6 +1,6 @@
-import { z } from "zod";
+import type { z } from "zod";
 
-import { TitleDescriptionSchema } from "./schemas";
+import type { TitleDescriptionSchema } from "./schemas";
 
 /**
  * Represents the metadata for catalogs and archives.

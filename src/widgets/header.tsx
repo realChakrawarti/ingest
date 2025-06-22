@@ -5,7 +5,7 @@ import Link from "next/link";
 
 import appConfig from "~/shared/app-config";
 import { useScrollTrigger } from "~/shared/hooks/use-scroll-trigger";
-import { cn } from "~/shared/lib/tailwind-merge";
+import { cn } from "~/shared/utils/tailwind-merge";
 
 import AppIcon from "../../public/icon.png";
 import { Button } from "../shared/ui/button";
@@ -31,6 +31,8 @@ const Header = () => {
           <SidebarTrigger className="h-8 w-8 mr-2">
             <Button variant="ghost" size="icon">
               <svg
+                role="img"
+                aria-label="toggle-sidebar"
                 xmlns="http://www.w3.org/2000/svg"
                 width="24"
                 height="24"

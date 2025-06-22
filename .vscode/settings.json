@@ -22,6 +22,11 @@
     "DEPENDENCIES.md": false,
     ".husky": false
   },
+  "editor.codeActionsOnSave": {
+    "source.organizeImports.biome": "explicit",
+    "source.action.useSortedKeys.biome": "explicit",
+    "source.fixAll.biome": "explicit"
+  },
   "typescript.preferences.autoImportFileExcludePatterns": ["@radix-ui/*"],
   "deno.enable": false,
   "pinnedProjects.lock": true,

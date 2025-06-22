@@ -4,7 +4,7 @@ import {
   YOUTUBE_VIDEO_DATA,
 } from "~/shared/lib/api/youtube-endpoints";
 
-import { ChannelDetails } from "../models";
+import type { ChannelDetails } from "../models";
 
 function generateChannelDetails(item: any) {
   const channelData = item.snippet;

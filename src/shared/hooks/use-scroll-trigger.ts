@@ -24,7 +24,7 @@ export function useScrollTrigger() {
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
-  }, [handleScroll, prevScroll]);
+  }, [handleScroll]);
 
   return isHidden;
 }

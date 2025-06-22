@@ -5,8 +5,10 @@ import { Inter } from "next/font/google";
 
 import { toast } from "~/shared/hooks/use-toast";
 import { indexedDB } from "~/shared/lib/api/dexie";
-import { getTimeDifference } from "~/shared/lib/date-time/time-diff";
-import { VideoData, YouTubeCardOptions } from "~/shared/types-schema/types";
+import type {
+  VideoData,
+  YouTubeCardOptions,
+} from "~/shared/types-schema/types";
 import { Avatar, AvatarFallback, AvatarImage } from "~/shared/ui/avatar";
 import { Button } from "~/shared/ui/button";
 import { DeleteIcon, InfoIcon, LinkIcon } from "~/shared/ui/icons";
@@ -18,6 +20,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "~/shared/ui/sheet";
+import { getTimeDifference } from "~/shared/utils/time-diff";
 
 import { OutLink } from "../out-link";
 import OverlayTip from "../overlay-tip";
@@ -127,8 +130,8 @@ function CopyLink({ videoId }: Pick<VideoData, "videoId">) {
       .writeText(`https://www.youtube.com/watch?v=${id}`)
       .then(() => {
         toast({
-          title: "Link copied",
           description: "The video link has been copied to your clipboard.",
+          title: "Link copied",
         });
       })
       .catch(() => {
@@ -217,7 +220,6 @@ function DownloadVideo({ videoId }: { videoId: string }) {
 
     navigator.clipboard.writeText(videoLink);
     toast({
-      title: "Video link has copied to the clipboard.",
       description: (
         <p>
           Opening{" "}
@@ -230,6 +232,7 @@ function DownloadVideo({ videoId }: { videoId: string }) {
           in a new tab. Please paste the video link.
         </p>
       ),
+      title: "Video link has copied to the clipboard.",
     });
     setTimeout(() => {
       window.open("https://cobalt.tools", "_blank");

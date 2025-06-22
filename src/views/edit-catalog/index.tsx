@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useEffect } from "react";
 import useSWR from "swr";
 
-import { CatalogList } from "~/entities/catalogs/models";
+import type { CatalogList } from "~/entities/catalogs/models";
 import { useToast } from "~/shared/hooks/use-toast";
 import fetchApi from "~/shared/lib/api/fetch";
 import { Badge } from "~/shared/ui/badge";
