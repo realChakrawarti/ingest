@@ -1,10 +1,10 @@
 "use client";
 
-import { ChevronLeft, ListPlusIcon } from "lucide-react";
+import { ChevronLeft, PlusIcon } from "lucide-react";
 import { useState } from "react";
-import { KeyedMutator } from "swr";
+import type { KeyedMutator } from "swr";
 
-import { ApiResponse } from "~/shared/lib/next/nx-response";
+import type { ApiResponse } from "~/shared/lib/next/nx-response";
 import { Button } from "~/shared/ui/button";
 import {
   Dialog,
@@ -38,11 +38,11 @@ export default function AddChannelPlaylistDialog({
   return (
     <Dialog open={isDialogOpen} onOpenChange={handleDialogClose}>
       <DialogTrigger asChild>
-        <Button variant="outline">
-          <div className="flex gap-2 items-center">
-            <ListPlusIcon className="size-8" />
-            <p>Add channel-playlist</p>
-          </div>
+        <Button>
+          <span className="flex items-center gap-1">
+            <PlusIcon size={24} />
+            Channel Playlist
+          </span>
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[600px] max-h-[80vh] overflow-hidden flex flex-col px-3 py-6">
@@ -62,7 +62,7 @@ export default function AddChannelPlaylistDialog({
               </Button>
             )}
             <DialogTitle>
-              {formStep === "url" && "Add YouTube Channel"}
+              {formStep === "url" && "Add Channel Playlist"}
               {formStep === "channel" && "Channel Details"}
               {formStep === "playlists" && "Select Playlists"}
             </DialogTitle>

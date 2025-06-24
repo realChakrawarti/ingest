@@ -1,7 +1,7 @@
-import { ChangeEvent, useLayoutEffect, useState } from "react";
+import { type ChangeEvent, useLayoutEffect, useState } from "react";
 
 import { TitleDescriptionSchema } from "~/shared/types-schema/schemas";
-import { TitleDescriptionType } from "~/shared/types-schema/types";
+import type { TitleDescriptionType } from "~/shared/types-schema/types";
 
 const initialState: TitleDescriptionType = {
   title: "",

@@ -1,5 +1,3 @@
-/* eslint-disable @stylistic/max-len */
-
 "use client";
 
 import { cva, type VariantProps } from "class-variance-authority";
@@ -7,7 +5,7 @@ import { X } from "lucide-react";
 import { Dialog as SheetPrimitive } from "radix-ui";
 import * as React from "react";
 
-import { cn } from "~/shared/lib/tailwind-merge";
+import { cn } from "~/shared/utils/tailwind-merge";
 
 const Sheet = SheetPrimitive.Root;
 
@@ -35,6 +33,9 @@ SheetOverlay.displayName = SheetPrimitive.Overlay.displayName;
 const sheetVariants = cva(
   "fixed z-50 gap-4 bg-background p-6 shadow-lg transition ease-in-out data-[state=closed]:duration-300 data-[state=open]:duration-500 data-[state=open]:animate-in data-[state=closed]:animate-out",
   {
+    defaultVariants: {
+      side: "right",
+    },
     variants: {
       side: {
         bottom:
@@ -44,9 +45,6 @@ const sheetVariants = cva(
           "inset-y-0 right-0 h-full w-3/4 border-l data-[state=closed]:slide-out-to-right data-[state=open]:slide-in-from-right sm:max-w-sm",
         top: "inset-x-0 top-0 border-b data-[state=closed]:slide-out-to-top data-[state=open]:slide-in-from-top",
       },
-    },
-    defaultVariants: {
-      side: "right",
     },
   }
 );

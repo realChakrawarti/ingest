@@ -12,7 +12,6 @@ export default function Spinner(properties: Properties) {
           className={
             "animate-spin rounded-full w-full h-full border-2 border-primary border-t-transparent"
           }
-          role="status"
         ></div>
         <span className="sr-only">Loading...</span>
       </div>

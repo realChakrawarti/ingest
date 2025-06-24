@@ -3,9 +3,11 @@ import useSWR from "swr";
 import appConfig from "~/shared/app-config";
 import { toast } from "~/shared/hooks/use-toast";
 import fetchApi from "~/shared/lib/api/fetch";
-import { getTimeDifference } from "~/shared/lib/date-time/time-diff";
 import { Badge } from "~/shared/ui/badge";
 import { ArchiveIcon } from "~/shared/ui/icons";
+import Log from "~/shared/utils/terminal-logger";
+import { getTimeDifference } from "~/shared/utils/time-diff";
+
 import GridContainer from "~/widgets/grid-container";
 import ArchiveCard from "~/widgets/item-card";
 import NoItemCard from "~/widgets/no-item-card";
@@ -29,7 +31,9 @@ export default function ArchiveView() {
         });
         mutate();
         toast({ title: result.message });
-      } catch (err) {}
+      } catch (err) {
+        Log.fail(err);
+      }
     }
   };
 

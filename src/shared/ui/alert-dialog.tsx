@@ -1,12 +1,10 @@
-/* eslint-disable @stylistic/max-len */
-
 "use client";
 
 import { AlertDialog as AlertDialogPrimitive } from "radix-ui";
 import * as React from "react";
 
-import { cn } from "~/shared/lib/tailwind-merge";
 import { buttonVariants } from "~/shared/ui/button";
+import { cn } from "~/shared/utils/tailwind-merge";
 
 const AlertDialog = AlertDialogPrimitive.Root;
 

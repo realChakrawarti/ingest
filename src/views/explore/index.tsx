@@ -3,6 +3,7 @@ import Link from "next/link";
 
 import fetchApi from "~/shared/lib/api/fetch";
 import type { ValidMetadata } from "~/shared/types-schema/types";
+
 import DetailsCard from "~/widgets/details-card";
 import GridContainer from "~/widgets/grid-container";
 import {
@@ -19,9 +20,8 @@ export const revalidate = 60 * 5; // Cache the page for 5 minutes, unless revali
 
 export default async function Explore() {
   const catalogs = await fetchApi<ValidMetadata[]>("/catalogs/valid");
-  const archives = await fetchApi<Omit<ValidMetadata, "pageviews">[]>(
-    "/archives/valid"
-  );
+  const archives =
+    await fetchApi<Omit<ValidMetadata, "pageviews">[]>("/archives/valid");
 
   const catalogsData = catalogs?.data;
   const archivesData = archives?.data;

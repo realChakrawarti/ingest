@@ -1,8 +1,13 @@
 import Dexie, { type EntityTable } from "dexie";
 
-import { FavoriteData, History, VideoData } from "~/shared/types-schema/types";
+import appConfig from "~/shared/app-config";
+import type {
+  FavoriteData,
+  History,
+  VideoData,
+} from "~/shared/types-schema/types";
 
-const indexedDB = new Dexie("YTCatalogDatabase") as Dexie & {
+const indexedDB = new Dexie(`${appConfig.name}-database`) as Dexie & {
   "watch-later": EntityTable<VideoData, "videoId">;
   favorites: EntityTable<FavoriteData, "id">;
   history: EntityTable<History, "videoId">;

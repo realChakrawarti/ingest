@@ -1,11 +1,9 @@
-/* eslint-disable @stylistic/max-len */
-
 "use client"
 
 import { Popover as PopoverPrimitive } from "radix-ui"
 import * as React from "react"
 
-import { cn } from "~/shared/lib/tailwind-merge"
+import { cn } from "~/shared/utils/tailwind-merge"
 
 const Popover = PopoverPrimitive.Root
 

@@ -1,7 +1,7 @@
 import { create } from "zustand";
 
-import { CatalogList } from "~/entities/catalogs/models";
-import { ChannelDetails, ChannelPlaylist } from "~/entities/youtube/models";
+import type { CatalogList } from "~/entities/catalogs/models";
+import type { ChannelDetails, ChannelPlaylist } from "~/entities/youtube/models";
 
 type VideoLink = {
   link: string;

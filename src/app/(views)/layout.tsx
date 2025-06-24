@@ -6,8 +6,9 @@ import { Inter } from "next/font/google";
 import Script from "next/script";
 
 import appConfig from "~/shared/app-config";
-import isDevelopment from "~/shared/lib/is-development";
 import { Toaster } from "~/shared/ui/toaster";
+import isDevelopment from "~/shared/utils/is-development";
+
 import AppSidebar from "~/widgets/app-sidebar";
 import Footer from "~/widgets/footer";
 import Header from "~/widgets/header";

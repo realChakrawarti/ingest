@@ -1,8 +1,8 @@
 import { adminDb } from "~/shared/lib/firebase/admin";
 import { COLLECTION } from "~/shared/lib/firebase/collections";
-import TerminalLogger from "~/shared/lib/terminal-logger";
+import Log from "~/shared/utils/terminal-logger";
 
-import { ArchiveByIdResponse } from "../models";
+import type { ArchiveByIdResponse } from "../models";
 
 /**
  * This function sends the response of a specific catalog provided a valid catalogId
@@ -29,6 +29,6 @@ export async function getArchiveById(archiveId: string) {
 
     return archiveResponseData;
   } catch (err) {
-    TerminalLogger.fatal("Unable to retrieve archive by id.", err);
+    Log.fatal("Unable to retrieve archive by id.", err);
   }
 }

@@ -8,7 +8,7 @@ export default function HeroSection() {
       {/* Hero */}
       <div className="relative overflow-hidden py-12 md:py-8">
         <div className="relative z-10">
-          <div className="container py-16 lg:py-20 pb-0">
+          <div className="container pt-16 pb-0 lg:pt-20 lg:pb-8">
             <div className="max-w-2xl text-center mx-auto">
               <div className="animate-bounce-slow mb-4">
                 <p className="text-primary mb-2 text-sm font-medium tracking-wider uppercase animate-pulse">

@@ -2,23 +2,31 @@
 
 import { useState } from "react";
 
-import { VideoData, YouTubeCardOptions } from "~/shared/types-schema/types";
+import type {
+  VideoData,
+  YouTubeCardOptions,
+} from "~/shared/types-schema/types";
 import { Button } from "~/shared/ui/button";
+import { ThreeDotIcon } from "~/shared/ui/icons";
 import { Popover, PopoverContent, PopoverTrigger } from "~/shared/ui/popover";
 
-import { ThreeDotIcon } from "../../shared/ui/icons";
 import {
   CopyLink,
   DownloadVideo,
   RemoveWatchLater,
   WatchLater,
 } from "./components";
+import MarkedWatched from "./marked-watched";
 
 export default function ShowCardOption({
   addWatchLater,
   removeWatchLater,
+  markWatched,
   video,
-}: Pick<YouTubeCardOptions, "addWatchLater" | "removeWatchLater"> & {
+}: Pick<
+  YouTubeCardOptions,
+  "addWatchLater" | "removeWatchLater" | "markWatched"
+> & {
   video: VideoData;
 }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -42,6 +50,7 @@ export default function ShowCardOption({
           align="end"
           className="w-[200px] border-none rounded-lg p-1"
         >
+          {markWatched ? <MarkedWatched video={video} /> : null}
           <CopyLink videoId={video.videoId} />
           <WatchLater addWatchLater={addWatchLater} videoData={video} />
           <RemoveWatchLater

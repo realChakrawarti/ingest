@@ -1,4 +1,4 @@
-import { NextRequest } from "next/server";
+import type { NextRequest } from "next/server";
 
 import { getChannelDetails } from "~/entities/youtube";
 import { getChannelDetailsFromVideoId } from "~/entities/youtube/services/get-channel-details";

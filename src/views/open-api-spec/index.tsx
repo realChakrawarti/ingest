@@ -4,7 +4,7 @@ import "@stoplight/elements/styles.min.css";
 import "@stoplight/elements/web-components.min.js";
 
 import { useIsTablet } from "~/shared/hooks/use-tablet";
-import { cn } from "~/shared/lib/tailwind-merge";
+import { cn } from "~/shared/utils/tailwind-merge";
 
 export default function OpenApiSpecification() {
   const isTablet = useIsTablet();

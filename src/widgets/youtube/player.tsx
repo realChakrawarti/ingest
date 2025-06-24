@@ -5,8 +5,8 @@ import { useEffect, useRef } from "react";
 
 import appConfig from "~/shared/app-config";
 import { indexedDB } from "~/shared/lib/api/dexie";
-import { cn } from "~/shared/lib/tailwind-merge";
 import type { VideoData } from "~/shared/types-schema/types";
+import { cn } from "~/shared/utils/tailwind-merge";
 
 import { useVideoTracking } from "./use-video-tracking";
 
@@ -25,8 +25,8 @@ export default function YoutubePlayer(
   const firstLoad = useRef<boolean>(false);
 
   const { stopTracking, startTracking, isPlaying } = useVideoTracking({
-    video,
     playerRef,
+    video,
   });
 
   function getActivePlayers() {
@@ -41,24 +41,26 @@ export default function YoutubePlayer(
     const allPlayers = getActivePlayers();
 
     const filterPlayers = Array.from(allPlayers).filter(
-      (item) => item != playerIframe
+      (item) => item !== playerIframe
     );
 
     switch (playingState) {
-      case playerState.CUED:
+      case playerState.CUED: {
         stopTracking();
         firstLoad.current = false;
         playerIframe.style.opacity = "0";
         playerIframe.setAttribute("playing", "false");
         break;
-      case playerState.PAUSED:
+      }
+      case playerState.PAUSED: {
         stopTracking();
         break;
-      case playerState.ENDED:
+      }
+      case playerState.ENDED: {
         stopTracking();
         break;
-
-      case playerState.PLAYING:
+      }
+      case playerState.PLAYING: {
         playerIframe.style.opacity = "1";
         playerIframe.setAttribute("playing", "true");
         // Stop other players
@@ -79,11 +81,14 @@ export default function YoutubePlayer(
         isPlaying.current = true;
         startTracking();
         break;
+      }
       case playerState.BUFFERING:
-        const seekedTime = target.getCurrentTime();
-        if (seekedTime > 0) {
-          target.seekTo(seekedTime, true);
-          isPlaying.current = true;
+        {
+          const seekedTime = target.getCurrentTime();
+          if (seekedTime > 0) {
+            target.seekTo(seekedTime, true);
+            isPlaying.current = true;
+          }
         }
         break;
     }
@@ -128,11 +133,11 @@ export default function YoutubePlayer(
       stopTracking();
       playerRef.current?.removeEventListener("onStateChange", _onStateChange);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
     <div
+      tabIndex={0}
       className={cn(
         "rounded-lg overflow-hidden mx-[2px] md:mx-0",
         "group-hover/player:shadow-primary group-hover/player:shadow-[0_0_0_2px]",
@@ -142,7 +147,7 @@ export default function YoutubePlayer(
       onMouseDown={loadIFrameElement}
     >
       <YouTubeEmbed
-        params={enableJsApi ? iframeParams + "&enablejsapi=1" : iframeParams}
+        params={enableJsApi ? `${iframeParams}&enablejsapi=1` : iframeParams}
         videoid={videoId}
         playlabel={title}
         js-api={enableJsApi}

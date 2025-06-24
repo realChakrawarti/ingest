@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import appConfig from "~/shared/app-config";
 import { indexedDB } from "~/shared/lib/api/dexie";
 import type { History } from "~/shared/types-schema/types";
+
 import GridContainer from "~/widgets/grid-container";
 import {
   PublicContentContainer,

@@ -3,6 +3,8 @@
 import { useLiveQuery } from "dexie-react-hooks";
 
 import { indexedDB } from "~/shared/lib/api/dexie";
+
+import BackLink from "~/widgets/back-link";
 import GridContainer from "~/widgets/grid-container";
 import {
   PublicContentContainer,
@@ -13,12 +15,17 @@ import YouTubeCard from "~/widgets/youtube/youtube-card";
 
 export default function WatchLater() {
   const watchLater =
-    useLiveQuery<any[]>(() => indexedDB["watch-later"].toArray()) ?? [];
+    useLiveQuery(() => indexedDB["watch-later"].toArray()) ?? [];
 
   return (
     <PublicMainContainer>
       <PublicHeaderTitle>
-        <h1 className="text-2xl font-semibold tracking-tight">Watch later</h1>
+        <div className="flex items-center gap-2">
+          <BackLink href="/explore" />
+          <h1 className="text-lg lg:text-xl font-semibold tracking-tight">
+            Watch later
+          </h1>
+        </div>
       </PublicHeaderTitle>
       <PublicContentContainer>
         <GridContainer>

@@ -1,10 +1,10 @@
-import { DocumentData } from "firebase-admin/firestore";
+import type { DocumentData } from "firebase-admin/firestore";
 import { unstable_noStore } from "next/cache";
 
-import { VideoDetails } from "~/entities/youtube/models";
+import type { VideoDetails } from "~/entities/youtube/models";
 import { adminDb } from "~/shared/lib/firebase/admin";
 import { COLLECTION } from "~/shared/lib/firebase/collections";
-import { ValidMetadata } from "~/shared/types-schema/types";
+import type { ValidMetadata } from "~/shared/types-schema/types";
 
 const getArchiveMetadata = async (archiveId: string) => {
   const archiveRef = adminDb.collection(COLLECTION.archives).doc(archiveId);
@@ -21,7 +21,7 @@ const getVideoThumbnails = (archiveData: DocumentData) => {
 
 export async function getValidArchiveIds() {
   unstable_noStore();
-  let archiveListData: any[] = [];
+  const archiveListData: any[] = [];
   const archivesCollectionRef = adminDb.collection(COLLECTION.archives);
 
   const validArchiveQuery = archivesCollectionRef

@@ -1,7 +1,7 @@
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
-import { Metadata } from "next";
+import type { Metadata } from "next";
 
 import appConfig from "~/shared/app-config";
 

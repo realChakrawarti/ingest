@@ -1,16 +1,20 @@
 "use client";
 
+import { Info } from "lucide-react";
 import Link from "next/link";
 import { useEffect } from "react";
 import useSWR from "swr";
 
-import { CatalogList } from "~/entities/catalogs/models";
+import type { CatalogList } from "~/entities/catalogs/models";
+
 import { useToast } from "~/shared/hooks/use-toast";
 import fetchApi from "~/shared/lib/api/fetch";
 import { Badge } from "~/shared/ui/badge";
 import { Button } from "~/shared/ui/button";
 import { LinkIcon } from "~/shared/ui/icons";
 import { Separator } from "~/shared/ui/separator";
+
+import BackLink from "~/widgets/back-link";
 import JustTip from "~/widgets/just-the-tip";
 import Spinner from "~/widgets/spinner";
 
@@ -44,12 +48,12 @@ export default function EditCatalog({ catalogId }: { catalogId: string }) {
   useEffect(() => {
     if (catalogData?.data) {
       setSavedChannels(
-        catalogData?.data?.list.filter(
+        catalogData?.data?.list?.filter(
           (item: CatalogList) => item.type === "channel"
         )
       );
       setSavedPlaylists(
-        catalogData?.data?.list.filter(
+        catalogData?.data?.list?.filter(
           (item: CatalogList) => item.type === "playlist"
         )
       );
@@ -66,8 +70,8 @@ export default function EditCatalog({ catalogId }: { catalogId: string }) {
     }
 
     const result = await fetchApi(`/catalogs/${catalogId}/channel`, {
-      method: "DELETE",
       body: JSON.stringify(deleteChannel),
+      method: "DELETE",
     });
 
     if (result.success) {
@@ -89,8 +93,8 @@ export default function EditCatalog({ catalogId }: { catalogId: string }) {
     }
 
     const result = await fetchApi(`/catalogs/${catalogId}/playlist`, {
-      method: "DELETE",
       body: JSON.stringify(deletePlaylist),
+      method: "DELETE",
     });
 
     if (result.success) {
@@ -108,13 +112,16 @@ export default function EditCatalog({ catalogId }: { catalogId: string }) {
   return (
     <div>
       <div className="flex flex-col md:flex-row gap-2 md:items-center justify-between p-3">
-        <div>
-          <h1 className="text-lg lg:text-xl">
-            {catalogData?.data.title ?? ""}
-          </h1>
-          <p className="text-xs lg:text-sm">
-            {catalogData?.data.description ?? ""}
-          </p>
+        <div className="flex items-center gap-4">
+          <BackLink className="size-6" href="/dashboard" />
+          <div className="flex items-center gap-2">
+            <h1 className="text-lg lg:text-xl">
+              {catalogData?.data.title ?? ""}
+            </h1>
+            <JustTip label={catalogData?.data.description}>
+              <Info className="size-4" />
+            </JustTip>
+          </div>
         </div>
         <div className="flex items-center gap-3">
           <UpdateCatalogMeta
@@ -126,8 +133,8 @@ export default function EditCatalog({ catalogId }: { catalogId: string }) {
           {savedChannels?.length ? (
             <Link href={`/c/${catalogId}`} target="_blank">
               <JustTip label="Visit Catalog">
-                <Button variant="outline">
-                  <LinkIcon className="size-8" />
+                <Button variant="ghost" size="icon">
+                  <LinkIcon />
                 </Button>
               </JustTip>
             </Link>

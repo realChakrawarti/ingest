@@ -1,7 +1,7 @@
 import { adminDb } from "~/shared/lib/firebase/admin";
 import { COLLECTION } from "~/shared/lib/firebase/collections";
 
-import { CatalogByIdResponse, CatalogList } from "../models";
+import type { CatalogByIdResponse, CatalogList } from "../models";
 
 /**
  * Retrieves detailed information for a specific catalog by its ID.

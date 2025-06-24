@@ -1,8 +1,8 @@
-/* eslint-disable @next/next/no-img-element */
-import { Metadata } from "next/types";
+import type { Metadata } from "next/types";
 
 import appConfig from "~/shared/app-config";
 import fetchApi from "~/shared/lib/api/fetch";
+
 import PubliCatalog from "~/views/public-catalog";
 
 type PublicCatalogParams = {
@@ -21,7 +21,6 @@ export async function generateMetadata({
   const catalogData = result.data;
 
   return {
-    title: `${catalogData?.title} | ${appConfig.marketName}`,
     openGraph: {
       description: catalogData?.description,
       siteName: `${appConfig.marketName}`,
@@ -29,6 +28,7 @@ export async function generateMetadata({
       type: "website",
       url: `${appConfig.url}/${catalogId}`,
     },
+    title: `${catalogData?.title} | ${appConfig.marketName}`,
   };
 }
 

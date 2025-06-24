@@ -1,10 +1,10 @@
 "use client";
 
-import * as CheckboxPrimitive from "@radix-ui/react-checkbox";
 import { Check } from "lucide-react";
+import { Checkbox as CheckboxPrimitive } from "radix-ui";
 import * as React from "react";
 
-import { cn } from "../lib/tailwind-merge";
+import { cn } from "~/shared/utils/tailwind-merge";
 
 const Checkbox = React.forwardRef<
   React.ElementRef<typeof CheckboxPrimitive.Root>,

@@ -1,12 +1,14 @@
-/* eslint-disable @stylistic/max-len */
 import { cva, type VariantProps } from "class-variance-authority";
-import * as React from "react";
+import type * as React from "react";
 
-import { cn } from "~/shared/lib/tailwind-merge";
+import { cn } from "~/shared/utils/tailwind-merge";
 
 const badgeVariants = cva(
   "inline-flex items-center rounded-md border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2",
   {
+    defaultVariants: {
+      variant: "default",
+    },
     variants: {
       variant: {
         default:
@@ -17,9 +19,6 @@ const badgeVariants = cva(
         secondary:
           "border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80",
       },
-    },
-    defaultVariants: {
-      variant: "default",
     },
   }
 );

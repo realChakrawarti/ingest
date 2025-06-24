@@ -6,7 +6,6 @@ const paths = [
   "./src/app",
   "./src/shared/ui",
   "./src/views",
-
   "./src/widgets",
 ];
 

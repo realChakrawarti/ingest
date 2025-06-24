@@ -1,10 +1,10 @@
 import { Edit } from "lucide-react";
-import { FormEvent } from "react";
-import { KeyedMutator } from "swr";
+import type { FormEvent } from "react";
+import type { KeyedMutator } from "swr";
 
 import { toast } from "~/shared/hooks/use-toast";
 import fetchApi from "~/shared/lib/api/fetch";
-import { ApiResponse } from "~/shared/lib/next/nx-response";
+import type { ApiResponse } from "~/shared/lib/next/nx-response";
 import { Button } from "~/shared/ui/button";
 import {
   Dialog,
@@ -17,6 +17,7 @@ import {
 } from "~/shared/ui/dialog";
 import { Input } from "~/shared/ui/input";
 import { Label } from "~/shared/ui/label";
+
 import { useMetaValidate } from "~/widgets/use-meta-validate";
 
 interface UpdateArchiveMetaProps {
@@ -33,18 +34,18 @@ export default function UpdateArchiveMeta({
   description,
 }: UpdateArchiveMetaProps) {
   const { handleOnChange, meta, metaError, submitDisabled } = useMetaValidate({
-    title,
     description,
+    title,
   });
 
   async function updateArchiveMeta(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const result = await fetchApi(`/archives/${archiveId}/update`, {
-      method: "PATCH",
       body: JSON.stringify({
-        title: meta.title,
         description: meta.description,
+        title: meta.title,
       }),
+      method: "PATCH",
     });
 
     if (!result.success) {

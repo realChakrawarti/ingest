@@ -1,10 +1,10 @@
-import { FormEvent } from "react";
-import { KeyedMutator } from "swr";
+import type { FormEvent } from "react";
+import type { KeyedMutator } from "swr";
 
 import { useConfetti } from "~/shared/hooks/use-confetti";
 import { toast } from "~/shared/hooks/use-toast";
 import fetchApi from "~/shared/lib/api/fetch";
-import { ApiResponse } from "~/shared/lib/next/nx-response";
+import type { ApiResponse } from "~/shared/lib/next/nx-response";
 import { Button } from "~/shared/ui/button";
 import {
   Dialog,
@@ -18,6 +18,7 @@ import {
 import { PlusIcon } from "~/shared/ui/icons";
 import { Input } from "~/shared/ui/input";
 import { Label } from "~/shared/ui/label";
+
 import { useMetaValidate } from "~/widgets/use-meta-validate";
 
 interface CreateCatalogDialogProps {
@@ -37,11 +38,11 @@ export default function CreateCatalogDialog({
   const createNewCatalog = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const result = await fetchApi("/catalogs", {
-      method: "POST",
       body: JSON.stringify({
-        title: meta.title,
         description: meta.description,
+        title: meta.title,
       }),
+      method: "POST",
     });
 
     if (result.success) {
@@ -58,9 +59,9 @@ export default function CreateCatalogDialog({
     <Dialog>
       <DialogTrigger asChild>
         <Button disabled={disabled}>
-          <span className="flex items-center gap-2">
+          <span className="flex items-center gap-1">
             <PlusIcon size={24} />
-            Create Catalog
+            Catalog
           </span>
         </Button>
       </DialogTrigger>

@@ -3,7 +3,7 @@
 import { Avatar as AvatarPrimitive } from "radix-ui";
 import * as React from "react";
 
-import { cn } from "~/shared/lib/tailwind-merge";
+import { cn } from "~/shared/utils/tailwind-merge";
 
 const Avatar = React.forwardRef<
   React.ElementRef<typeof AvatarPrimitive.Root>,

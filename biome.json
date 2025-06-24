@@ -1,0 +1,85 @@
+{
+  "$schema": "https://biomejs.dev/schemas/2.0.0/schema.json",
+  "assist": {
+    "actions": {
+      "source": {
+        "organizeImports": {
+          "level": "on",
+          "options": {
+            "groups": [
+              ":PACKAGE_WITH_PROTOCOL:",
+              ":PACKAGE:",
+              ":BLANK_LINE:",
+              "~/entities/**",
+              ":BLANK_LINE:",
+              "~/features/**",
+              ":BLANK_LINE:",
+              "~/shared/**",
+              ":BLANK_LINE:",
+              "~/views/**",
+              ":BLANK_LINE:",
+              "~/widgets/**",
+              ":BLANK_LINE:",
+              ":ALIAS:",
+              ":BLANK_LINE:"
+            ]
+          }
+        },
+        "useSortedKeys": "on"
+      }
+    },
+    "enabled": true
+  },
+  "files": {
+    "ignoreUnknown": false,
+    "includes": ["src/**/*.ts", "src/**/*.tsx"]
+  },
+  "formatter": {
+    "attributePosition": "auto",
+    "bracketSameLine": false,
+    "bracketSpacing": true,
+    "enabled": true,
+    "expand": "auto",
+    "formatWithErrors": false,
+    "indentStyle": "space",
+    "indentWidth": 2,
+    "lineEnding": "lf",
+    "lineWidth": 80,
+    "useEditorconfig": true
+  },
+  "html": { "formatter": { "selfCloseVoidElements": "always" } },
+  "javascript": {
+    "formatter": {
+      "arrowParentheses": "always",
+      "attributePosition": "auto",
+      "bracketSameLine": false,
+      "bracketSpacing": true,
+      "jsxQuoteStyle": "double",
+      "quoteProperties": "asNeeded",
+      "quoteStyle": "double",
+      "semicolons": "always",
+      "trailingCommas": "es5"
+    }
+  },
+  "linter": {
+    "domains": { "next": "recommended", "react": "recommended" },
+    "enabled": true,
+    "rules": {
+      "a11y": {
+        "noNoninteractiveTabindex": "info",
+        "noStaticElementInteractions": "info",
+        "useKeyWithClickEvents": "info"
+      },
+      "complexity": { "noStaticOnlyClass": "off", "useLiteralKeys": "info" },
+      "correctness": {
+        "noUnusedFunctionParameters": "warn",
+        "useExhaustiveDependencies": "warn"
+      },
+      "recommended": true,
+      "suspicious": {
+        "noExplicitAny": "info"
+      }
+    }
+  },
+  "vcs": { "clientKind": "git", "enabled": false, "useIgnoreFile": false }
+}

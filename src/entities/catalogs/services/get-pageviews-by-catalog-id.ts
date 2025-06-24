@@ -1,15 +1,14 @@
-import { BetaAnalyticsDataClient, protos } from "@google-analytics/data";
+import { BetaAnalyticsDataClient, type protos } from "@google-analytics/data";
 
-import isDevelopment from "~/shared/lib/is-development";
-import TerminalLogger from "~/shared/lib/terminal-logger";
+import isDevelopment from "~/shared/utils/is-development";
+import Log from "~/shared/utils/terminal-logger";
 
 const analyticsDataClient = new BetaAnalyticsDataClient({
   credentials: {
     client_email: process.env.GOOGLE_CLIENT_EMAIL,
     // TODO: Consider storing private key as encoded base64, then decode and use
-    private_key: process.env
-      .GOOGLE_ANALYTICS_PRIVATE_KEY!.split(String.raw`\n`)
-      .join("\n"),
+    private_key:
+      process.env.GOOGLE_ANALYTICS_PRIVATE_KEY.split(String.raw`\n`).join("\n"),
   },
 });
 
@@ -42,8 +41,8 @@ export async function getPageviewByCatalogId(
   const request = {
     dateRanges: [
       {
-        startDate: "90daysAgo",
         endDate: "today",
+        startDate: "90daysAgo",
       },
     ],
     dimensionFilter: {
@@ -68,7 +67,7 @@ export async function getPageviewByCatalogId(
     property: `properties/${process.env.GOOGLE_ANALYTICS_PROPERTY_ID}`,
   } as protos.google.analytics.data.v1beta.IRunReportRequest;
 
-  TerminalLogger.info(`Querying pageview of catalog: ${catalogId}`);
+  Log.info(`Querying pageview of catalog: ${catalogId}`);
 
   // Refer: https://github.com/googleanalytics/nodejs-docs-samples/blob/e21670ab2c79a12c45bffa10ac26e0324279a718/google-analytics-data/run_report.js#L33-L93
   const [response] = await analyticsDataClient.runReport(request);

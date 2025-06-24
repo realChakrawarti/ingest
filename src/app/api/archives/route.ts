@@ -1,4 +1,4 @@
-import { NextRequest } from "next/server";
+import type { NextRequest } from "next/server";
 
 import { createArchive, getArchiveByUser } from "~/entities/archives";
 import { getUserIdHeader } from "~/shared/lib/next/get-user-id-header";

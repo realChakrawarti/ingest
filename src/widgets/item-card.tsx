@@ -1,10 +1,9 @@
 import { Check, Clock, Copy, Trash2 } from "lucide-react";
 import Link from "next/link";
-import { ReactNode, useState } from "react";
+import { type ReactNode, useState } from "react";
 
 import appConfig from "~/shared/app-config";
 import { toast } from "~/shared/hooks/use-toast";
-import { cn } from "~/shared/lib/tailwind-merge";
 import { Button } from "~/shared/ui/button";
 import {
   Card,
@@ -24,6 +23,8 @@ import {
   DialogTrigger,
 } from "~/shared/ui/dialog";
 import { WarningIcon } from "~/shared/ui/icons";
+import { cn } from "~/shared/utils/tailwind-merge";
+
 import JustTip from "~/widgets/just-the-tip";
 
 function CopyButton({ id, type }: { id: string; type: "catalog" | "archive" }) {

@@ -1,9 +1,12 @@
-/* eslint-disable @next/next/no-img-element */
-import { ClockIcon, type LucideIcon } from "lucide-react";
+import { ClockIcon, Info, type LucideIcon } from "lucide-react";
 import dynamic from "next/dynamic";
-import { ReactNode } from "react";
+import type { ReactNode } from "react";
+
+import type { VideosByCatalog } from "~/entities/catalogs/models";
 
 import fetchApi from "~/shared/lib/api/fetch";
+import type { YouTubeCardOptions } from "~/shared/types-schema/types";
+import { Button } from "~/shared/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -11,7 +14,10 @@ import {
   DropdownMenuTrigger,
 } from "~/shared/ui/dropdown-menu";
 import { MonthIcon, ThreeDotIcon, WeekIcon } from "~/shared/ui/icons";
+
+import BackLink from "~/widgets/back-link";
 import GridContainer from "~/widgets/grid-container";
+import JustTip from "~/widgets/just-the-tip";
 import {
   PublicHeaderTitle,
   PublicMainContainer,
@@ -37,13 +43,22 @@ export default async function PubliCatalog({
   channelId: string;
   catalogId: string;
 }) {
-  const result = await fetchApi(`/catalogs/${catalogId}/videos`);
+  const result = await fetchApi<VideosByCatalog>(
+    `/catalogs/${catalogId}/videos`
+  );
 
   const catalogData = result.data;
 
-  const videos: Record<string, any> = catalogData?.data;
-  const catalogTitle = catalogData?.title;
-  const catalogDescription = catalogData?.description;
+  const videos = catalogData?.data;
+  const catalogTitle = catalogData?.title ?? "";
+  const catalogDescription = catalogData?.description ?? "";
+
+  const playerOptions: YouTubeCardOptions = {
+    addWatchLater: true,
+    enableJsApi: true,
+    hideAvatar: Boolean(channelId),
+    markWatched: true,
+  };
 
   if (!videos) {
     return (
@@ -64,18 +79,21 @@ export default async function PubliCatalog({
         <PublicHeaderTitle>
           <div className="space-y-0">
             <div className="flex justify-between items-center">
-              <div className="space-y-1">
-                <span className="flex items-center gap-4">
-                  <h1 className="text-2xl font-semibold tracking-tight">
-                    {catalogTitle}
-                  </h1>
-                </span>
-                <p className="text-base text-muted-foreground">
-                  {catalogDescription}
-                </p>
+              <div className="flex items-center gap-4">
+                <BackLink href="/explore/catalogs" />
+                <div className="space-y-1">
+                  <span className="flex items-center gap-4">
+                    <h1 className="text-lg lg:text-xl font-semibold tracking-tight">
+                      {catalogTitle}
+                    </h1>
+                    <JustTip label={catalogDescription}>
+                      <Info className="size-4" />
+                    </JustTip>
+                  </span>
+                </div>
               </div>
 
-              <div className="self-center mr-2">
+              <div className="mr-2">
                 <DropdownMenu>
                   <DropdownMenuTrigger>
                     <ThreeDotIcon className="size-5" />
@@ -116,11 +134,7 @@ export default async function PubliCatalog({
             {today.map((video) => (
               <YouTubeCard
                 key={video.videoId}
-                options={{
-                  addWatchLater: true,
-                  enableJsApi: true,
-                  hideAvatar: Boolean(channelId),
-                }}
+                options={playerOptions}
                 video={video}
               />
             ))}
@@ -132,11 +146,7 @@ export default async function PubliCatalog({
             {week.map((video) => (
               <YouTubeCard
                 key={video.videoId}
-                options={{
-                  addWatchLater: true,
-                  enableJsApi: true,
-                  hideAvatar: Boolean(channelId),
-                }}
+                options={playerOptions}
                 video={video}
               />
             ))}
@@ -148,11 +158,7 @@ export default async function PubliCatalog({
             {month.map((video) => (
               <YouTubeCard
                 key={video.videoId}
-                options={{
-                  addWatchLater: true,
-                  enableJsApi: true,
-                  hideAvatar: Boolean(channelId),
-                }}
+                options={playerOptions}
                 video={video}
               />
             ))}

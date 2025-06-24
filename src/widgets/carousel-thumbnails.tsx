@@ -1,8 +1,7 @@
-/* eslint-disable @next/next/no-img-element */
 "use client";
 
 import Link from "next/link";
-import React, { MutableRefObject } from "react";
+import type { MutableRefObject } from "react";
 import Slider, { type Settings } from "react-slick";
 
 function ThumbnailCarousel({
@@ -30,7 +29,7 @@ function ThumbnailCarousel({
     <div className="size-full overflow-hidden">
       <Slider ref={sliderRef} {...settings}>
         {thumbnails?.map((thumb) => {
-          const videoId = thumb.split("/vi/")[1].split("/")[0];
+          const videoId = thumb?.split("/vi/")[1].split("/")[0];
           return (
             <div key={thumb}>
               <Link prefetch={false} scroll={false} href={`${path}#${videoId}`}>

@@ -1,18 +1,26 @@
-import { cookies } from "next/headers";
-import { NextRequest, NextResponse } from "next/server";
+import { cookies, headers } from "next/headers";
+import { type NextRequest, NextResponse } from "next/server";
 
 import { SESSION_COOKIE_NAME } from "./shared/lib/constants";
 import { verifyFirebaseSessionCookie } from "./shared/lib/firebase/verify-session-cookie";
 import { NxResponse } from "./shared/lib/next/nx-response";
-import TerminalLogger from "./shared/lib/terminal-logger";
+import Log from "./shared/utils/terminal-logger";
+
+const allowedOrigins = ["https://ingest.707x.in", "https://ytcatalog.707x.in"];
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
+  const origin = request.headers.get("origin") ?? "";
 
   // Conditional logic to explicitly ignore /api/catalogs/valid
   if (pathname === "/api/catalogs/valid") {
     // Allow this specific path to bypass middleware logic
     return NextResponse.next();
+  }
+
+  if (allowedOrigins.includes(origin)) {
+    request.headers.set("Access-Control-Allow-Origin", origin);
+    request.headers.set("Vary", "Origin");
   }
 
   const authSessionToken = cookies().get(SESSION_COOKIE_NAME)?.value;
@@ -25,15 +33,14 @@ export async function middleware(request: NextRequest) {
     );
   }
   try {
-    const decodeUserDetails = await verifyFirebaseSessionCookie(
-      authSessionToken
-    );
+    const decodeUserDetails =
+      await verifyFirebaseSessionCookie(authSessionToken);
     const userId = decodeUserDetails.sub;
     if (userId) {
       request.headers.set("userId", userId);
     }
   } catch (err) {
-    TerminalLogger.fatal("Failed authorization on middleware", err);
+    Log.fatal("Failed authorization on middleware", err);
     return NxResponse.fail(
       "Unable to verify credentials.",
       { code: "VERIFICATION_FAILED", details: "Unable to verify credentials." },

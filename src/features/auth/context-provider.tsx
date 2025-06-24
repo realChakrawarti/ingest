@@ -1,8 +1,8 @@
 "use client";
 
 import {
-  GithubAuthProvider,
-  GoogleAuthProvider,
+  type GithubAuthProvider,
+  type GoogleAuthProvider,
   onAuthStateChanged,
   signInWithPopup,
   signOut,
@@ -21,7 +21,7 @@ import { useToast } from "~/shared/hooks/use-toast";
 import fetchApi from "~/shared/lib/api/fetch";
 import { Routes } from "~/shared/lib/constants";
 import { auth } from "~/shared/lib/firebase/client";
-import TerminalLogger from "~/shared/lib/terminal-logger";
+import Log from "~/shared/utils/terminal-logger";
 
 type UserContext = {
   user: User | null;
@@ -46,18 +46,18 @@ export default function AuthContextProvider({ children }: PropsWithChildren) {
   const [userState, setUserState] = useState<User | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
-  const authStateChanged = async (user: User | null) => {
-    const token = await user?.getIdToken();
-    if (user && token) {
-      setUserState(user);
-      setLoading(false);
-    } else {
-      setUserState(null);
-      setLoading(false);
-    }
-  };
-
   useLayoutEffect(() => {
+    const authStateChanged = async (user: User | null) => {
+      const token = await user?.getIdToken();
+      if (user && token) {
+        setUserState(user);
+        setLoading(false);
+      } else {
+        setUserState(null);
+        setLoading(false);
+      }
+    };
+
     const unsubscribeFromAuth = onAuthStateChanged(auth, authStateChanged);
 
     return () => {
@@ -76,14 +76,14 @@ export default function AuthContextProvider({ children }: PropsWithChildren) {
       if (user) {
         const userToken = await user.getIdToken();
         const result = await fetchApi("/users", {
-          method: "POST",
           body: JSON.stringify({ token: userToken }),
+          method: "POST",
         });
         toast({ title: result.message });
         router.push(Routes.DASHBOARD);
       }
     } catch (err) {
-      TerminalLogger.fail(JSON.stringify(err));
+      Log.fail(JSON.stringify(err));
       setLoading(false);
     }
   }
