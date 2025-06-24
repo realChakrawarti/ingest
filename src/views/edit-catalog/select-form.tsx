@@ -53,11 +53,11 @@ export default function SelectForm({
       return;
     }
 
-    const channelExists = savedChannels.find(
+    const channelExists = savedChannels?.find(
       (item) => item.channelId === channelInfo.channelId
     );
 
-    const playlistWithChannelExists = savedPlaylists.find(
+    const playlistWithChannelExists = savedPlaylists?.find(
       (item) => item.channelId === channelInfo.channelId
     );
 

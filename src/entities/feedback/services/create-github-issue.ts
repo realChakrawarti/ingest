@@ -8,7 +8,7 @@ export async function createGitHubIssue(title: string, description: string) {
   const result = await octokit.request("POST /repos/{owner}/{repo}/issues", {
     body: description,
     owner: "realChakrawarti",
-    repo: "yt-catalog",
+    repo: "ingest",
     title: title,
   });
 

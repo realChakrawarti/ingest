@@ -7,8 +7,9 @@ import {
 import { getAuth } from "firebase-admin/auth";
 import { getFirestore } from "firebase-admin/firestore";
 
-import isDevelopment from "../../utils/is-development";
-import Log from "../../utils/terminal-logger";
+import appConfig from "~/shared/app-config";
+import isDevelopment from "~/shared/utils/is-development";
+import Log from "~/shared/utils/terminal-logger";
 
 const appOptions: AppOptions = {
   credential: cert({
@@ -24,7 +25,7 @@ if (isDevelopment()) {
   process.env.FIREBASE_AUTH_EMULATOR_HOST = "localhost:9099";
 }
 
-const appInstanceName = "ytcatalog-server";
+const appInstanceName = `${appConfig.name}-server`;
 
 function getServerFirebaseApp() {
   const apps = getApps();

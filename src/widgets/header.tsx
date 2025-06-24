@@ -5,11 +5,11 @@ import Link from "next/link";
 
 import appConfig from "~/shared/app-config";
 import { useScrollTrigger } from "~/shared/hooks/use-scroll-trigger";
+import { Button } from "~/shared/ui/button";
+import { SidebarTrigger } from "~/shared/ui/sidebar";
 import { cn } from "~/shared/utils/tailwind-merge";
 
 import AppIcon from "../../public/icon.png";
-import { Button } from "../shared/ui/button";
-import { SidebarTrigger } from "../shared/ui/sidebar";
 import { GitHubStargazer } from "./github-stargazers";
 import ThemeToggle from "./theme-toggle";
 
@@ -66,7 +66,7 @@ const Header = () => {
           </Link>
         </div>
         <div className="flex gap-3 items-center">
-          <GitHubStargazer owner="realChakrawarti" repo="yt-catalog" />
+          <GitHubStargazer owner="realChakrawarti" repo="ingest" />
           <ThemeToggle />
         </div>
       </div>

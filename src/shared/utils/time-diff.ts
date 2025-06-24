@@ -1,4 +1,7 @@
-function formatPluralUnit(value: number, type: "month" | "minute" | "hour" | "day") {
+function formatPluralUnit(
+  value: number,
+  type: "month" | "minute" | "hour" | "day"
+) {
   return `${value} ${type}${value > 1 ? "s" : ""}`;
 }
 
@@ -13,7 +16,7 @@ function formatTimeDifferenceWithMonths(timeDiff: number) {
   let minutes = 0;
 
   if (timeDiff < MINUTES_PER_HOUR) {
-    minutes = timeDiff;
+    minutes = Math.floor(timeDiff);
   } else if (timeDiff < MINUTES_PER_DAY) {
     hours = Math.floor(timeDiff / MINUTES_PER_HOUR);
     minutes = Math.round(timeDiff % MINUTES_PER_HOUR);

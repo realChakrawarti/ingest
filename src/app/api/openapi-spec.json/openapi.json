@@ -1,11 +1,11 @@
 {
   "openapi": "3.1.1",
   "info": {
-    "title": "YTCatalog API",
+    "title": "Ingest API",
     "version": "1.5.8",
     "summary": "Organize YouTube channels and playlists into Catalogs"
   },
-  "servers": [{ "url": "https://ytcatalog.707x.in/api" }],
+  "servers": [{ "url": "https://ingest.707x.in/api" }],
   "components": {},
   "paths": {
     "/feedback": {

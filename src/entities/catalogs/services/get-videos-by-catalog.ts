@@ -11,25 +11,8 @@ import { COLLECTION } from "~/shared/lib/firebase/collections";
 import Log from "~/shared/utils/terminal-logger";
 import { time } from "~/shared/utils/time";
 
-import type { CatalogList, UserCatalogDocument } from "../models";
+import type { CatalogList, UserCatalogDocument, VideoListData, VideoMetadata } from "../models";
 import { getPageviewByCatalogId } from "./get-pageviews-by-catalog-id";
-
-type VideoMetadata = {
-  description: string;
-  title: string;
-  channelId: string;
-  thumbnail: any;
-  channelTitle: string;
-  videoId: string;
-  publishedAt: string;
-  channelLogo: string;
-};
-
-type videoListData = {
-  day: VideoMetadata[];
-  week: VideoMetadata[];
-  month: VideoMetadata[];
-};
 
 async function updateChannelLogos(list: CatalogList[]): Promise<CatalogList[]> {
   const channels = new Set<string>();
@@ -88,7 +71,7 @@ export async function getVideosByCatalog(catalogId: string) {
   const videoList: VideoMetadata[] = [];
   let totalVideos: number = 0;
 
-  let videoFilterData: videoListData = {
+  let videoFilterData: VideoListData = {
     day: [],
     month: [],
     week: [],
@@ -387,5 +370,5 @@ async function getChannelVideos(channel: CatalogList<"channel">) {
  * which is a convention used by YouTube to generate playlist IDs from channel IDs.
  */
 function createPlaylistId(channelId: string) {
-  return channelId.substring(0, 1) + "U" + channelId.substring(2);
+  return `${channelId.substring(0, 1)}U${channelId.substring(2)}`;
 }

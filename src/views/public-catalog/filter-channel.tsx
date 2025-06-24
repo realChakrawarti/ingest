@@ -7,10 +7,12 @@ import { Avatar, AvatarFallback, AvatarImage } from "~/shared/ui/avatar";
 import { Badge } from "~/shared/ui/badge";
 import { cn } from "~/shared/utils/tailwind-merge";
 
+import type { ChannelTag } from "./helper-methods";
+
 export default function FilterChannel({
   activeChannels,
 }: {
-  activeChannels: any;
+  activeChannels: ChannelTag[];
 }) {
   const searchParams = useSearchParams();
   const pathname = usePathname();
@@ -64,15 +66,13 @@ export default function FilterChannel({
           "max-w-sm sm:max-w-xl md:max-w-2xl lg:max-w-3xl xl:max-w-4xl"
         )}
       >
-        {activeChannels.length > 1 ? (
-          <Badge
-            onClick={handleOnClear}
-            className="cursor-pointer text-sm h-8 p-0 px-3 text-nowrap select-none"
-            variant="outline"
-          >
-            All
-          </Badge>
-        ) : null}
+        <Badge
+          onClick={handleOnClear}
+          className="cursor-pointer text-sm h-8 p-0 px-3 text-nowrap select-none"
+          variant={!channelId ? "default" : "outline"}
+        >
+          All
+        </Badge>
         {activeChannels.map((channel: any) => (
           <Badge
             key={channel.id}

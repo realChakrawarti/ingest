@@ -18,6 +18,7 @@ import {
 import { PlusIcon } from "~/shared/ui/icons";
 import { Input } from "~/shared/ui/input";
 import { Label } from "~/shared/ui/label";
+
 import { useMetaValidate } from "~/widgets/use-meta-validate";
 
 interface CreateArchiveDialogProps {
@@ -38,11 +39,11 @@ export default function CreateArchiveDialog({
   const createNewArchive = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const result = await fetchApi("/archives", {
-      method: "POST",
       body: JSON.stringify({
-        title: meta.title,
         description: meta.description,
+        title: meta.title,
       }),
+      method: "POST",
     });
 
     if (result.success) {
@@ -59,9 +60,9 @@ export default function CreateArchiveDialog({
     <Dialog>
       <DialogTrigger asChild>
         <Button disabled={disabled}>
-          <span className="flex items-center gap-2">
+          <span className="flex items-center gap-1">
             <PlusIcon size={24} />
-            Create Archive
+            Archive
           </span>
         </Button>
       </DialogTrigger>

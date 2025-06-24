@@ -1,5 +1,5 @@
 {
-  "name": "yt-catalog",
+  "name": "ingest",
   "version": "1.7.6",
   "scripts": {
     "dev": "concurrently \"pnpm run emulate-firebase\" \"next dev\" --kill-others",
@@ -15,18 +15,18 @@
     "release:minor": "standard-version --release-as minor",
     "release:patch": "standard-version --release-as patch",
     "release:major": "standard-version --release-as major",
+    "ui:migrate": "pnpx shadcn@latest migrate radix",
     "deps": "pnpx dependex"
   },
   "engines": {
     "node": ">=22.0.0"
   },
   "dependencies": {
+    "@bprogress/next": "^3.2.12",
     "@google-analytics/data": "^4.12.0",
     "@icons-pack/react-simple-icons": "^10.2.0",
     "@next/third-parties": "^14.2.24",
-    "@radix-ui/react-checkbox": "^1.3.2",
     "@stoplight/elements": "^9.0.0",
-    "@types/youtube": "^0.1.0",
     "canvas-confetti": "^1.9.3",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
@@ -40,20 +40,18 @@
     "linkifyjs": "^4.2.0",
     "lucide-react": "^0.439.0",
     "nanoid": "^5.1.0",
-    "next": "^14.2.24",
-    "next-nprogress-bar": "^2.4.5",
-    "next-themes": "^0.4.4",
+    "next": "^14.2.30",
+    "next-themes": "^0.4.6",
     "octokit": "^4.1.2",
     "radix-ui": "latest",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-slick": "^0.30.3",
     "slick-carousel": "^1.8.1",
-    "swr": "^2.3.2",
+    "swr": "^2.3.3",
     "tailwind-merge": "^2.6.0",
     "tailwind-variants": "^0.2.1",
     "tailwindcss-animate": "^1.0.7",
-    "usehooks-ts": "^3.1.1",
     "zod": "^3.24.2",
     "zustand": "^5.0.3"
   },
@@ -63,9 +61,10 @@
     "@commitlint/config-conventional": "^19.7.1",
     "@types/canvas-confetti": "^1.9.0",
     "@types/node": "^20.17.19",
-    "@types/react": "^18.3.18",
-    "@types/react-dom": "^18.3.5",
+    "@types/react": "^18.3.23",
+    "@types/react-dom": "^18.3.7",
     "@types/react-slick": "^0.23.13",
+    "@types/youtube": "^0.1.2",
     "concurrently": "^9.1.2",
     "firebase-tools": "^13.31.1",
     "husky": "^9.1.7",
@@ -73,7 +72,7 @@
     "react-scan": "^0.3.3",
     "standard-version": "^9.5.0",
     "tailwindcss": "^3.4.17",
-    "typescript": "^5.7.3",
+    "typescript": "^5.8.3",
     "vitest": "^3.2.4"
   },
   "packageManager": "pnpm@10.9.0+sha512.0486e394640d3c1fb3c9d43d49cf92879ff74f8516959c235308f5a8f62e2e19528a65cdc2a3058f587cde71eba3d5b56327c8c33a97e4c4051ca48a10ca2d5f"

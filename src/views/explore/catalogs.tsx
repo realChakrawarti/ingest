@@ -1,5 +1,7 @@
 import fetchApi from "~/shared/lib/api/fetch";
 import type { ValidMetadata } from "~/shared/types-schema/types";
+
+import BackLink from "~/widgets/back-link";
 import DetailsCard from "~/widgets/details-card";
 import GridContainer from "~/widgets/grid-container";
 import {
@@ -18,7 +20,8 @@ export default async function Catalogs() {
   return (
     <PublicMainContainer>
       <PublicHeaderTitle>
-        <h1 className="text-2xl font-semibold tracking-tight flex gap-2 items-start">
+        <h1 className="text-lg lg:text-xl font-semibold tracking-tight flex gap-2 items-center">
+          <BackLink href="/explore" />
           <p>Catalogs</p>
         </h1>
       </PublicHeaderTitle>

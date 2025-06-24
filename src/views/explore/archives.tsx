@@ -1,4 +1,6 @@
 import fetchApi from "~/shared/lib/api/fetch";
+
+import BackLink from "~/widgets/back-link";
 import DetailsCard from "~/widgets/details-card";
 import GridContainer from "~/widgets/grid-container";
 import {
@@ -13,7 +15,12 @@ export default async function Archives() {
   return (
     <PublicMainContainer>
       <PublicHeaderTitle>
-        <h1 className="text-2xl font-semibold tracking-tight">Archives</h1>
+        <div className="flex items-center gap-2">
+          <BackLink href="/explore" />
+          <h1 className="text-lg lg:text-xl font-semibold tracking-tight">
+            Archives
+          </h1>
+        </div>
       </PublicHeaderTitle>
       <PublicContentContainer>
         <GridContainer>

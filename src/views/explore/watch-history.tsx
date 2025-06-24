@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 
 import { indexedDB } from "~/shared/lib/api/dexie";
 import type { History } from "~/shared/types-schema/types";
+
+import BackLink from "~/widgets/back-link";
 import GridContainer from "~/widgets/grid-container";
 import {
   PublicContentContainer,
@@ -26,7 +28,12 @@ export default function WatchHistory() {
   return (
     <PublicMainContainer>
       <PublicHeaderTitle>
-        <h1 className="text-2xl font-semibold tracking-tight">Watch history</h1>
+        <div className="flex items-center gap-2">
+          <BackLink href="/explore" />
+          <h1 className="text-lg lg:text-xl font-semibold tracking-tight">
+            Watch history
+          </h1>
+        </div>
       </PublicHeaderTitle>
       <PublicContentContainer>
         <GridContainer>

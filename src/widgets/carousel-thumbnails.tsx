@@ -29,7 +29,7 @@ function ThumbnailCarousel({
     <div className="size-full overflow-hidden">
       <Slider ref={sliderRef} {...settings}>
         {thumbnails?.map((thumb) => {
-          const videoId = thumb.split("/vi/")[1].split("/")[0];
+          const videoId = thumb?.split("/vi/")[1].split("/")[0];
           return (
             <div key={thumb}>
               <Link prefetch={false} scroll={false} href={`${path}#${videoId}`}>

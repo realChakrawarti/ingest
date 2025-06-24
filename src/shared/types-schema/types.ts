@@ -33,11 +33,12 @@ type VideoData = {
 };
 
 export type YouTubeCardOptions = {
-  removeVideo: (_videoId: string) => void;
+  removeVideo?: (_videoId: string) => void;
   hideAvatar: boolean;
   addWatchLater: boolean;
-  removeWatchLater: boolean;
+  removeWatchLater?: boolean;
   enableJsApi: boolean;
+  markWatched: boolean;
 };
 
 export interface History extends VideoData {

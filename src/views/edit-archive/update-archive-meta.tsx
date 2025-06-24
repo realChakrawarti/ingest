@@ -17,6 +17,7 @@ import {
 } from "~/shared/ui/dialog";
 import { Input } from "~/shared/ui/input";
 import { Label } from "~/shared/ui/label";
+
 import { useMetaValidate } from "~/widgets/use-meta-validate";
 
 interface UpdateArchiveMetaProps {
@@ -33,18 +34,18 @@ export default function UpdateArchiveMeta({
   description,
 }: UpdateArchiveMetaProps) {
   const { handleOnChange, meta, metaError, submitDisabled } = useMetaValidate({
-    title,
     description,
+    title,
   });
 
   async function updateArchiveMeta(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const result = await fetchApi(`/archives/${archiveId}/update`, {
-      method: "PATCH",
       body: JSON.stringify({
-        title: meta.title,
         description: meta.description,
+        title: meta.title,
       }),
+      method: "PATCH",
     });
 
     if (!result.success) {

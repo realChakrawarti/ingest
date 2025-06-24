@@ -87,10 +87,14 @@ export default class Log {
   /**
    * Logs a debug message, enabled only if debug mode is active.
    * @param {string} message - The debug message.
+   * @param {any} value - The debug value.
    */
-  static debug(message: string): void {
+  static debug(message: string, value?: any): void {
     if (Log._isDebugEnabled) {
       console.debug(`⬛ ${message}`);
+      if (value) {
+        console.debug(value);
+      }
     }
   }
 

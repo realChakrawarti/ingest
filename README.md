@@ -14,17 +14,17 @@
 
 ## Introduction
 
-![ytcatalog-homepage](./screen-capture.png)
+![ingest-homepage](./screen-capture.png)
 
 
-Do you ever find yourself lost in a YouTube wormhole, spending hours watching unrelated videos? YTCatalog is here to help!
+Do you ever find yourself lost in a YouTube wormhole, spending hours watching unrelated videos? Ingest is here to help!
 
 This web application empowers you to take control of your YouTube viewing by creating personalized catalogs of your favorite channels. Organize and curate content from channels you find valuable, making it easy to find the videos you want to watch later.
 
 ### Key Features:
 
 - **Channel Catalog Creation:** Effortlessly build a list of YouTube channels you enjoy. Add them to your catalog for quick access.
-- **Automatic Updates (Every 4 Hours):** Stay informed! YTCatalog automatically refreshes your catalog every 4 hours upon revisiting the page.
+- **Automatic Updates (Every 4 Hours):** Stay informed! Ingest automatically refreshes your catalog every 4 hours upon revisiting the page.
 - **Seamless Sharing:** Share your curated catalogs with friends, family, or online communities who share your interests.
 
 ### Benefits:
@@ -43,6 +43,6 @@ Read the [contributing](./CONTRIBUTING.md) guide.
 
 ### Contributors
 
-<a href="https://github.com/realChakrawarti/yt-catalog/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=realChakrawarti/yt-catalog" />
+<a href="https://github.com/realChakrawarti/ingest/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=realChakrawarti/ingest" />
 </a>

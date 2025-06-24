@@ -20,6 +20,7 @@ export default function YouTubeCard(props: YouTubeCardProps) {
     hideAvatar = false,
     addWatchLater = false,
     removeWatchLater = false,
+    markWatched = false,
   } = options ?? {};
 
   return (
@@ -33,6 +34,7 @@ export default function YouTubeCard(props: YouTubeCardProps) {
         video={video}
         addWatchLater={addWatchLater}
         removeWatchLater={removeWatchLater}
+        markWatched={markWatched}
       />
       <div className="p-3">
         <ChannelMeta hideAvatar={hideAvatar} {...video} />

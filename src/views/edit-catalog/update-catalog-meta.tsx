@@ -17,6 +17,7 @@ import {
 } from "~/shared/ui/dialog";
 import { Input } from "~/shared/ui/input";
 import { Label } from "~/shared/ui/label";
+
 import { useMetaValidate } from "~/widgets/use-meta-validate";
 
 interface UpdateCatalogMetaProps {
@@ -33,18 +34,18 @@ export default function UpdateCatalogMeta({
   description,
 }: UpdateCatalogMetaProps) {
   const { meta, metaError, handleOnChange, submitDisabled } = useMetaValidate({
-    title,
     description,
+    title,
   });
 
   async function updateCatalogMeta(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const result = await fetchApi(`/catalogs/${catalogId}/update`, {
-      method: "PATCH",
       body: JSON.stringify({
-        title: meta.title,
         description: meta.description,
+        title: meta.title,
       }),
+      method: "PATCH",
     });
 
     if (!result.success) {
@@ -57,7 +58,7 @@ export default function UpdateCatalogMeta({
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button>
+        <Button variant="ghost" size="icon">
           <Edit />
         </Button>
       </DialogTrigger>

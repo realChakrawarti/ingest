@@ -3,19 +3,18 @@
 import type { PropsWithChildren } from "react";
 
 import { useIsMobile } from "~/shared/hooks/use-mobile";
-
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "../shared/ui/tooltip";
+} from "~/shared/ui/tooltip";
 
 type JustTipProps = PropsWithChildren & { label: string };
 export default function JustTip({ children, label }: JustTipProps) {
   const isMobile = useIsMobile();
 
-  if (isMobile) return <>{children}</>;
+  if (isMobile) return <abbr className="no-underline" title={label}>{children}</abbr>;
 
   return (
     <TooltipProvider>

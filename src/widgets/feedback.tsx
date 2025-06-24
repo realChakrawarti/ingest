@@ -11,9 +11,7 @@ import { useState } from "react";
 
 import { toast } from "~/shared/hooks/use-toast";
 import fetchApi from "~/shared/lib/api/fetch";
-import { cn } from "~/shared/utils/tailwind-merge";
-
-import { Button } from "../shared/ui/button";
+import { Button } from "~/shared/ui/button";
 import {
   Dialog,
   DialogClose,
@@ -22,17 +20,19 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "../shared/ui/dialog";
-import { Input } from "../shared/ui/input";
-import { Label } from "../shared/ui/label";
+} from "~/shared/ui/dialog";
+import { Input } from "~/shared/ui/input";
+import { Label } from "~/shared/ui/label";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "../shared/ui/select";
-import { Textarea } from "../shared/ui/textarea";
+} from "~/shared/ui/select";
+import { Textarea } from "~/shared/ui/textarea";
+import { cn } from "~/shared/utils/tailwind-merge";
+
 import { OutLink } from "./out-link";
 
 type FeedbackType = "Bug" | "Improvement" | "Feature" | "General";
@@ -71,7 +71,7 @@ export default function Feedback() {
 
     const title =
       feedback.length > TITLE_CHAR_LIMIT
-        ? feedback.substring(0, TITLE_CHAR_LIMIT) + "..."
+        ? `${feedback.substring(0, TITLE_CHAR_LIMIT)}...`
         : feedback;
     const description = `
 ### Reporter

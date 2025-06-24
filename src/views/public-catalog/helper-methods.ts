@@ -1,12 +1,14 @@
 // TODO: Make use lodash to simplify the code
 
+import type { VideoListData, VideoMetadata } from "~/entities/catalogs/models";
+
 export function filterChannel(
-  videoData: any,
+  videoData: VideoListData,
   channelId?: string
-): [any[], any[], any[]] {
-  const today: any[] = videoData?.day;
-  const week: any[] = videoData?.week;
-  const month: any[] = videoData?.month;
+): [VideoMetadata[], VideoMetadata[], VideoMetadata[]] {
+  const today = videoData?.day;
+  const week = videoData?.week;
+  const month = videoData?.month;
 
   if (!channelId) {
     return [today, week, month];
@@ -18,10 +20,9 @@ export function filterChannel(
 
   return [filteredToday, filteredWeek, filteredMonth];
 }
+export type ChannelTag = { title: string; id: string; logo: string };
 
-type ChannelTag = { title: string; id: string; logo: string };
-
-function getChannels(videos: any[]) {
+function getChannels(videos: VideoMetadata[]) {
   const channels = [];
   for (let i = 0; i < videos?.length; i++) {
     const video = videos[i];
@@ -50,12 +51,12 @@ function channelUnique(channels: ChannelTag[]) {
   return uniqueChannels;
 }
 
-export function getActiveChannelIds(videoData: any): ChannelTag[] {
+export function getActiveChannelIds(videoData: VideoListData): ChannelTag[] {
   const channelIds: ChannelTag[] = [];
 
-  const today: any[] = videoData?.day;
-  const week: any[] = videoData?.week;
-  const month: any[] = videoData?.month;
+  const today = videoData?.day;
+  const week = videoData?.week;
+  const month = videoData?.month;
 
   channelIds.push(...getChannels(today));
   channelIds.push(...getChannels(week));
