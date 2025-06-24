@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.7.7](https://github.com/realChakrawarti/yt-catalog/compare/v1.7.6...v1.7.7) (2025-06-24)
+
+
+### Features
+
+* add back button & mark watched video ([5107bba](https://github.com/realChakrawarti/yt-catalog/commit/5107bba3eaccef07c8b65f7ab8f4a74cb929f9e6))
+* rename ytcatalog to ingest ([6c5744e](https://github.com/realChakrawarti/yt-catalog/commit/6c5744e6de3ca5b82416401c9bda792dcd04468c))
+
 ### [1.7.6](https://github.com/realChakrawarti/yt-catalog/compare/v1.7.5...v1.7.6) (2025-06-18)
 
 
