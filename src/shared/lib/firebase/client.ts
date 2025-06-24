@@ -1,8 +1,14 @@
-import { FirebaseOptions, getApps, initializeApp } from "firebase/app";
+import { type FirebaseOptions, getApps, initializeApp } from "firebase/app";
 import { connectAuthEmulator, getAuth } from "firebase/auth";
 import { connectFirestoreEmulator, getFirestore } from "firebase/firestore";
 
-const appInstanceName = "ytcatalog-client";
+import appConfig from "~/shared/app-config";
+import isDevelopment from "~/shared/utils/is-development";
+import Log from "~/shared/utils/terminal-logger";
+
+import localFirebase from "../../../../firebase.json";
+
+const appInstanceName = `${appConfig.name}-client`;
 
 const firebaseConfig: FirebaseOptions = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -21,7 +27,7 @@ function getClientFirebaseApp() {
     try {
       return initializeApp(firebaseConfig, appInstanceName);
     } catch (err) {
-      TerminalLogger.fail(`Failed to initialize Firebase client app: ${err}`);
+      Log.fail(`Failed to initialize Firebase client app: ${err}`);
       throw err;
     }
   }
@@ -33,10 +39,6 @@ const app = getClientFirebaseApp();
 
 const auth = getAuth(app);
 const db = getFirestore(app);
-
-import localFirebase from "../../../../firebase.json";
-import isDevelopment from "../is-development";
-import TerminalLogger from "../terminal-logger";
 
 const authPort = localFirebase.emulators.auth.port;
 const firestorePort = localFirebase.emulators.firestore.port;

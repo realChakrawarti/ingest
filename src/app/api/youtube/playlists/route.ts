@@ -1,4 +1,4 @@
-import { NextRequest } from "next/server";
+import type { NextRequest } from "next/server";
 
 import { getPlaylistsByChannel } from "~/entities/youtube";
 import { NxResponse } from "~/shared/lib/next/nx-response";

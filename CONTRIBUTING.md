@@ -1,6 +1,6 @@
 # Contributing
 
-We appreciate your interest in contributing to YTCatalog! This guide outlines the process for setting up your development environment, making contributions, and submitting pull requests.
+We appreciate your interest in contributing to Ingest! This guide outlines the process for setting up your development environment, making contributions, and submitting pull requests.
 
 <hr >
 
@@ -34,7 +34,7 @@ There are several ways you can contribute to the project:
 
 ## Issue Workflow
 
-Create tickets for bugs, feature requests, or any other questions you might have https://github.com/realChakrawarti/yt-catalog/issues/new. This helps us track and manage contributions effectively.
+Create tickets for bugs, feature requests, or any other questions you might have https://github.com/realChakrawarti/ingest/issues/new. This helps us track and manage contributions effectively.
 
 You can find the issue tracker here: https://github.com/users/realChakrawarti/projects/5
 
@@ -61,15 +61,15 @@ Before you begin contributing, make sure you have the necessary dependencies ins
 
 - Make sure you have [git](https://git-scm.com/downloads) installed.
 - Make sure you have [pnpm](https://pnpm.io/installation) installed.
-- Fork the [repository](https://github.com/realChakrawarti/yt-catalog) by
-  clicking on the **[Fork](https://github.com/realChakrawarti/yt-catalog/fork)** button on the repository's page. This creates a copy of the code under your GitHub user account.
+- Fork the [repository](https://github.com/realChakrawarti/ingest) by
+  clicking on the **[Fork](https://github.com/realChakrawarti/ingest/fork)** button on the repository's page. This creates a copy of the code under your GitHub user account.
 
   ```bash
-  git clone git@github.com:<your Github handle>/yt-catalog.git
+  git clone git@github.com:<your github handle>/ingest.git
 
-  cd yt-catalog
+  cd ingest
 
-  git remote add upstream https://github.com/realChakrawarti/yt-catalog.git
+  git remote add upstream https://github.com/realChakrawarti/ingest.git
   ```
 
   **Refer:** https://graphite.dev/guides/upstream-remote on how to sync your forked repository with original repository.

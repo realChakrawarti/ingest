@@ -1,6 +1,6 @@
 "use client";
 
-import { ChangeEvent, Dispatch, SetStateAction } from "react";
+import type { ChangeEvent, Dispatch, SetStateAction } from "react";
 
 import { TitleDescriptionSchema } from "~/shared/types-schema/schemas";
 import type { TitleDescriptionType } from "~/shared/types-schema/types";

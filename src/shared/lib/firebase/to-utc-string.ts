@@ -1,4 +1,4 @@
-import { Timestamp } from "firebase-admin/firestore";
+import type { Timestamp } from "firebase-admin/firestore";
 
 /**
  * Converts a Firestore Timestamp to a UTC formatted string.

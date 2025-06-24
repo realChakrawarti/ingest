@@ -15,8 +15,10 @@ import { usePathname } from "next/navigation";
 import { useState } from "react";
 
 import { useAuth } from "~/features/auth/context-provider";
+
 import { indexedDB } from "~/shared/lib/api/dexie";
-import { cn } from "~/shared/lib/tailwind-merge";
+import { Avatar, AvatarFallback, AvatarImage } from "~/shared/ui/avatar";
+import { Button } from "~/shared/ui/button";
 import {
   Collapsible,
   CollapsibleContent,
@@ -24,10 +26,6 @@ import {
 } from "~/shared/ui/collapsible";
 import { HeartListIcon, LogoutIcon } from "~/shared/ui/icons";
 import { Separator } from "~/shared/ui/separator";
-import NextUpdate from "~/views/public-catalog/next-update";
-
-import { Avatar, AvatarFallback, AvatarImage } from "../shared/ui/avatar";
-import { Button } from "../shared/ui/button";
 import {
   Sidebar,
   SidebarContent,
@@ -43,7 +41,11 @@ import {
   SidebarMenuSub,
   SidebarMenuSubItem,
   useSidebar,
-} from "../shared/ui/sidebar";
+} from "~/shared/ui/sidebar";
+import { cn } from "~/shared/utils/tailwind-merge";
+
+import NextUpdate from "~/views/public-catalog/next-update";
+
 import AuthButton from "./auth-buttons";
 import Feedback from "./feedback";
 

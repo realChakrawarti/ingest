@@ -1,6 +1,6 @@
-import { z } from "zod";
+import type { z } from "zod";
 
-import { TitleDescriptionSchema } from "./schemas";
+import type { TitleDescriptionSchema } from "./schemas";
 
 /**
  * Represents the metadata for catalogs and archives.
@@ -33,11 +33,12 @@ type VideoData = {
 };
 
 export type YouTubeCardOptions = {
-  removeVideo: (_videoId: string) => void;
+  removeVideo?: (_videoId: string) => void;
   hideAvatar: boolean;
   addWatchLater: boolean;
-  removeWatchLater: boolean;
+  removeWatchLater?: boolean;
   enableJsApi: boolean;
+  markWatched: boolean;
 };
 
 export interface History extends VideoData {

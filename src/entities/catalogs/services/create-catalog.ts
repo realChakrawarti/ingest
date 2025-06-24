@@ -1,6 +1,6 @@
 import { adminDb } from "~/shared/lib/firebase/admin";
 import { COLLECTION } from "~/shared/lib/firebase/collections";
-import { createNanoidToken } from "~/shared/lib/nanoid-token";
+import { createNanoidToken } from "~/shared/utils/nanoid-token";
 
 type CatalogMeta = {
   title: string;

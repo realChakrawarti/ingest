@@ -6,21 +6,31 @@ import { useMemo } from "react";
 import appConfig from "~/shared/app-config";
 import { toast } from "~/shared/hooks/use-toast";
 
-export default function ShareCatalog(props: any) {
+type ShareCatalogProps = {
+  catalogId: string;
+  catalogDescription: string;
+  catalogTitle: string;
+};
+
+export default function ShareCatalog({
+  catalogId,
+  catalogDescription,
+  catalogTitle,
+}: ShareCatalogProps) {
   const shareData = useMemo(
     () => ({
-      text: props.catalogDescription,
-      title: props.catalogTitle,
-      url: `${appConfig.url}/c/${props.catalogId}`,
+      text: catalogDescription,
+      title: catalogTitle,
+      url: `${appConfig.url}/c/${catalogId}`,
     }),
-    [props]
+    [catalogId, catalogDescription, catalogTitle]
   );
 
   const copyLink = () => {
     window.navigator.clipboard.writeText(shareData.url);
     toast({
-      title: "Link copied",
       description: "The video link has been copied to your clipboard.",
+      title: "Link copied",
     });
   };
 

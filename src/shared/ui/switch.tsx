@@ -1,11 +1,9 @@
-/* eslint-disable @stylistic/max-len */
-
 "use client"
 
 import { Switch as SwitchPrimitives } from "radix-ui"
 import * as React from "react"
 
-import { cn } from "~/shared/lib/tailwind-merge"
+import { cn } from "~/shared/utils/tailwind-merge"
 
 const Switch = React.forwardRef<
   React.ElementRef<typeof SwitchPrimitives.Root>,

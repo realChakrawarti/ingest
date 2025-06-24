@@ -1,8 +1,8 @@
 import { revalidatePath } from "next/cache";
-import { NextRequest } from "next/server";
+import type { NextRequest } from "next/server";
 
 import { deleteChannel, updateCatalogChannels } from "~/entities/catalogs";
-import { CatalogList } from "~/entities/catalogs/models";
+import type { CatalogList } from "~/entities/catalogs/models";
 import { getUserIdHeader } from "~/shared/lib/next/get-user-id-header";
 import { NxResponse } from "~/shared/lib/next/nx-response";
 

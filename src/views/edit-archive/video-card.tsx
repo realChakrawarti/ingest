@@ -1,9 +1,13 @@
-/* eslint-disable @next/next/no-img-element */
-import { VideoDetails } from "~/entities/youtube/models";
-import { VideoData, YouTubeCardOptions } from "~/shared/types-schema/types";
+import type { VideoDetails } from "~/entities/youtube/models";
+
+import type {
+  VideoData,
+  YouTubeCardOptions,
+} from "~/shared/types-schema/types";
 import { Button } from "~/shared/ui/button";
 import { DeleteIcon, ThreeDotIcon } from "~/shared/ui/icons";
 import { Popover, PopoverContent, PopoverTrigger } from "~/shared/ui/popover";
+
 import { ChannelMeta } from "~/widgets/youtube/components";
 
 function RemoveVideo({

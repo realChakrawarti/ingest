@@ -1,7 +1,9 @@
-import { NextRequest } from "next/server";
+import type { NextRequest } from "next/server";
 
 import { createGitHubIssue } from "~/entities/feedback";
+
 import { NxResponse } from "~/shared/lib/next/nx-response";
+import Log from "~/shared/utils/terminal-logger";
 
 export async function POST(request: NextRequest) {
   const { title, description } = await request.json();
@@ -14,6 +16,7 @@ export async function POST(request: NextRequest) {
       201
     );
   } catch (err) {
+    Log.fail(err);
     return NxResponse.fail(
       "Unable to share feedback.",
       {

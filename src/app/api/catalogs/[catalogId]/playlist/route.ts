@@ -1,10 +1,12 @@
 import { revalidatePath } from "next/cache";
-import { NextRequest } from "next/server";
+import type { NextRequest } from "next/server";
 
 import { deletePlaylist, updateCatalogPlaylists } from "~/entities/catalogs";
-import { CatalogList } from "~/entities/catalogs/models";
+import type { CatalogList } from "~/entities/catalogs/models";
+
 import { getUserIdHeader } from "~/shared/lib/next/get-user-id-header";
 import { NxResponse } from "~/shared/lib/next/nx-response";
+import Log from "~/shared/utils/terminal-logger";
 
 type ContextParams = {
   params: {
@@ -78,8 +80,9 @@ export async function DELETE(request: NextRequest, ctx: ContextParams) {
   try {
     await deletePlaylist(userId, catalogId, playlistToDelete);
     revalidatePath(`/c/${catalogId}`);
-    return NxResponse.success<any>("Playlist deleted successfully.", {}, 200);
+    return NxResponse.success("Playlist deleted successfully.", {}, 200);
   } catch (err) {
+    Log.fail(err);
     return NxResponse.fail(
       "Unable to delete playlist from the catalog.",
       {

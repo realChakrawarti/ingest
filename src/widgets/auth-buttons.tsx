@@ -1,10 +1,14 @@
 "use client";
 
 import { useAuth } from "~/features/auth/context-provider";
-import { githubProvider, googleProvider } from "~/features/auth/service-providers";
+import {
+  githubProvider,
+  googleProvider,
+} from "~/features/auth/service-providers";
 
-import { Button } from "../shared/ui/button";
-import { GithubIcon, GmailIcon } from "../shared/ui/icons";
+import { Button } from "~/shared/ui/button";
+import { GithubIcon, GmailIcon } from "~/shared/ui/icons";
+
 import JustTip from "./just-the-tip";
 
 export default function AuthButton() {

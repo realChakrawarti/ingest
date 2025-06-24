@@ -1,9 +1,8 @@
 "use client";
 
-// Needed because react-scan must be imported first
-// eslint-disable-next-line simple-import-sort/imports
+// biome-ignore assist/source/organizeImports: Needed because react-scan must be imported first
 import { scan } from "react-scan";
-import { JSX, useEffect } from "react";
+import { type JSX, useEffect } from "react";
 
 export function ReactScan(): JSX.Element {
   useEffect(() => {

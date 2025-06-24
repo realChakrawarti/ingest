@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { ReactNode, useEffect } from "react";
+import { type ReactNode, useEffect } from "react";
 
 import { useAuth } from "./context-provider";
 
@@ -14,7 +14,6 @@ export default function withAuth(WrappedComponent: React.ComponentType<any>) {
       if (!user && !loading) {
         router.push("/");
       }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [user]);
 
     return <WrappedComponent {...props} />;

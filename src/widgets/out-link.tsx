@@ -1,4 +1,4 @@
-import { ComponentProps } from "react";
+import type { ComponentProps } from "react";
 
 interface OutLinkProps extends ComponentProps<"a"> {
   href: `https://${string}` | string;

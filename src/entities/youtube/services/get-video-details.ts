@@ -1,6 +1,6 @@
 import { YOUTUBE_VIDEO_DATA } from "~/shared/lib/api/youtube-endpoints";
 
-import { VideoDetails } from "../models";
+import type { VideoDetails } from "../models";
 
 // TODO: Parse only the data required and sent it down
 export async function getVideoDetails(videoIdParam: string) {

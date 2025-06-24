@@ -1,4 +1,4 @@
-import { VideoDetails } from "~/entities/youtube/models";
+import type { VideoDetails } from "~/entities/youtube/models";
 
 export type ArchiveByIdResponse = {
   title: string;

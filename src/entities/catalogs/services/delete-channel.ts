@@ -3,7 +3,7 @@ import { FieldValue } from "firebase-admin/firestore";
 import { adminDb } from "~/shared/lib/firebase/admin";
 import { COLLECTION } from "~/shared/lib/firebase/collections";
 
-import { CatalogList } from "../models";
+import type { CatalogList } from "../models";
 
 /**
  * Removes specified channels from a user's catalog.

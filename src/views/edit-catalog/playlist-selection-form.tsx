@@ -1,21 +1,22 @@
 import Fuse from "fuse.js";
 import { Check, Loader2, Search } from "lucide-react";
 import { useParams } from "next/navigation";
-import { ChangeEvent, useEffect, useState } from "react";
-import { KeyedMutator } from "swr";
+import { type ChangeEvent, useEffect, useState } from "react";
+import type { KeyedMutator } from "swr";
 
-import { CatalogList } from "~/entities/catalogs/models";
-import { ChannelPlaylist } from "~/entities/youtube/models";
+import type { CatalogList } from "~/entities/catalogs/models";
+import type { ChannelPlaylist } from "~/entities/youtube/models";
+
 import { toast } from "~/shared/hooks/use-toast";
 import fetchApi from "~/shared/lib/api/fetch";
-import { ApiResponse } from "~/shared/lib/next/nx-response";
-import TerminalLogger from "~/shared/lib/terminal-logger";
+import type { ApiResponse } from "~/shared/lib/next/nx-response";
 import { Badge } from "~/shared/ui/badge";
 import { Button } from "~/shared/ui/button";
 import { Checkbox } from "~/shared/ui/checkbox";
 import { Input } from "~/shared/ui/input";
 import { Label } from "~/shared/ui/label";
 import { Separator } from "~/shared/ui/separator";
+import Log from "~/shared/utils/terminal-logger";
 
 import useCatalogStore from "./catalog-store";
 
@@ -78,8 +79,8 @@ export default function PlaylistSelectionForm({
       };
 
       const result = await fetchApi(`/catalogs/${catalogId}/playlist`, {
-        method: "PATCH",
         body: JSON.stringify(payload),
+        method: "PATCH",
       });
 
       if (result.success) {
@@ -91,7 +92,7 @@ export default function PlaylistSelectionForm({
       }
       setIsDialogOpen(false);
     } catch (err) {
-      TerminalLogger.fail(`${err}`);
+      Log.fail(`${err}`);
     } finally {
       setIsLoading(false);
     }
@@ -165,6 +166,7 @@ export default function PlaylistSelectionForm({
               >
                 {playlist.playlistTitle}
                 <button
+                  type="button"
                   onClick={() => togglePlaylistSelection(playlist)}
                   className="ml-1 hover:bg-muted-foreground/20 rounded-full p-0.5"
                 >

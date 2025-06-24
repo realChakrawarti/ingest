@@ -1,9 +1,9 @@
-import { DocumentData } from "firebase-admin/firestore";
+import type { DocumentData } from "firebase-admin/firestore";
 import { unstable_noStore } from "next/cache";
 
 import { adminDb } from "~/shared/lib/firebase/admin";
 import { COLLECTION } from "~/shared/lib/firebase/collections";
-import { ValidMetadata } from "~/shared/types-schema/types";
+import type { ValidMetadata } from "~/shared/types-schema/types";
 
 export async function getValidCatalogIds() {
   unstable_noStore();

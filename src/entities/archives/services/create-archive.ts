@@ -1,6 +1,6 @@
 import { adminDb } from "~/shared/lib/firebase/admin";
 import { COLLECTION } from "~/shared/lib/firebase/collections";
-import { createNanoidToken } from "~/shared/lib/nanoid-token";
+import { createNanoidToken } from "~/shared/utils/nanoid-token";
 
 export async function createArchive(userId: string, archiveMeta: any) {
   const nanoidToken = createNanoidToken(9);
@@ -18,8 +18,8 @@ export async function createArchive(userId: string, archiveMeta: any) {
   try {
     // Create archive sub-collection
     batch.set(userArchiveRef, {
-      videoIds: [],
       updatedAt: new Date(),
+      videoIds: [],
     });
 
     // Add a doc to archive collection

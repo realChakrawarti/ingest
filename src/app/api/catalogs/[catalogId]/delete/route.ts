@@ -1,5 +1,5 @@
 import { revalidatePath } from "next/cache";
-import { NextRequest } from "next/server";
+import type { NextRequest } from "next/server";
 
 import { deleteCatalog } from "~/entities/catalogs";
 import { getUserIdHeader } from "~/shared/lib/next/get-user-id-header";

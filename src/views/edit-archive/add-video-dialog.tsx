@@ -1,9 +1,8 @@
-import { ChangeEvent, useState } from "react";
+import { type ChangeEvent, useState } from "react";
 
 import { toast } from "~/shared/hooks/use-toast";
 import fetchApi from "~/shared/lib/api/fetch";
 import { Regex } from "~/shared/lib/constants";
-import TerminalLogger from "~/shared/lib/terminal-logger";
 import { Button } from "~/shared/ui/button";
 import {
   Dialog,
@@ -13,6 +12,7 @@ import {
   DialogTrigger,
 } from "~/shared/ui/dialog";
 import { Input } from "~/shared/ui/input";
+import Log from "~/shared/utils/terminal-logger";
 
 type VideoLink = {
   link: string;
@@ -27,8 +27,8 @@ export default function AddVideoDialog({
   revalidateArchive: () => void;
 }) {
   const [videoLink, setVideoLink] = useState<VideoLink>({
-    link: "",
     error: "",
+    link: "",
   });
   const handleVideoLink = (e: ChangeEvent<HTMLInputElement>) => {
     setVideoLink((prev) => ({
@@ -71,8 +71,8 @@ export default function AddVideoDialog({
       }
 
       const resultAdd = await fetchApi(`/archives/${archiveId}/add-video`, {
-        method: "PATCH",
         body: JSON.stringify(result.data),
+        method: "PATCH",
       });
 
       if (resultAdd.success) {
@@ -81,11 +81,11 @@ export default function AddVideoDialog({
       }
 
       setVideoLink({
-        link: "",
         error: "",
+        link: "",
       });
     } catch (err) {
-      TerminalLogger.fail(String(err));
+      Log.fail(String(err));
       toast({ title: "Something went wrong." });
     }
   };

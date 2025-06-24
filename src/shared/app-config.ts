@@ -1,13 +1,13 @@
-import packageInfo from "../../package.json" assert { type: "json" };
+import packageInfo from "../../package.json" with { type: "json" };
 
 class AppConfig {
   private _domain = "707x.in";
-  private _marketName = "YTCatalog";
+  private _marketName = "Ingest";
   private _name = packageInfo.name;
-  private _subDomain = "ytcatalog";
+  private _subDomain = "ingest";
   private _version = packageInfo.version;
   private _organization = "707x Labs";
-  private _githubRepo = "https://github.com/realChakrawarti/yt-catalog";
+  private _githubRepo = "https://github.com/realChakrawarti/ingest";
   private _catalogVideoLimit = 10;
   private _watchedPercentage = 95;
   private _limitCatalogs = 5;
