@@ -6,7 +6,7 @@ import {
   YOUTUBE_CHANNEL_INFORMATION_BY_IDS,
   YOUTUBE_CHANNEL_PLAYLIST_VIDEOS,
 } from "~/shared/lib/api/youtube-endpoints";
-import { refs } from "~/shared/lib/firebase";
+import { refs } from "~/shared/lib/firebase/refs";
 import Log from "~/shared/utils/terminal-logger";
 import { time } from "~/shared/utils/time";
 

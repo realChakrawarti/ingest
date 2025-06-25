@@ -3,7 +3,7 @@ import { unstable_noStore } from "next/cache";
 
 import type { VideoDetails } from "~/entities/youtube/models";
 
-import { refs } from "~/shared/lib/firebase";
+import { refs } from "~/shared/lib/firebase/refs";
 import type { ValidMetadata } from "~/shared/types-schema/types";
 
 const getArchiveMetadata = async (archiveId: string) => {

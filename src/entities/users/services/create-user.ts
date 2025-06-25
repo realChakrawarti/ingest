@@ -4,7 +4,8 @@
  * @param uid
  * @returns
  */
-import { refs } from "~/shared/lib/firebase";
+
+import { refs } from "~/shared/lib/firebase/refs";
 
 export const createUser = async (uid: string): Promise<string> => {
   const userRef = refs.users.doc(uid);

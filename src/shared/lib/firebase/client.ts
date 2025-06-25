@@ -48,4 +48,8 @@ if (isDevelopment()) {
   connectFirestoreEmulator(clientDb, "127.0.0.1", firestorePort);
 }
 
-export { clientApp, clientAuth, clientDb };
+export const client = {
+  app: clientApp,
+  auth: clientAuth,
+  db: clientDb,
+};

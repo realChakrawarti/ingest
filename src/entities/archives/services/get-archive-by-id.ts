@@ -1,4 +1,4 @@
-import { refs } from "~/shared/lib/firebase";
+import { refs } from "~/shared/lib/firebase/refs";
 import Log from "~/shared/utils/terminal-logger";
 
 import type { ArchiveByIdResponse } from "../models";

@@ -1,4 +1,5 @@
-import { db, refs } from "~/shared/lib/firebase";
+import { admin } from "~/shared/lib/firebase/admin";
+import { refs } from "~/shared/lib/firebase/refs";
 import { createNanoidToken } from "~/shared/utils/nanoid-token";
 
 export async function createArchive(
@@ -12,7 +13,7 @@ export async function createArchive(
   // Add a doc to user -> archive collection
   const userArchiveRef = refs.userArchives(userId).doc(nanoidToken);
 
-  const batch = db.admin.batch();
+  const batch = admin.db.batch();
 
   try {
     // Create archive sub-collection

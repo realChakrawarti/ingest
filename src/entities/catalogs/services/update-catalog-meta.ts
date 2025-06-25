@@ -1,4 +1,4 @@
-import { refs } from "~/shared/lib/firebase";
+import { refs } from "~/shared/lib/firebase/refs";
 
 type CatalogMeta = {
   title: string;

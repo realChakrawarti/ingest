@@ -2,7 +2,8 @@ import { FieldValue } from "firebase-admin/firestore";
 
 import type { VideoDetails } from "~/entities/youtube/models";
 
-import { db, refs } from "~/shared/lib/firebase";
+import { admin } from "~/shared/lib/firebase/admin";
+import { refs } from "~/shared/lib/firebase/refs";
 
 export async function addArchiveVideo(
   userId: string,
@@ -13,7 +14,7 @@ export async function addArchiveVideo(
   const userArchiveRef = refs.userArchives(userId).doc(archiveId);
 
   try {
-    await db.admin.runTransaction(async (txn) => {
+    await admin.db.runTransaction(async (txn) => {
       const userArchiveSnap = await txn.get(userArchiveRef);
       const userArchiveData = userArchiveSnap.data();
 

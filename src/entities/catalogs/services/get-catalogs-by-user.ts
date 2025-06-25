@@ -1,4 +1,5 @@
-import { refs, timestampUTC } from "~/shared/lib/firebase";
+import { timestampUTC } from "~/shared/lib/firebase";
+import { refs } from "~/shared/lib/firebase/refs";
 import Log from "~/shared/utils/terminal-logger";
 
 type UserCatalogs = {

@@ -1,4 +1,4 @@
-import { refs } from "~/shared/lib/firebase";
+import { refs } from "~/shared/lib/firebase/refs";
 
 export async function updateArchiveMeta(
   archiveId: string,

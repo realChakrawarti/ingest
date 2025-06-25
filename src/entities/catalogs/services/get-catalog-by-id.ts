@@ -1,4 +1,4 @@
-import { refs } from "~/shared/lib/firebase";
+import { refs } from "~/shared/lib/firebase/refs";
 
 import type { CatalogByIdResponse, CatalogList } from "../models";
 

@@ -1,4 +1,4 @@
-import { refs } from "~/shared/lib/firebase";
+import { refs } from "~/shared/lib/firebase/refs";
 
 /**
  * Retrieves the next scheduled update time for a specific catalog.

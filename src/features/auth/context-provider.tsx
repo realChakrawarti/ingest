@@ -20,7 +20,7 @@ import {
 import { useToast } from "~/shared/hooks/use-toast";
 import fetchApi from "~/shared/lib/api/fetch";
 import { Routes } from "~/shared/lib/constants";
-import { auth } from "~/shared/lib/firebase";
+import { client } from "~/shared/lib/firebase/client";
 import Log from "~/shared/utils/terminal-logger";
 
 type UserContext = {
@@ -59,7 +59,7 @@ export default function AuthContextProvider({ children }: PropsWithChildren) {
     };
 
     const unsubscribeFromAuth = onAuthStateChanged(
-      auth.client,
+      client.auth,
       authStateChanged
     );
 
@@ -74,7 +74,7 @@ export default function AuthContextProvider({ children }: PropsWithChildren) {
   ) {
     try {
       setLoading(true);
-      const response = await signInWithPopup(auth.client, provider);
+      const response = await signInWithPopup(client.auth, provider);
       const user = response.user;
       if (user) {
         const userToken = await user.getIdToken();
@@ -92,7 +92,7 @@ export default function AuthContextProvider({ children }: PropsWithChildren) {
   }
 
   const logout = async () => {
-    signOut(auth.client);
+    signOut(client.auth);
     window.localStorage.clear();
     const result = await fetchApi("/logout");
     toast({ title: result.message });

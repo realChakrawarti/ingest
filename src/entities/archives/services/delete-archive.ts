@@ -1,11 +1,12 @@
-import { db, refs } from "~/shared/lib/firebase";
+import { admin } from "~/shared/lib/firebase/admin";
+import { refs } from "~/shared/lib/firebase/refs";
 
 export async function deleteArchive(userId: string, archiveId: string) {
   const archiveRef = refs.archives.doc(archiveId);
 
   const userArchiveRef = refs.userArchives(userId).doc(archiveId);
 
-  const batch = db.admin.batch();
+  const batch = admin.db.batch();
 
   try {
     batch.delete(archiveRef);

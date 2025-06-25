@@ -1,7 +1,7 @@
 import type { DocumentData } from "firebase-admin/firestore";
 import { unstable_noStore } from "next/cache";
 
-import { refs } from "~/shared/lib/firebase";
+import { refs } from "~/shared/lib/firebase/refs";
 import type { ValidMetadata } from "~/shared/types-schema/types";
 
 export async function getValidCatalogIds() {
