@@ -1,7 +1,6 @@
 import { FieldValue } from "firebase-admin/firestore";
 
-import { adminDb } from "~/shared/lib/firebase/admin";
-import { COLLECTION } from "~/shared/lib/firebase/collections";
+import { refs } from "~/shared/lib/firebase";
 
 import type { CatalogList } from "../models";
 
@@ -18,8 +17,7 @@ export async function deleteChannel(
   catalogId: string,
   channelToDelete: CatalogList
 ) {
-  const userRef = adminDb.collection(COLLECTION.users).doc(userId);
-  const userCatalogRef = userRef.collection(COLLECTION.catalogs).doc(catalogId);
+  const userCatalogRef = refs.userCatalogs(userId).doc(catalogId);
 
   try {
     await userCatalogRef.update({

@@ -1,13 +1,15 @@
-import { adminDb } from "~/shared/lib/firebase/admin";
-import { COLLECTION } from "~/shared/lib/firebase/collections";
+import { refs } from "~/shared/lib/firebase";
 
-export async function updateArchiveMeta(archiveId: string, archiveMeta: any) {
-  const archiveRef = adminDb.collection(COLLECTION.archives).doc(archiveId);
+export async function updateArchiveMeta(
+  archiveId: string,
+  archiveMeta: { title: string; description: string }
+) {
+  const archiveRef = refs.archives.doc(archiveId);
 
   try {
     await archiveRef.update({
-      title: archiveMeta.title,
       description: archiveMeta.description,
+      title: archiveMeta.title,
     });
 
     return "Archive details updated successfully.";

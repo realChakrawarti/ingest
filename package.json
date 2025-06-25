@@ -9,7 +9,7 @@
     "emulate-firebase:export-seed": "firebase --project ytcatalog707 emulators:export seed",
     "build": "next build",
     "start": "next start",
-    "lint": "pnpm exec biome lint --diagnostic-level=warn --log-kind=compact",
+    "lint": "pnpm exec biome lint --log-kind=compact",
     "prepare": "husky",
     "release": "standard-version",
     "release:minor": "standard-version --release-as minor",

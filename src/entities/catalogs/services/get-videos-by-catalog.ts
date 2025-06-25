@@ -6,12 +6,16 @@ import {
   YOUTUBE_CHANNEL_INFORMATION_BY_IDS,
   YOUTUBE_CHANNEL_PLAYLIST_VIDEOS,
 } from "~/shared/lib/api/youtube-endpoints";
-import { adminDb } from "~/shared/lib/firebase/admin";
-import { COLLECTION } from "~/shared/lib/firebase/collections";
+import { refs } from "~/shared/lib/firebase";
 import Log from "~/shared/utils/terminal-logger";
 import { time } from "~/shared/utils/time";
 
-import type { CatalogList, UserCatalogDocument, VideoListData, VideoMetadata } from "../models";
+import type {
+  CatalogList,
+  UserCatalogDocument,
+  VideoListData,
+  VideoMetadata,
+} from "../models";
 import { getPageviewByCatalogId } from "./get-pageviews-by-catalog-id";
 
 async function updateChannelLogos(list: CatalogList[]): Promise<CatalogList[]> {
@@ -77,7 +81,7 @@ export async function getVideosByCatalog(catalogId: string) {
     week: [],
   };
 
-  const catalogRef = adminDb.collection(COLLECTION.catalogs).doc(catalogId);
+  const catalogRef = refs.catalogs.doc(catalogId);
   const catalogSnap = await catalogRef.get();
 
   if (!catalogSnap.exists) {
@@ -256,9 +260,7 @@ async function getPlaylistVideos(playlist: CatalogList<"playlist">) {
     const playlistVideoItems = result.items;
 
     if (!playlistVideoItems.length) {
-      Log.warn(
-        `No uploads found in the playlist: ${playlist.playlistId}.`
-      );
+      Log.warn(`No uploads found in the playlist: ${playlist.playlistId}.`);
       return playlistItemData;
     }
 

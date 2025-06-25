@@ -1,26 +1,17 @@
-import { cookies, headers } from "next/headers";
+import { cookies } from "next/headers";
 import { type NextRequest, NextResponse } from "next/server";
 
-import { SESSION_COOKIE_NAME } from "./shared/lib/constants";
-import { verifyFirebaseSessionCookie } from "./shared/lib/firebase/verify-session-cookie";
-import { NxResponse } from "./shared/lib/next/nx-response";
-import Log from "./shared/utils/terminal-logger";
-
-const allowedOrigins = ["https://ingest.707x.in", "https://ytcatalog.707x.in"];
+import { SESSION_COOKIE_NAME } from "~/shared/lib/constants";
+import { verifyFirebaseSessionCookie } from "~/shared/lib/firebase";
+import { NxResponse } from "~/shared/lib/next/nx-response";
+import Log from "~/shared/utils/terminal-logger";
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
-  const origin = request.headers.get("origin") ?? "";
-
   // Conditional logic to explicitly ignore /api/catalogs/valid
   if (pathname === "/api/catalogs/valid") {
     // Allow this specific path to bypass middleware logic
     return NextResponse.next();
-  }
-
-  if (allowedOrigins.includes(origin)) {
-    request.headers.set("Access-Control-Allow-Origin", origin);
-    request.headers.set("Vary", "Origin");
   }
 
   const authSessionToken = cookies().get(SESSION_COOKIE_NAME)?.value;

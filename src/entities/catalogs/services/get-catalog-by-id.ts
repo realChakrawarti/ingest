@@ -1,5 +1,4 @@
-import { adminDb } from "~/shared/lib/firebase/admin";
-import { COLLECTION } from "~/shared/lib/firebase/collections";
+import { refs } from "~/shared/lib/firebase";
 
 import type { CatalogByIdResponse, CatalogList } from "../models";
 
@@ -19,7 +18,6 @@ import type { CatalogByIdResponse, CatalogList } from "../models";
  */
 export async function getCatalogById(catalogId: string, userId: string) {
   // Get channel list
-  const userRef = adminDb.collection(COLLECTION.users).doc(userId);
 
   let catalogResponseData: CatalogByIdResponse = {
     description: "",
@@ -27,8 +25,8 @@ export async function getCatalogById(catalogId: string, userId: string) {
     title: "",
   };
 
-  const userCatalogRef = userRef.collection(COLLECTION.catalogs).doc(catalogId);
-  const catalogRef = adminDb.collection(COLLECTION.catalogs).doc(catalogId);
+  const userCatalogRef = refs.userCatalogs(userId).doc(catalogId);
+  const catalogRef = refs.catalogs.doc(catalogId);
 
   try {
     const userCatalogData = await userCatalogRef.get();

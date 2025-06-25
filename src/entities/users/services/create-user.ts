@@ -4,12 +4,10 @@
  * @param uid
  * @returns
  */
-
-import { adminDb } from "~/shared/lib/firebase/admin";
-import { COLLECTION } from "~/shared/lib/firebase/collections";
+import { refs } from "~/shared/lib/firebase";
 
 export const createUser = async (uid: string): Promise<string> => {
-  const userRef = adminDb.collection(COLLECTION.users).doc(uid);
+  const userRef = refs.users.doc(uid);
   const userSnap = await userRef.get();
 
   // Check if the user document already exists

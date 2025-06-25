@@ -1,17 +1,15 @@
 import type { DocumentData } from "firebase-admin/firestore";
 import { unstable_noStore } from "next/cache";
 
-import { adminDb } from "~/shared/lib/firebase/admin";
-import { COLLECTION } from "~/shared/lib/firebase/collections";
+import { refs } from "~/shared/lib/firebase";
 import type { ValidMetadata } from "~/shared/types-schema/types";
 
 export async function getValidCatalogIds() {
   unstable_noStore();
   const catalogListData: ValidMetadata[] = [];
-  const catalogsCollectionRef = adminDb.collection(COLLECTION.catalogs);
 
   // Filter the catalog, where totalVideos is greater than 0 and pageviews are sorted 'desc'
-  const validCatalogQuery = catalogsCollectionRef
+  const validCatalogQuery = refs.catalogs
     .where("data.totalVideos", ">", 0)
     .orderBy("pageviews", "desc")
     .limit(50);
@@ -48,7 +46,7 @@ export async function getValidCatalogIds() {
 }
 
 const getCatalogMetadata = async (catalogId: string) => {
-  const catalogRef = adminDb.collection(COLLECTION.catalogs).doc(catalogId);
+  const catalogRef = refs.catalogs.doc(catalogId);
   const catalogSnap = await catalogRef.get();
   const catalogData = catalogSnap.data();
   return catalogData;

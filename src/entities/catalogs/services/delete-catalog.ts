@@ -1,16 +1,11 @@
-import { adminDb } from "~/shared/lib/firebase/admin";
-import { COLLECTION } from "~/shared/lib/firebase/collections";
+import { db, refs } from "~/shared/lib/firebase";
 
 export async function deleteCatalog(userId: string, catalogId: string) {
-  const catalogRef = adminDb.collection(COLLECTION.catalogs).doc(catalogId);
+  const catalogRef = refs.catalogs.doc(catalogId);
 
-  const userCatalogRef = adminDb
-    .collection(COLLECTION.users)
-    .doc(userId)
-    .collection(COLLECTION.catalogs)
-    .doc(catalogId);
+  const userCatalogRef = refs.userCatalogs(userId).doc(catalogId);
 
-  const batch = adminDb.batch();
+  const batch = db.admin.batch();
   try {
     batch.delete(catalogRef);
     batch.delete(userCatalogRef);

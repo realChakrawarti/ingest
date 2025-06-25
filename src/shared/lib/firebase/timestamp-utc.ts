@@ -6,6 +6,6 @@ import type { Timestamp } from "firebase-admin/firestore";
  * @param dateTime - The Firestore Timestamp to be converted
  * @returns A string representation of the timestamp in UTC format
  */
-export function toUTCString(dateTime: Timestamp) {
+export function timestampUTC(dateTime: Timestamp) {
   return new Date(dateTime.toDate()).toUTCString();
 }

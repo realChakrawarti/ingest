@@ -1,10 +1,10 @@
 import { GithubAuthProvider, GoogleAuthProvider } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 
-import { app } from "~/shared/lib/firebase/client";
+import { app } from "~/shared/lib/firebase";
 
 // Initialize Firestore
-export const firestore = getFirestore(app);
+export const firestore = getFirestore(app.client);
 
 // Initalize Google Authentication Provider
 export const googleProvider = new GoogleAuthProvider();

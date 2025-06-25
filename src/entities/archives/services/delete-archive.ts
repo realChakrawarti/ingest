@@ -1,16 +1,11 @@
-import { adminDb } from "~/shared/lib/firebase/admin";
-import { COLLECTION } from "~/shared/lib/firebase/collections";
+import { db, refs } from "~/shared/lib/firebase";
 
 export async function deleteArchive(userId: string, archiveId: string) {
-  const archiveRef = adminDb.collection(COLLECTION.archives).doc(archiveId);
+  const archiveRef = refs.archives.doc(archiveId);
 
-  const userArchiveRef = adminDb
-    .collection(COLLECTION.users)
-    .doc(userId)
-    .collection(COLLECTION.archives)
-    .doc(archiveId);
+  const userArchiveRef = refs.userArchives(userId).doc(archiveId);
 
-  const batch = adminDb.batch();
+  const batch = db.admin.batch();
 
   try {
     batch.delete(archiveRef);

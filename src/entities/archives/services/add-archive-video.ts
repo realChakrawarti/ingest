@@ -1,30 +1,30 @@
 import { FieldValue } from "firebase-admin/firestore";
 
-import { adminDb } from "~/shared/lib/firebase/admin";
-import { COLLECTION } from "~/shared/lib/firebase/collections";
+import type { VideoDetails } from "~/entities/youtube/models";
+
+import { db, refs } from "~/shared/lib/firebase";
 
 export async function addArchiveVideo(
   userId: string,
   archiveId: string,
-  videoData: any
+  videoData: VideoDetails
 ) {
-  const userRef = adminDb.collection(COLLECTION.users).doc(userId);
-  const archiveRef = adminDb.collection(COLLECTION.archives).doc(archiveId);
-  const userArchiveRef = userRef.collection(COLLECTION.archives).doc(archiveId);
+  const archiveRef = refs.archives.doc(archiveId);
+  const userArchiveRef = refs.userArchives(userId).doc(archiveId);
 
   try {
-    await adminDb.runTransaction(async (t) => {
-      const userArchiveSnap = await t.get(userArchiveRef);
+    await db.admin.runTransaction(async (txn) => {
+      const userArchiveSnap = await txn.get(userArchiveRef);
       const userArchiveData = userArchiveSnap.data();
 
       const currentTotalVideos = userArchiveData?.videoIds?.length || 0;
 
-      t.update(userArchiveRef, {
+      txn.update(userArchiveRef, {
         updatedAt: new Date(),
         videoIds: FieldValue.arrayUnion(videoData.videoId),
       });
 
-      t.update(archiveRef, {
+      txn.update(archiveRef, {
         "data.totalVideos": currentTotalVideos + 1,
         "data.updatedAt": new Date(),
         "data.videos": FieldValue.arrayUnion(videoData),
