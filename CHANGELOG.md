@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.7.8](https://github.com/realChakrawarti/ingest/compare/v1.7.7...v1.7.8) (2025-06-25)
+
+
+### Bug Fixes
+
+* update screen-capture image ([ce68f28](https://github.com/realChakrawarti/ingest/commit/ce68f28d5195f480b70683db6e1db93678f2588e))
+
 ### [1.7.7](https://github.com/realChakrawarti/yt-catalog/compare/v1.7.6...v1.7.7) (2025-06-24)
 
 
