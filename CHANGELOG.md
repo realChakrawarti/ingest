@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.7.9](https://github.com/realChakrawarti/ingest/compare/v1.7.8...v1.7.9) (2025-06-25)
+
+
+### Bug Fixes
+
+* seperate admin and client firebase imports ([16c9be7](https://github.com/realChakrawarti/ingest/commit/16c9be73a8d5cc53243498c5b9676f5de74ed5da))
+
 ### [1.7.8](https://github.com/realChakrawarti/ingest/compare/v1.7.7...v1.7.8) (2025-06-25)
 
 
