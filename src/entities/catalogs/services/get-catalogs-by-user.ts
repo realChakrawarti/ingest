@@ -1,6 +1,5 @@
-import { adminDb } from "~/shared/lib/firebase/admin";
-import { COLLECTION } from "~/shared/lib/firebase/collections";
-import { toUTCString } from "~/shared/lib/firebase/to-utc-string";
+import { timestampUTC } from "~/shared/lib/firebase";
+import { refs } from "~/shared/lib/firebase/refs";
 import Log from "~/shared/utils/terminal-logger";
 
 type UserCatalogs = {
@@ -21,8 +20,7 @@ type UserCatalogs = {
 export async function getCatalogByUser(userId: string) {
   const userCatalogsData: UserCatalogs[] = [];
 
-  const userRef = adminDb.collection(COLLECTION.users).doc(userId);
-  const userCatalogsCollectionRef = userRef.collection(COLLECTION.catalogs);
+  const userCatalogsCollectionRef = refs.userCatalogs(userId);
   try {
     const userCatalogsDoc = await userCatalogsCollectionRef.get();
 
@@ -34,9 +32,7 @@ export async function getCatalogByUser(userId: string) {
 
     await Promise.all(
       catalogIds.map(async (catalogId) => {
-        const catalogRef = adminDb
-          .collection(COLLECTION.catalogs)
-          .doc(catalogId);
+        const catalogRef = refs.catalogs.doc(catalogId);
         const catalogSnap = await catalogRef.get();
         const catalogData = catalogSnap.data();
 
@@ -45,14 +41,14 @@ export async function getCatalogByUser(userId: string) {
           id: catalogId,
           title: catalogData?.title,
           videoData: {
-            updatedAt: toUTCString(catalogData?.data?.updatedAt),
+            updatedAt: timestampUTC(catalogData?.data?.updatedAt),
             videos: catalogData?.data?.videos,
           },
         });
       })
     );
   } catch (err) {
-    Log.fail(String(err));
+    Log.fail(err);
   }
 
   return userCatalogsData;

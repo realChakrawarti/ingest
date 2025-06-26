@@ -73,6 +73,7 @@
       "complexity": { "noStaticOnlyClass": "off", "useLiteralKeys": "info" },
       "correctness": {
         "noUnusedFunctionParameters": "warn",
+        "noUnusedImports": "error",
         "useExhaustiveDependencies": "warn"
       },
       "recommended": true,

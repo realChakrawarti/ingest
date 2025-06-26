@@ -1,6 +1,5 @@
-import { adminDb } from "~/shared/lib/firebase/admin";
-import { COLLECTION } from "~/shared/lib/firebase/collections";
-import { toUTCString } from "~/shared/lib/firebase/to-utc-string";
+import { timestampUTC } from "~/shared/lib/firebase";
+import { refs } from "~/shared/lib/firebase/refs";
 import Log from "~/shared/utils/terminal-logger";
 
 /**
@@ -11,9 +10,8 @@ import Log from "~/shared/utils/terminal-logger";
 export async function getArchiveByUser(userId: string) {
   let userArchivesData: any[] = [];
 
-  const userRef = adminDb.collection(COLLECTION.users).doc(userId);
   try {
-    const userArchivesCollectionRef = userRef.collection(COLLECTION.archives);
+    const userArchivesCollectionRef = refs.userArchives(userId);
     const userArchivesDoc = await userArchivesCollectionRef.listDocuments();
     const archiveIds = userArchivesDoc.map((doc) => doc.id);
 
@@ -21,9 +19,7 @@ export async function getArchiveByUser(userId: string) {
       return userArchivesData;
     }
 
-    const archiveRefs = archiveIds.map((id) =>
-      adminDb.collection(COLLECTION.archives).doc(id)
-    );
+    const archiveRefs = archiveIds.map((id) => refs.archives.doc(id));
 
     const archiveSnapshots = await Promise.all(
       archiveRefs.map((ref) => ref.get())
@@ -38,7 +34,7 @@ export async function getArchiveByUser(userId: string) {
         id: archiveId,
         title: archiveData?.title,
         videoData: {
-          updatedAt: toUTCString(archiveData?.data?.updatedAt),
+          updatedAt: timestampUTC(archiveData?.data?.updatedAt),
           videos: archiveData?.data?.videos,
         },
       };

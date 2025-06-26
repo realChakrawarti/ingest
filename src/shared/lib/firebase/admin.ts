@@ -45,6 +45,11 @@ function getServerFirebaseApp() {
 const adminApp = getServerFirebaseApp();
 
 const adminAuth = getAuth(adminApp);
+
 const adminDb = getFirestore(adminApp);
 
-export { adminApp, adminAuth, adminDb };
+export const admin = {
+  app: adminApp,
+  auth: adminAuth,
+  db: adminDb,
+};

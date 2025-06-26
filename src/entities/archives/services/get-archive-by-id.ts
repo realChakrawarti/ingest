@@ -1,5 +1,4 @@
-import { adminDb } from "~/shared/lib/firebase/admin";
-import { COLLECTION } from "~/shared/lib/firebase/collections";
+import { refs } from "~/shared/lib/firebase/refs";
 import Log from "~/shared/utils/terminal-logger";
 
 import type { ArchiveByIdResponse } from "../models";
@@ -14,7 +13,7 @@ import type { ArchiveByIdResponse } from "../models";
 // TODO: How would I handle the data? VideoId as an array in userArchive and data
 // retrived from API stored as an object in the main archive?
 export async function getArchiveById(archiveId: string) {
-  const archiveRef = adminDb.collection(COLLECTION.archives).doc(archiveId);
+  const archiveRef = refs.archives.doc(archiveId);
 
   try {
     // Get title and description

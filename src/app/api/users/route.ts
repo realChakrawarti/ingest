@@ -3,7 +3,7 @@ import type { NextRequest } from "next/server";
 import { createUser } from "~/entities/users";
 
 import { SESSION_COOKIE_NAME } from "~/shared/lib/constants";
-import { adminAuth } from "~/shared/lib/firebase/admin";
+import { admin } from "~/shared/lib/firebase/admin";
 import { NxResponse } from "~/shared/lib/next/nx-response";
 import { time } from "~/shared/utils/time";
 
@@ -16,11 +16,11 @@ export async function POST(request: NextRequest) {
   };
 
   try {
-    const userDetails = await adminAuth.verifyIdToken(token);
+    const userDetails = await admin.auth.verifyIdToken(token);
     const message = await createUser(userDetails.uid);
     const response = NxResponse.success<any>(message, {}, 201);
 
-    const session = await adminAuth.createSessionCookie(token, {
+    const session = await admin.auth.createSessionCookie(token, {
       expiresIn: time.hours(12),
     });
 

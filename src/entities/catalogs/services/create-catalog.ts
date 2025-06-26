@@ -1,5 +1,5 @@
-import { adminDb } from "~/shared/lib/firebase/admin";
-import { COLLECTION } from "~/shared/lib/firebase/collections";
+import { admin } from "~/shared/lib/firebase/admin";
+import { refs } from "~/shared/lib/firebase/refs";
 import { createNanoidToken } from "~/shared/utils/nanoid-token";
 
 type CatalogMeta = {
@@ -12,16 +12,13 @@ type CatalogMeta = {
  * @param userId
  */
 export async function createCatalog(userId: string, catalogMeta: CatalogMeta) {
-  const userRef = adminDb.collection(COLLECTION.users).doc(userId);
   const nanoidToken = createNanoidToken(6);
-  const catalogRef = adminDb.collection(COLLECTION.catalogs).doc(nanoidToken);
+  const catalogRef = refs.catalogs.doc(nanoidToken);
 
   // Add a doc to user -> catalog collection
-  const userCatalogRef = userRef
-    .collection(COLLECTION.catalogs)
-    .doc(nanoidToken);
+  const userCatalogRef = refs.userCatalogs(userId).doc(nanoidToken);
 
-  const batch = adminDb.batch();
+  const batch = admin.db.batch();
 
   try {
     // Create catalog sub-collection

@@ -1,19 +1,19 @@
-import { adminDb } from "~/shared/lib/firebase/admin";
-import { COLLECTION } from "~/shared/lib/firebase/collections";
+import { admin } from "~/shared/lib/firebase/admin";
+import { refs } from "~/shared/lib/firebase/refs";
 import { createNanoidToken } from "~/shared/utils/nanoid-token";
 
-export async function createArchive(userId: string, archiveMeta: any) {
+export async function createArchive(
+  userId: string,
+  archiveMeta: { title: string; description: string }
+) {
   const nanoidToken = createNanoidToken(9);
 
-  const userRef = adminDb.collection(COLLECTION.users).doc(userId);
-  const archiveRef = adminDb.collection(COLLECTION.archives).doc(nanoidToken);
+  const archiveRef = refs.archives.doc(nanoidToken);
 
   // Add a doc to user -> archive collection
-  const userArchiveRef = userRef
-    .collection(COLLECTION.archives)
-    .doc(nanoidToken);
+  const userArchiveRef = refs.userArchives(userId).doc(nanoidToken);
 
-  const batch = adminDb.batch();
+  const batch = admin.db.batch();
 
   try {
     // Create archive sub-collection

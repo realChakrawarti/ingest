@@ -1,18 +1,17 @@
 import { FieldValue } from "firebase-admin/firestore";
 
-import { adminDb } from "~/shared/lib/firebase/admin";
-import { COLLECTION } from "~/shared/lib/firebase/collections";
+import { admin } from "~/shared/lib/firebase/admin";
+import { refs } from "~/shared/lib/firebase/refs";
 
 export async function removeArchiveVideo(
   userId: string,
   archiveId: string,
   payload: any
 ) {
-  const userRef = adminDb.collection(COLLECTION.users).doc(userId);
-  const archiveRef = adminDb.collection(COLLECTION.archives).doc(archiveId);
-  const userArchiveRef = userRef.collection(COLLECTION.archives).doc(archiveId);
+  const archiveRef = refs.archives.doc(archiveId);
+  const userArchiveRef = refs.userArchives(userId).doc(archiveId);
 
-  const batch = adminDb.batch();
+  const batch = admin.db.batch();
 
   try {
     const userArchiveSnap = await userArchiveRef.get();

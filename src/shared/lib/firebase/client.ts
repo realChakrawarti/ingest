@@ -35,17 +35,21 @@ function getClientFirebaseApp() {
   return clientFirebaseApp;
 }
 
-const app = getClientFirebaseApp();
+const clientApp = getClientFirebaseApp();
 
-const auth = getAuth(app);
-const db = getFirestore(app);
+const clientAuth = getAuth(clientApp);
+const clientDb = getFirestore(clientApp);
 
 const authPort = localFirebase.emulators.auth.port;
 const firestorePort = localFirebase.emulators.firestore.port;
 
 if (isDevelopment()) {
-  connectAuthEmulator(auth, `http://127.0.0.1:${authPort}`);
-  connectFirestoreEmulator(db, "127.0.0.1", firestorePort);
+  connectAuthEmulator(clientAuth, `http://127.0.0.1:${authPort}`);
+  connectFirestoreEmulator(clientDb, "127.0.0.1", firestorePort);
 }
 
-export { app, auth, db };
+export const client = {
+  app: clientApp,
+  auth: clientAuth,
+  db: clientDb,
+};

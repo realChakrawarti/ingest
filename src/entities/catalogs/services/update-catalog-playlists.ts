@@ -1,7 +1,6 @@
 import { FieldValue } from "firebase-admin/firestore";
 
-import { adminDb } from "~/shared/lib/firebase/admin";
-import { COLLECTION } from "~/shared/lib/firebase/collections";
+import { refs } from "~/shared/lib/firebase/refs";
 
 import type { CatalogList } from "../models";
 
@@ -10,8 +9,7 @@ export async function updateCatalogPlaylists(
   catalogId: string,
   playlists: CatalogList<"playlist">[]
 ) {
-  const userRef = adminDb.collection(COLLECTION.users).doc(userId);
-  const userCatalogRef = userRef.collection(COLLECTION.catalogs).doc(catalogId);
+  const userCatalogRef = refs.userCatalogs(userId).doc(catalogId);
 
   if (!playlists[0]?.channelId) {
     throw Error("Provided playlist doesn't contain any channel");

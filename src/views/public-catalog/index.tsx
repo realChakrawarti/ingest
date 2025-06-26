@@ -6,7 +6,6 @@ import type { VideosByCatalog } from "~/entities/catalogs/models";
 
 import fetchApi from "~/shared/lib/api/fetch";
 import type { YouTubeCardOptions } from "~/shared/types-schema/types";
-import { Button } from "~/shared/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
