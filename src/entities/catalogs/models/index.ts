@@ -38,16 +38,23 @@ export type UserCatalogDocument = {
   updatedAt: Timestamp;
 };
 
-export type VideoMetadata = {
+export type VideoExtraDetails = {
+  videoComments: number;
+  videoDuration: number;
+  videoLikes: number;
+  videoViews: number;
+};
+
+export interface VideoMetadata {
   description: string;
   title: string;
   channelId: string;
-  thumbnail: any;
+  thumbnail: string;
   channelTitle: string;
   videoId: string;
   publishedAt: string;
   channelLogo: string;
-};
+}
 
 export type VideoListData = {
   day: VideoMetadata[];

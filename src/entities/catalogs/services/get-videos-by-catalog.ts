@@ -5,6 +5,7 @@ import appConfig from "~/shared/app-config";
 import {
   YOUTUBE_CHANNEL_INFORMATION_BY_IDS,
   YOUTUBE_CHANNEL_PLAYLIST_VIDEOS,
+  YOUTUBE_VIDEOS_DATA,
 } from "~/shared/lib/api/youtube-endpoints";
 import { refs } from "~/shared/lib/firebase/refs";
 import Log from "~/shared/utils/terminal-logger";
@@ -13,6 +14,7 @@ import { time } from "~/shared/utils/time";
 import type {
   CatalogList,
   UserCatalogDocument,
+  VideoExtraDetails,
   VideoListData,
   VideoMetadata,
 } from "../models";
@@ -53,24 +55,6 @@ async function updateChannelLogos(list: CatalogList[]): Promise<CatalogList[]> {
   });
 }
 
-/**
- * Retrieves and manages video metadata for a specific catalog.
- *
- * @param catalogId - Unique identifier for the catalog
- * @returns Catalog video metadata, including filtered videos, pageviews, and update information
- *
- * @remarks
- * This function performs the following key operations:
- * - Checks if catalog exists
- * - Retrieves videos from associated channels and playlists
- * - Caches video data in Firestore
- * - Filters videos by publication time (day, week, month)
- * - Manages cache invalidation and update intervals
- *
- * @throws Will return error messages if catalog is empty or doesn't exist
- *
- * @beta
- */
 export async function getVideosByCatalog(catalogId: string) {
   const videoList: VideoMetadata[] = [];
   let totalVideos: number = 0;
@@ -104,6 +88,7 @@ export async function getVideosByCatalog(catalogId: string) {
     return "Catalog is empty. Channel or playlist is yet to be added!";
   }
 
+  // TODO: Maybe we can skip the filtering, but will be difficult to parse when subreddits are added?
   const channelListData: CatalogList<"channel">[] = catalogList.filter(
     (item: CatalogList) => item.type === "channel"
   );
@@ -118,9 +103,11 @@ export async function getVideosByCatalog(catalogId: string) {
 
   const currentTime = Date.now();
 
-  // TODO: Consider moving this to a remote flag for runtime customization ??
-  if (currentTime - lastUpdatedCatalogList > time.hours(12)) {
-    // Get channel logos
+  // Update channel logos
+  if (
+    currentTime - lastUpdatedCatalogList >
+    appConfig.channelLogoUpdatePeriod
+  ) {
     const updatedList = await updateChannelLogos(catalogList);
     await userCatalogRef.set({
       list: updatedList,
@@ -138,7 +125,7 @@ export async function getVideosByCatalog(catalogId: string) {
   let recentUpdate = new Date(currentTime);
   let pageviews = 0;
 
-  if (currentTime - lastUpdatedTime > time.hours(4)) {
+  if (currentTime - lastUpdatedTime > appConfig.catalogUpdatePeriod) {
     try {
       pageviews = await getPageviewByCatalogId(catalogId);
     } catch (err) {
@@ -182,16 +169,22 @@ export async function getVideosByCatalog(catalogId: string) {
       return dateB - dateA;
     });
 
+    const videoIds = videoList.map((video) => video.videoId);
+
+    const videoDetails = await addVideoDuration(videoIds);
+
     // Filter by day (24 hour), week (7 days) and month (30 days)
     for (const video of videoList) {
       const videoPublishedAt = new Date(video.publishedAt).getTime();
 
+      const extraDetails = videoDetails.get(video.videoId);
+      const updatedVideo = { ...video, ...extraDetails };
       if (currentTime - videoPublishedAt < time.days(1)) {
-        videoFilterData.day.push(video);
+        videoFilterData.day.push(updatedVideo);
       } else if (currentTime - videoPublishedAt < time.weeks(1)) {
-        videoFilterData.week.push(video);
+        videoFilterData.week.push(updatedVideo);
       } else {
-        videoFilterData.month.push(video);
+        videoFilterData.month.push(updatedVideo);
       }
     }
 
@@ -214,14 +207,16 @@ export async function getVideosByCatalog(catalogId: string) {
     recentUpdate = lastUpdated;
     Log.info(
       `Returning cached data for the catalog ${catalogId}, next update on ${new Date(
-        lastUpdatedTime + time.hours(4)
+        lastUpdatedTime + appConfig.catalogUpdatePeriod
       )}`
     );
   }
 
   return {
     description: catalogSnapData?.description,
-    nextUpdate: new Date(recentUpdate.getTime() + time.hours(4)).toUTCString(),
+    nextUpdate: new Date(
+      recentUpdate.getTime() + appConfig.catalogUpdatePeriod
+    ).toUTCString(),
     pageviews: catalogSnapData?.pageviews ?? 0,
     title: catalogSnapData?.title,
     totalVideos: totalVideos,
@@ -229,89 +224,24 @@ export async function getVideosByCatalog(catalogId: string) {
   };
 }
 
-// TODO: Both `getPlaylistVideos` and `getChannelVideos` is doing similar things with different params.
-// Consider merging the two as both are used to create the same video list for a catalog
-
-/**
- * Retrieves videos from a specified YouTube playlist, filtering out private and older videos.
- *
- * @param playlist - The playlist object containing playlist details
- * @returns An array of video metadata for public videos published within the last 30 days
- *
- * @remarks
- * This function fetches playlist items from the YouTube API and applies the following filters:
- * - Excludes private videos
- * - Excludes videos older than 30 days
- *
- * @throws {Error} Logs any errors encountered during the API fetch process
- */
 async function getPlaylistVideos(playlist: CatalogList<"playlist">) {
-  const playlistItemData: VideoMetadata[] = [];
-  try {
-    const result = await fetch(
-      YOUTUBE_CHANNEL_PLAYLIST_VIDEOS(
-        playlist.playlistId,
-        appConfig.catalogVideoLimit
-      ),
-      { cache: "no-store" }
-    ).then((data) => data.json());
-
-    const currentTime = Date.now();
-    const playlistVideoItems = result.items;
-
-    if (!playlistVideoItems.length) {
-      Log.warn(`No uploads found in the playlist: ${playlist.playlistId}.`);
-      return playlistItemData;
-    }
-
-    for (const item of playlistVideoItems) {
-      // Don't return video which are private, deleted (privacyStatusUnspecified) or are older than 30 days (ONE MONTH)
-      const videoPublished = item.contentDetails?.videoPublishedAt;
-      if (
-        item.status.privacyStatus === "private" ||
-        item.status.privacyStatus === "privacyStatusUnspecified" ||
-        currentTime - new Date(videoPublished).getTime() > time.days(30)
-      ) {
-        continue;
-      }
-
-      playlistItemData.push({
-        channelId: item.snippet.channelId,
-        channelLogo: playlist.channelLogo,
-        channelTitle: item.snippet.channelTitle,
-        description: item.snippet.description,
-        publishedAt: item.contentDetails.videoPublishedAt,
-        thumbnail: item.snippet.thumbnails.medium,
-        title: item.snippet.title,
-        videoId: item.contentDetails.videoId,
-      });
-    }
-  } catch (err) {
-    Log.fail(String(err));
-    throw new Error(
-      `Failed to fetch videos of playlist id: ${
-        playlist.playlistId
-      }\n${JSON.stringify(err)}`
-    );
-  }
-
-  return playlistItemData;
+  const items = await getVideosFromCatalogItem(
+    playlist.playlistId,
+    playlist.channelLogo
+  );
+  return items;
 }
 
-/**
- * Retrieves videos from a YouTube channel's uploads playlist.
- *
- * @param channel - The channel object containing channel details
- * @returns An array of video metadata for public videos published within the last 30 days
- *
- * @remarks
- * This function filters out private videos and videos older than 30 days from the channel's uploads playlist.
- * It uses the YouTube API to fetch playlist items and transforms them into a standardized video metadata format.
- *
- * @throws {Error} Logs any errors encountered during the API request
- */
 async function getChannelVideos(channel: CatalogList<"channel">) {
   const playlistId = createPlaylistId(channel.channelId);
+  const items = await getVideosFromCatalogItem(playlistId, channel.channelLogo);
+  return items;
+}
+
+async function getVideosFromCatalogItem(
+  playlistId: string,
+  channelLogo: string
+) {
   const playlistItemData: VideoMetadata[] = [];
   try {
     const result = await fetch(
@@ -340,17 +270,17 @@ async function getChannelVideos(channel: CatalogList<"channel">) {
 
       playlistItemData.push({
         channelId: item.snippet.channelId,
-        channelLogo: channel.channelLogo,
+        channelLogo: channelLogo,
         channelTitle: item.snippet.channelTitle,
         description: item.snippet.description,
         publishedAt: item.contentDetails.videoPublishedAt,
-        thumbnail: item.snippet.thumbnails.medium,
+        thumbnail: item.snippet.thumbnails.medium.url,
         title: item.snippet.title,
         videoId: item.contentDetails.videoId,
       });
     }
   } catch (err) {
-    Log.fail(String(err));
+    Log.fail(err);
     throw new Error(
       `Failed to fetch videos of playlist id: ${playlistId}\n${JSON.stringify(
         err
@@ -361,16 +291,80 @@ async function getChannelVideos(channel: CatalogList<"channel">) {
   return playlistItemData;
 }
 
-/**
- * Generates a unique playlist ID based on a channel ID.
- *
- * @param channel - The original YouTube channel ID
- * @returns A modified playlist ID derived from the input channel ID
- *
- * @remarks
- * This function transforms a channel ID by replacing the second character with 'U',
- * which is a convention used by YouTube to generate playlist IDs from channel IDs.
- */
 function createPlaylistId(channelId: string) {
   return `${channelId.substring(0, 1)}U${channelId.substring(2)}`;
+}
+
+function chunkVideoIds(
+  videoIds: string[],
+  chunkSize: number,
+  result: string[][] = []
+) {
+  // Base case: If the array is empty, return the accumulated result
+  if (videoIds.length === 0) {
+    return result;
+  }
+
+  const chunk = videoIds.splice(0, chunkSize);
+
+  // Push the extracted chunk to our result array
+  result.push(chunk);
+  return chunkVideoIds(videoIds, chunkSize, result);
+}
+
+async function addVideoDuration(videoIds: string[]) {
+  const chunkedVideoIds = chunkVideoIds(videoIds, 50);
+  Log.debug("checked video ids", chunkedVideoIds);
+  const videoIdsDuration = new Map<string, VideoExtraDetails>();
+
+  const videoPromises = chunkedVideoIds.map((item) =>
+    fetch(YOUTUBE_VIDEOS_DATA(item))
+  );
+
+  const results = await Promise.all(videoPromises);
+
+  for (const result of results) {
+    const data = await result.json();
+    data.items.forEach((item: any) =>
+      videoIdsDuration.set(item.id, {
+        videoComments: item.statistics.commentCount,
+        videoDuration: youtubeDurationToSeconds(item.contentDetails.duration),
+        videoLikes: item.statistics.likeCount,
+        videoViews: item.statistics.viewCount,
+      })
+    );
+  }
+  return videoIdsDuration;
+}
+
+function youtubeDurationToSeconds(duration: string) {
+  let hours = 0;
+  let minutes = 0;
+  let seconds = 0;
+
+  // Remove PT from string ref: https://developers.google.com/youtube/v3/docs/videos#contentDetails.duration
+  duration = duration.replace("PT", "");
+
+  // If the string contains hours parse it and remove it from our duration string
+  if (duration.indexOf("H") > -1) {
+    const hours_split = duration.split("H");
+    hours = parseInt(hours_split[0]);
+    duration = hours_split[1];
+  }
+
+  // If the string contains minutes parse it and remove it from our duration string
+  if (duration.indexOf("M") > -1) {
+    const minutes_split = duration.split("M");
+    minutes = parseInt(minutes_split[0]);
+    duration = minutes_split[1];
+  }
+
+  // If the string contains seconds parse it and remove it from our duration string
+  if (duration.indexOf("S") > -1) {
+    const seconds_split = duration.split("S");
+    seconds = parseInt(seconds_split[0]);
+  }
+
+  // Math the values to return seconds
+  return hours * 60 * 60 + minutes * 60 + seconds;
 }

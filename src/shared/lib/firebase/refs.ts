@@ -1,3 +1,5 @@
+import type { CollectionReference } from "firebase-admin/firestore";
+
 import { admin } from "./admin";
 
 const COLLECTION = {
@@ -7,11 +9,11 @@ const COLLECTION = {
 } as const;
 
 export const refs = {
-  archives: admin.db.collection(COLLECTION.archives),
+  archives: admin.db.collection(COLLECTION.archives) as CollectionReference,
   catalogs: admin.db.collection(COLLECTION.catalogs),
   userArchives: (userId: string) =>
     refs.users.doc(userId).collection(COLLECTION.archives),
   userCatalogs: (userId: string) =>
     refs.users.doc(userId).collection(COLLECTION.catalogs),
   users: admin.db.collection(COLLECTION.users),
-};
+} as const;

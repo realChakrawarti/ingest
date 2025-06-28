@@ -40,7 +40,7 @@ export async function getArchiveByUser(userId: string) {
       };
     });
   } catch (err) {
-    Log.fail(String(err));
+    Log.fail(err);
   }
 
   return userArchivesData;

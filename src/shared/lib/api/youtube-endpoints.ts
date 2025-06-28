@@ -20,6 +20,11 @@ export const YOUTUBE_CHANNEL_INFORMATION_BY_HANDLE = (
 export const YOUTUBE_VIDEO_DATA = (videoId: string) =>
   `https://youtube.googleapis.com/youtube/v3/videos?part=snippet&id=${videoId}&key=${process.env.YOUTUBE_API_KEY}`;
 
+export const YOUTUBE_VIDEOS_DATA = (videoIds: string[], limit: number = 50) => {
+  const commaSeperatedVideoIds = videoIds.join(",");
+  return `https://youtube.googleapis.com/youtube/v3/videos?part=statistics&part=contentDetails&maxResults=${limit}&id=${commaSeperatedVideoIds}&key=${process.env.YOUTUBE_API_KEY}`;
+};
+
 export const YOUTUBE_CHANNEL_PLAYLISTS = (
   channelId: string,
   nextPageToken?: string,

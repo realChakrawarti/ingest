@@ -4,6 +4,7 @@ import type { YouTubeCardProps } from "~/shared/types-schema/types";
 
 import { ChannelMeta, DescriptionSheet } from "./components";
 import ShowCardOption from "./show-card-options";
+import { TimeDuration } from "./time-duration";
 import { WatchedStatus } from "./watched-status";
 
 const ClientYouTubePlayer = dynamic(() => import("./player"), {
@@ -29,6 +30,10 @@ export default function YouTubeCard(props: YouTubeCardProps) {
         <ClientYouTubePlayer enableJsApi={enableJsApi} {...video} />
         <DescriptionSheet title={title} description={description} />
         <WatchedStatus videoId={video.videoId} />
+        <TimeDuration
+          videoDuration={video?.videoDuration ?? 0}
+          videoId={video.videoId}
+        />
       </div>
       <ShowCardOption
         video={video}

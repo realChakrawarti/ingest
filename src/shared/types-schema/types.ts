@@ -1,5 +1,7 @@
 import type { z } from "zod";
 
+import type { VideoExtraDetails } from "~/entities/catalogs/models";
+
 import type { TitleDescriptionSchema } from "./schemas";
 
 /**
@@ -48,7 +50,7 @@ export interface History extends VideoData {
 }
 
 export interface YouTubeCardProps {
-  video: VideoData;
+  video: VideoData & Partial<VideoExtraDetails>;
   options?: Partial<YouTubeCardOptions> | any;
 }
 
