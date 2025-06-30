@@ -2,16 +2,9 @@ import { admin } from "~/shared/lib/firebase/admin";
 import { refs } from "~/shared/lib/firebase/refs";
 import { createNanoidToken } from "~/shared/utils/nanoid-token";
 
-type CatalogMeta = {
-  title: string;
-  description: string;
-};
+import type { ZCatalogMeta } from "../models";
 
-/**
- * This function creates a catalog for a user
- * @param userId
- */
-export async function createCatalog(userId: string, catalogMeta: CatalogMeta) {
+export async function createCatalog(userId: string, meta: ZCatalogMeta) {
   const nanoidToken = createNanoidToken(6);
   const catalogRef = refs.catalogs.doc(nanoidToken);
 
@@ -33,8 +26,8 @@ export async function createCatalog(userId: string, catalogMeta: CatalogMeta) {
       data: {
         updatedAt: new Date(0),
       },
-      description: catalogMeta.description,
-      title: catalogMeta.title,
+      description: meta.description,
+      title: meta.title,
       videoRef: userCatalogRef,
     });
 

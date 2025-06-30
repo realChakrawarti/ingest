@@ -1,4 +1,4 @@
-import type { CatalogList } from "~/entities/catalogs/models";
+import type { ZCatalogChannel } from "~/entities/catalogs/models";
 
 import { Button } from "~/shared/ui/button";
 import { DeleteIcon } from "~/shared/ui/icons";
@@ -15,7 +15,13 @@ import {
 import { DeleteModal } from "~/widgets/delete-modal";
 import { OutLink } from "~/widgets/out-link";
 
-function ChannelTable({ channels, handleDelete }: any) {
+function ChannelTable({
+  channels,
+  handleDelete,
+}: {
+  channels: ZCatalogChannel[];
+  handleDelete: (id: string) => Promise<void>;
+}) {
   return (
     <Table>
       <TableCaption>A list of channels.</TableCaption>
@@ -35,7 +41,7 @@ function ChannelTable({ channels, handleDelete }: any) {
             </TableCell>
           </TableRow>
         ) : (
-          channels?.map((catalogChannel: CatalogList, idx: number) => {
+          channels?.map((catalogChannel, idx: number) => {
             const { channelHandle, channelId, channelLogo, channelTitle } =
               catalogChannel;
             return (

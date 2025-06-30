@@ -1,4 +1,4 @@
-import type { DocumentReference } from "firebase-admin/firestore";
+import { Timestamp } from "firebase-admin/firestore";
 import { revalidatePath } from "next/cache";
 
 import appConfig from "~/shared/app-config";
@@ -12,15 +12,18 @@ import Log from "~/shared/utils/terminal-logger";
 import { time } from "~/shared/utils/time";
 
 import type {
-  CatalogList,
-  UserCatalogDocument,
-  VideoExtraDetails,
-  VideoListData,
-  VideoMetadata,
+  ZCatalogChannel,
+  ZCatalogList,
+  ZCatalogPlaylist,
+  ZCatalogVideoListSchema,
+  ZVideoContentInfo,
+  ZVideoMetadata,
 } from "../models";
 import { getPageviewByCatalogId } from "./get-pageviews-by-catalog-id";
 
-async function updateChannelLogos(list: CatalogList[]): Promise<CatalogList[]> {
+async function updateChannelLogos(
+  list: ZCatalogList[]
+): Promise<ZCatalogList[]> {
   const channels = new Set<string>();
   list.forEach((item) => channels.add(item.channelId));
 
@@ -56,10 +59,9 @@ async function updateChannelLogos(list: CatalogList[]): Promise<CatalogList[]> {
 }
 
 export async function getVideosByCatalog(catalogId: string) {
-  const videoList: VideoMetadata[] = [];
-  let totalVideos: number = 0;
+  const videoList: ZVideoMetadata[] = [];
 
-  let videoFilterData: VideoListData = {
+  let videoFilterData: ZCatalogVideoListSchema = {
     day: [],
     month: [],
     week: [],
@@ -74,14 +76,14 @@ export async function getVideosByCatalog(catalogId: string) {
 
   const catalogSnapData = catalogSnap.data();
 
-  const userCatalogRef: DocumentReference = catalogSnapData?.videoRef;
+  const userCatalogRef = catalogSnapData?.videoRef;
 
   if (!userCatalogRef) {
     return "Reference to the user doesn't exists";
   }
 
   const userCatalogSnap = await userCatalogRef.get();
-  const userSnapData = userCatalogSnap.data() as UserCatalogDocument;
+  const userSnapData = userCatalogSnap.data();
   const catalogList = userSnapData?.list;
 
   if (!catalogList?.length) {
@@ -89,19 +91,13 @@ export async function getVideosByCatalog(catalogId: string) {
   }
 
   // TODO: Maybe we can skip the filtering, but will be difficult to parse when subreddits are added?
-  const channelListData: CatalogList<"channel">[] = catalogList.filter(
-    (item: CatalogList) => item.type === "channel"
-  );
+  const channelListData = catalogList.filter((item) => item.type === "channel");
 
-  const playlistData: CatalogList<"playlist">[] = catalogList.filter(
-    (item: CatalogList) => item.type === "playlist"
-  );
-
-  const lastUpdatedCatalogList = new Date(
-    userSnapData.updatedAt.toDate()
-  ).getTime();
+  const playlistData = catalogList.filter((item) => item.type === "playlist");
 
   const currentTime = Date.now();
+  const lastUpdatedCatalogList =
+    userSnapData?.updatedAt.toDate().getTime() ?? currentTime;
 
   // Update channel logos
   if (
@@ -111,7 +107,7 @@ export async function getVideosByCatalog(catalogId: string) {
     const updatedList = await updateChannelLogos(catalogList);
     await userCatalogRef.set({
       list: updatedList,
-      updatedAt: new Date(),
+      updatedAt: Timestamp.fromDate(new Date()),
     });
   } else {
     Log.info(`Too early to revalidate channels logo.`);
@@ -136,7 +132,7 @@ export async function getVideosByCatalog(catalogId: string) {
       );
     }
 
-    const videoListPromise: Promise<VideoMetadata[]>[] = [];
+    const videoListPromise: Promise<ZVideoMetadata[]>[] = [];
 
     if (playlistData?.length) {
       playlistData?.forEach((playlist) => {
@@ -203,7 +199,6 @@ export async function getVideosByCatalog(catalogId: string) {
     Log.info(`Cached invalidated /c/${catalogId}`);
   } else {
     videoFilterData = catalogSnapData?.data.videos;
-    totalVideos = catalogSnapData?.data.totalVideos;
     recentUpdate = lastUpdated;
     Log.info(
       `Returning cached data for the catalog ${catalogId}, next update on ${new Date(
@@ -217,14 +212,12 @@ export async function getVideosByCatalog(catalogId: string) {
     nextUpdate: new Date(
       recentUpdate.getTime() + appConfig.catalogUpdatePeriod
     ).toUTCString(),
-    pageviews: catalogSnapData?.pageviews ?? 0,
     title: catalogSnapData?.title,
-    totalVideos: totalVideos,
     videos: videoFilterData,
   };
 }
 
-async function getPlaylistVideos(playlist: CatalogList<"playlist">) {
+async function getPlaylistVideos(playlist: ZCatalogPlaylist) {
   const items = await getVideosFromCatalogItem(
     playlist.playlistId,
     playlist.channelLogo
@@ -232,7 +225,7 @@ async function getPlaylistVideos(playlist: CatalogList<"playlist">) {
   return items;
 }
 
-async function getChannelVideos(channel: CatalogList<"channel">) {
+async function getChannelVideos(channel: ZCatalogChannel) {
   const playlistId = createPlaylistId(channel.channelId);
   const items = await getVideosFromCatalogItem(playlistId, channel.channelLogo);
   return items;
@@ -242,7 +235,7 @@ async function getVideosFromCatalogItem(
   playlistId: string,
   channelLogo: string
 ) {
-  const playlistItemData: VideoMetadata[] = [];
+  const playlistItemData: ZVideoMetadata[] = [];
   try {
     const result = await fetch(
       YOUTUBE_CHANNEL_PLAYLIST_VIDEOS(playlistId, appConfig.catalogVideoLimit),
@@ -314,8 +307,7 @@ function chunkVideoIds(
 
 async function addVideoDuration(videoIds: string[]) {
   const chunkedVideoIds = chunkVideoIds(videoIds, 50);
-  Log.debug("checked video ids", chunkedVideoIds);
-  const videoIdsDuration = new Map<string, VideoExtraDetails>();
+  const videoIdsDuration = new Map();
 
   const videoPromises = chunkedVideoIds.map((item) =>
     fetch(YOUTUBE_VIDEOS_DATA(item))
@@ -325,14 +317,15 @@ async function addVideoDuration(videoIds: string[]) {
 
   for (const result of results) {
     const data = await result.json();
-    data.items.forEach((item: any) =>
-      videoIdsDuration.set(item.id, {
+    data.items.forEach((item: any) => {
+      const videoContentInfo: ZVideoContentInfo = {
         videoComments: item.statistics.commentCount,
         videoDuration: youtubeDurationToSeconds(item.contentDetails.duration),
         videoLikes: item.statistics.likeCount,
         videoViews: item.statistics.viewCount,
-      })
-    );
+      } satisfies ZVideoContentInfo;
+      videoIdsDuration.set(item.id, videoContentInfo);
+    });
   }
   return videoIdsDuration;
 }

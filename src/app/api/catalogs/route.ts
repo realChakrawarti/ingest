@@ -1,6 +1,8 @@
 import type { NextRequest } from "next/server";
 
 import { createCatalog, getCatalogByUser } from "~/entities/catalogs";
+import { CatalogMetaSchema } from "~/entities/catalogs/models";
+
 import { getUserIdHeader } from "~/shared/lib/next/get-user-id-header";
 import { NxResponse } from "~/shared/lib/next/nx-response";
 
@@ -13,13 +15,22 @@ export async function GET() {
 export async function POST(request: NextRequest) {
   const userId = getUserIdHeader();
 
-  const catalogMeta = await request.json();
+  const body = await request.json();
 
-  const catalogId = await createCatalog(userId, catalogMeta);
+  const { success, error, data } = CatalogMetaSchema.safeParse(body);
 
-  return NxResponse.success<{ catalogId: string }>(
-    "Catalog created successfully.",
-    { catalogId },
-    201
-  );
+  if (success) {
+    const catalogId = await createCatalog(userId, data);
+    return NxResponse.success<{ catalogId: string }>(
+      "Catalog created successfully.",
+      { catalogId },
+      201
+    );
+  } else {
+    return NxResponse.fail(
+      "Invalid data provided.",
+      { code: "INVALID_DATA", details: error.message },
+      422
+    );
+  }
 }

@@ -2,6 +2,8 @@
 
 import useSWR from "swr";
 
+import type { ZCatalogByUser } from "~/entities/catalogs/models";
+
 import appConfig from "~/shared/app-config";
 import { toast } from "~/shared/hooks/use-toast";
 import fetchApi from "~/shared/lib/api/fetch";
@@ -23,7 +25,11 @@ export default function CatalogView() {
     isLoading: isCatalogLoading,
     error: isCatalogError,
     mutate,
-  } = useSWR("/catalogs", (url) => fetchApi(url, { cache: "no-store" }));
+  } = useSWR("/catalogs", (url) =>
+    fetchApi<ZCatalogByUser[]>(url, { cache: "no-store" })
+  );
+
+  const catalogsData = catalogs?.data;
 
   const handleCatalogDelete = async (catalogId: string) => {
     if (catalogId) {
@@ -46,12 +52,12 @@ export default function CatalogView() {
           <BookOpenIcon />
           <p>Catalogs</p>
           <Badge className="text-lg lg:text-xl text-primary" variant="outline">
-            {catalogs?.data.length ?? 0}/{appConfig.limitCatalogs}
+            {catalogsData?.length ?? 0}/{appConfig.limitCatalogs}
           </Badge>
         </h1>
         <div className="flex items-center gap-3">
           <CreateCatalogDialog
-            disabled={(catalogs?.data.length ?? 0) >= appConfig.limitCatalogs}
+            disabled={(catalogsData?.length ?? 0) >= appConfig.limitCatalogs}
             revalidateCatalogs={mutate}
           />
         </div>
@@ -62,11 +68,11 @@ export default function CatalogView() {
       ) : (
         <section className="w-full">
           {/* TODO: Maybe add a skeleton? */}
-          {catalogs?.data.length ? (
+          {catalogsData?.length ? (
             <GridContainer>
-              {catalogs?.data.map((catalog: any) => {
+              {catalogsData.map((catalog) => {
                 const [_, lastUpdated] = getTimeDifference(
-                  catalog?.videoData?.updatedAt,
+                  catalog.updatedAt,
                   true,
                   false
                 );

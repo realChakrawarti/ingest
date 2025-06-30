@@ -1,28 +1,8 @@
 import type { z } from "zod";
 
-import type { VideoExtraDetails } from "~/entities/catalogs/models";
+import type { ZVideoContentInfo } from "~/entities/catalogs/models";
 
 import type { TitleDescriptionSchema } from "./schemas";
-
-/**
- * Represents the metadata for catalogs and archives.
- * @property totalVideos - The total number of videos in the collection
- * @property thumbnails - Array of thumbnail URLs for the videos
- * @property id - Unique identifier for the collection
- * @property title - Title of the collection
- * @property description - Description of the collection
- * @property updatedAt - Last update timestamp
- * @property pageviews - Number of page views
- */
-export type ValidMetadata = {
-  totalVideos: number;
-  thumbnails: string[];
-  id: string;
-  title: string;
-  description: string;
-  updatedAt: string;
-  pageviews?: number;
-};
 
 type VideoData = {
   videoId: string;
@@ -50,7 +30,7 @@ export interface History extends VideoData {
 }
 
 export interface YouTubeCardProps {
-  video: VideoData & Partial<VideoExtraDetails>;
+  video: VideoData & Partial<ZVideoContentInfo>;
   options?: Partial<YouTubeCardOptions> | any;
 }
 

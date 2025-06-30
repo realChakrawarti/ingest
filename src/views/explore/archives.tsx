@@ -1,3 +1,5 @@
+import type { ZArchiveValid } from "~/entities/archives/models";
+
 import fetchApi from "~/shared/lib/api/fetch";
 
 import BackLink from "~/widgets/back-link";
@@ -10,7 +12,7 @@ import {
 } from "~/widgets/public-layout";
 
 export default async function Archives() {
-  const archives = await fetchApi("/archives/valid");
+  const archives = await fetchApi<ZArchiveValid[]>("/archives/valid");
 
   return (
     <PublicMainContainer>
@@ -25,13 +27,13 @@ export default async function Archives() {
       <PublicContentContainer>
         <GridContainer>
           {archives?.data?.length ? (
-            archives?.data?.map((pageData: any) => {
+            archives?.data?.map((pageData) => {
               if (pageData?.id) {
                 return (
                   <DetailsCard
                     path={`/a/${pageData.id}`}
                     key={pageData.id}
-                    pageData={pageData}
+                    validData={pageData}
                   />
                 );
               }

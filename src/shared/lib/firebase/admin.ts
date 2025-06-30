@@ -5,7 +5,7 @@ import {
   initializeApp,
 } from "firebase-admin/app";
 import { getAuth } from "firebase-admin/auth";
-import { getFirestore } from "firebase-admin/firestore";
+import { getFirestore, type Timestamp } from "firebase-admin/firestore";
 
 import appConfig from "~/shared/app-config";
 import isDevelopment from "~/shared/utils/is-development";
@@ -53,3 +53,7 @@ export const admin = {
   auth: adminAuth,
   db: adminDb,
 };
+
+export function timestampUTC(dateTime: Timestamp) {
+  return dateTime.toDate().toUTCString();
+}

@@ -1,6 +1,6 @@
 import { Info } from "lucide-react";
 
-import type { ArchiveByIdResponse } from "~/entities/archives/models";
+import type { ZArchiveByID } from "~/entities/archives/models";
 
 import fetchApi from "~/shared/lib/api/fetch";
 
@@ -14,7 +14,7 @@ export default async function PublicArchive({
 }: {
   archiveId: string;
 }) {
-  const result = await fetchApi<ArchiveByIdResponse>(`/archives/${archiveId}`);
+  const result = await fetchApi<ZArchiveByID>(`/archives/${archiveId}`);
   const archiveData = result.data;
 
   const archiveTitle = archiveData?.title ?? "";

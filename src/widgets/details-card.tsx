@@ -5,18 +5,21 @@ import Link from "next/link";
 import { type MouseEvent, useRef, useState } from "react";
 import type Slider from "react-slick";
 
-import type { ValidMetadata } from "~/shared/types-schema/types";
+import type { ZArchiveValid } from "~/entities/archives/models";
+import type { ZCatalogValid } from "~/entities/catalogs/models";
+
 import { cn } from "~/shared/utils/tailwind-merge";
+import Log from "~/shared/utils/terminal-logger";
 
 import ThumbnailCarousel from "./carousel-thumbnails";
 import OverlayTip from "./overlay-tip";
 
 interface DetailsCardProps {
-  pageData: ValidMetadata;
+  validData: ZCatalogValid | ZArchiveValid;
   path: string;
 }
 
-export default function DetailsCard({ pageData, path }: DetailsCardProps) {
+export default function DetailsCard({ validData, path }: DetailsCardProps) {
   const sliderRef = useRef<Slider | null>(null);
   const [slidesPlaying, setSlidesPlaying] = useState<boolean>(false);
 
@@ -32,6 +35,8 @@ export default function DetailsCard({ pageData, path }: DetailsCardProps) {
     sliderRef.current?.slickPause();
   };
 
+  Log.debug(">>>>", validData);
+
   return (
     <section
       className={cn(
@@ -45,7 +50,7 @@ export default function DetailsCard({ pageData, path }: DetailsCardProps) {
         <ThumbnailCarousel
           path={path}
           sliderRef={sliderRef}
-          thumbnails={pageData.thumbnails}
+          thumbnails={validData.thumbnails}
         />
 
         <div className="absolute right-0 bottom-3">
@@ -79,27 +84,29 @@ export default function DetailsCard({ pageData, path }: DetailsCardProps) {
 
       <Link
         prefetch={false} // In order to disable automatic updation to not frequently viewed catalogs
-        key={pageData?.id}
+        key={validData?.id}
         href={path}
       >
         <div className="group flex justify-between p-4 pt-2">
           <div>
             <h2
-              id={pageData?.id}
+              id={validData?.id}
               className="font-semibold group-hover:text-primary tracking-wide"
             >
-              {pageData?.title}
+              {validData?.title}
             </h2>
             <p className="text-sm text-muted-foreground">
-              {pageData?.description}
+              {validData?.description}
             </p>
           </div>
         </div>
       </Link>
 
-      {pageData?.pageviews ? <Pageview pageviews={pageData.pageviews} /> : null}
-      {pageData?.totalVideos ? (
-        <TotalVideos totalVideos={pageData.totalVideos} />
+      {validData?.pageviews ? (
+        <Pageview pageviews={validData.pageviews} />
+      ) : null}
+      {validData?.totalVideos ? (
+        <TotalVideos totalVideos={validData.totalVideos} />
       ) : null}
     </section>
   );

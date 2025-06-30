@@ -4,7 +4,7 @@ import { useParams } from "next/navigation";
 import { type ChangeEvent, useEffect, useState } from "react";
 import type { KeyedMutator } from "swr";
 
-import type { CatalogList } from "~/entities/catalogs/models";
+import type { ZCatalogPlaylist } from "~/entities/catalogs/models";
 import type { ChannelPlaylist } from "~/entities/youtube/models";
 
 import { toast } from "~/shared/hooks/use-toast";
@@ -60,8 +60,8 @@ export default function PlaylistSelectionForm({
     try {
       setIsLoading(true);
 
-      const playlistDetails: CatalogList<"playlist">[] = selectedPlaylists.map(
-        (item: ChannelPlaylist): CatalogList<"playlist"> => ({
+      const playlistDetails = selectedPlaylists.map(
+        (item: ChannelPlaylist): ZCatalogPlaylist => ({
           channelDescription: channelInfo.channelDescription,
           channelHandle: channelInfo.channelHandle,
           channelId: channelInfo.channelId,
@@ -74,12 +74,8 @@ export default function PlaylistSelectionForm({
         })
       );
 
-      const payload = {
-        playlists: playlistDetails,
-      };
-
       const result = await fetchApi(`/catalogs/${catalogId}/playlist`, {
-        body: JSON.stringify(payload),
+        body: JSON.stringify(playlistDetails),
         method: "PATCH",
       });
 

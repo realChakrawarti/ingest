@@ -2,6 +2,8 @@ import { revalidatePath } from "next/cache";
 import type { NextRequest } from "next/server";
 
 import { removeArchiveVideo } from "~/entities/archives";
+import { YouTubeVideoMetadataSchema } from "~/entities/youtube/models";
+
 import { getUserIdHeader } from "~/shared/lib/next/get-user-id-header";
 import { NxResponse } from "~/shared/lib/next/nx-response";
 
@@ -15,11 +17,21 @@ export async function PATCH(request: NextRequest, ctx: ContextParams) {
   const userId = getUserIdHeader();
   const { archiveId } = ctx.params;
 
-  const payload = await request.json();
+  const body = await request.json();
 
-  const message = await removeArchiveVideo(userId, archiveId, payload);
+  const { success, data, error } = YouTubeVideoMetadataSchema.safeParse(body);
 
-  revalidatePath(`/a/${archiveId}`);
+  if (success) {
+    const message = await removeArchiveVideo(userId, archiveId, data);
 
-  return NxResponse.success(message, {}, 201);
+    revalidatePath(`/a/${archiveId}`);
+
+    return NxResponse.success(message, {}, 201);
+  } else {
+    return NxResponse.fail(
+      "Invalid data provided.",
+      { code: "INVALID_DATA", details: error.message },
+      422
+    );
+  }
 }

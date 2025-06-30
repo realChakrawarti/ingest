@@ -1,8 +1,10 @@
 import { refs } from "~/shared/lib/firebase/refs";
 
+import type { ZArchiveMeta } from "../models";
+
 export async function updateArchiveMeta(
   archiveId: string,
-  archiveMeta: { title: string; description: string }
+  archiveMeta: ZArchiveMeta
 ) {
   const archiveRef = refs.archives.doc(archiveId);
 

@@ -2,7 +2,7 @@ import { revalidatePath } from "next/cache";
 import type { NextRequest } from "next/server";
 
 import { deleteChannel, updateCatalogChannels } from "~/entities/catalogs";
-import type { CatalogList } from "~/entities/catalogs/models";
+import { CatalogChannelSchema } from "~/entities/catalogs/models";
 
 import { getUserIdHeader } from "~/shared/lib/next/get-user-id-header";
 import { NxResponse } from "~/shared/lib/next/nx-response";
@@ -17,13 +17,21 @@ export async function DELETE(request: NextRequest, ctx: ContextParams) {
   const userId = getUserIdHeader();
   const { catalogId } = ctx.params;
 
-  const channelToDelete = await request.json();
+  const body = await request.json();
 
-  await deleteChannel(userId, catalogId, channelToDelete);
+  const { success, error, data } = CatalogChannelSchema.safeParse(body);
 
-  revalidatePath(`/c/${catalogId}`);
-
-  return NxResponse.success<any>("Channel deleted successfully.", {}, 200);
+  if (success) {
+    await deleteChannel(userId, catalogId, data);
+    revalidatePath(`/c/${catalogId}`);
+    return NxResponse.success("Channel deleted successfully.", {}, 200);
+  } else {
+    return NxResponse.fail(
+      "Invalid data provided.",
+      { code: "INVALID_DATA", details: error.message },
+      422
+    );
+  }
 }
 
 export async function PATCH(request: NextRequest, ctx: ContextParams) {
@@ -41,21 +49,27 @@ export async function PATCH(request: NextRequest, ctx: ContextParams) {
     );
   }
 
-  const payload: { channel: CatalogList<"channel"> } = await request.json();
+  const body = await request.json();
 
-  const message = await updateCatalogChannels(
-    userId,
-    catalogId,
-    payload.channel
-  );
+  const { success, data, error } = CatalogChannelSchema.safeParse(body);
 
-  if (message) {
+  if (success) {
+    const message = await updateCatalogChannels(userId, catalogId, data);
+
+    if (message) {
+      return NxResponse.fail(
+        message,
+        { code: "CATALOG_UPDATE_FAILED", details: message },
+        400
+      );
+    }
+
+    return NxResponse.success("Channel list updated successfully.", {}, 201);
+  } else {
     return NxResponse.fail(
-      message,
-      { code: "CATALOG_UPDATE_FAILED", details: message },
-      400
+      "Invalid data provided.",
+      { code: "INVALID_DATA", details: error.message },
+      422
     );
   }
-
-  return NxResponse.success<any>("Channel list updated successfully.", {}, 201);
 }

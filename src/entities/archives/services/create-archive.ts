@@ -1,3 +1,5 @@
+import { Timestamp } from "firebase-admin/firestore";
+
 import { admin } from "~/shared/lib/firebase/admin";
 import { refs } from "~/shared/lib/firebase/refs";
 import { createNanoidToken } from "~/shared/utils/nanoid-token";
@@ -18,14 +20,15 @@ export async function createArchive(
   try {
     // Create archive sub-collection
     batch.set(userArchiveRef, {
-      updatedAt: new Date(),
+      updatedAt: Timestamp.fromDate(new Date()),
       videoIds: [],
     });
 
     // Add a doc to archive collection
     batch.set(archiveRef, {
       data: {
-        updatedAt: new Date(0),
+        totalVideos: 0,
+        updatedAt: Timestamp.fromDate(new Date(0)),
       },
       description: archiveMeta.description,
       title: archiveMeta.title,
