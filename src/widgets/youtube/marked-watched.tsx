@@ -1,12 +1,18 @@
 import { useLiveQuery } from "dexie-react-hooks";
 import { Check, Square } from "lucide-react";
 
+import type { ZVideoMetadataCompatible } from "~/entities/catalogs/models";
+
 import appConfig from "~/shared/app-config";
 import { indexedDB } from "~/shared/lib/api/dexie";
-import type { History, VideoData } from "~/shared/types-schema/types";
+import type { History } from "~/shared/types-schema/types";
 import { Button } from "~/shared/ui/button";
 
-export default function MarkedWatched({ video }: { video: VideoData }) {
+export default function MarkedWatched({
+  video,
+}: {
+  video: ZVideoMetadataCompatible;
+}) {
   const videoProgress = useLiveQuery(() =>
     indexedDB["history"].get(video.videoId)
   );
@@ -39,7 +45,7 @@ export default function MarkedWatched({ video }: { video: VideoData }) {
   async function markWatched() {
     const payload: History = {
       completed: 100,
-      duration: 0,
+      duration: video?.videoDuration ?? 0,
       updatedAt: Date.now(),
       ...video,
     };

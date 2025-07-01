@@ -9,7 +9,6 @@ import type { ZArchiveValid } from "~/entities/archives/models";
 import type { ZCatalogValid } from "~/entities/catalogs/models";
 
 import { cn } from "~/shared/utils/tailwind-merge";
-import Log from "~/shared/utils/terminal-logger";
 
 import ThumbnailCarousel from "./carousel-thumbnails";
 import OverlayTip from "./overlay-tip";
@@ -34,8 +33,6 @@ export default function DetailsCard({ validData, path }: DetailsCardProps) {
     setSlidesPlaying(false);
     sliderRef.current?.slickPause();
   };
-
-  Log.debug(">>>>", validData);
 
   return (
     <section

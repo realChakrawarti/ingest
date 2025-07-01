@@ -23,10 +23,8 @@ function formatSecondsToHMS(totalSeconds: number) {
   }
 }
 
-import { useState } from "react";
-
 import OverlayTip from "../overlay-tip";
-import currentlyPlayingStore from "./currently-playing-store";
+import useActivePlayerRef from "./use-active-player";
 
 export function TimeDuration({
   videoDuration,
@@ -35,21 +33,9 @@ export function TimeDuration({
   videoDuration: number;
   videoId: string;
 }) {
-  const [activePlayerRef, setActivePlayerRef] = useState<YT.Player | null>(
-    null
-  );
+  const activePlayerRef = useActivePlayerRef();
 
-  // Not within the react rendering context to avoid re-renders, using zustand/vanilla
-  const getActivePlayer: Parameters<typeof currentlyPlayingStore.subscribe>[0] =
-    (state) => {
-      if (state.playerRef) {
-        setActivePlayerRef(state.playerRef);
-      }
-    };
-
-  currentlyPlayingStore.subscribe(getActivePlayer);
-
-  if (activePlayerRef?.getVideoData().video_id === videoId) {
+  if (activePlayerRef?.getVideoData()?.video_id === videoId) {
     return null;
   }
   return (

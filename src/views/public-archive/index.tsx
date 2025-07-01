@@ -39,32 +39,15 @@ export default async function PublicArchive({
       {archiveData?.videos.length ? (
         <section className="px-0 md:px-3">
           <GridContainer>
-            {archiveData.videos.map(
-              ({
-                videoId,
-                videoTitle,
-                channelTitle,
-                channelId,
-                videoDescription,
-                publishedAt,
-              }) => {
-                return (
-                  <YouTubeCard
-                    key={videoId}
-                    video={{
-                      channelId: channelId,
-                      channelLogo: "",
-                      channelTitle: channelTitle,
-                      description: videoDescription,
-                      publishedAt: publishedAt,
-                      title: videoTitle,
-                      videoId: videoId,
-                    }}
-                    options={{ hideAvatar: true }}
-                  />
-                );
-              }
-            )}
+            {archiveData.videos.map((video) => {
+              return (
+                <YouTubeCard
+                  key={video.videoId}
+                  video={video}
+                  options={{ hideAvatar: true }}
+                />
+              );
+            })}
           </GridContainer>
         </section>
       ) : (

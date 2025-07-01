@@ -31,15 +31,7 @@ const DocumentReferenceSchema = z.custom<
   DocumentReference<ZUserArchiveDocument>
 >((value) => value instanceof DocumentReference);
 
-const ArchiveVideoSchema = z.object({
-  channelId: z.string(),
-  channelTitle: z.string(),
-  publishedAt: z.string(),
-  videoDescription: z.string(),
-  videoId: z.string(),
-  videoThumbnail: z.string(),
-  videoTitle: z.string(),
-});
+const ArchiveVideoSchema = YouTubeVideoMetadataSchema;
 
 export const ArchiveDocumentSchema = z.object({
   data: z.object({
@@ -64,6 +56,7 @@ export type ZArchiveByUser = z.infer<typeof ArchiveByUserSchema>;
 const ArchiveValidSchema = z.object({
   description: z.string(),
   id: z.string(),
+  pageviews: z.number().optional(),
   thumbnails: z.array(z.string()),
   title: z.string(),
   totalVideos: z.number(),

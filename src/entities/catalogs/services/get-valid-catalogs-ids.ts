@@ -54,8 +54,10 @@ const getCatalogMetadata = async (catalogId: string) => {
 
 const getVideoThumbnails = (catalogData: ZCatalogDocument) => {
   const videos = catalogData.data.videos;
-  const dayThumbnails = videos.day.map((video) => video.thumbnail);
-  const weekThumbnails = videos.week.map((video) => video.thumbnail);
-  const monthThumbnails = videos.month.map((video) => video.thumbnail);
+  const dayThumbnails = videos?.day.map((video) => video.videoThumbnail) ?? [];
+  const weekThumbnails =
+    videos?.week.map((video) => video.videoThumbnail) ?? [];
+  const monthThumbnails =
+    videos?.month.map((video) => video.videoThumbnail) ?? [];
   return [...dayThumbnails, ...weekThumbnails, ...monthThumbnails];
 };

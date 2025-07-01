@@ -17,7 +17,7 @@ import type {
   ZCatalogPlaylist,
   ZCatalogVideoListSchema,
   ZVideoContentInfo,
-  ZVideoMetadata,
+  ZVideoMetadataWithoutContent,
 } from "../models";
 import { getPageviewByCatalogId } from "./get-pageviews-by-catalog-id";
 
@@ -59,9 +59,9 @@ async function updateChannelLogos(
 }
 
 export async function getVideosByCatalog(catalogId: string) {
-  const videoList: ZVideoMetadata[] = [];
+  const videoList: ZVideoMetadataWithoutContent[] = [];
 
-  let videoFilterData: ZCatalogVideoListSchema = {
+  let videoFilterData: ZCatalogVideoListSchema | undefined = {
     day: [],
     month: [],
     week: [],
@@ -132,7 +132,7 @@ export async function getVideosByCatalog(catalogId: string) {
       );
     }
 
-    const videoListPromise: Promise<ZVideoMetadata[]>[] = [];
+    const videoListPromise: Promise<ZVideoMetadataWithoutContent[]>[] = [];
 
     if (playlistData?.length) {
       playlistData?.forEach((playlist) => {
@@ -235,7 +235,7 @@ async function getVideosFromCatalogItem(
   playlistId: string,
   channelLogo: string
 ) {
-  const playlistItemData: ZVideoMetadata[] = [];
+  const playlistItemData: ZVideoMetadataWithoutContent[] = [];
   try {
     const result = await fetch(
       YOUTUBE_CHANNEL_PLAYLIST_VIDEOS(playlistId, appConfig.catalogVideoLimit),
@@ -265,11 +265,11 @@ async function getVideosFromCatalogItem(
         channelId: item.snippet.channelId,
         channelLogo: channelLogo,
         channelTitle: item.snippet.channelTitle,
-        description: item.snippet.description,
         publishedAt: item.contentDetails.videoPublishedAt,
-        thumbnail: item.snippet.thumbnails.medium.url,
-        title: item.snippet.title,
+        videoDescription: item.snippet.description,
         videoId: item.contentDetails.videoId,
+        videoThumbnail: item.snippet.thumbnails.medium.url,
+        videoTitle: item.snippet.title,
       });
     }
   } catch (err) {
@@ -319,10 +319,10 @@ async function addVideoDuration(videoIds: string[]) {
     const data = await result.json();
     data.items.forEach((item: any) => {
       const videoContentInfo: ZVideoContentInfo = {
-        videoComments: item.statistics.commentCount,
-        videoDuration: youtubeDurationToSeconds(item.contentDetails.duration),
-        videoLikes: item.statistics.likeCount,
-        videoViews: item.statistics.viewCount,
+        videoComments: parseInt(item.statistics.commentCount),
+        videoDuration: youtubeDurationToSeconds(item.contentDetails?.duration),
+        videoLikes: parseInt(item.statistics.likeCount),
+        videoViews: parseInt(item.statistics.viewCount),
       } satisfies ZVideoContentInfo;
       videoIdsDuration.set(item.id, videoContentInfo);
     });
@@ -331,6 +331,10 @@ async function addVideoDuration(videoIds: string[]) {
 }
 
 function youtubeDurationToSeconds(duration: string) {
+  if (!duration) {
+    return 0;
+  }
+
   let hours = 0;
   let minutes = 0;
   let seconds = 0;

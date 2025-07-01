@@ -45,23 +45,46 @@ const CatalogByIDSchema = z.object({
   title: z.string(),
 });
 
-const VideoContentInfoSchema = {
+const VideoContentInfoSchema = z.object({
   videoComments: z.number(),
   videoDuration: z.number(),
   videoLikes: z.number(),
   videoViews: z.number(),
-};
+});
 
-const VideoMetadataSchema = z.object({
+const VideoMetadataSchema = VideoContentInfoSchema.extend({
   channelId: z.string(),
   channelLogo: z.string(),
   channelTitle: z.string(),
-  description: z.string(),
   publishedAt: z.string(),
-  thumbnail: z.string(),
-  title: z.string(),
+  videoDescription: z.string(),
   videoId: z.string(),
+  videoThumbnail: z.string(),
+  videoTitle: z.string(),
 });
+
+const VideoMetadataWithoutContentSchema = VideoMetadataSchema.omit({
+  videoComments: true,
+  videoDuration: true,
+  videoLikes: true,
+  videoViews: true,
+});
+
+const VideoMetadataCompatibleSchema = VideoMetadataSchema.partial({
+  channelLogo: true,
+  videoComments: true,
+  videoDuration: true,
+  videoLikes: true,
+  videoViews: true,
+});
+
+export type ZVideoMetadataCompatible = z.infer<
+  typeof VideoMetadataCompatibleSchema
+>;
+
+export type ZVideoMetadataWithoutContent = z.infer<
+  typeof VideoMetadataWithoutContentSchema
+>;
 
 const DocumentReferenceSchema = z.custom<
   DocumentReference<ZUserCatalogDocument>
@@ -77,9 +100,9 @@ const CatalogDocumentSchema = CatalogMetaSchema.extend({
   data: z.object({
     totalVideos: z.number(),
     updatedAt: TimestampSchema,
-    videos: CatalogVideoListSchema,
+    videos: CatalogVideoListSchema.optional(),
   }),
-  pageviews: z.number(),
+  pageviews: z.number().optional(),
   videoRef: DocumentReferenceSchema,
 });
 

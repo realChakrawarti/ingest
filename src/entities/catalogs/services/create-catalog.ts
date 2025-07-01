@@ -1,3 +1,5 @@
+import { Timestamp } from "firebase-admin/firestore";
+
 import { admin } from "~/shared/lib/firebase/admin";
 import { refs } from "~/shared/lib/firebase/refs";
 import { createNanoidToken } from "~/shared/utils/nanoid-token";
@@ -16,15 +18,15 @@ export async function createCatalog(userId: string, meta: ZCatalogMeta) {
   try {
     // Create catalog sub-collection
     batch.set(userCatalogRef, {
-      channels: [],
-      playlists: [],
-      updatedAt: new Date(),
+      list: [],
+      updatedAt: Timestamp.fromDate(new Date()),
     });
 
     // Add a doc to catalog collection
     batch.set(catalogRef, {
       data: {
-        updatedAt: new Date(0),
+        totalVideos: 0,
+        updatedAt: Timestamp.fromDate(new Date(0)),
       },
       description: meta.description,
       title: meta.title,

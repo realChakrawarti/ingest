@@ -57,6 +57,8 @@ export default async function PubliCatalog({
     enableJsApi: true,
     hideAvatar: Boolean(channelId),
     markWatched: true,
+    showDuration: true,
+    showVideoStats: true,
   };
 
   if (!videos) {

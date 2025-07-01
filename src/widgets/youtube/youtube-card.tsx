@@ -1,20 +1,29 @@
 import dynamic from "next/dynamic";
 
-import type { YouTubeCardProps } from "~/shared/types-schema/types";
+import type { ZVideoMetadataCompatible } from "~/entities/catalogs/models";
+
+import type { YouTubeCardOptions } from "~/shared/types-schema/types";
 
 import { ChannelMeta, DescriptionSheet } from "./components";
 import ShowCardOption from "./show-card-options";
 import { TimeDuration } from "./time-duration";
+import { VideoCategory } from "./video-category";
+import VideoStats from "./video-stats";
 import { WatchedStatus } from "./watched-status";
 
 const ClientYouTubePlayer = dynamic(() => import("./player"), {
   ssr: false,
 });
 
+interface YouTubeCardProps {
+  video: ZVideoMetadataCompatible;
+  options?: Partial<YouTubeCardOptions>;
+}
+
 export default function YouTubeCard(props: YouTubeCardProps) {
   const { video, options } = props;
 
-  const { videoId, title, description } = video;
+  const { videoId, videoTitle, videoDescription } = video;
 
   const {
     enableJsApi = false,
@@ -22,18 +31,39 @@ export default function YouTubeCard(props: YouTubeCardProps) {
     addWatchLater = false,
     removeWatchLater = false,
     markWatched = false,
+    showVideoStats = false,
+    showDuration = false,
   } = options ?? {};
 
   return (
     <div key={videoId} id="player-card" className="flex flex-col group/player">
       <div className="relative aspect-video">
         <ClientYouTubePlayer enableJsApi={enableJsApi} {...video} />
-        <DescriptionSheet title={title} description={description} />
-        <WatchedStatus videoId={video.videoId} />
-        <TimeDuration
-          videoDuration={video?.videoDuration ?? 0}
-          videoId={video.videoId}
+        <DescriptionSheet
+          videoTitle={videoTitle}
+          videoDescription={videoDescription}
         />
+        <WatchedStatus videoId={video.videoId} />
+        <VideoCategory
+          videoId={video.videoId}
+          videoComments={video.videoComments ?? 0}
+          videoLikes={video.videoLikes ?? 0}
+          videoViews={video.videoViews ?? 0}
+        />
+        {showVideoStats ? (
+          <VideoStats
+            videoId={video.videoId}
+            videoComments={video.videoComments ?? 0}
+            videoLikes={video.videoLikes ?? 0}
+            videoViews={video.videoViews ?? 0}
+          />
+        ) : null}
+        {showDuration ? (
+          <TimeDuration
+            videoDuration={video?.videoDuration ?? 0}
+            videoId={video.videoId}
+          />
+        ) : null}
       </div>
       <ShowCardOption
         video={video}
@@ -42,7 +72,7 @@ export default function YouTubeCard(props: YouTubeCardProps) {
         markWatched={markWatched}
       />
       <div className="p-3">
-        <ChannelMeta hideAvatar={hideAvatar} {...video} />
+        <ChannelMeta hideAvatar={hideAvatar} video={video} />
       </div>
     </div>
   );

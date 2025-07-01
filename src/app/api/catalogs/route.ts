@@ -8,8 +8,22 @@ import { NxResponse } from "~/shared/lib/next/nx-response";
 
 export async function GET() {
   const userId = getUserIdHeader();
-  const data = await getCatalogByUser(userId);
-  return NxResponse.success("Catalogs data fetched successfully.", data, 200);
+  try {
+    const data = await getCatalogByUser(userId);
+    return NxResponse.success("Catalogs data fetched successfully.", data, 200);
+  } catch (err) {
+    return NxResponse.fail(
+      "Unable to retrieve user catalogs.",
+      {
+        code: "GET_USER_CATALOG_FAILED",
+        details:
+          err instanceof Error
+            ? err.message
+            : "Unable to retrieve user catalogs.",
+      },
+      500
+    );
+  }
 }
 
 export async function POST(request: NextRequest) {

@@ -31,7 +31,7 @@ export async function PATCH(request: NextRequest, ctx: ContextParams) {
     return NxResponse.success(result, {}, 201);
   } else {
     return NxResponse.fail(
-      "Inavlid data provided.",
+      "Invalid data provided.",
       { code: "INVALID_DATA", details: error.message },
       422
     );

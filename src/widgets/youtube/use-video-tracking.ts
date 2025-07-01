@@ -1,13 +1,15 @@
 import { useEffect, useRef } from "react";
 
+import type { ZVideoMetadataCompatible } from "~/entities/catalogs/models";
+
 import { indexedDB } from "~/shared/lib/api/dexie";
-import type { History, VideoData } from "~/shared/types-schema/types";
+import type { History } from "~/shared/types-schema/types";
 
 import currentlyPlayingStore from "./currently-playing-store";
 
 interface UseVideoTrackingProps {
   playerRef: React.MutableRefObject<YT.Player | null>;
-  video: VideoData;
+  video: ZVideoMetadataCompatible;
 }
 
 export function useVideoTracking({ video, playerRef }: UseVideoTrackingProps) {
