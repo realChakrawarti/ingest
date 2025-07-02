@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.7.10](https://github.com/realChakrawarti/ingest/compare/v1.7.9...v1.7.10) (2025-07-02)
+
+
+### Features
+
+* add video stats and current status as per views, likes and comments ([091aa6b](https://github.com/realChakrawarti/ingest/commit/091aa6b3c20841450ab80aa1693fe32e37e510f5))
+* **player:** show duration on load, hide on playing, managed using zustand/vanilla ([5d762a0](https://github.com/realChakrawarti/ingest/commit/5d762a023e9c1976e8ffe051ec260f8bb026dc48))
+* show duration on load, hide on playing (closes [#172](https://github.com/realChakrawarti/ingest/issues/172)) ([5ed30dc](https://github.com/realChakrawarti/ingest/commit/5ed30dc901328e31316b65d0787066fb46203c79))
+
+
+### Bug Fixes
+
+* coderabbit suggestion ([6797390](https://github.com/realChakrawarti/ingest/commit/6797390f930f76e42017c01d71235c3d84dde10e))
+* use zod extensively to validate data on server and on client ([0aefa96](https://github.com/realChakrawarti/ingest/commit/0aefa9655d8b16cbd29d3d9883821d85648b72ff))
+
 ### [1.7.9](https://github.com/realChakrawarti/ingest/compare/v1.7.8...v1.7.9) (2025-06-25)
 
 
