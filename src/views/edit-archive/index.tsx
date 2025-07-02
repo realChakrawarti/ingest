@@ -2,7 +2,7 @@
 
 import useSWR from "swr";
 
-import type { ArchiveByIdResponse } from "~/entities/archives/models";
+import type { ZArchiveByID } from "~/entities/archives/models";
 
 import { toast } from "~/shared/hooks/use-toast";
 import fetchApi from "~/shared/lib/api/fetch";
@@ -24,7 +24,7 @@ export default function EditArchive({ archiveId }: { archiveId: string }) {
     mutate: revalidateArchive,
   } = useSWR(
     archiveId ? `/archives/${archiveId}` : null,
-    (url) => fetchApi<ArchiveByIdResponse>(url, { cache: "no-store" }),
+    (url) => fetchApi<ZArchiveByID>(url, { cache: "no-store" }),
     { revalidateOnFocus: false }
   );
 

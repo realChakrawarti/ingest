@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useEffect } from "react";
 import useSWR from "swr";
 
-import type { CatalogList } from "~/entities/catalogs/models";
+import type { ZCatalogByID } from "~/entities/catalogs/models";
 
 import { useToast } from "~/shared/hooks/use-toast";
 import fetchApi from "~/shared/lib/api/fetch";
@@ -32,33 +32,31 @@ export default function EditCatalog({ catalogId }: { catalogId: string }) {
   const { toast } = useToast();
 
   const {
-    data: catalogData,
+    data: catalogs,
     isLoading,
     error,
     mutate: revalidateCatalog,
   } = useSWR(
     catalogId ? `/catalogs/${catalogId}` : null,
-    (url) => fetchApi(url, { cache: "no-store" }),
+    (url) => fetchApi<ZCatalogByID>(url, { cache: "no-store" }),
     { revalidateOnFocus: false }
   );
+
+  const catalogsData = catalogs?.data;
 
   const { savedChannels, setSavedChannels, setSavedPlaylists, savedPlaylists } =
     useCatalogStore();
 
   useEffect(() => {
-    if (catalogData?.data) {
+    if (catalogsData) {
       setSavedChannels(
-        catalogData?.data?.list?.filter(
-          (item: CatalogList) => item.type === "channel"
-        )
+        catalogsData?.list?.filter((item) => item.type === "channel")
       );
       setSavedPlaylists(
-        catalogData?.data?.list?.filter(
-          (item: CatalogList) => item.type === "playlist"
-        )
+        catalogsData?.list?.filter((item) => item.type === "playlist")
       );
     }
-  }, [catalogData?.data, setSavedChannels, setSavedPlaylists]);
+  }, [catalogsData, setSavedChannels, setSavedPlaylists]);
 
   // TODO: Deleting item should be a single function as both doing the same thing, and should use a single endpoint
   const handleDeleteSaved = async (id: string) => {
@@ -115,10 +113,8 @@ export default function EditCatalog({ catalogId }: { catalogId: string }) {
         <div className="flex items-center gap-4">
           <BackLink className="size-6" href="/dashboard" />
           <div className="flex items-center gap-2">
-            <h1 className="text-lg lg:text-xl">
-              {catalogData?.data.title ?? ""}
-            </h1>
-            <JustTip label={catalogData?.data.description}>
+            <h1 className="text-lg lg:text-xl">{catalogsData?.title ?? ""}</h1>
+            <JustTip label={catalogsData?.description ?? ""}>
               <Info className="size-4" />
             </JustTip>
           </div>
@@ -127,8 +123,8 @@ export default function EditCatalog({ catalogId }: { catalogId: string }) {
           <UpdateCatalogMeta
             catalogId={catalogId}
             revalidateCatalog={revalidateCatalog}
-            title={catalogData?.data.title}
-            description={catalogData?.data.description}
+            title={catalogsData?.title ?? ""}
+            description={catalogsData?.description ?? ""}
           />
           {savedChannels?.length ? (
             <Link href={`/c/${catalogId}`} target="_blank">

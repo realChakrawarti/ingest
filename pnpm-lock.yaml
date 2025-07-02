@@ -99,7 +99,7 @@ importers:
         specifier: ^1.0.7
         version: 1.0.7(tailwindcss@3.4.17)
       zod:
-        specifier: ^3.24.2
+        specifier: ^3.25.67
         version: 3.25.67
       zustand:
         specifier: ^5.0.3

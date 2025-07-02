@@ -2,6 +2,8 @@ import { revalidatePath } from "next/cache";
 import type { NextRequest } from "next/server";
 
 import { addArchiveVideo } from "~/entities/archives";
+import { YouTubeVideoMetadataSchema } from "~/entities/youtube/models";
+
 import { getUserIdHeader } from "~/shared/lib/next/get-user-id-header";
 import { NxResponse } from "~/shared/lib/next/nx-response";
 
@@ -15,12 +17,23 @@ export async function PATCH(request: NextRequest, ctx: ContextParams) {
   const userId = getUserIdHeader();
   const { archiveId } = ctx.params;
 
-  const payload = await request.json();
-  const result = await addArchiveVideo(userId, archiveId, payload);
+  const body = await request.json();
 
-  // Reset page cache when archives updates
-  revalidatePath("/explore/archives");
-  revalidatePath(`/a/${archiveId}`);
+  const { success, error, data } = YouTubeVideoMetadataSchema.safeParse(body);
 
-  return NxResponse.success(result, {}, 201);
+  if (success) {
+    const result = await addArchiveVideo(userId, archiveId, data);
+
+    // Reset page cache when archives updates
+    revalidatePath("/explore/archives");
+    revalidatePath(`/a/${archiveId}`);
+
+    return NxResponse.success(result, {}, 201);
+  } else {
+    return NxResponse.fail(
+      "Invalid data provided.",
+      { code: "INVALID_DATA", details: error.message },
+      422
+    );
+  }
 }

@@ -1,5 +1,6 @@
+import type { ZCatalogValid } from "~/entities/catalogs/models";
+
 import fetchApi from "~/shared/lib/api/fetch";
-import type { ValidMetadata } from "~/shared/types-schema/types";
 
 import BackLink from "~/widgets/back-link";
 import DetailsCard from "~/widgets/details-card";
@@ -11,7 +12,7 @@ import {
 } from "~/widgets/public-layout";
 
 export default async function Catalogs() {
-  const catalogs = await fetchApi<ValidMetadata[]>("/catalogs/valid");
+  const catalogs = await fetchApi<ZCatalogValid[]>("/catalogs/valid");
 
   const sortedByPageviews = catalogs.data?.sort(
     (a, b) => (b.pageviews || 0) - (a.pageviews || 0)
@@ -28,13 +29,13 @@ export default async function Catalogs() {
       <PublicContentContainer>
         <GridContainer>
           {sortedByPageviews?.length ? (
-            sortedByPageviews?.map((pageData: any) => {
+            sortedByPageviews?.map((pageData) => {
               if (pageData?.id) {
                 return (
                   <DetailsCard
                     path={`/c/${pageData.id}`}
                     key={pageData.id}
-                    pageData={pageData}
+                    validData={pageData}
                   />
                 );
               }

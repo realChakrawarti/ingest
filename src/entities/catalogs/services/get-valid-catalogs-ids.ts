@@ -1,12 +1,12 @@
-import type { DocumentData } from "firebase-admin/firestore";
 import { unstable_noStore } from "next/cache";
 
 import { refs } from "~/shared/lib/firebase/refs";
-import type { ValidMetadata } from "~/shared/types-schema/types";
+
+import type { ZCatalogDocument, ZCatalogValid } from "../models";
 
 export async function getValidCatalogIds() {
   unstable_noStore();
-  const catalogListData: ValidMetadata[] = [];
+  const catalogListData: ZCatalogValid[] = [];
 
   // Filter the catalog, where totalVideos is greater than 0 and pageviews are sorted 'desc'
   const validCatalogQuery = refs.catalogs
@@ -27,14 +27,14 @@ export async function getValidCatalogIds() {
     catalogIds.map(async (catalogId) => {
       const catalogData = await getCatalogMetadata(catalogId);
       if (catalogData) {
-        const metaData: ValidMetadata = {
+        const metaData = {
           description: catalogData?.description,
           id: catalogId,
           pageviews: catalogData.pageviews ?? 0,
           thumbnails: getVideoThumbnails(catalogData),
           title: catalogData?.title,
           totalVideos: catalogData?.data?.totalVideos,
-          updatedAt: catalogData?.data.updatedAt.toDate(),
+          updatedAt: catalogData?.data.updatedAt,
         };
 
         catalogListData.push(metaData);
@@ -52,31 +52,12 @@ const getCatalogMetadata = async (catalogId: string) => {
   return catalogData;
 };
 
-type CatalogDocumentData = {
-  channelId: string;
-  channelLogo: string;
-  channelTitle: string;
-  description: string;
-  publishedAt: string;
-  thumbnail: {
-    height: number;
-    width: number;
-    url: string;
-  };
-  title: string;
-  videoId: string;
-};
-
-const getVideoThumbnails = (catalogData: DocumentData) => {
+const getVideoThumbnails = (catalogData: ZCatalogDocument) => {
   const videos = catalogData.data.videos;
-  const dayThumbnails = videos.day.map(
-    (video: CatalogDocumentData) => video.thumbnail.url
-  );
-  const weekThumbnails = videos.week.map(
-    (video: CatalogDocumentData) => video.thumbnail.url
-  );
-  const monthThumbnails = videos.month.map(
-    (video: CatalogDocumentData) => video.thumbnail.url
-  );
+  const dayThumbnails = videos?.day.map((video) => video.videoThumbnail) ?? [];
+  const weekThumbnails =
+    videos?.week.map((video) => video.videoThumbnail) ?? [];
+  const monthThumbnails =
+    videos?.month.map((video) => video.videoThumbnail) ?? [];
   return [...dayThumbnails, ...weekThumbnails, ...monthThumbnails];
 };

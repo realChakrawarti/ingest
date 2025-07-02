@@ -1,13 +1,10 @@
 import { refs } from "~/shared/lib/firebase/refs";
 
-type CatalogMeta = {
-  title: string;
-  description: string;
-};
+import type { ZCatalogMeta } from "../models";
 
 export async function updateCatalogMeta(
   catalogId: string,
-  payload: CatalogMeta
+  payload: ZCatalogMeta
 ) {
   const { title, description } = payload;
   const catalogRef = refs.catalogs.doc(catalogId);

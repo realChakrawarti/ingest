@@ -2,7 +2,7 @@ import { ClockIcon, Info, type LucideIcon } from "lucide-react";
 import dynamic from "next/dynamic";
 import type { ReactNode } from "react";
 
-import type { VideosByCatalog } from "~/entities/catalogs/models";
+import type { ZVideosByCatalog } from "~/entities/catalogs/models";
 
 import fetchApi from "~/shared/lib/api/fetch";
 import type { YouTubeCardOptions } from "~/shared/types-schema/types";
@@ -42,13 +42,13 @@ export default async function PubliCatalog({
   channelId: string;
   catalogId: string;
 }) {
-  const result = await fetchApi<VideosByCatalog>(
+  const result = await fetchApi<ZVideosByCatalog>(
     `/catalogs/${catalogId}/videos`
   );
 
   const catalogData = result.data;
 
-  const videos = catalogData?.data;
+  const videos = catalogData?.videos;
   const catalogTitle = catalogData?.title ?? "";
   const catalogDescription = catalogData?.description ?? "";
 
@@ -57,6 +57,9 @@ export default async function PubliCatalog({
     enableJsApi: true,
     hideAvatar: Boolean(channelId),
     markWatched: true,
+    showDuration: true,
+    showVideoCategory: true,
+    showVideoStats: true,
   };
 
   if (!videos) {

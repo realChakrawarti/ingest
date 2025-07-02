@@ -1,9 +1,6 @@
-import type { VideoDetails } from "~/entities/youtube/models";
+import type { ZVideoMetadataCompatible } from "~/entities/catalogs/models";
 
-import type {
-  VideoData,
-  YouTubeCardOptions,
-} from "~/shared/types-schema/types";
+import type { YouTubeCardOptions } from "~/shared/types-schema/types";
 import { Button } from "~/shared/ui/button";
 import { DeleteIcon, ThreeDotIcon } from "~/shared/ui/icons";
 import { Popover, PopoverContent, PopoverTrigger } from "~/shared/ui/popover";
@@ -13,7 +10,8 @@ import { ChannelMeta } from "~/widgets/youtube/components";
 function RemoveVideo({
   removeVideo,
   videoId,
-}: Pick<VideoData, "videoId"> & Pick<YouTubeCardOptions, "removeVideo">) {
+}: Pick<ZVideoMetadataCompatible, "videoId"> &
+  Pick<YouTubeCardOptions, "removeVideo">) {
   if (typeof removeVideo === "function")
     return (
       <Button
@@ -29,19 +27,12 @@ function RemoveVideo({
 }
 
 interface VideoCardProps {
-  video: VideoDetails;
+  video: ZVideoMetadataCompatible;
   removeVideo: (_videoId: string) => Promise<void>;
 }
 
 export default function VideoCard({ video, removeVideo }: VideoCardProps) {
-  const {
-    videoId,
-    videoTitle,
-    videoThumbnail,
-    channelTitle,
-    channelId,
-    publishedAt,
-  } = video;
+  const { videoId, videoTitle, videoThumbnail } = video;
 
   return (
     <div className="flex flex-col gap-3">
@@ -71,15 +62,7 @@ export default function VideoCard({ video, removeVideo }: VideoCardProps) {
           </PopoverContent>
         </Popover>
         <div className="p-3">
-          <ChannelMeta
-            hideAvatar
-            channelTitle={channelTitle}
-            channelLogo=""
-            channelId={channelId}
-            title={videoTitle}
-            publishedAt={publishedAt}
-            videoId={videoId}
-          />
+          <ChannelMeta video={video} hideAvatar />
         </div>
       </div>
     </div>

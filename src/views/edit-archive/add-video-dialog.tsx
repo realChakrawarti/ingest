@@ -1,5 +1,7 @@
 import { type ChangeEvent, useState } from "react";
 
+import type { ZYouTubeVideoMetadata } from "~/entities/youtube/models";
+
 import { toast } from "~/shared/hooks/use-toast";
 import fetchApi from "~/shared/lib/api/fetch";
 import { Regex } from "~/shared/lib/constants";
@@ -63,7 +65,9 @@ export default function AddVideoDialog({
     }
 
     try {
-      const result = await fetchApi(`/youtube/video?videoId=${videoId}`);
+      const result = await fetchApi<ZYouTubeVideoMetadata>(
+        `/youtube/video?videoId=${videoId}`
+      );
 
       if (!result.success) {
         toast({ title: result.message });

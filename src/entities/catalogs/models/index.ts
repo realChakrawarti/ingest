@@ -1,63 +1,153 @@
-import type { Timestamp } from "firebase-admin/firestore";
+import { DocumentReference, Timestamp } from "firebase-admin/firestore";
+import { z } from "zod/v4";
 
-interface ChannelBase {
-  channelTitle: string;
-  channelDescription: string;
-  channelLogo: string;
-  channelId: string;
-  channelHandle: string;
-}
+export const CatalogMetaSchema = z.object({
+  description: z.string(),
+  title: z.string(),
+});
 
-interface ChannelType extends ChannelBase {
-  type: "channel";
-}
+const BaseCatalogSchema = z.object({
+  channelDescription: z.string(),
+  channelHandle: z.string(),
+  channelId: z.string(),
+  channelLogo: z.string(),
+  channelTitle: z.string(),
+});
 
-interface PlaylistType extends ChannelBase {
-  type: "playlist";
-  playlistTitle: string;
-  playlistDescription: string;
-  playlistId: string;
-}
+export const CatalogChannelSchema = BaseCatalogSchema.extend({
+  type: z.literal("channel"),
+});
 
-export type CatalogList<
-  T extends "channel" | "playlist" | undefined = undefined,
-> = T extends "channel"
-  ? ChannelType
-  : T extends "playlist"
-    ? PlaylistType
-    : ChannelType | PlaylistType;
+export const CatalogPlaylistSchema = BaseCatalogSchema.extend({
+  playlistDescription: z.string(),
+  playlistId: z.string(),
+  playlistTitle: z.string(),
+  type: z.literal("playlist"),
+});
 
-export type CatalogByIdResponse = {
-  title: string;
-  description: string;
-  list: CatalogList[];
-};
+const CatalogListSchema = z.discriminatedUnion("type", [
+  CatalogChannelSchema,
+  CatalogPlaylistSchema,
+]);
 
-export type UserCatalogDocument = {
-  list: CatalogList[];
-  updatedAt: Timestamp;
-};
+const TimestampSchema = z.custom<Timestamp>(
+  (value) => value instanceof Timestamp
+);
 
-export type VideoMetadata = {
-  description: string;
-  title: string;
-  channelId: string;
-  thumbnail: any;
-  channelTitle: string;
-  videoId: string;
-  publishedAt: string;
-  channelLogo: string;
-};
+export const UserCatalogDocumentSchema = z.object({
+  list: z.array(CatalogListSchema),
+  updatedAt: TimestampSchema,
+});
 
-export type VideoListData = {
-  day: VideoMetadata[];
-  week: VideoMetadata[];
-  month: VideoMetadata[];
-};
+const CatalogByIDSchema = z.object({
+  description: z.string(),
+  list: z.array(CatalogListSchema),
+  title: z.string(),
+});
 
-export type VideosByCatalog = {
-  data: VideoListData;
-  description: string;
-  nextUpdate: string;
-  title: string;
-};
+const VideoContentInfoSchema = z.object({
+  videoComments: z.number(),
+  videoDuration: z.number(),
+  videoLikes: z.number(),
+  videoViews: z.number(),
+});
+
+const VideoMetadataSchema = VideoContentInfoSchema.extend({
+  channelId: z.string(),
+  channelLogo: z.string(),
+  channelTitle: z.string(),
+  publishedAt: z.string(),
+  videoDescription: z.string(),
+  videoId: z.string(),
+  videoThumbnail: z.string(),
+  videoTitle: z.string(),
+});
+
+const VideoMetadataWithoutContentSchema = VideoMetadataSchema.omit({
+  videoComments: true,
+  videoDuration: true,
+  videoLikes: true,
+  videoViews: true,
+});
+
+export const VideoMetadataCompatibleSchema = VideoMetadataSchema.partial({
+  channelLogo: true,
+  videoComments: true,
+  videoDuration: true,
+  videoLikes: true,
+  videoViews: true,
+});
+
+export type ZVideoMetadataCompatible = z.infer<
+  typeof VideoMetadataCompatibleSchema
+>;
+
+export type ZVideoMetadataWithoutContent = z.infer<
+  typeof VideoMetadataWithoutContentSchema
+>;
+
+const DocumentReferenceSchema = z.custom<
+  DocumentReference<ZUserCatalogDocument>
+>((value) => value instanceof DocumentReference);
+
+const CatalogVideoListSchema = z.object({
+  day: z.array(VideoMetadataSchema).default([]),
+  month: z.array(VideoMetadataSchema).default([]),
+  week: z.array(VideoMetadataSchema).default([]),
+});
+
+const CatalogDocumentSchema = CatalogMetaSchema.extend({
+  data: z.object({
+    totalVideos: z.number(),
+    updatedAt: TimestampSchema,
+    videos: CatalogVideoListSchema.optional(),
+  }),
+  pageviews: z.number().optional(),
+  videoRef: DocumentReferenceSchema,
+});
+
+const CatalogValidSchema = z.object({
+  description: z.string(),
+  id: z.string(),
+  pageviews: z.number().default(0),
+  thumbnails: z.array(z.string()),
+  title: z.string(),
+  totalVideos: z.number(),
+  updatedAt: TimestampSchema,
+});
+
+const CatalogByUserSchema = CatalogMetaSchema.extend({
+  id: z.string(),
+  updatedAt: z.string(),
+});
+
+const VideosByCatalogSchema = CatalogMetaSchema.extend({
+  nextUpdate: z.string(),
+  videos: CatalogVideoListSchema,
+});
+
+export type ZCatalogMeta = z.infer<typeof CatalogMetaSchema>;
+
+export type ZCatalogChannel = z.infer<typeof CatalogChannelSchema>;
+
+export type ZCatalogPlaylist = z.infer<typeof CatalogPlaylistSchema>;
+
+export type ZCatalogList = z.infer<typeof CatalogListSchema>;
+
+export type ZCatalogByID = z.infer<typeof CatalogByIDSchema>;
+
+export type ZUserCatalogDocument = z.infer<typeof UserCatalogDocumentSchema>;
+
+export type ZVideoContentInfo = z.infer<typeof VideoContentInfoSchema>;
+
+export type ZVideoMetadata = z.infer<typeof VideoMetadataSchema>;
+
+export type ZCatalogVideoListSchema = z.infer<typeof CatalogVideoListSchema>;
+
+export type ZCatalogDocument = z.infer<typeof CatalogDocumentSchema>;
+
+export type ZVideosByCatalog = z.infer<typeof VideosByCatalogSchema>;
+
+export type ZCatalogByUser = z.infer<typeof CatalogByUserSchema>;
+
+export type ZCatalogValid = z.infer<typeof CatalogValidSchema>;

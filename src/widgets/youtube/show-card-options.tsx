@@ -2,10 +2,9 @@
 
 import { useState } from "react";
 
-import type {
-  VideoData,
-  YouTubeCardOptions,
-} from "~/shared/types-schema/types";
+import type { ZVideoMetadataCompatible } from "~/entities/catalogs/models";
+
+import type { YouTubeCardOptions } from "~/shared/types-schema/types";
 import { Button } from "~/shared/ui/button";
 import { ThreeDotIcon } from "~/shared/ui/icons";
 import { Popover, PopoverContent, PopoverTrigger } from "~/shared/ui/popover";
@@ -27,7 +26,7 @@ export default function ShowCardOption({
   YouTubeCardOptions,
   "addWatchLater" | "removeWatchLater" | "markWatched"
 > & {
-  video: VideoData;
+  video: ZVideoMetadataCompatible;
 }) {
   const [isOpen, setIsOpen] = useState(false);
 

@@ -1,6 +1,7 @@
 import type { NextRequest } from "next/server";
 
 import { getVideoDetails } from "~/entities/youtube";
+
 import { NxResponse } from "~/shared/lib/next/nx-response";
 
 export async function GET(request: NextRequest) {

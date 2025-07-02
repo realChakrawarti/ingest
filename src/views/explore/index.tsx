@@ -1,8 +1,10 @@
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 
+import type { ZArchiveValid } from "~/entities/archives/models";
+import type { ZCatalogValid } from "~/entities/catalogs/models";
+
 import fetchApi from "~/shared/lib/api/fetch";
-import type { ValidMetadata } from "~/shared/types-schema/types";
 
 import DetailsCard from "~/widgets/details-card";
 import GridContainer from "~/widgets/grid-container";
@@ -19,9 +21,8 @@ export const dynamic = "force-dynamic";
 export const revalidate = 60 * 5; // Cache the page for 5 minutes, unless revalidated on updates
 
 export default async function Explore() {
-  const catalogs = await fetchApi<ValidMetadata[]>("/catalogs/valid");
-  const archives =
-    await fetchApi<Omit<ValidMetadata, "pageviews">[]>("/archives/valid");
+  const catalogs = await fetchApi<ZCatalogValid[]>("/catalogs/valid");
+  const archives = await fetchApi<ZArchiveValid[]>("/archives/valid");
 
   const catalogsData = catalogs?.data;
   const archivesData = archives?.data;
@@ -42,7 +43,7 @@ export default async function Explore() {
                 <DetailsCard
                   path={`/c/${catalog.id}`}
                   key={catalog.id}
-                  pageData={catalog}
+                  validData={catalog}
                 />
               ))}
             </GridContainer>
@@ -60,7 +61,7 @@ export default async function Explore() {
                 <DetailsCard
                   path={`/a/${archive.id}`}
                   key={archive.id}
-                  pageData={archive}
+                  validData={archive}
                 />
               ))}
             </GridContainer>

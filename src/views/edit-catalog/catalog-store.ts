@@ -1,7 +1,13 @@
 import { create } from "zustand";
 
-import type { CatalogList } from "~/entities/catalogs/models";
-import type { ChannelDetails, ChannelPlaylist } from "~/entities/youtube/models";
+import type {
+  ZCatalogChannel,
+  ZCatalogPlaylist,
+} from "~/entities/catalogs/models";
+import type {
+  ChannelDetails,
+  ChannelPlaylist,
+} from "~/entities/youtube/models";
 
 type VideoLink = {
   link: string;
@@ -13,20 +19,20 @@ type Step = "url" | "channel" | "playlists";
 interface State {
   channelInfo: ChannelDetails;
   videoLink: VideoLink;
-  savedChannels: CatalogList<"channel">[];
+  savedChannels: ZCatalogChannel[];
   selectedPlaylists: ChannelPlaylist[];
   searchPlaylists: ChannelPlaylist[];
   channelPlaylists: ChannelPlaylist[];
   playlistInput: string;
-  savedPlaylists: CatalogList<"playlist">[];
+  savedPlaylists: ZCatalogPlaylist[];
   formStep: Step;
 }
 
 interface Actions {
   setChannelInfo: (_channelInfo: ChannelDetails) => void;
   setVideoLink: (_videoLink: Partial<VideoLink>) => void;
-  setSavedPlaylists: (_playlist: CatalogList<"playlist">[]) => void;
-  setSavedChannels: (_channels: CatalogList<"channel">[]) => void;
+  setSavedPlaylists: (_playlist: ZCatalogPlaylist[]) => void;
+  setSavedChannels: (_channels: ZCatalogChannel[]) => void;
   setSelectedPlaylists: (_selectedPlaylists: ChannelPlaylist[]) => void;
   setSearchPlaylists: (_searchPlaylists: ChannelPlaylist[]) => void;
   setChannelPlaylists: (_channelPlaylists: ChannelPlaylist[]) => void;

@@ -2,12 +2,12 @@ import { FieldValue } from "firebase-admin/firestore";
 
 import { refs } from "~/shared/lib/firebase/refs";
 
-import type { CatalogList } from "../models";
+import type { ZCatalogPlaylist } from "../models";
 
 export async function updateCatalogPlaylists(
   userId: string,
   catalogId: string,
-  playlists: CatalogList<"playlist">[]
+  playlists: ZCatalogPlaylist[]
 ) {
   const userCatalogRef = refs.userCatalogs(userId).doc(catalogId);
 

@@ -1,6 +1,6 @@
 import { Info } from "lucide-react";
 
-import type { ArchiveByIdResponse } from "~/entities/archives/models";
+import type { ZArchiveByID } from "~/entities/archives/models";
 
 import fetchApi from "~/shared/lib/api/fetch";
 
@@ -14,7 +14,7 @@ export default async function PublicArchive({
 }: {
   archiveId: string;
 }) {
-  const result = await fetchApi<ArchiveByIdResponse>(`/archives/${archiveId}`);
+  const result = await fetchApi<ZArchiveByID>(`/archives/${archiveId}`);
   const archiveData = result.data;
 
   const archiveTitle = archiveData?.title ?? "";
@@ -39,32 +39,15 @@ export default async function PublicArchive({
       {archiveData?.videos.length ? (
         <section className="px-0 md:px-3">
           <GridContainer>
-            {archiveData.videos.map(
-              ({
-                videoId,
-                videoTitle,
-                channelTitle,
-                channelId,
-                videoDescription,
-                publishedAt,
-              }) => {
-                return (
-                  <YouTubeCard
-                    key={videoId}
-                    video={{
-                      channelId: channelId,
-                      channelLogo: "",
-                      channelTitle: channelTitle,
-                      description: videoDescription,
-                      publishedAt: publishedAt,
-                      title: videoTitle,
-                      videoId: videoId,
-                    }}
-                    options={{ hideAvatar: true }}
-                  />
-                );
-              }
-            )}
+            {archiveData.videos.map((video) => {
+              return (
+                <YouTubeCard
+                  key={video.videoId}
+                  video={video}
+                  options={{ hideAvatar: true }}
+                />
+              );
+            })}
           </GridContainer>
         </section>
       ) : (
