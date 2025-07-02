@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.7.11](https://github.com/realChakrawarti/ingest/compare/v1.7.10...v1.7.11) (2025-07-02)
+
+
+### Bug Fixes
+
+* next update result check ([007ecea](https://github.com/realChakrawarti/ingest/commit/007ecea604499c2646e3e323f886c8f559c48fa0))
+
 ### [1.7.10](https://github.com/realChakrawarti/ingest/compare/v1.7.9...v1.7.10) (2025-07-02)
 
 
