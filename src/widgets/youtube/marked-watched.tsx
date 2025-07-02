@@ -41,17 +41,17 @@ export default function MarkedWatched({
     );
   }
 
-  // TODO: Once we have video duration, https://github.com/realChakrawarti/ingest/issues/172 set duration to that
   async function markWatched() {
     const payload: History = {
       completed: 100,
-      duration: video?.videoDuration ?? 0,
+      duration: video?.videoDuration ? video.videoDuration - 5 : 0,
       updatedAt: Date.now(),
       ...video,
     };
 
     await indexedDB["history"].put(payload);
   }
+
   return (
     <Button
       variant="ghost"

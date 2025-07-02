@@ -1,11 +1,27 @@
 "use client";
 
+import { useLiveQuery } from "dexie-react-hooks";
 import { FlameIcon, MessageSquareText, TrendingUp } from "lucide-react";
 
 import type { ZVideoContentInfo } from "~/entities/catalogs/models";
 
+import appConfig from "~/shared/app-config";
+import { indexedDB } from "~/shared/lib/api/dexie";
+
 import OverlayTip from "../overlay-tip";
 import useActivePlayerRef from "./use-active-player";
+
+interface CategoryThresholds {
+  trending: { minViews: number; minLikes: number; minComments: number };
+  controversial: { minComments: number; commentToLikeRatio: number };
+  hot: { minViews: number; minEngagementRate: number };
+}
+
+const CATEGORY_THRESHOLDS: CategoryThresholds = {
+  controversial: { commentToLikeRatio: 0.1, minComments: 50 },
+  hot: { minEngagementRate: 0.03, minViews: 50_000 },
+  trending: { minComments: 100, minLikes: 5_000, minViews: 100_000 },
+};
 
 /**
  * Categorizes a video based on its views, likes, and comments.
@@ -31,7 +47,7 @@ function categorizeVideoSimplified(
   let commentToLikeRatio = 0;
   if (likes === 0) {
     if (comments > 0) {
-      commentToLikeRatio = comments * 1000; // Assign a very high value if comments exist but no likes
+      commentToLikeRatio = Math.min(comments * 10, 100);
     } else {
       commentToLikeRatio = 0;
     }
@@ -39,42 +55,31 @@ function categorizeVideoSimplified(
     commentToLikeRatio = comments / likes;
   }
 
-  // --- 2. Define Thresholds (HYPOTHETICAL VALUES - ADJUST THESE!) ---
-  const TRENDING_MIN_VIEWS = 100_000;
-  const TRENDING_MIN_LIKES = 5_000;
-  const TRENDING_MIN_COMMENTS = 100;
-
-  const CONTROVERSIAL_MIN_COMMENTS = 50;
-  const CONTROVERSIAL_COMMENT_TO_LIKE_RATIO_THRESHOLD = 0.1;
-
-  const HOT_MIN_VIEWS = 50_000;
-  const HOT_MIN_ENGAGEMENT_RATE = 0.03;
-
-  // --- 3. Categorization Logic ---
-
-  // 1. Check for TRENDING
+  // Check for TRENDING
   if (
-    views >= TRENDING_MIN_VIEWS &&
-    likes >= TRENDING_MIN_LIKES &&
-    comments >= TRENDING_MIN_COMMENTS
+    views >= CATEGORY_THRESHOLDS.trending.minViews &&
+    likes >= CATEGORY_THRESHOLDS.trending.minLikes &&
+    comments >= CATEGORY_THRESHOLDS.trending.minComments
   ) {
     return "Trending";
   }
 
-  // 2. Check for CONTROVERSIAL (if not Trending)
+  // Check for CONTROVERSIAL (if not Trending)
   if (
-    comments >= CONTROVERSIAL_MIN_COMMENTS &&
-    commentToLikeRatio >= CONTROVERSIAL_COMMENT_TO_LIKE_RATIO_THRESHOLD
+    comments >= CATEGORY_THRESHOLDS.controversial.minComments &&
+    commentToLikeRatio >= CATEGORY_THRESHOLDS.controversial.commentToLikeRatio
   ) {
     return "Controversial";
   }
 
-  // 3. Check for HOT (if not Trending or Controversial)
-  if (views >= HOT_MIN_VIEWS && engagementRate >= HOT_MIN_ENGAGEMENT_RATE) {
+  // Check for HOT (if not Trending or Controversial)
+  if (
+    views >= CATEGORY_THRESHOLDS.hot.minViews &&
+    engagementRate >= CATEGORY_THRESHOLDS.hot.minEngagementRate
+  ) {
     return "Hot";
   }
 
-  // 4. Default Category
   return "Inconclusive";
 }
 const Icons = {
@@ -90,6 +95,9 @@ export function VideoCategory({
   videoId,
 }: Omit<ZVideoContentInfo, "videoDuration"> & { videoId: string }) {
   const activePlayerRef = useActivePlayerRef();
+
+  const videoProgress = useLiveQuery(() => indexedDB["history"].get(videoId));
+
   const category = categorizeVideoSimplified(
     videoViews,
     videoLikes,
@@ -100,7 +108,10 @@ export function VideoCategory({
     return null;
   }
 
-  if (category === "Inconclusive") {
+  if (
+    category === "Inconclusive" ||
+    (videoProgress && videoProgress.completed > appConfig.watchedPercentage)
+  ) {
     return null;
   } else {
     const IconComponent = Icons[category];

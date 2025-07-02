@@ -7,24 +7,20 @@ import type { ZVideoContentInfo } from "~/entities/catalogs/models";
 import OverlayTip from "../overlay-tip";
 import useActivePlayerRef from "./use-active-player";
 
-function formatNumberToKAndM(num: number) {
-  const absNum = Math.abs(num);
-  let formattedValue: number;
-  let suffix = "";
+function formatNumber(num: number): string {
+  const billion = 1_000_000_000;
+  const million = 1_000_000;
+  const thousand = 1_000;
 
-  if (absNum >= 1000000) {
-    const millions = absNum / 1000000;
-    formattedValue = Math.floor(millions * 10) / 10;
-    suffix = "M";
-  } else if (absNum >= 1000) {
-    const thousands = absNum / 1000;
-    formattedValue = Math.floor(thousands * 10) / 10;
-    suffix = "K";
+  if (num >= billion) {
+    return `${(num / billion).toFixed(1)}B`;
+  } else if (num >= million) {
+    return `${(num / million).toFixed(1)}M`;
+  } else if (num >= thousand) {
+    return `${(num / thousand).toFixed(1)}K`;
   } else {
     return num.toString();
   }
-
-  return formattedValue.toFixed(1) + suffix;
 }
 
 export default function VideoStats({
@@ -51,15 +47,15 @@ export default function VideoStats({
           <div className="hidden group-hover/player:flex gap-1 items-center">
             <span className="flex items-center gap-1">
               <EyeIcon className="size-4" />
-              {formatNumberToKAndM(videoViews)}
+              {formatNumber(videoViews)}
             </span>
             <span className="flex items-center gap-1">
               <ThumbsUp className="size-4" />
-              {formatNumberToKAndM(videoLikes)}
+              {formatNumber(videoLikes)}
             </span>
             <span className="flex items-center gap-1">
               <MessageSquare className="size-4" />
-              {videoComments}
+              {formatNumber(videoComments)}
             </span>
           </div>
         </div>

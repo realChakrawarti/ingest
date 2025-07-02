@@ -58,6 +58,7 @@ export default async function PubliCatalog({
     hideAvatar: Boolean(channelId),
     markWatched: true,
     showDuration: true,
+    showVideoCategory: true,
     showVideoStats: true,
   };
 

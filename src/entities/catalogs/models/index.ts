@@ -70,7 +70,7 @@ const VideoMetadataWithoutContentSchema = VideoMetadataSchema.omit({
   videoViews: true,
 });
 
-const VideoMetadataCompatibleSchema = VideoMetadataSchema.partial({
+export const VideoMetadataCompatibleSchema = VideoMetadataSchema.partial({
   channelLogo: true,
   videoComments: true,
   videoDuration: true,

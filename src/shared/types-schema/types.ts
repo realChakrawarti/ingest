@@ -1,4 +1,4 @@
-import type { z } from "zod";
+import type { z } from "zod/v4";
 
 import type { ZVideoMetadataCompatible } from "~/entities/catalogs/models";
 
@@ -13,6 +13,7 @@ export type YouTubeCardOptions = {
   markWatched: boolean;
   showVideoStats: boolean;
   showDuration: boolean;
+  showVideoCategory: boolean;
 };
 
 export interface History extends ZVideoMetadataCompatible {

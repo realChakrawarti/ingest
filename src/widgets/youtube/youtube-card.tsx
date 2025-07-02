@@ -33,6 +33,7 @@ export default function YouTubeCard(props: YouTubeCardProps) {
     markWatched = false,
     showVideoStats = false,
     showDuration = false,
+    showVideoCategory = false,
   } = options ?? {};
 
   return (
@@ -44,12 +45,14 @@ export default function YouTubeCard(props: YouTubeCardProps) {
           videoDescription={videoDescription}
         />
         <WatchedStatus videoId={video.videoId} />
-        <VideoCategory
-          videoId={video.videoId}
-          videoComments={video.videoComments ?? 0}
-          videoLikes={video.videoLikes ?? 0}
-          videoViews={video.videoViews ?? 0}
-        />
+        {showVideoCategory ? (
+          <VideoCategory
+            videoId={video.videoId}
+            videoComments={video.videoComments ?? 0}
+            videoLikes={video.videoLikes ?? 0}
+            videoViews={video.videoViews ?? 0}
+          />
+        ) : null}
         {showVideoStats ? (
           <VideoStats
             videoId={video.videoId}

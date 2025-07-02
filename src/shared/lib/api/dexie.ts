@@ -11,13 +11,34 @@ const indexedDB = new Dexie(`${appConfig.name}-database`) as Dexie & {
   history: EntityTable<History, "videoId">;
 };
 
-indexedDB.version(4).stores({
-  favorites: "id, title, description",
-  history:
-    "videoId, duration, updatedAt, completed, title, channelTitle, publishedAt, channelId, channelLogo, description, videoDuration",
-  "watch-later":
-    "videoId, title, channelTitle, publishedAt, channelId, channelLogo, description",
-});
+indexedDB
+  .version(3)
+  .stores({
+    favorites: "id, title, description",
+    history:
+      "videoId, duration, updatedAt, completed, title, channelTitle, publishedAt, channelId, channelLogo, description, videoDuration",
+    "watch-later":
+      "videoId, title, channelTitle, publishedAt, channelId, channelLogo, description",
+  })
+  .upgrade((tx) => {
+    tx.table("history")
+      .toCollection()
+      .modify((item) => {
+        item.videoTitle = item.title;
+        item.videoDescription = item.description;
+        delete item.title;
+        delete item.description;
+      });
+
+    tx.table("watch-later")
+      .toCollection()
+      .modify((item) => {
+        item.videoTitle = item.title;
+        item.videoDescription = item.description;
+        delete item.title;
+        delete item.description;
+      });
+  });
 
 export type { FavoriteData };
 export { indexedDB };
