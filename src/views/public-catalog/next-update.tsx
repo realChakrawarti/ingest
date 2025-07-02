@@ -62,7 +62,7 @@ export function ShowNextUpdateBanner() {
 const POLLING_INTERVAL = 5 * 60_000; // 5 minutes
 const SHOW_BANNER = 10_000; // 10 seconds
 
-export default function NextUpdate({ catalogId }: any) {
+export default function NextUpdate({ catalogId }: { catalogId: string }) {
   const { setShowBanner } = useNextUpdateStore();
 
   const {
