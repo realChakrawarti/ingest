@@ -35,7 +35,7 @@ export async function getPageviewByCatalogId(
   catalogId: string
 ): Promise<number> {
   if (isDevelopment()) {
-    return 69;
+    return Math.ceil(100 * Math.random());
   }
 
   const request = {

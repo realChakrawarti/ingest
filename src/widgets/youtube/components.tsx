@@ -3,12 +3,11 @@ import Linkify from "linkify-react";
 import { Clock8, HardDriveDownloadIcon } from "lucide-react";
 import { Inter } from "next/font/google";
 
+import type { ZVideoMetadataCompatible } from "~/entities/catalogs/models";
+
 import { toast } from "~/shared/hooks/use-toast";
 import { indexedDB } from "~/shared/lib/api/dexie";
-import type {
-  VideoData,
-  YouTubeCardOptions,
-} from "~/shared/types-schema/types";
+import type { YouTubeCardOptions } from "~/shared/types-schema/types";
 import { Avatar, AvatarFallback, AvatarImage } from "~/shared/ui/avatar";
 import { Button } from "~/shared/ui/button";
 import { DeleteIcon, InfoIcon, LinkIcon } from "~/shared/ui/icons";
@@ -26,20 +25,24 @@ import { OutLink } from "../out-link";
 import OverlayTip from "../overlay-tip";
 
 interface WatchLaterProps extends Pick<YouTubeCardOptions, "addWatchLater"> {
-  videoData: VideoData;
+  videoData: ZVideoMetadataCompatible;
 }
 
 const inter = Inter({ subsets: ["latin"] });
 
 function ChannelMeta({
-  channelLogo,
-  channelTitle,
-  channelId,
-  title,
-  publishedAt,
   hideAvatar,
-  videoId,
-}: Omit<VideoData, "description"> & { hideAvatar: boolean }) {
+  video,
+}: { video: ZVideoMetadataCompatible } & { hideAvatar: boolean }) {
+  const {
+    channelLogo,
+    videoId,
+    channelTitle,
+    channelId,
+    videoTitle,
+    publishedAt,
+  } = video;
+
   const [_, timeElapsed] = getTimeDifference(publishedAt, true, false);
   return (
     <div className="flex gap-3">
@@ -58,8 +61,8 @@ function ChannelMeta({
           id={videoId}
           className="font-semibold leading-tight text-sm line-clamp-2 pr-6 text-wrap group-hover/player:text-primary"
         >
-          <abbr className="no-underline cursor-help" title={title}>
-            {title}
+          <abbr className="no-underline cursor-help" title={videoTitle}>
+            {videoTitle}
           </abbr>
         </h3>
         <div className="flex items-center gap-2 text-xs text-muted-foreground">
@@ -81,9 +84,9 @@ function ChannelMeta({
 }
 
 function DescriptionSheet({
-  title,
-  description,
-}: Pick<VideoData, "title" | "description">) {
+  videoTitle,
+  videoDescription,
+}: Pick<ZVideoMetadataCompatible, "videoTitle" | "videoDescription">) {
   return (
     <Sheet>
       <SheetTrigger asChild>
@@ -102,8 +105,8 @@ function DescriptionSheet({
       </SheetTrigger>
       <SheetContent className="overflow-y-auto w-full md:max-w-[450px]">
         <SheetHeader className="text-left">
-          <SheetTitle>{title}</SheetTitle>
-          <SheetDescription className="sr-only">{title}</SheetDescription>
+          <SheetTitle>{videoTitle}</SheetTitle>
+          <SheetDescription className="sr-only">{videoTitle}</SheetDescription>
         </SheetHeader>
         <div className="mt-4">
           <Linkify
@@ -116,7 +119,7 @@ function DescriptionSheet({
               target: "_blank",
             }}
           >
-            {description}
+            {videoDescription}
           </Linkify>
         </div>
       </SheetContent>
@@ -124,7 +127,7 @@ function DescriptionSheet({
   );
 }
 
-function CopyLink({ videoId }: Pick<VideoData, "videoId">) {
+function CopyLink({ videoId }: Pick<ZVideoMetadataCompatible, "videoId">) {
   function copyLink(id: string) {
     navigator.clipboard
       .writeText(`https://www.youtube.com/watch?v=${id}`)
@@ -157,7 +160,10 @@ function WatchLater({ addWatchLater, videoData }: WatchLaterProps) {
     useLiveQuery(() => indexedDB["watch-later"].toArray()) ?? [];
 
   async function addToWatchLater() {
-    function checkIfExists(existingVideos: VideoData[], videoId: string) {
+    function checkIfExists(
+      existingVideos: ZVideoMetadataCompatible[],
+      videoId: string
+    ) {
       for (let i = 0; i < existingVideos?.length; i++) {
         if (existingVideos[i].videoId === videoId) {
           return true;
@@ -170,7 +176,7 @@ function WatchLater({ addWatchLater, videoData }: WatchLaterProps) {
       toast({ title: "Video already added." });
     } else {
       await indexedDB["watch-later"].add(videoData);
-      toast({ title: `"${videoData.title}" added to watch later.` });
+      toast({ title: `"${videoData.videoTitle}" added to watch later.` });
     }
   }
 
@@ -192,7 +198,8 @@ function WatchLater({ addWatchLater, videoData }: WatchLaterProps) {
 function RemoveWatchLater({
   removeWatchLater,
   videoId,
-}: Pick<YouTubeCardOptions, "removeWatchLater"> & Pick<VideoData, "videoId">) {
+}: Pick<YouTubeCardOptions, "removeWatchLater"> &
+  Pick<ZVideoMetadataCompatible, "videoId">) {
   async function removeFromWatchLater(videoId: string) {
     await indexedDB["watch-later"].delete(videoId);
     toast({ title: "Video has been removed from watch later." });

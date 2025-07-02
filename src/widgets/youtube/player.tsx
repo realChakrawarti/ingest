@@ -3,9 +3,10 @@
 import { YouTubeEmbed } from "@next/third-parties/google";
 import { useEffect, useRef } from "react";
 
+import type { ZVideoMetadataCompatible } from "~/entities/catalogs/models";
+
 import appConfig from "~/shared/app-config";
 import { indexedDB } from "~/shared/lib/api/dexie";
-import type { VideoData } from "~/shared/types-schema/types";
 import { cn } from "~/shared/utils/tailwind-merge";
 
 import { useVideoTracking } from "./use-video-tracking";
@@ -15,11 +16,11 @@ const iframeParams = `rel=0&playsinline=1&origin=${appConfig.url}`;
 // TODO: picture-in-picture - https://codepen.io/jh3y/pen/wBBOdNv
 
 export default function YoutubePlayer(
-  props: VideoData & { enableJsApi: boolean }
+  props: ZVideoMetadataCompatible & { enableJsApi: boolean }
 ) {
   const { enableJsApi, ...video } = props;
 
-  const { videoId, title } = video;
+  const { videoId, videoTitle } = video;
   const containerRef = useRef<HTMLDivElement | null>(null);
   const playerRef = useRef<YT.Player | null>(null);
   const firstLoad = useRef<boolean>(false);
@@ -149,7 +150,7 @@ export default function YoutubePlayer(
       <YouTubeEmbed
         params={enableJsApi ? `${iframeParams}&enablejsapi=1` : iframeParams}
         videoid={videoId}
-        playlabel={title}
+        playlabel={videoTitle}
         js-api={enableJsApi}
       />
     </div>

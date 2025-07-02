@@ -1,7 +1,7 @@
 import { refs } from "~/shared/lib/firebase/refs";
 import Log from "~/shared/utils/terminal-logger";
 
-import type { ArchiveByIdResponse } from "../models";
+import { ArchiveDocumentSchema, type ZArchiveByID } from "../models";
 
 /**
  * This function sends the response of a specific catalog provided a valid catalogId
@@ -20,13 +20,20 @@ export async function getArchiveById(archiveId: string) {
     const archiveSnap = await archiveRef.get();
     const archiveData = archiveSnap.data();
 
-    const archiveResponseData: ArchiveByIdResponse = {
-      description: archiveData?.description,
-      title: archiveData?.title,
-      videos: archiveData?.data.videos,
-    };
+    const { success, error, data } =
+      ArchiveDocumentSchema.safeParse(archiveData);
 
-    return archiveResponseData;
+    if (success && data.data.videos) {
+      const archiveResponseData: ZArchiveByID = {
+        description: data.description,
+        title: data.title,
+        videos: data.data.videos,
+      };
+
+      return archiveResponseData;
+    } else {
+      throw Error(error?.message ?? "Unable to parse archive by ID.");
+    }
   } catch (err) {
     Log.fatal("Unable to retrieve archive by id.", err);
   }

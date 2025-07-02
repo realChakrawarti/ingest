@@ -1,6 +1,8 @@
-import { timestampUTC } from "~/shared/lib/firebase";
+import { timestampUTC } from "~/shared/lib/firebase/admin";
 import { refs } from "~/shared/lib/firebase/refs";
 import Log from "~/shared/utils/terminal-logger";
+
+import type { ZArchiveByUser } from "../models";
 
 /**
  * This function returns all archive of a user
@@ -8,15 +10,13 @@ import Log from "~/shared/utils/terminal-logger";
  * @returns
  */
 export async function getArchiveByUser(userId: string) {
-  let userArchivesData: any[] = [];
-
   try {
     const userArchivesCollectionRef = refs.userArchives(userId);
     const userArchivesDoc = await userArchivesCollectionRef.listDocuments();
     const archiveIds = userArchivesDoc.map((doc) => doc.id);
 
     if (!archiveIds.length) {
-      return userArchivesData;
+      return [];
     }
 
     const archiveRefs = archiveIds.map((id) => refs.archives.doc(id));
@@ -25,23 +25,27 @@ export async function getArchiveByUser(userId: string) {
       archiveRefs.map((ref) => ref.get())
     );
 
-    userArchivesData = archiveSnapshots.map((snapshot, index) => {
-      const archiveData = snapshot.data();
-      const archiveId = archiveIds[index];
+    const userArchivesData: ZArchiveByUser[] = archiveSnapshots.map(
+      (snapshot, index) => {
+        const archiveData = snapshot.data();
+        const archiveId = archiveIds[index];
 
-      return {
-        description: archiveData?.description,
-        id: archiveId,
-        title: archiveData?.title,
-        videoData: {
-          updatedAt: timestampUTC(archiveData?.data?.updatedAt),
-          videos: archiveData?.data?.videos,
-        },
-      };
-    });
+        if (archiveData) {
+          return {
+            description: archiveData?.description,
+            id: archiveId,
+            title: archiveData?.title,
+            updatedAt: timestampUTC(archiveData.data.updatedAt),
+          };
+        } else {
+          throw Error("Archive data is not available.");
+        }
+      }
+    );
+
+    return userArchivesData;
   } catch (err) {
-    Log.fail(String(err));
+    Log.fail(err);
+    throw err;
   }
-
-  return userArchivesData;
 }

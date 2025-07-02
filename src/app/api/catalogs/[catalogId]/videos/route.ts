@@ -22,16 +22,9 @@ export async function GET(_request: NextRequest, ctx: ContextParams) {
         return NxResponse.fail(data, { code: "UNKNOWN", details: data }, 400);
       }
 
-      const response = {
-        data: data.videos,
-        description: data.description,
-        nextUpdate: data.nextUpdate,
-        title: data.title,
-      };
-
-      return NxResponse.success<any>(
+      return NxResponse.success(
         `Catalog: ${catalogId} videos fetched successfully.`,
-        response,
+        data,
         200
       );
     } catch (err) {

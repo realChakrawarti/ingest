@@ -2,9 +2,10 @@ import { cookies } from "next/headers";
 import { type NextRequest, NextResponse } from "next/server";
 
 import { SESSION_COOKIE_NAME } from "~/shared/lib/constants";
-import { verifyFirebaseSessionCookie } from "~/shared/lib/firebase";
 import { NxResponse } from "~/shared/lib/next/nx-response";
 import Log from "~/shared/utils/terminal-logger";
+
+import { verifyFirebaseSessionCookie } from "./shared/lib/firebase/verify-session-cookie";
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;

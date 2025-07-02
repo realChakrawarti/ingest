@@ -18,13 +18,15 @@ export async function GET(request: NextRequest, ctx: ContextParams) {
   const result = await getNextUpdate(catalogId);
   const currentTime = Date.now();
 
-  const lastUpdatedTime = new Date(result).getTime();
-  const nextUpdate = new Date(lastUpdatedTime + time.hours(4)).toUTCString();
+  if (result) {
+    const lastUpdatedTime = result?.getTime();
+    const nextUpdate = new Date(lastUpdatedTime + time.hours(4)).toUTCString();
 
-  if (currentTime - lastUpdatedTime > time.hours(4)) {
-    Log.info(`Revalidating path: /c/${catalogId}`);
-    revalidatePath(`/c/${catalogId}`);
+    if (currentTime - lastUpdatedTime > time.hours(4)) {
+      Log.info(`Revalidating path: /c/${catalogId}`);
+      revalidatePath(`/c/${catalogId}`);
+    }
+
+    return NxResponse.success("", nextUpdate, 200);
   }
-
-  return NxResponse.success("", nextUpdate, 200);
 }

@@ -1,3 +1,5 @@
+import { z } from "zod/v4";
+
 export type ChannelPlaylist = {
   channelId: string;
   channelTitle: string;
@@ -20,12 +22,14 @@ export type ChannelDetails = {
   channelDescription: string;
 };
 
-export type VideoDetails = {
-  channelId: string;
-  channelTitle: string;
-  publishedAt: string;
-  videoDescription: string;
-  videoId: string;
-  videoThumbnail: string;
-  videoTitle: string;
-};
+export const YouTubeVideoMetadataSchema = z.object({
+  channelId: z.string(),
+  channelTitle: z.string(),
+  publishedAt: z.string(),
+  videoDescription: z.string(),
+  videoId: z.string(),
+  videoThumbnail: z.string(),
+  videoTitle: z.string(),
+});
+
+export type ZYouTubeVideoMetadata = z.infer<typeof YouTubeVideoMetadataSchema>;

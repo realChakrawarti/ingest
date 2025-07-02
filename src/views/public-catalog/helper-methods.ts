@@ -1,11 +1,14 @@
 // TODO: Make use lodash to simplify the code
 
-import type { VideoListData, VideoMetadata } from "~/entities/catalogs/models";
+import type {
+  ZCatalogVideoListSchema,
+  ZVideoMetadata,
+} from "~/entities/catalogs/models";
 
 export function filterChannel(
-  videoData: VideoListData,
+  videoData: ZCatalogVideoListSchema,
   channelId?: string
-): [VideoMetadata[], VideoMetadata[], VideoMetadata[]] {
+): [ZVideoMetadata[], ZVideoMetadata[], ZVideoMetadata[]] {
   const today = videoData?.day;
   const week = videoData?.week;
   const month = videoData?.month;
@@ -22,7 +25,7 @@ export function filterChannel(
 }
 export type ChannelTag = { title: string; id: string; logo: string };
 
-function getChannels(videos: VideoMetadata[]) {
+function getChannels(videos: ZVideoMetadata[]) {
   const channels = [];
   for (let i = 0; i < videos?.length; i++) {
     const video = videos[i];
@@ -51,7 +54,9 @@ function channelUnique(channels: ChannelTag[]) {
   return uniqueChannels;
 }
 
-export function getActiveChannelIds(videoData: VideoListData): ChannelTag[] {
+export function getActiveChannelIds(
+  videoData: ZCatalogVideoListSchema
+): ChannelTag[] {
   const channelIds: ChannelTag[] = [];
 
   const today = videoData?.day;

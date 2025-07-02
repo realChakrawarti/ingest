@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { z } from "zod/v4";
 
 const envVariables = z.object({
   FIREBASE_CLIENT_EMAIL: z.string(),

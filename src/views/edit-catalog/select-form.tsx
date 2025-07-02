@@ -3,7 +3,7 @@ import { useParams } from "next/navigation";
 import { useState } from "react";
 import type { KeyedMutator } from "swr";
 
-import type { CatalogList } from "~/entities/catalogs/models";
+import type { ZCatalogChannel } from "~/entities/catalogs/models";
 
 import { toast } from "~/shared/hooks/use-toast";
 import fetchApi from "~/shared/lib/api/fetch";
@@ -79,9 +79,7 @@ export default function SelectForm({
       return;
     }
 
-    // 3. Create the payload, push it, clear all state and close dialog on success with a notification
-
-    const channelDetails: CatalogList<"channel"> = {
+    const channelDetails: ZCatalogChannel = {
       channelDescription: channelInfo.channelDescription,
       channelHandle: channelInfo.channelHandle,
       channelId: channelInfo.channelId,
@@ -90,14 +88,10 @@ export default function SelectForm({
       type: "channel",
     };
 
-    const payload = {
-      channel: channelDetails,
-    };
-
     try {
       setIsLoading(true);
       const result = await fetchApi(`/catalogs/${catalogId}/channel`, {
-        body: JSON.stringify(payload),
+        body: JSON.stringify(channelDetails),
         method: "PATCH",
       });
 

@@ -1,6 +1,6 @@
 import { FieldValue } from "firebase-admin/firestore";
 
-import type { VideoDetails } from "~/entities/youtube/models";
+import type { ZYouTubeVideoMetadata } from "~/entities/youtube/models";
 
 import { admin } from "~/shared/lib/firebase/admin";
 import { refs } from "~/shared/lib/firebase/refs";
@@ -8,7 +8,7 @@ import { refs } from "~/shared/lib/firebase/refs";
 export async function addArchiveVideo(
   userId: string,
   archiveId: string,
-  videoData: VideoDetails
+  videoData: ZYouTubeVideoMetadata
 ) {
   const archiveRef = refs.archives.doc(archiveId);
   const userArchiveRef = refs.userArchives(userId).doc(archiveId);

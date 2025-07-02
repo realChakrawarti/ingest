@@ -1,6 +1,6 @@
 import { YOUTUBE_VIDEO_DATA } from "~/shared/lib/api/youtube-endpoints";
 
-import type { VideoDetails } from "../models";
+import type { ZYouTubeVideoMetadata } from "../models";
 
 // TODO: Parse only the data required and sent it down
 export async function getVideoDetails(videoIdParam: string) {
@@ -9,7 +9,7 @@ export async function getVideoDetails(videoIdParam: string) {
 
   const videoData = result.items[0].snippet;
 
-  const data: VideoDetails = {
+  const data: ZYouTubeVideoMetadata = {
     channelId: videoData.channelId,
     channelTitle: videoData.channelTitle,
     publishedAt: videoData.publishedAt,

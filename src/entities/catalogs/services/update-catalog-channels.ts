@@ -2,12 +2,12 @@ import { FieldValue } from "firebase-admin/firestore";
 
 import { refs } from "~/shared/lib/firebase/refs";
 
-import type { CatalogList } from "../models";
+import type { ZCatalogChannel } from "../models";
 
 export async function updateCatalogChannels(
   userId: string,
   catalogId: string,
-  channel: CatalogList<"channel">
+  channel: ZCatalogChannel
 ) {
   const userCatalogRef = refs.userCatalogs(userId).doc(catalogId);
 
