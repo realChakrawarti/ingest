@@ -28,7 +28,9 @@ export default function VideoStats({
   videoLikes,
   videoComments,
   videoId,
-}: Omit<ZVideoContentInfo, "videoDuration"> & { videoId: string }) {
+}: Omit<ZVideoContentInfo, "videoDuration" | "videoAvailability"> & {
+  videoId: string;
+}) {
   const activePlayerRef = useActivePlayerRef();
 
   if (activePlayerRef?.getVideoData()?.video_id === videoId) {

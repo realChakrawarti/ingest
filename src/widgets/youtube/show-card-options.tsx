@@ -49,14 +49,18 @@ export default function ShowCardOption({
           align="end"
           className="w-[200px] border-none rounded-lg p-1"
         >
-          {markWatched ? <MarkedWatched video={video} /> : null}
+          {markWatched && video?.videoAvailability === "none" ? (
+            <MarkedWatched video={video} />
+          ) : null}
           <CopyLink videoId={video.videoId} />
           <WatchLater addWatchLater={addWatchLater} videoData={video} />
           <RemoveWatchLater
             videoId={video.videoId}
             removeWatchLater={removeWatchLater}
           />
-          <DownloadVideo videoId={video.videoId} />
+          {video?.videoAvailability === "none" ? (
+            <DownloadVideo videoId={video.videoId} />
+          ) : null}
         </PopoverContent>
       </Popover>
     </div>

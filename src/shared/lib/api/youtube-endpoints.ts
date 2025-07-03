@@ -22,7 +22,7 @@ export const YOUTUBE_VIDEO_DATA = (videoId: string) =>
 
 export const YOUTUBE_VIDEOS_DATA = (videoIds: string[], limit: number = 50) => {
   const commaSeparatedVideoIds = videoIds.join(",");
-  return `https://youtube.googleapis.com/youtube/v3/videos?part=statistics&part=contentDetails&maxResults=${limit}&id=${commaSeparatedVideoIds}&key=${process.env.YOUTUBE_API_KEY}`;
+  return `https://youtube.googleapis.com/youtube/v3/videos?part=statistics,contentDetails,snippet&maxResults=${limit}&id=${commaSeparatedVideoIds}&key=${process.env.YOUTUBE_API_KEY}`;
 };
 
 export const YOUTUBE_CHANNEL_PLAYLISTS = (
