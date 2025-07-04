@@ -43,9 +43,9 @@ export function useVideoTracking({
   const startTracking = () => {
     if (trackingRef.current) return;
 
-    // if (playerRef.current) {
-    //   setPlayerRef(playerRef.current);
-    // }
+    if (thisPlayerRef.current) {
+      setPlayerRef(thisPlayerRef.current);
+    }
 
     trackingRef.current = setInterval(async () => {
       if (!thisPlayerRef.current) return;
