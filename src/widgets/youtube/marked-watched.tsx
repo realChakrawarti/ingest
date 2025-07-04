@@ -41,10 +41,20 @@ export default function MarkedWatched({
     );
   }
 
+  // TODO: When a playing video is marked as watched, maybe stop the video?
+  // Currently using the playerRef from "playing-currently-store" de-syncs the playerRef, needs further investigation
   async function markWatched() {
+    const percentCompleted = appConfig.watchedPercentage + 1;
+    const markedCompletionDuration = video?.videoDuration
+      ? video.videoDuration -
+        parseInt(
+          ((video.videoDuration * (100 - percentCompleted)) / 100).toFixed(2),
+          10
+        )
+      : 0;
     const payload: History = {
-      completed: 100,
-      duration: video?.videoDuration ? video.videoDuration - 5 : 0,
+      completed: percentCompleted,
+      duration: markedCompletionDuration,
       updatedAt: Date.now(),
       ...video,
     };

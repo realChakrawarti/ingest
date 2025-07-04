@@ -1,4 +1,5 @@
 import packageInfo from "../../package.json" with { type: "json" };
+import isDevelopment from "./utils/is-development";
 import { time } from "./utils/time";
 
 class AppConfig {
@@ -33,7 +34,9 @@ class AppConfig {
   }
 
   get url(): string {
-    return `https://${this._subDomain}.${this._domain}`;
+    return isDevelopment()
+      ? "http://localhost:3000"
+      : `https://${this._subDomain}.${this._domain}`;
   }
 
   get domain(): string {

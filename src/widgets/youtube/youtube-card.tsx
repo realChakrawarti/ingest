@@ -6,8 +6,8 @@ import type { YouTubeCardOptions } from "~/shared/types-schema/types";
 
 import { ChannelMeta, DescriptionSheet } from "./components";
 import ShowCardOption from "./show-card-options";
-import { TimeDuration } from "./time-duration";
 import { VideoCategory } from "./video-category";
+import { VideoDuration } from "./video-duration";
 import VideoStats from "./video-stats";
 import { WatchedStatus } from "./watched-status";
 
@@ -62,7 +62,8 @@ export default function YouTubeCard(props: YouTubeCardProps) {
           />
         ) : null}
         {showDuration ? (
-          <TimeDuration
+          <VideoDuration
+            videoAvailability={video.videoAvailability}
             videoDuration={video?.videoDuration ?? 0}
             videoId={video.videoId}
           />

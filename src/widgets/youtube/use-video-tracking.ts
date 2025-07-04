@@ -8,13 +8,15 @@ import type { History } from "~/shared/types-schema/types";
 import currentlyPlayingStore from "./currently-playing-store";
 
 interface UseVideoTrackingProps {
-  playerRef: React.MutableRefObject<YT.Player | null>;
+  thisPlayerRef: React.MutableRefObject<YT.Player | null>;
   video: ZVideoMetadataCompatible;
 }
 
-export function useVideoTracking({ video, playerRef }: UseVideoTrackingProps) {
+export function useVideoTracking({
+  video,
+  thisPlayerRef,
+}: UseVideoTrackingProps) {
   const trackingRef = useRef<NodeJS.Timeout | null>(null);
-  const isPlaying = useRef<boolean>(false);
   const setPlayerRef = currentlyPlayingStore.getState().setPlayerRef;
 
   function getPercentCompleted(node: YT.Player) {
@@ -41,20 +43,18 @@ export function useVideoTracking({ video, playerRef }: UseVideoTrackingProps) {
   const startTracking = () => {
     if (trackingRef.current) return;
 
-    if (playerRef.current) {
-      setPlayerRef(playerRef.current);
+    if (thisPlayerRef.current) {
+      setPlayerRef(thisPlayerRef.current);
     }
 
     trackingRef.current = setInterval(async () => {
-      if (!playerRef.current) return;
+      if (!thisPlayerRef.current) return;
 
-      await updateProgress(playerRef.current);
+      await updateProgress(thisPlayerRef.current);
     }, 2_000);
   };
 
   const stopTracking = () => {
-    isPlaying.current = false;
-
     setPlayerRef(null);
 
     if (trackingRef.current) {
@@ -72,5 +72,5 @@ export function useVideoTracking({ video, playerRef }: UseVideoTrackingProps) {
     };
   }, []);
 
-  return { isPlaying, startTracking, stopTracking };
+  return { startTracking, stopTracking };
 }
