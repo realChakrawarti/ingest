@@ -93,7 +93,9 @@ export function VideoCategory({
   videoLikes,
   videoComments,
   videoId,
-}: Omit<ZVideoContentInfo, "videoDuration"> & { videoId: string }) {
+}: Omit<ZVideoContentInfo, "videoDuration" | "videoAvailability"> & {
+  videoId: string;
+}) {
   const activePlayerRef = useActivePlayerRef();
 
   const videoProgress = useLiveQuery(() => indexedDB["history"].get(videoId));

@@ -23,21 +23,32 @@ function formatSecondsToHMS(totalSeconds: number) {
   }
 }
 
+import type { ZVideoMetadata } from "~/entities/catalogs/models";
+
 import OverlayTip from "../overlay-tip";
 import useActivePlayerRef from "./use-active-player";
 
-export function TimeDuration({
+function checkVideoAvailability(
+  availability: "live" | "none" | "upcoming" | undefined
+) {
+  if (availability === "live") return "LIVE";
+  if (availability === "upcoming") return "PREMIERE";
+  return "";
+}
+
+export function VideoDuration({
+  videoAvailability,
   videoDuration,
   videoId,
-}: {
-  videoDuration: number;
-  videoId: string;
-}) {
+}: Pick<ZVideoMetadata, "videoId" | "videoDuration" | "videoAvailability">) {
   const activePlayerRef = useActivePlayerRef();
 
   if (activePlayerRef?.getVideoData()?.video_id === videoId) {
     return null;
   }
+
+  const availability = checkVideoAvailability(videoAvailability);
+
   return (
     <div className="absolute bottom-2 right-[2px] md:right-0 cursor-default">
       <OverlayTip
@@ -45,7 +56,9 @@ export function TimeDuration({
         id="video-duration"
         aria-label="Video duration"
       >
-        <div className="text-xs">{formatSecondsToHMS(videoDuration)}</div>
+        <div className="text-xs">
+          {availability || formatSecondsToHMS(videoDuration)}
+        </div>
       </OverlayTip>
     </div>
   );

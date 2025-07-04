@@ -319,8 +319,9 @@ async function addVideoDuration(videoIds: string[]) {
     const data = await result.json();
     data.items.forEach((item: any) => {
       const videoContentInfo: ZVideoContentInfo = {
+        videoAvailability: item.snippet.liveBroadcastContent,
         videoComments: parseInt(item.statistics.commentCount || "0"),
-        videoDuration: youtubeDurationToSeconds(item.contentDetails?.duration),
+        videoDuration: youtubeDurationToSeconds(item.contentDetails.duration),
         videoLikes: parseInt(item.statistics.likeCount || "0"),
         videoViews: parseInt(item.statistics.viewCount || "0"),
       } satisfies ZVideoContentInfo;

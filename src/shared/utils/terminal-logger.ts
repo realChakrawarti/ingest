@@ -2,10 +2,11 @@
  * @fileoverview A robust console logging utility for various log levels.
  */
 
+import isDevelopment from "./is-development";
+
 export default class Log {
   // Controls whether debug logs are enabled. Can be overridden at runtime.
-  private static _isDebugEnabled: boolean =
-    process.env.NODE_ENV !== "production";
+  private static _isDebugEnabled: boolean = isDevelopment();
 
   /**
    * Initializes the Log utility.
