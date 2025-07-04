@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.7.12](https://github.com/realChakrawarti/ingest/compare/v1.7.11...v1.7.12) (2025-07-04)
+
+
+### Bug Fixes
+
+* marked watched correctly sets the duration and completed percentage on non-playing state ([9cf4e34](https://github.com/realChakrawarti/ingest/commit/9cf4e344313373bf02e6f57c29b3c90de92ada52))
+* player continuation and add live & premiere on video status ([406fd4c](https://github.com/realChakrawarti/ingest/commit/406fd4c64641ef5ff0bd8e3fe603a1a47f314a26))
+* **player:** continuation, add live & premiere on video status, marked watched duration ([6cd80ed](https://github.com/realChakrawarti/ingest/commit/6cd80edd9855814909aaf2ec51395607d6efb42b))
+* remove logs and avoid onStateChange creation on every render ([db8489f](https://github.com/realChakrawarti/ingest/commit/db8489f2c5529e926e0b794509a2fd612f0388cb))
+
 ### [1.7.11](https://github.com/realChakrawarti/ingest/compare/v1.7.10...v1.7.11) (2025-07-02)
 
 
