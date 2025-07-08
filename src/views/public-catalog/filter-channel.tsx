@@ -47,7 +47,7 @@ export default function FilterChannel({
 
   return (
     <div
-      className="px-3 flex gap-2 items-center container"
+      className="px-2 md:px-3 flex gap-2 items-center container"
       style={{ width: `${containerWidth}px` }}
     >
       <FilterVideosModal />
@@ -60,17 +60,17 @@ export default function FilterChannel({
         >
           <Badge
             onClick={handleOnClear}
-            className="cursor-pointer text-sm h-8 p-0 px-3 text-nowrap select-none"
+            className="cursor-pointer tracking-normal font-normal text-sm h-8 p-0 px-3 text-nowrap select-none"
             variant={!channelId ? "default" : "outline"}
           >
             All
           </Badge>
-          {activeChannels.map((channel: any) => (
+          {activeChannels.map((channel) => (
             <Badge
               key={channel.id}
               variant={channel.id === channelId ? "default" : "outline"}
               onClick={() => handleSelectionChange(channel.id)}
-              className="cursor-pointer text-sm h-8 p-0 px-3 text-nowrap select-none"
+              className="cursor-pointer tracking-normal font-normal text-sm h-8 p-0 px-3 text-nowrap select-none"
             >
               {channel.title}
             </Badge>
@@ -111,7 +111,7 @@ export function CurrentActive({
 
   if (activeFilteredChannel) {
     return (
-      <div className="flex gap-2 items-center px-2 md:px-3">
+      <div className="flex gap-2 items-start px-2 md:px-3">
         <Avatar className="h-8 w-8 rounded-lg">
           <AvatarImage
             src={activeFilteredChannel.logo}
@@ -119,7 +119,9 @@ export function CurrentActive({
           />
           <AvatarFallback>{activeFilteredChannel.title}</AvatarFallback>
         </Avatar>
-        <h4 className="text-2xl font-bold">{activeFilteredChannel.title}</h4>
+        <h4 className="text-lg md:text-2xl leading-none tracking-wide">
+          {activeFilteredChannel.title}
+        </h4>
       </div>
     );
   }
@@ -159,7 +161,7 @@ function FilterVideosModal() {
         <DialogHeader title="Filter videos">Filter videos</DialogHeader>
         <div className="flex flex-col gap-4 items-start">
           <div className="flex items-center gap-1">
-            <p className="text-md font-semibold text-primary">Duration</p>
+            <p className="text-md text-primary">Duration</p>
             <ToggleGroup
               value={duration ?? ""}
               aria-label="Duration of video"

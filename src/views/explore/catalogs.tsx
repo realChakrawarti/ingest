@@ -21,7 +21,7 @@ export default async function Catalogs() {
   return (
     <PublicMainContainer>
       <PublicHeaderTitle>
-        <h1 className="text-lg lg:text-xl font-semibold tracking-tight flex gap-2 items-center">
+        <h1 className="text-lg lg:text-xl tracking-wide flex gap-2 items-start">
           <BackLink href="/explore" />
           <p>Catalogs</p>
         </h1>

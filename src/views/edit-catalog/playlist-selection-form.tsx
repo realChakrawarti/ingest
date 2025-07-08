@@ -14,7 +14,6 @@ import { Badge } from "~/shared/ui/badge";
 import { Button } from "~/shared/ui/button";
 import { Checkbox } from "~/shared/ui/checkbox";
 import { Input } from "~/shared/ui/input";
-import { Label } from "~/shared/ui/label";
 import { Separator } from "~/shared/ui/separator";
 import Log from "~/shared/utils/terminal-logger";
 
@@ -131,7 +130,6 @@ export default function PlaylistSelectionForm({
   return (
     <div className="space-y-4">
       <div className="space-y-2">
-        <Label htmlFor="playlist-search">Search Playlists</Label>
         <div className="relative">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
           <Input
@@ -146,7 +144,7 @@ export default function PlaylistSelectionForm({
         {searchPlaylists.length === 0 && playlistInput && (
           <p className="text-sm text-center">
             No matching playlists found -{" "}
-            <span className="text-primary font-semibold">{playlistInput}</span>!
+            <span className="text-primary">{playlistInput}</span>!
           </p>
         )}
       </div>

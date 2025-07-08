@@ -168,7 +168,9 @@ export default function SelectForm({
           alt={channelInfo?.channelTitle}
         />
         <div className="flex-1 min-w-0">
-          <h3 className="font-semibold text-lg">{channelInfo.channelTitle}</h3>
+          <h3 className="text-lg tracking-normal">
+            {channelInfo.channelTitle}
+          </h3>
           <p className="text-sm text-muted-foreground">
             Subscribers: {formatSubscribers(channelInfo.channelSubscriberCount)}
           </p>

@@ -51,7 +51,7 @@ export function GitHubStargazer({
               tabIndex={-1}
               className="w-4 h-4 text-yellow-400 group-hover/star:fill-yellow-400"
             />
-            <span className="font-medium">
+            <span className="font-medium font-hilmar">
               {data?.stargazers_count.toLocaleString()}
             </span>
           </button>

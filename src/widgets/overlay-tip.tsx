@@ -14,7 +14,13 @@ export default function OverlayTip({
   id,
 }: OverlayTipProps) {
   return (
-    <div id={id} className={cn("bg-accent/70 backdrop-blur-sm", className)}>
+    <div
+      id={id}
+      className={cn(
+        "bg-[rgba(0,0,0,0.6)] text-white/90 backdrop-blur-sm font-hilmar tracking-wider",
+        className
+      )}
+    >
       {children}
     </div>
   );

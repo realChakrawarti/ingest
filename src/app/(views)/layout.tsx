@@ -2,7 +2,6 @@ import "~/app/styles/globals.css";
 
 import { GoogleAnalytics } from "@next/third-parties/google";
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import Script from "next/script";
 
 import appConfig from "~/shared/app-config";
@@ -15,8 +14,6 @@ import Header from "~/widgets/header";
 import { ReactScan } from "~/widgets/react-scan";
 
 import Providers from "./context";
-
-const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   applicationName: `${appConfig.marketName}`,
@@ -40,7 +37,7 @@ export default function RootLayout({
           strategy="lazyOnload"
         />
       </head>
-      <body className={`min-h-full overflow-y-auto ${inter.className}`}>
+      <body className={`min-h-full overflow-y-auto font-slalom`}>
         <Providers>
           <AppSidebar />
           <div className="flex flex-col flex-1">

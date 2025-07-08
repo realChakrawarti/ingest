@@ -76,7 +76,7 @@ function Title({ label, type }: { label: string; type?: string }) {
   return (
     <PublicHeaderTitle>
       <h2 className=" flex items-end gap-2 justify-between" aria-label={label}>
-        <div className="h-7 text-lg md:text-2xl font-semibold tracking-tight flex gap-2">
+        <div className="h-7 text-lg md:text-2xl tracking-wide flex gap-2">
           <PublicMarker />
           <div>
             <p>{label}</p>

@@ -38,9 +38,7 @@ export default function ContinueWatching() {
     return (
       <PublicMainContainer>
         <PublicHeaderTitle>
-          <h1 className="text-2xl font-semibold tracking-tight">
-            Continue Watching
-          </h1>
+          <h1 className="text-2xl tracking-wide">Continue Watching</h1>
         </PublicHeaderTitle>
         <PublicContentContainer>
           <GridContainer>

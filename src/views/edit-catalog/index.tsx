@@ -150,8 +150,13 @@ export default function EditCatalog({ catalogId }: { catalogId: string }) {
           {savedChannels?.length ? (
             <div className="space-y-3">
               <div className="flex items-center justify-between">
-                <h2 className="text-xl font-semibold">Saved Channels</h2>
-                <Badge variant="secondary">
+                <h2 className="text-xl font-normal tracking-wide">
+                  Saved Channels
+                </h2>
+                <Badge
+                  className="font-normal tracking-wide"
+                  variant="secondary"
+                >
                   {savedChannels?.length} of 15 channels added
                 </Badge>
               </div>
@@ -165,8 +170,13 @@ export default function EditCatalog({ catalogId }: { catalogId: string }) {
           {savedPlaylists?.length ? (
             <div className="space-y-3">
               <div className="flex items-center justify-between">
-                <h2 className="text-xl font-semibold">Saved Playlists</h2>
-                <Badge variant="secondary">
+                <h2 className="text-xl font-normal tracking-wide">
+                  Saved Playlists
+                </h2>
+                <Badge
+                  className="font-normal tracking-wide"
+                  variant="secondary"
+                >
                   {savedPlaylists?.length} of 15 playlists added
                 </Badge>
               </div>
