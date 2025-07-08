@@ -1,3 +1,22 @@
+@font-face {
+  font-family: hilmar;
+  src: url(../../../public/Hilmar-Medium.otf);
+}
+
+@font-face {
+  font-family: slalom;
+  src: url(../../../public/ca-slalom-regular.woff2);
+}
+
+.font-hilmar {
+  font-family: hilmar;
+}
+
+.font-slalom {
+  font-family: slalom;
+}
+
+
 @keyframes scroll {
   0% {
     transform: translateX(0);

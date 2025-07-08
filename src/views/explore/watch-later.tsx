@@ -20,11 +20,9 @@ export default function WatchLater() {
   return (
     <PublicMainContainer>
       <PublicHeaderTitle>
-        <div className="flex items-center gap-2">
+        <div className="flex items-start gap-2">
           <BackLink href="/explore" />
-          <h1 className="text-lg lg:text-xl font-semibold tracking-tight">
-            Watch later
-          </h1>
+          <h1 className="text-lg lg:text-xl tracking-wide">Watch later</h1>
         </div>
       </PublicHeaderTitle>
       <PublicContentContainer>

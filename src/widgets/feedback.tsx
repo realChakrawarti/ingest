@@ -131,7 +131,7 @@ ${feedback}
             )}
           >
             <MailQuestion className="mr-2 h-4 w-4" />
-            Feedback
+            <p className="tracking-wide">Feedback</p>
           </Button>
         </DialogTrigger>
         <DialogContent>

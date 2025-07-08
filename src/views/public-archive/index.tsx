@@ -23,12 +23,10 @@ export default async function PublicArchive({
   return (
     <div className="space-y-4 pb-6 pt-7">
       <section className="px-2 md:px-3">
-        <div className="flex items-center gap-4">
+        <div className="flex items-start gap-4">
           <BackLink href="/explore/archives" />
-          <div className="space-y-1">
-            <h1 className="text-lg lg:text-xl font-semibold tracking-tight">
-              {archiveTitle}
-            </h1>
+          <div className="flex gap-1 items-center">
+            <h1 className="text-lg lg:text-xl tracking-wide">{archiveTitle}</h1>
             <JustTip label={archiveDescription}>
               <Info className="size-4" />
             </JustTip>

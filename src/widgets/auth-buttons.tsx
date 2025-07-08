@@ -31,7 +31,7 @@ export default function AuthButton() {
           onClick={signInWithGoogle}
         >
           <GmailIcon color="#EA4335" size={24} />
-          <p>Google</p>
+          <p className="tracking-wider">Google</p>
         </Button>
       </JustTip>
       <JustTip label="Login with GitHub">
@@ -41,7 +41,7 @@ export default function AuthButton() {
           onClick={signInWithGitHub}
         >
           <GithubIcon size={24} />
-          <p>GitHub</p>
+          <p className="tracking-wider">GitHub</p>
         </Button>
       </JustTip>
     </div>
