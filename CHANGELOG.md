@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.8.1](https://github.com/realChakrawarti/ingest/compare/v1.8.0...v1.8.1) (2025-07-08)
+
+
+### Features
+
+* filter videos by duration ([f167809](https://github.com/realChakrawarti/ingest/commit/f167809bbf713ae64f7803f0006a2ce886ede43e))
+* filter videos by duration ([fa69d21](https://github.com/realChakrawarti/ingest/commit/fa69d2119d86b786f8432c1eabb38e30ea1f4f6c))
+
 ## [1.8.0](https://github.com/realChakrawarti/ingest/compare/v1.7.12...v1.8.0) (2025-07-05)
 
 ### [1.7.12](https://github.com/realChakrawarti/ingest/compare/v1.7.11...v1.7.12) (2025-07-04)
