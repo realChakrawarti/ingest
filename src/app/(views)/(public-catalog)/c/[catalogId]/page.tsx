@@ -8,7 +8,8 @@ import PubliCatalog from "~/views/public-catalog";
 type PublicCatalogParams = {
   params: { catalogId: string };
   searchParams?: {
-    channelId: string;
+    channelId?: string;
+    duration?: "short" | "medium" | "long";
   };
 };
 
@@ -39,8 +40,15 @@ export default async function PublicCatalogPage({
   searchParams,
 }: PublicCatalogParams) {
   const channelId = searchParams?.channelId;
+  const duration = searchParams?.duration;
 
   const { catalogId } = params;
 
-  return <PubliCatalog catalogId={catalogId} channelId={channelId ?? ""} />;
+  return (
+    <PubliCatalog
+      catalogId={catalogId}
+      channelId={channelId ?? ""}
+      duration={duration ?? null}
+    />
+  );
 }

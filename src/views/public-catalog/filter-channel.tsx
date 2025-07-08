@@ -1,94 +1,91 @@
 "use client";
 
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { SlidersHorizontal } from "lucide-react";
+import { useSearchParams } from "next/navigation";
+import { parseAsString, useQueryState } from "nuqs";
 import { useEffect, useMemo, useState } from "react";
 
+import useScreenWidth from "~/shared/hooks/use-screen-width";
 import { Avatar, AvatarFallback, AvatarImage } from "~/shared/ui/avatar";
 import { Badge } from "~/shared/ui/badge";
+import { Button } from "~/shared/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTrigger,
+} from "~/shared/ui/dialog";
+import { ToggleGroup, ToggleGroupItem } from "~/shared/ui/toggle-group";
 import { cn } from "~/shared/utils/tailwind-merge";
 
 import type { ChannelTag } from "./helper-methods";
-
 export default function FilterChannel({
   activeChannels,
 }: {
   activeChannels: ChannelTag[];
 }) {
-  const searchParams = useSearchParams();
-  const pathname = usePathname();
-  const { replace } = useRouter();
-
-  const params = useMemo(
-    () => new URLSearchParams(searchParams),
-    [searchParams]
+  const [channelId, setChannelId] = useQueryState(
+    "channelId",
+    parseAsString
+      .withDefault("")
+      .withOptions({ history: "replace", shallow: false })
   );
-  const channelId = params.get("channelId");
-
-  const [selectedChannelId, setSelectedChannelId] = useState<string>("");
 
   const handleSelectionChange = (key: string) => {
     if (!key) {
-      setSelectedChannelId(key);
       return;
     }
-
-    setSelectedChannelId(key);
-
-    if (key) {
-      params.set("channelId", key);
-    } else {
-      params.delete("channelId");
-    }
-
-    replace(`${pathname}?${params.toString()}`);
+    return setChannelId(key);
   };
 
   const handleOnClear = () => {
-    params.delete("channelId");
-
-    replace(`${pathname}?${params.toString()}`);
-
-    setSelectedChannelId("");
+    setChannelId(null);
   };
 
-  useEffect(() => {
-    if (channelId) {
-      setSelectedChannelId(channelId);
-    }
-  }, [channelId]);
+  const containerWidth = useScreenWidth();
 
   return (
-    <div className="h-14 overflow-hidden">
-      <div
-        className={cn(
-          // TODO: Handle the width change of the content wrt the sidebar and window resize, this is hacky!
-          "px-3 flex gap-3 items-center overflow-x-auto scrollbar-hide",
-          "max-w-sm sm:max-w-xl md:max-w-2xl lg:max-w-3xl xl:max-w-4xl"
-        )}
-      >
-        <Badge
-          onClick={handleOnClear}
-          className="cursor-pointer text-sm h-8 p-0 px-3 text-nowrap select-none"
-          variant={!channelId ? "default" : "outline"}
+    <div
+      className="px-3 flex gap-2 items-center container"
+      style={{ width: `${containerWidth}px` }}
+    >
+      <FilterVideosModal />
+
+      <div className="overflow-hidden">
+        <div
+          className={cn(
+            "flex gap-3 items-center overflow-x-auto scrollbar-hide"
+          )}
         >
-          All
-        </Badge>
-        {activeChannels.map((channel: any) => (
           <Badge
-            key={channel.id}
-            variant={channel.id === selectedChannelId ? "default" : "outline"}
-            onClick={() => handleSelectionChange(channel.id)}
+            onClick={handleOnClear}
             className="cursor-pointer text-sm h-8 p-0 px-3 text-nowrap select-none"
+            variant={!channelId ? "default" : "outline"}
           >
-            {channel.title}
+            All
           </Badge>
-        ))}
+          {activeChannels.map((channel: any) => (
+            <Badge
+              key={channel.id}
+              variant={channel.id === channelId ? "default" : "outline"}
+              onClick={() => handleSelectionChange(channel.id)}
+              className="cursor-pointer text-sm h-8 p-0 px-3 text-nowrap select-none"
+            >
+              {channel.title}
+            </Badge>
+          ))}
+        </div>
       </div>
     </div>
   );
 }
 
-export function CurrentActive({ activeChannels }: { activeChannels: any }) {
+export function CurrentActive({
+  activeChannels,
+}: {
+  activeChannels: ChannelTag[];
+}) {
   const searchParams = useSearchParams();
 
   const params = useMemo(
@@ -96,12 +93,14 @@ export function CurrentActive({ activeChannels }: { activeChannels: any }) {
     [searchParams]
   );
   const channelId = params.get("channelId");
-  const [activeFilteredChannel, setActiveFilteredChannel] = useState<any>(null);
+  const [activeFilteredChannel, setActiveFilteredChannel] = useState<
+    ChannelTag | undefined | null
+  >();
 
   useEffect(() => {
     if (channelId) {
       const filterChannel = activeChannels.find(
-        (channel: any) => channel.id === channelId
+        (channel) => channel.id === channelId
       );
 
       setActiveFilteredChannel(filterChannel);
@@ -126,4 +125,68 @@ export function CurrentActive({ activeChannels }: { activeChannels: any }) {
   }
 
   return <></>;
+}
+
+function FilterVideosModal() {
+  const [duration, setDuration] = useQueryState(
+    "duration",
+    parseAsString.withDefault("").withOptions({
+      history: "replace",
+      shallow: false,
+    })
+  );
+
+  function _onValueChange(value: string) {
+    setDuration(value);
+  }
+
+  function _clearAll() {
+    setDuration(null);
+  }
+
+  return (
+    <Dialog>
+      <DialogTrigger asChild>
+        <Button
+          variant="outline"
+          className="flex items-center gap-1 rounded-lg cursor-pointer text-sm h-8 p-0 px-3"
+        >
+          <SlidersHorizontal className="size-6" />
+          <span>Filters</span>
+        </Button>
+      </DialogTrigger>
+      <DialogContent className="">
+        <DialogHeader title="Filter videos">Filter videos</DialogHeader>
+        <div className="flex flex-col gap-4 items-start">
+          <div className="flex items-center gap-1">
+            <p className="text-md font-semibold text-primary">Duration</p>
+            <ToggleGroup
+              value={duration ?? ""}
+              aria-label="Duration of video"
+              type="single"
+              onValueChange={_onValueChange}
+            >
+              <ToggleGroupItem value="short" aria-label="Under 4 minutes">
+                Short
+              </ToggleGroupItem>
+              <ToggleGroupItem
+                value="medium"
+                aria-label="Between 4 and 20 minutes"
+              >
+                Medium
+              </ToggleGroupItem>
+              <ToggleGroupItem value="long" aria-label="Over 20 minutes">
+                Long
+              </ToggleGroupItem>
+            </ToggleGroup>
+          </div>
+        </div>
+        <DialogFooter className="flex flex-1">
+          <Button className="self-end" onClick={_clearAll} variant="outline">
+            Clear all
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
 }
