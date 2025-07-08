@@ -75,7 +75,7 @@ export default function AppSidebar() {
               )}
             >
               <LogoutIcon className="mr-2 h-4 w-4" />
-              Logout
+              <p className="tracking-wide">Logout</p>
             </Button>
           ) : null}
           <Feedback />
@@ -119,7 +119,7 @@ function LocalGroup() {
             )}
           >
             <HeartListIcon className="mr-2 h-4 w-4" />
-            Favorite Catalogs
+            <p className="tracking-wide">Favorite Catalogs</p>
             <ChevronRight className="ml-auto transition-transform group-data-[state=open]/collapsible:rotate-90" />
           </CollapsibleTrigger>
         </SidebarGroupLabel>
@@ -149,7 +149,7 @@ function LocalGroup() {
                               "hover:bg-primary/5 hover:text-primary/80"
                             )}
                           >
-                            {item.title}
+                            <p className="tracking-wide">{item.title}</p>
                           </Button>
                         </Link>
                       </SidebarMenuButton>
@@ -221,7 +221,7 @@ function UserGroup() {
                     )}
                   >
                     <LayoutDashboard className="mr-2 h-4 w-4" />
-                    Dashboard
+                    <p className="tracking-wide">Dashboard</p>
                   </Button>
                 </Link>
               </SidebarMenuButton>
@@ -298,7 +298,7 @@ function ExploreGroup() {
                       )}
                     >
                       <item.icon className="mr-2 h-4 w-4" />
-                      {item.label}
+                      <p className="tracking-wide">{item.label}</p>
                     </Button>
                   </Link>
                 </SidebarMenuButton>

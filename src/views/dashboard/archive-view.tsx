@@ -43,7 +43,10 @@ export default function ArchiveView() {
         <h1 className="text-lg lg:text-xl flex items-center gap-3">
           <ArchiveIcon />
           <p>Archives</p>
-          <Badge className="text-lg lg:text-xl text-primary" variant="outline">
+          <Badge
+            className="text-lg lg:text-xl text-primary font-hilmar"
+            variant="outline"
+          >
             {archives?.data.length ?? 0}/{appConfig.limitArchives}
           </Badge>
         </h1>

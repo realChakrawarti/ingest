@@ -18,7 +18,7 @@ export async function POST(request: NextRequest) {
   try {
     const userDetails = await admin.auth.verifyIdToken(token);
     const message = await createUser(userDetails.uid);
-    const response = NxResponse.success<any>(message, {}, 201);
+    const response = NxResponse.success(message, {}, 201);
 
     const session = await admin.auth.createSessionCookie(token, {
       expiresIn: time.hours(12),

@@ -82,12 +82,12 @@ export default async function PubliCatalog({
       <PublicMainContainer className="space-y-4">
         <PublicHeaderTitle>
           <div className="space-y-0">
-            <div className="flex justify-between items-center">
-              <div className="flex items-center gap-4">
+            <div className="flex justify-between items-start">
+              <div className="flex items-start gap-4">
                 <BackLink href="/explore/catalogs" />
                 <div className="space-y-1">
                   <span className="flex items-center gap-4">
-                    <h1 className="text-lg lg:text-xl font-semibold tracking-tight">
+                    <h1 className="text-lg lg:text-xl tracking-wide">
                       {catalogTitle}
                     </h1>
                     <JustTip label={catalogDescription}>

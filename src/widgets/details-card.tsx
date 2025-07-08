@@ -88,7 +88,7 @@ export default function DetailsCard({ validData, path }: DetailsCardProps) {
           <div>
             <h2
               id={validData?.id}
-              className="font-semibold group-hover:text-primary tracking-wide"
+              className="group-hover:text-primary tracking-wide"
             >
               {validData?.title}
             </h2>

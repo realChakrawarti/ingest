@@ -59,7 +59,7 @@ function ChannelMeta({
       >
         <h3
           id={videoId}
-          className="font-semibold leading-tight text-sm line-clamp-2 pr-6 text-wrap group-hover/player:text-primary"
+          className="leading-normal text-sm line-clamp-2 pr-6 text-wrap group-hover/player:text-primary"
         >
           <abbr className="no-underline cursor-help" title={videoTitle}>
             {videoTitle}
@@ -110,7 +110,7 @@ function DescriptionSheet({
         </SheetHeader>
         <div className="mt-4">
           <Linkify
-            className={`text-xs whitespace-pre-wrap ${inter.className}`}
+            className={`text-sm whitespace-pre-wrap font-slalom`}
             as="pre"
             options={{
               className:

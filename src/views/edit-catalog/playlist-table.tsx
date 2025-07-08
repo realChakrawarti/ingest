@@ -27,12 +27,10 @@ export default function PlaylistTable({
       <TableCaption>A list of playlists.</TableCaption>
       <TableHeader>
         <TableRow>
-          <TableHead className="max-w-[50px] font-semibold">SL No</TableHead>
-          <TableHead className="max-w-[150px] font-semibold">
-            Playlist Title
-          </TableHead>
-          <TableHead className="font-semibold">Playlist ID</TableHead>
-          <TableHead className="text-center font-semibold">Channel</TableHead>
+          <TableHead className="max-w-[50px]">SL No</TableHead>
+          <TableHead className="max-w-[150px]">Playlist Title</TableHead>
+          <TableHead>Playlist ID</TableHead>
+          <TableHead className="text-center">Channel</TableHead>
           <TableHead></TableHead>
         </TableRow>
       </TableHeader>

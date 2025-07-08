@@ -97,7 +97,7 @@ export default function ItemCard({
         <Link className={cardContentStyles} href={editLink} prefetch>
           <CardHeader className="space-y-1 pb-2">
             <CardTitle className="flex items-start justify-between">
-              <span className="text-lg line-clamp-2 flex-grow mr-2 group-hover/card-item:text-primary tracking-wide">
+              <span className="text-lg line-clamp-2 flex-grow mr-2 group-hover/card-item:text-primary font-normal tracking-wide">
                 {title}
               </span>
             </CardTitle>

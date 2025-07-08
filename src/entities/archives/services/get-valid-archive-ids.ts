@@ -22,7 +22,7 @@ const getVideoThumbnails = (archiveData: DocumentData) => {
 
 export async function getValidArchiveIds() {
   unstable_noStore();
-  const archiveListData: any[] = [];
+  const archiveListData: ZArchiveValid[] = [];
 
   const validArchiveQuery = refs.archives
     .where("data.videos", "!=", false)

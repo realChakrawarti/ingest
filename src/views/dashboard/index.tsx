@@ -8,7 +8,7 @@ import CatalogView from "./catalog-view";
 export default function Dashboard() {
   return (
     <div className="flex first:pt-3 last:pb-3 flex-col gap-3">
-      <h1 className="px-3 text-2xl font-semibold tracking-tight">Dashboard</h1>
+      <h1 className="px-3 text-2xl tracking-wide">Dashboard</h1>
       <Separator />
       <CatalogView />
       <Separator />
