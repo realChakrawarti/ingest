@@ -27,7 +27,7 @@ import YouTubeCard from "~/widgets/youtube/youtube-card";
 
 import { AddToFavorites } from "./add-to-fav";
 import FilterChannel, { CurrentActive } from "./filter-channel";
-import { filterChannel, getActiveChannelIds } from "./helper-methods";
+import { filterVideos, getActiveChannelIds } from "./helper-methods";
 import { ShowNextUpdateBanner } from "./next-update";
 
 // Refer: https://nextjs.org/docs/pages/building-your-application/optimizing/lazy-loading#with-no-ssr
@@ -38,9 +38,11 @@ const DynamicShareCatalog = dynamic(() => import("./share-catalog"), {
 export default async function PubliCatalog({
   channelId = "",
   catalogId,
+  duration = null,
 }: {
   channelId: string;
   catalogId: string;
+  duration: "short" | "medium" | "long" | null;
 }) {
   const result = await fetchApi<ZVideosByCatalog>(
     `/catalogs/${catalogId}/videos`
@@ -70,7 +72,7 @@ export default async function PubliCatalog({
     );
   }
 
-  const [today, week, month] = filterChannel(videos, channelId);
+  const [today, week, month] = filterVideos(videos, channelId, duration);
 
   const activeChannels = getActiveChannelIds(videos);
 

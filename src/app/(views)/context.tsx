@@ -2,6 +2,7 @@
 
 import { ProgressProvider } from "@bprogress/next/app";
 import { ThemeProvider as NextThemesProvider } from "next-themes";
+import { NuqsAdapter } from "nuqs/adapters/next/app";
 
 import AuthContextProvider from "~/features/auth/context-provider";
 
@@ -26,7 +27,9 @@ export default function Providers({
           shallowRouting
         >
           <SidebarProvider>
-            <div className="flex flex-grow min-h-screen">{children}</div>
+            <div className="flex flex-grow min-h-screen">
+              <NuqsAdapter>{children}</NuqsAdapter>
+            </div>
           </SidebarProvider>
         </ProgressProvider>
       </AuthContextProvider>
