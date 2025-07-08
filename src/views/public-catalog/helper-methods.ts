@@ -5,7 +5,9 @@ import type {
   ZVideoMetadata,
 } from "~/entities/catalogs/models";
 
-export function filterChannel(
+import { time } from "~/shared/utils/time";
+
+function _filterChannel(
   videoData: ZCatalogVideoListSchema,
   channelId?: string
 ): [ZVideoMetadata[], ZVideoMetadata[], ZVideoMetadata[]] {
@@ -23,6 +25,81 @@ export function filterChannel(
 
   return [filteredToday, filteredWeek, filteredMonth];
 }
+
+export function filterVideos(
+  videoData: ZCatalogVideoListSchema,
+  channelId?: string,
+  duration?: "short" | "medium" | "long" | null
+): [ZVideoMetadata[], ZVideoMetadata[], ZVideoMetadata[]] {
+  if (channelId && !duration) return _filterChannel(videoData, channelId);
+
+  if (duration && !channelId) {
+    const { day, week, month } = _filterDuration(videoData, duration);
+    return [day, week, month];
+  }
+
+  if (duration && channelId) {
+    return _filterChannel(_filterDuration(videoData, duration), channelId);
+  }
+
+  return [videoData.day, videoData.week, videoData.month];
+}
+
+function _filterDuration(
+  videoData: ZCatalogVideoListSchema,
+  duration?: "short" | "medium" | "long"
+): ZCatalogVideoListSchema {
+  const today = videoData?.day;
+  const week = videoData?.week;
+  const month = videoData?.month;
+
+  if (!duration) {
+    return { day: today, month, week };
+  }
+
+  if (duration === "short") {
+    const filteredToday = today.filter(
+      (video) => video.videoDuration <= time.minutes(4) / 1000
+    );
+    const filteredWeek = week.filter(
+      (video) => video.videoDuration <= time.minutes(4) / 1000
+    );
+    const filteredMonth = month.filter(
+      (video) => video.videoDuration <= time.minutes(4) / 1000
+    );
+
+    return { day: filteredToday, month: filteredMonth, week: filteredWeek };
+  } else if (duration === "medium") {
+    const filteredToday = today.filter(
+      (video) =>
+        video.videoDuration >= time.minutes(4) / 1000 &&
+        video.videoDuration <= time.minutes(20) / 1000
+    );
+    const filteredWeek = week.filter(
+      (video) =>
+        video.videoDuration >= time.minutes(4) / 1000 &&
+        video.videoDuration <= time.minutes(20) / 1000
+    );
+    const filteredMonth = month.filter(
+      (video) =>
+        video.videoDuration >= time.minutes(4) / 1000 &&
+        video.videoDuration <= time.minutes(20) / 1000
+    );
+    return { day: filteredToday, month: filteredMonth, week: filteredWeek };
+  } else {
+    const filteredToday = today.filter(
+      (video) => video.videoDuration >= time.minutes(20) / 1000
+    );
+    const filteredWeek = week.filter(
+      (video) => video.videoDuration >= time.minutes(20) / 1000
+    );
+    const filteredMonth = month.filter(
+      (video) => video.videoDuration >= time.minutes(20) / 1000
+    );
+    return { day: filteredToday, month: filteredMonth, week: filteredWeek };
+  }
+}
+
 export type ChannelTag = { title: string; id: string; logo: string };
 
 function getChannels(videos: ZVideoMetadata[]) {

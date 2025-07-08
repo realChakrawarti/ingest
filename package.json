@@ -1,6 +1,6 @@
 {
   "name": "ingest",
-  "version": "1.8.0",
+  "version": "1.8.1",
   "scripts": {
     "dev": "concurrently \"pnpm run emulate-firebase\" \"next dev\" --kill-others",
     "dev:seed": "concurrently \"pnpm run emulate-firebase:import-seed\" \"next dev\" --kill-others",
@@ -42,6 +42,7 @@
     "nanoid": "^5.1.0",
     "next": "^14.2.30",
     "next-themes": "^0.4.6",
+    "nuqs": "^2.4.3",
     "octokit": "^4.1.2",
     "radix-ui": "latest",
     "react": "^18.3.1",
