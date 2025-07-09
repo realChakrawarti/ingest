@@ -1,6 +1,7 @@
 "use client";
 
 import withAuth from "~/features/auth/with-auth-hoc";
+
 import EditCatalog from "~/views/edit-catalog";
 
 type EditCatalogPageParams = {

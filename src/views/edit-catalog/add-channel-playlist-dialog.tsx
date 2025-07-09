@@ -1,6 +1,7 @@
 "use client";
 
-import { ChevronLeft, PlusIcon } from "lucide-react";
+import { SiYoutube } from "@icons-pack/react-simple-icons";
+import { ChevronLeft } from "lucide-react";
 import { useState } from "react";
 import type { KeyedMutator } from "swr";
 
@@ -40,7 +41,7 @@ export default function AddChannelPlaylistDialog({
       <DialogTrigger asChild>
         <Button>
           <span className="flex items-center gap-1">
-            <PlusIcon size={24} />
+            <SiYoutube className="size-8" />
             Channel Playlist
           </span>
         </Button>

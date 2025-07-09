@@ -19,6 +19,7 @@ import JustTip from "~/widgets/just-the-tip";
 import Spinner from "~/widgets/spinner";
 
 import AddChannelPlaylistDialog from "./add-channel-playlist-dialog";
+import AddSubredditDialog from "./add-subreddit-dialog";
 import useCatalogStore from "./catalog-store";
 import ChannelTable from "./channel-table";
 import PlaylistTable from "./playlist-table";
@@ -135,6 +136,7 @@ export default function EditCatalog({ catalogId }: { catalogId: string }) {
               </JustTip>
             </Link>
           ) : null}
+          <AddSubredditDialog />
           <AddChannelPlaylistDialog revalidateCatalog={revalidateCatalog} />
         </div>
       </div>
