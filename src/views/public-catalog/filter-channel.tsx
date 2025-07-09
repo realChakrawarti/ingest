@@ -1,9 +1,9 @@
 "use client";
 
-import { SlidersHorizontal } from "lucide-react";
+import { ChevronLeft, ChevronRight, SlidersHorizontal } from "lucide-react";
 import { useSearchParams } from "next/navigation";
 import { parseAsString, useQueryState } from "nuqs";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 import useScreenWidth from "~/shared/hooks/use-screen-width";
 import { Avatar, AvatarFallback, AvatarImage } from "~/shared/ui/avatar";
@@ -45,6 +45,45 @@ export default function FilterChannel({
 
   const containerWidth = useScreenWidth();
 
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const [showLeftScroll, setShowLeftScroll] = useState(false);
+  const [showRightScroll, setShowRightScroll] = useState(false);
+
+  const scrollLeft = () => {
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollBy({ behavior: "smooth", left: -200 });
+    }
+  };
+
+  const scrollRight = () => {
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollBy({ behavior: "smooth", left: 200 });
+    }
+  };
+
+  useEffect(() => {
+    const checkScrollButtons = () => {
+      if (scrollContainerRef.current) {
+        const { scrollLeft, scrollWidth, clientWidth } =
+          scrollContainerRef.current;
+        setShowLeftScroll(scrollLeft > 10);
+        setShowRightScroll(scrollLeft < scrollWidth - clientWidth - 10);
+      }
+    };
+
+    const scrollContainer = scrollContainerRef.current;
+    if (scrollContainer) {
+      scrollContainer.addEventListener("scroll", checkScrollButtons);
+
+      // Initial check after content loads
+      setTimeout(checkScrollButtons, 100);
+
+      return () => {
+        scrollContainer.removeEventListener("scroll", checkScrollButtons);
+      };
+    }
+  }, []);
+
   return (
     <div
       className="px-2 md:px-3 flex gap-2 items-center container"
@@ -52,10 +91,34 @@ export default function FilterChannel({
     >
       <FilterVideosModal />
 
-      <div className="overflow-hidden">
+      <div className="overflow-hidden relative flex items-center grow">
+        {showLeftScroll && (
+          <Button
+            variant="ghost"
+            size="icon"
+            className="rounded-lg absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-background to-transparent backdrop-blur-sm z-10 flex items-center"
+            onClick={scrollLeft}
+          >
+            <ChevronLeft className="h-4 w-4" />
+            <span className="sr-only">Scroll left</span>
+          </Button>
+        )}
+
+        {showRightScroll && (
+          <Button
+            variant="ghost"
+            size="icon"
+            className="rounded-lg absolute right-0 top-0 bottom-0 bg-gradient-to-r from-background to-transparent backdrop-blur-sm z-10 flex items-center"
+            onClick={scrollRight}
+          >
+            <ChevronRight className="h-4 w-4" />
+            <span className="sr-only">Scroll right</span>
+          </Button>
+        )}
         <div
+          ref={scrollContainerRef}
           className={cn(
-            "flex gap-3 items-center overflow-x-auto scrollbar-hide"
+            "flex gap-3 items-center overflow-x-auto scrollbar-hide grow"
           )}
         >
           <Badge
