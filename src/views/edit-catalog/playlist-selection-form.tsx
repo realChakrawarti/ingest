@@ -123,10 +123,6 @@ export default function PlaylistSelectionForm({
     }
   }, [channelPlaylists]);
 
-  function playlistAlreadySelected(id: string) {
-    return Boolean(selectedPlaylists.find((item) => item.playlistId === id));
-  }
-
   return (
     <div className="space-y-4">
       <div className="space-y-2">
@@ -177,40 +173,18 @@ export default function PlaylistSelectionForm({
       <div className="space-y-2 max-h-60 overflow-auto">
         {searchPlaylists.length
           ? searchPlaylists.map((playlist) => (
-              <div
+              <PlaylistItemCheckbox
                 key={playlist.playlistId}
-                className="flex items-center space-x-3 p-3 border rounded-lg hover:bg-muted/50 cursor-pointer"
-                onClick={() => togglePlaylistSelection(playlist)}
-              >
-                <Checkbox
-                  checked={playlistAlreadySelected(playlist.playlistId)}
-                  onChange={() => togglePlaylistSelection(playlist)}
-                />
-                <div className="flex-1 min-w-0">
-                  <div className="font-medium">{playlist.playlistTitle}</div>
-                  <div className="text-sm text-muted-foreground">
-                    {playlist.videoCount} videos
-                  </div>
-                </div>
-              </div>
+                playlist={playlist}
+                togglePlaylistSelection={togglePlaylistSelection}
+              />
             ))
           : channelPlaylists.map((playlist) => (
-              <div
+              <PlaylistItemCheckbox
                 key={playlist.playlistId}
-                className="flex items-center space-x-3 p-3 border rounded-lg hover:bg-muted/50 cursor-pointer"
-                onClick={() => togglePlaylistSelection(playlist)}
-              >
-                <Checkbox
-                  checked={playlistAlreadySelected(playlist.playlistId)}
-                  onChange={() => togglePlaylistSelection(playlist)}
-                />
-                <div className="flex-1 min-w-0">
-                  <div className="font-medium">{playlist.playlistTitle}</div>
-                  <div className="text-sm text-muted-foreground">
-                    {playlist.videoCount} videos
-                  </div>
-                </div>
-              </div>
+                playlist={playlist}
+                togglePlaylistSelection={togglePlaylistSelection}
+              />
             ))}
       </div>
 
@@ -247,6 +221,37 @@ export default function PlaylistSelectionForm({
             )}
           </div>
         </Button>
+      </div>
+    </div>
+  );
+}
+
+function PlaylistItemCheckbox({
+  playlist,
+  togglePlaylistSelection,
+}: {
+  playlist: ChannelPlaylist;
+  togglePlaylistSelection: (playlist: ChannelPlaylist) => void;
+}) {
+  const { selectedPlaylists } = useCatalogStore();
+  function playlistAlreadySelected(id: string) {
+    return Boolean(selectedPlaylists.find((item) => item.playlistId === id));
+  }
+
+  return (
+    <div
+      className="flex items-center space-x-3 p-3 border rounded-lg hover:bg-muted/50 cursor-pointer"
+      onClick={() => togglePlaylistSelection(playlist)}
+    >
+      <Checkbox
+        checked={playlistAlreadySelected(playlist.playlistId)}
+        onChange={() => togglePlaylistSelection(playlist)}
+      />
+      <div className="flex-1 min-w-0">
+        <div className="font-medium">{playlist.playlistTitle}</div>
+        <div className="text-sm text-muted-foreground">
+          {playlist.videoCount} videos
+        </div>
       </div>
     </div>
   );

@@ -23,6 +23,7 @@ import AddSubredditDialog from "./add-subreddit-dialog";
 import useCatalogStore from "./catalog-store";
 import ChannelTable from "./channel-table";
 import PlaylistTable from "./playlist-table";
+import SubredditTable from "./subreddit-table";
 import UpdateCatalogMeta from "./update-catalog-meta";
 
 // TODO: Instead of table for rendering saved and unsaved channels/playlist, consider using cards
@@ -45,8 +46,14 @@ export default function EditCatalog({ catalogId }: { catalogId: string }) {
 
   const catalogsData = catalogs?.data;
 
-  const { savedChannels, setSavedChannels, setSavedPlaylists, savedPlaylists } =
-    useCatalogStore();
+  const {
+    savedChannels,
+    setSavedChannels,
+    setSavedPlaylists,
+    setSavedSubreddits,
+    savedPlaylists,
+    savedSubreddits,
+  } = useCatalogStore();
 
   useEffect(() => {
     if (catalogsData) {
@@ -56,8 +63,12 @@ export default function EditCatalog({ catalogId }: { catalogId: string }) {
       setSavedPlaylists(
         catalogsData?.list?.filter((item) => item.type === "playlist")
       );
+
+      setSavedSubreddits(
+        catalogsData?.list?.filter((item) => item.type === "subreddit")
+      );
     }
-  }, [catalogsData, setSavedChannels, setSavedPlaylists]);
+  }, [catalogsData, setSavedChannels, setSavedPlaylists, setSavedSubreddits]);
 
   // TODO: Deleting item should be a single function as both doing the same thing, and should use a single endpoint
   const handleDeleteSaved = async (id: string) => {
@@ -108,6 +119,32 @@ export default function EditCatalog({ catalogId }: { catalogId: string }) {
     }
   };
 
+  const handleDeleteSavedSubreddit = async (id: string) => {
+    const deleteSubreddit = savedSubreddits.find(
+      (subreddit) =>
+        subreddit.type === "subreddit" && subreddit.subredditId === id
+    );
+    if (!deleteSubreddit) {
+      return;
+    }
+
+    const result = await fetchApi(`/catalogs/${catalogId}/subreddit`, {
+      body: JSON.stringify(deleteSubreddit),
+      method: "DELETE",
+    });
+
+    if (result.success) {
+      toast({
+        title: `${
+          deleteSubreddit.type === "subreddit" && deleteSubreddit.subredditTitle
+        } subreddit deleted from the catalog.`,
+      });
+      revalidateCatalog();
+    } else {
+      toast({ title: "Something went wrong." });
+    }
+  };
+
   return (
     <div>
       <div className="flex flex-col md:flex-row gap-2 md:items-center justify-between p-3">
@@ -136,7 +173,7 @@ export default function EditCatalog({ catalogId }: { catalogId: string }) {
               </JustTip>
             </Link>
           ) : null}
-          <AddSubredditDialog />
+          <AddSubredditDialog revalidateCatalog={revalidateCatalog} />
           <AddChannelPlaylistDialog revalidateCatalog={revalidateCatalog} />
         </div>
       </div>
@@ -185,6 +222,26 @@ export default function EditCatalog({ catalogId }: { catalogId: string }) {
               <PlaylistTable
                 playlists={savedPlaylists}
                 handleDelete={handleDeleteSavedPlaylist}
+              />
+            </div>
+          ) : null}
+
+          {savedSubreddits?.length ? (
+            <div className="space-y-3">
+              <div className="flex items-center justify-between">
+                <h2 className="text-xl font-normal tracking-wide">
+                  Saved Subreddits
+                </h2>
+                <Badge
+                  className="font-normal tracking-wide"
+                  variant="secondary"
+                >
+                  {savedSubreddits?.length} of 10 subreddits added
+                </Badge>
+              </div>
+              <SubredditTable
+                subreddits={savedSubreddits}
+                handleDelete={handleDeleteSavedSubreddit}
               />
             </div>
           ) : null}

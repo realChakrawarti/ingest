@@ -25,9 +25,20 @@ export const CatalogPlaylistSchema = BaseCatalogSchema.extend({
   type: z.literal("playlist"),
 });
 
+export const CatalogSubredditSchema = z.object({
+  subredditDescription: z.string(),
+  subredditIcon: z.string(),
+  subredditId: z.string(),
+  subredditName: z.string(),
+  subredditTitle: z.string(),
+  subredditUrl: z.string(),
+  type: z.literal("subreddit"),
+});
+
 const CatalogListSchema = z.discriminatedUnion("type", [
   CatalogChannelSchema,
   CatalogPlaylistSchema,
+  CatalogSubredditSchema,
 ]);
 
 const TimestampSchema = z.custom<Timestamp>(
@@ -99,6 +110,8 @@ const CatalogVideoListSchema = z.object({
 
 const CatalogDocumentSchema = CatalogMetaSchema.extend({
   data: z.object({
+    posts: z.array(z.any()),
+    totalPosts: z.number().default(0),
     totalVideos: z.number(),
     updatedAt: TimestampSchema,
     videos: CatalogVideoListSchema.optional(),
@@ -124,6 +137,7 @@ const CatalogByUserSchema = CatalogMetaSchema.extend({
 
 const VideosByCatalogSchema = CatalogMetaSchema.extend({
   nextUpdate: z.string(),
+  posts: z.array(z.any()),
   videos: CatalogVideoListSchema,
 });
 
@@ -132,6 +146,8 @@ export type ZCatalogMeta = z.infer<typeof CatalogMetaSchema>;
 export type ZCatalogChannel = z.infer<typeof CatalogChannelSchema>;
 
 export type ZCatalogPlaylist = z.infer<typeof CatalogPlaylistSchema>;
+
+export type ZCatalogSubreddit = z.infer<typeof CatalogSubredditSchema>;
 
 export type ZCatalogList = z.infer<typeof CatalogListSchema>;
 

@@ -3,6 +3,7 @@ import { create } from "zustand";
 import type {
   ZCatalogChannel,
   ZCatalogPlaylist,
+  ZCatalogSubreddit,
 } from "~/entities/catalogs/models";
 import type {
   ChannelDetails,
@@ -20,25 +21,29 @@ interface State {
   channelInfo: ChannelDetails;
   videoLink: VideoLink;
   savedChannels: ZCatalogChannel[];
+  savedSubreddits: ZCatalogSubreddit[];
   selectedPlaylists: ChannelPlaylist[];
   searchPlaylists: ChannelPlaylist[];
   channelPlaylists: ChannelPlaylist[];
   playlistInput: string;
   savedPlaylists: ZCatalogPlaylist[];
   formStep: Step;
+  selectedSubreddits: ZCatalogSubreddit[];
 }
 
 interface Actions {
-  setChannelInfo: (_channelInfo: ChannelDetails) => void;
-  setVideoLink: (_videoLink: Partial<VideoLink>) => void;
-  setSavedPlaylists: (_playlist: ZCatalogPlaylist[]) => void;
-  setSavedChannels: (_channels: ZCatalogChannel[]) => void;
-  setSelectedPlaylists: (_selectedPlaylists: ChannelPlaylist[]) => void;
-  setSearchPlaylists: (_searchPlaylists: ChannelPlaylist[]) => void;
-  setChannelPlaylists: (_channelPlaylists: ChannelPlaylist[]) => void;
-  setPlaylistInput: (_input: string) => void;
+  setChannelInfo: (channelInfo: ChannelDetails) => void;
+  setVideoLink: (videoLink: Partial<VideoLink>) => void;
+  setSavedPlaylists: (playlist: ZCatalogPlaylist[]) => void;
+  setSavedChannels: (channels: ZCatalogChannel[]) => void;
+  setSavedSubreddits: (subreddits: ZCatalogSubreddit[]) => void;
+  setSelectedPlaylists: (selectedPlaylists: ChannelPlaylist[]) => void;
+  setSearchPlaylists: (searchPlaylists: ChannelPlaylist[]) => void;
+  setChannelPlaylists: (channelPlaylists: ChannelPlaylist[]) => void;
+  setPlaylistInput: (input: string) => void;
   resetTempData: () => void;
-  setFormStep: (_step: Step) => void;
+  setFormStep: (step: Step) => void;
+  setSelectedSubreddits: (selectedSubreddits: ZCatalogSubreddit[]) => void;
 }
 
 const initialState: State = {
@@ -57,8 +62,10 @@ const initialState: State = {
   playlistInput: "",
   savedChannels: [],
   savedPlaylists: [],
+  savedSubreddits: [],
   searchPlaylists: [],
   selectedPlaylists: [],
+  selectedSubreddits: [],
   videoLink: { error: "", link: "" },
 };
 
@@ -72,6 +79,7 @@ const useCatalogStore = create<State & Actions>((set) => ({
       playlistInput: "",
       searchPlaylists: [],
       selectedPlaylists: [],
+      selectedSubreddits: [],
       videoLink: { error: "", link: "" },
     }),
   setChannelInfo: (channelInfo) => set({ channelInfo: channelInfo }),
@@ -81,10 +89,14 @@ const useCatalogStore = create<State & Actions>((set) => ({
   setPlaylistInput: (inputValue) => set({ playlistInput: inputValue }),
   setSavedChannels: (channels) => set({ savedChannels: channels }),
   setSavedPlaylists: (playlists) => set({ savedPlaylists: playlists }),
+  setSavedSubreddits: (subreddits) => set({ savedSubreddits: subreddits }),
   setSearchPlaylists: (searchPlaylists) =>
     set({ searchPlaylists: searchPlaylists }),
   setSelectedPlaylists: (selectedPlaylists) =>
     set({ selectedPlaylists: selectedPlaylists }),
+  setSelectedSubreddits: (selectedSubreddt) => {
+    set({ selectedSubreddits: selectedSubreddt });
+  },
   setVideoLink: (link) => {
     return set((state) => ({
       videoLink: {

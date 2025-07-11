@@ -15,14 +15,33 @@ import type {
   ZCatalogChannel,
   ZCatalogList,
   ZCatalogPlaylist,
+  ZCatalogSubreddit,
   ZCatalogVideoListSchema,
   ZVideoContentInfo,
   ZVideoMetadataWithoutContent,
 } from "../models";
 import { getPageviewByCatalogId } from "./get-pageviews-by-catalog-id";
 
+export interface Post {
+  id: string;
+  title: string;
+  author: string;
+  subreddit: string;
+  score: number;
+  num_comments: number;
+  created_utc: number;
+  url: string;
+  permalink: string;
+  selftext?: string;
+  thumbnail?: string;
+  preview?: any;
+  is_video: boolean;
+  domain: string;
+  post_hint?: string;
+}
+
 async function updateChannelLogos(
-  list: ZCatalogList[]
+  list: Array<ZCatalogChannel | ZCatalogPlaylist>
 ): Promise<ZCatalogList[]> {
   const channels = new Set<string>();
   list.forEach((item) => channels.add(item.channelId));
@@ -67,6 +86,8 @@ export async function getVideosByCatalog(catalogId: string) {
     week: [],
   };
 
+  let postResults: Post[] = [];
+
   const catalogRef = refs.catalogs.doc(catalogId);
   const catalogSnap = await catalogRef.get();
 
@@ -86,14 +107,17 @@ export async function getVideosByCatalog(catalogId: string) {
   const userSnapData = userCatalogSnap.data();
   const catalogList = userSnapData?.list;
 
-  if (!catalogList?.length) {
-    return "Catalog is empty. Channel or playlist is yet to be added!";
+  const youtubeList = catalogList?.filter((item) => item.type !== "subreddit");
+  const redditList = catalogList?.filter((item) => item.type === "subreddit");
+
+  if (!youtubeList?.length) {
+    return "Catalog is empty.";
   }
 
   // TODO: Maybe we can skip the filtering, but will be difficult to parse when subreddits are added?
-  const channelListData = catalogList.filter((item) => item.type === "channel");
+  const channelListData = youtubeList.filter((item) => item.type === "channel");
 
-  const playlistData = catalogList.filter((item) => item.type === "playlist");
+  const playlistData = youtubeList.filter((item) => item.type === "playlist");
 
   const currentTime = Date.now();
   const lastUpdatedCatalogList =
@@ -104,7 +128,7 @@ export async function getVideosByCatalog(catalogId: string) {
     currentTime - lastUpdatedCatalogList >
     appConfig.channelLogoUpdatePeriod
   ) {
-    const updatedList = await updateChannelLogos(catalogList);
+    const updatedList = await updateChannelLogos(youtubeList);
     await userCatalogRef.set({
       list: updatedList,
       updatedAt: Timestamp.fromDate(new Date()),
@@ -113,10 +137,10 @@ export async function getVideosByCatalog(catalogId: string) {
     Log.info(`Too early to revalidate channels logo.`);
   }
 
-  // Get last updated, check if time has been 6 hours or not, if so make call to YouTube API,
+  // Get last updated, check if time has been 4 hours or not, if so make call to YouTube API,
   // if not fetch from firestore
   const lastUpdated = catalogSnapData?.data?.updatedAt.toDate();
-  const lastUpdatedTime = new Date(lastUpdated).getTime();
+  const lastUpdatedTime = lastUpdated.getTime();
 
   let recentUpdate = new Date(currentTime);
   let pageviews = 0;
@@ -146,9 +170,13 @@ export async function getVideosByCatalog(catalogId: string) {
       });
     }
 
-    const results = await Promise.allSettled(videoListPromise);
+    if (redditList?.length) {
+      postResults = (await getSubredditPosts(redditList)) ?? [];
+    }
 
-    results.forEach((result) => {
+    const videoResults = await Promise.allSettled(videoListPromise);
+
+    videoResults.forEach((result) => {
       if (result.status === "fulfilled") {
         videoList.push(...result.value);
       } else {
@@ -184,8 +212,10 @@ export async function getVideosByCatalog(catalogId: string) {
       }
     }
 
-    const catalogVideos = {
+    const catalogContents = {
       data: {
+        posts: postResults,
+        totalPosts: postResults.length,
         totalVideos: videoList.length,
         updatedAt: recentUpdate,
         videos: videoFilterData,
@@ -193,12 +223,13 @@ export async function getVideosByCatalog(catalogId: string) {
       pageviews: pageviews,
     };
 
-    await catalogRef.set(catalogVideos, { merge: true });
+    await catalogRef.set(catalogContents, { merge: true });
 
     revalidatePath(`/c/${catalogId}`);
     Log.info(`Cached invalidated /c/${catalogId}`);
   } else {
     videoFilterData = catalogSnapData?.data.videos;
+    postResults = catalogSnapData?.data.posts;
     recentUpdate = lastUpdated;
     Log.info(
       `Returning cached data for the catalog ${catalogId}, next update on ${new Date(
@@ -212,9 +243,49 @@ export async function getVideosByCatalog(catalogId: string) {
     nextUpdate: new Date(
       recentUpdate.getTime() + appConfig.catalogUpdatePeriod
     ).toUTCString(),
+    posts: postResults,
     title: catalogSnapData?.title,
     videos: videoFilterData,
   };
+}
+
+async function getSubredditPosts(list: ZCatalogSubreddit[]) {
+  const postPromises = list.map((item) =>
+    fetch(`https://www.reddit.com/r/${item.subredditName}/hot.json?limit=15`)
+  );
+
+  const postResults = await Promise.all(postPromises);
+
+  const postList: Post[] = [];
+
+  for (const result of postResults) {
+    const data = await result.json();
+
+    const allPosts = data.data.children.map((child: any) => child.data);
+    allPosts.forEach((item: any) => {
+      const postContentInfo: Post = {
+        author: item.author,
+        created_utc: item.created_utc,
+        domain: item.domain ?? "",
+        id: item.id,
+        is_video: item.is_video,
+        num_comments: item.num_comments,
+        permalink: item.permalink,
+        post_hint: item.post_hint ?? "",
+        preview: item.preview ?? "",
+        score: item.score,
+        selftext: item.selftext ?? "",
+        subreddit: item.subreddit,
+        thumbnail: item.thumbnail ?? "",
+        title: item.title,
+        url: item.url,
+      };
+
+      postList.push(postContentInfo);
+    });
+
+    return postList;
+  }
 }
 
 async function getPlaylistVideos(playlist: ZCatalogPlaylist) {

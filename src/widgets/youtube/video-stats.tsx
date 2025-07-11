@@ -4,24 +4,10 @@ import { ChartBar, EyeIcon, MessageSquare, ThumbsUp } from "lucide-react";
 
 import type { ZVideoContentInfo } from "~/entities/catalogs/models";
 
+import formatLargeNumber from "~/shared/utils/format-large-number";
+
 import OverlayTip from "../overlay-tip";
 import useActivePlayerRef from "./use-active-player";
-
-function formatNumber(num: number): string {
-  const billion = 1_000_000_000;
-  const million = 1_000_000;
-  const thousand = 1_000;
-
-  if (num >= billion) {
-    return `${(num / billion).toFixed(1)}B`;
-  } else if (num >= million) {
-    return `${(num / million).toFixed(1)}M`;
-  } else if (num >= thousand) {
-    return `${(num / thousand).toFixed(1)}K`;
-  } else {
-    return num.toString();
-  }
-}
 
 export default function VideoStats({
   videoViews,
@@ -49,15 +35,15 @@ export default function VideoStats({
           <div className="hidden group-hover/player:flex gap-1 items-center">
             <span className="flex items-center gap-1">
               <EyeIcon className="size-4" />
-              {formatNumber(videoViews)}
+              {formatLargeNumber(videoViews)}
             </span>
             <span className="flex items-center gap-1">
               <ThumbsUp className="size-4" />
-              {formatNumber(videoLikes)}
+              {formatLargeNumber(videoLikes)}
             </span>
             <span className="flex items-center gap-1">
               <MessageSquare className="size-4" />
-              {formatNumber(videoComments)}
+              {formatLargeNumber(videoComments)}
             </span>
           </div>
         </div>

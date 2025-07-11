@@ -50,6 +50,10 @@ export default async function PubliCatalog({
 
   const catalogData = result.data;
 
+  const posts = catalogData?.posts;
+
+  console.log(">>>>posts", posts);
+
   const videos = catalogData?.videos;
   const catalogTitle = catalogData?.title ?? "";
   const catalogDescription = catalogData?.description ?? "";

@@ -1,4 +1,4 @@
-import type { ZCatalogPlaylist } from "~/entities/catalogs/models";
+import type { ZCatalogSubreddit } from "~/entities/catalogs/models";
 
 import { Button } from "~/shared/ui/button";
 import { DeleteIcon } from "~/shared/ui/icons";
@@ -16,65 +16,65 @@ import { DeleteModal } from "~/widgets/delete-modal";
 import { OutLink } from "~/widgets/out-link";
 
 interface PlaylistTableProps {
-  playlists: ZCatalogPlaylist[];
+  subreddits: ZCatalogSubreddit[];
   handleDelete: (_id: string) => void;
 }
 
-export default function PlaylistTable({
-  playlists,
+export default function SubredditTable({
+  subreddits,
   handleDelete,
 }: PlaylistTableProps) {
   return (
     <Table>
-      <TableCaption>A list of playlists.</TableCaption>
+      <TableCaption>A list of subreddits.</TableCaption>
       <TableHeader>
         <TableRow>
           <TableHead className="max-w-[50px]">SL No</TableHead>
-          <TableHead className="max-w-[150px]">Playlist Title</TableHead>
-          <TableHead>Playlist ID</TableHead>
+          <TableHead className="max-w-[150px]">Name</TableHead>
+          <TableHead>Subreddit ID</TableHead>
           <TableHead className="text-center">Channel</TableHead>
           <TableHead></TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
-        {playlists?.length === 0 ? (
+        {subreddits?.length === 0 ? (
           <TableRow>
             <TableCell colSpan={5} className="h-4 text-center">
-              No playlist added yet.
+              No subreddit added yet.
             </TableCell>
           </TableRow>
         ) : (
-          playlists?.map((playlist, idx: number) => {
+          subreddits?.map((subreddit, idx: number) => {
             const {
-              playlistTitle,
-              playlistId,
-              channelLogo,
-              channelTitle,
-              channelHandle,
-            } = playlist;
+              subredditName,
+              subredditIcon,
+              subredditUrl,
+              subredditTitle,
+              subredditId,
+            } = subreddit;
             return (
-              <TableRow key={playlist?.playlistId}>
+              <TableRow key={subredditId}>
                 <TableCell>{idx + 1}</TableCell>
-                <TableCell>{playlistTitle}</TableCell>
-                <TableCell>{playlistId}</TableCell>
+                <TableCell>{subredditName}</TableCell>
+                <TableCell>{subredditId}</TableCell>
                 <TableCell>
                   <div className="flex gap-2 items-center">
-                    {channelLogo ? (
+                    {subredditIcon ? (
                       <img
-                        src={channelLogo}
-                        alt={channelTitle}
+                        src={subredditIcon}
+                        alt={subredditUrl}
                         className="size-6 rounded-lg"
                       />
                     ) : null}
-                    {channelHandle ? (
+                    {subredditUrl ? (
                       <OutLink
                         className="text-indigo-600 hover:text-indigo-500 visited:text-indigo-700"
-                        href={`https://www.youtube.com/${channelHandle}`}
+                        href={`https://www.reddit.com${subredditUrl}`}
                       >
-                        <p>{channelTitle}</p>
+                        <p>{subredditTitle}</p>
                       </OutLink>
                     ) : (
-                      <p>{channelTitle}</p>
+                      <p>{subredditTitle}</p>
                     )}
                   </div>
                 </TableCell>
@@ -84,11 +84,11 @@ export default function PlaylistTable({
                       <>
                         This action cannot be undone. This will permanently
                         remove{" "}
-                        <span className="text-primary">{playlistTitle}</span>{" "}
-                        playlist from the catalog?
+                        <span className="text-primary">{subredditTitle}</span>{" "}
+                        subreddit from the catalog?
                       </>
                     }
-                    onDelete={() => handleDelete(playlistId)}
+                    onDelete={() => handleDelete(subredditId)}
                   >
                     <Button variant="outline">
                       <DeleteIcon

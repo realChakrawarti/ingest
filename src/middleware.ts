@@ -61,6 +61,7 @@ export const config = {
     "/api/catalogs/:catalogId/channel",
     "/api/catalogs/:catalogId/delete",
     "/api/catalogs/:catalogId/playlist",
+    "/api/catalogs/:catalogId/subreddit",
     "/api/catalogs/:catalogId/update",
     "/api/catalogs/:catalogId/video",
     // YouTube Routes
