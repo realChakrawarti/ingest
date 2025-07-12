@@ -24,6 +24,7 @@ import {
 import { Input } from "~/shared/ui/input";
 import { Separator } from "~/shared/ui/separator";
 import formatLargeNumber from "~/shared/utils/format-large-number";
+import formatRedditImageLink from "~/shared/utils/format-reddit-image-link";
 import Log from "~/shared/utils/terminal-logger";
 
 import useCatalogStore from "./catalog-store";
@@ -35,11 +36,6 @@ async function getSubreddits(query: string) {
   const data = await response.json();
   const results = data.data.children.map((child: any) => child.data);
   return results;
-}
-
-function formatSubredditIcon(link: string) {
-  if (!link) return "";
-  return link.replace(/&amp;/g, "&");
 }
 
 export default function AddSubredditDialog({
@@ -75,8 +71,8 @@ export default function AddSubredditDialog({
       const subredditFormatted: ZCatalogSubreddit = {
         subredditDescription: subreddit.public_description,
         subredditIcon:
-          formatSubredditIcon(subreddit.icon_img) ||
-          formatSubredditIcon(subreddit.community_icon) ||
+          formatRedditImageLink(subreddit.icon_img) ||
+          formatRedditImageLink(subreddit.community_icon) ||
           "",
         subredditId: subreddit.id,
         subredditName: subreddit.display_name,
@@ -89,7 +85,7 @@ export default function AddSubredditDialog({
     }
   };
 
-  const { data, isLoading } = useSWR(
+  const { data, isLoading, mutate } = useSWR(
     debouncedSearch?.length > 2 ? `subreddits-${debouncedSearch}` : null,
     () => getSubreddits(searchInput)
   );
@@ -114,11 +110,13 @@ export default function AddSubredditDialog({
       } else {
         toast({ title: "Something went wrong!" });
       }
+      setSearchInput("");
+      await mutate(undefined); // Clear the data
       setIsDialogOpen(false);
     } catch (err) {
       Log.fail(err);
     } finally {
-      setIsLoadingUpdate(true);
+      setIsLoadingUpdate(false);
     }
   }
 
@@ -263,8 +261,8 @@ function SearchDropdown({
                 <Avatar className="size-8 rounded-lg">
                   <AvatarImage
                     src={
-                      formatSubredditIcon(subreddit.community_icon) ||
-                      formatSubredditIcon(subreddit.icon_img)
+                      formatRedditImageLink(subreddit.community_icon) ||
+                      formatRedditImageLink(subreddit.icon_img)
                     }
                     alt={`r/${subreddit.display_name} icon`}
                   />

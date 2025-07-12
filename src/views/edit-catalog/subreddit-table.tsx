@@ -30,9 +30,8 @@ export default function SubredditTable({
       <TableHeader>
         <TableRow>
           <TableHead className="max-w-[50px]">SL No</TableHead>
-          <TableHead className="max-w-[150px]">Name</TableHead>
+          <TableHead>Subreddit</TableHead>
           <TableHead>Subreddit ID</TableHead>
-          <TableHead className="text-center">Channel</TableHead>
           <TableHead></TableHead>
         </TableRow>
       </TableHeader>
@@ -55,8 +54,6 @@ export default function SubredditTable({
             return (
               <TableRow key={subredditId}>
                 <TableCell>{idx + 1}</TableCell>
-                <TableCell>{subredditName}</TableCell>
-                <TableCell>{subredditId}</TableCell>
                 <TableCell>
                   <div className="flex gap-2 items-center">
                     {subredditIcon ? (
@@ -67,16 +64,16 @@ export default function SubredditTable({
                       />
                     ) : null}
                     {subredditUrl ? (
-                      <OutLink
-                        className="text-indigo-600 hover:text-indigo-500 visited:text-indigo-700"
-                        href={`https://www.reddit.com${subredditUrl}`}
-                      >
+                      <OutLink href={`https://www.reddit.com${subredditUrl}`}>
                         <p>{subredditTitle}</p>
                       </OutLink>
                     ) : (
                       <p>{subredditTitle}</p>
                     )}
                   </div>
+                </TableCell>
+                <TableCell>
+                  r/{subredditName} - ({subredditId})
                 </TableCell>
                 <TableCell>
                   <DeleteModal

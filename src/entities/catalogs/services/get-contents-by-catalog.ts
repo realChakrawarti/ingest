@@ -8,6 +8,7 @@ import {
   YOUTUBE_VIDEOS_DATA,
 } from "~/shared/lib/api/youtube-endpoints";
 import { refs } from "~/shared/lib/firebase/refs";
+import formatRedditImageLink from "~/shared/utils/format-reddit-image-link";
 import Log from "~/shared/utils/terminal-logger";
 import { time } from "~/shared/utils/time";
 
@@ -16,29 +17,12 @@ import type {
   ZCatalogList,
   ZCatalogPlaylist,
   ZCatalogSubreddit,
+  ZCatalogSubredditPost,
   ZCatalogVideoListSchema,
   ZVideoContentInfo,
   ZVideoMetadataWithoutContent,
 } from "../models";
 import { getPageviewByCatalogId } from "./get-pageviews-by-catalog-id";
-
-export interface Post {
-  id: string;
-  title: string;
-  author: string;
-  subreddit: string;
-  score: number;
-  num_comments: number;
-  created_utc: number;
-  url: string;
-  permalink: string;
-  selftext?: string;
-  thumbnail?: string;
-  preview?: any;
-  is_video: boolean;
-  domain: string;
-  post_hint?: string;
-}
 
 async function updateChannelLogos(
   list: Array<ZCatalogChannel | ZCatalogPlaylist>
@@ -77,7 +61,7 @@ async function updateChannelLogos(
   });
 }
 
-export async function getVideosByCatalog(catalogId: string) {
+export async function getContentsByCatalog(catalogId: string) {
   const videoList: ZVideoMetadataWithoutContent[] = [];
 
   let videoFilterData: ZCatalogVideoListSchema | undefined = {
@@ -86,7 +70,7 @@ export async function getVideosByCatalog(catalogId: string) {
     week: [],
   };
 
-  let postResults: Post[] = [];
+  let postResults: ZCatalogSubredditPost[] = [];
 
   const catalogRef = refs.catalogs.doc(catalogId);
   const catalogSnap = await catalogRef.get();
@@ -250,42 +234,53 @@ export async function getVideosByCatalog(catalogId: string) {
 }
 
 async function getSubredditPosts(list: ZCatalogSubreddit[]) {
+  const postList: ZCatalogSubredditPost[] = [];
   const postPromises = list.map((item) =>
     fetch(`https://www.reddit.com/r/${item.subredditName}/hot.json?limit=15`)
   );
 
   const postResults = await Promise.all(postPromises);
 
-  const postList: Post[] = [];
-
   for (const result of postResults) {
     const data = await result.json();
 
     const allPosts = data.data.children.map((child: any) => child.data);
-    allPosts.forEach((item: any) => {
-      const postContentInfo: Post = {
-        author: item.author,
-        created_utc: item.created_utc,
-        domain: item.domain ?? "",
-        id: item.id,
-        is_video: item.is_video,
-        num_comments: item.num_comments,
-        permalink: item.permalink,
-        post_hint: item.post_hint ?? "",
-        preview: item.preview ?? "",
-        score: item.score,
-        selftext: item.selftext ?? "",
+    for (let i = 0; i < allPosts.length; i++) {
+      const item = allPosts[i];
+
+      // TODO: is_gallery checks if the post gallery, later integrate gallery?
+      // Skips this iteration: 1 week older and the post is a gallery (collection of images)
+      if (
+        Date.now() / 1000 - item?.created_utc > time.weeks(1) / 1000 ||
+        item?.is_gallery
+      ) {
+        continue;
+      }
+
+      const postContentInfo: ZCatalogSubredditPost = {
+        postAuthor: item.author,
+        postCommentsCount: item.num_comments,
+        postCreatedAt: item?.created_utc,
+        postDomain: item.domain ?? "",
+        postId: item.id,
+        postImage:
+          formatRedditImageLink(item?.preview?.images[0]?.source.url) ?? "",
+        postPermalink: item.permalink,
+        postPreview: item.preview ?? "",
+        postSelftext: item.selftext ?? "",
+        postThumbnail: formatRedditImageLink(item?.thumbnail) ?? "",
+        postTitle: item.title,
+        postType: item.post_hint ?? "",
+        postUrl: item.url,
+        postVideo: item?.media?.reddit_video?.fallback_url ?? "",
+        postVotes: item.score,
         subreddit: item.subreddit,
-        thumbnail: item.thumbnail ?? "",
-        title: item.title,
-        url: item.url,
       };
 
       postList.push(postContentInfo);
-    });
-
-    return postList;
+    }
   }
+  return postList;
 }
 
 async function getPlaylistVideos(playlist: ZCatalogPlaylist) {

@@ -29,6 +29,7 @@ import { AddToFavorites } from "./add-to-fav";
 import FilterChannel, { CurrentActive } from "./filter-channel";
 import { filterVideos, getActiveChannelIds } from "./helper-methods";
 import { ShowNextUpdateBanner } from "./next-update";
+import SubredditPosts from "./subreddit-posts";
 
 // Refer: https://nextjs.org/docs/pages/building-your-application/optimizing/lazy-loading#with-no-ssr
 const DynamicShareCatalog = dynamic(() => import("./share-catalog"), {
@@ -51,8 +52,6 @@ export default async function PubliCatalog({
   const catalogData = result.data;
 
   const posts = catalogData?.posts;
-
-  console.log(">>>>posts", posts);
 
   const videos = catalogData?.videos;
   const catalogTitle = catalogData?.title ?? "";
@@ -131,6 +130,8 @@ export default async function PubliCatalog({
             </div>
           </div>
         </PublicHeaderTitle>
+
+        <SubredditPosts posts={posts ?? []} />
 
         <FilterChannel activeChannels={activeChannels} />
 

@@ -68,7 +68,6 @@ export default function PlaylistTable({
                     ) : null}
                     {channelHandle ? (
                       <OutLink
-                        className="text-indigo-600 hover:text-indigo-500 visited:text-indigo-700"
                         href={`https://www.youtube.com/${channelHandle}`}
                       >
                         <p>{channelTitle}</p>

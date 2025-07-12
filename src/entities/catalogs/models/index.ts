@@ -141,6 +141,28 @@ const VideosByCatalogSchema = CatalogMetaSchema.extend({
   videos: CatalogVideoListSchema,
 });
 
+const CatalogSubredditPostSchema = z.object({
+  postAuthor: z.string(),
+  postCommentsCount: z.number().default(0),
+  postCreatedAt: z.number(),
+  postDomain: z.string(),
+  postId: z.string(),
+  postImage: z.string(),
+  postPermalink: z.string(),
+  postPreview: z.any(),
+  postSelftext: z.string().optional(),
+  postThumbnail: z.string().optional(),
+  postTitle: z.string(),
+  postType: z.string(),
+  postUrl: z.string(),
+  postVideo: z.string(),
+  postVotes: z.number(),
+  subreddit: z.string(),
+  // subredditIcon: z.string(),
+});
+
+export type ZCatalogSubredditPost = z.infer<typeof CatalogSubredditPostSchema>;
+
 export type ZCatalogMeta = z.infer<typeof CatalogMetaSchema>;
 
 export type ZCatalogChannel = z.infer<typeof CatalogChannelSchema>;
