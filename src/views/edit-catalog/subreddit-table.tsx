@@ -15,7 +15,7 @@ import {
 import { DeleteModal } from "~/widgets/delete-modal";
 import { OutLink } from "~/widgets/out-link";
 
-interface PlaylistTableProps {
+interface SubredditTableProps {
   subreddits: ZCatalogSubreddit[];
   handleDelete: (_id: string) => void;
 }
@@ -23,7 +23,7 @@ interface PlaylistTableProps {
 export default function SubredditTable({
   subreddits,
   handleDelete,
-}: PlaylistTableProps) {
+}: SubredditTableProps) {
   return (
     <Table>
       <TableCaption>A list of subreddits.</TableCaption>
@@ -38,7 +38,7 @@ export default function SubredditTable({
       <TableBody>
         {subreddits?.length === 0 ? (
           <TableRow>
-            <TableCell colSpan={5} className="h-4 text-center">
+            <TableCell colSpan={4} className="h-4 text-center">
               No subreddit added yet.
             </TableCell>
           </TableRow>

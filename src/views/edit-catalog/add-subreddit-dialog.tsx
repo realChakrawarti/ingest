@@ -41,7 +41,7 @@ async function getSubreddits(query: string) {
 export default function AddSubredditDialog({
   revalidateCatalog,
 }: {
-  revalidateCatalog: KeyedMutator<ApiResponse<any>>;
+  revalidateCatalog: KeyedMutator<ApiResponse>;
 }) {
   const [searchInput, setSearchInput] = useState<string>("");
   const debouncedSearch = useDebounce(searchInput, 1000);
@@ -55,15 +55,16 @@ export default function AddSubredditDialog({
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const toggleSubredditSelection = (subreddit: any) => {
+    const subredditId = subreddit?.id || subreddit?.subredditId;
     // Check if subreddit already added
     const subredditExists = selectedSubreddits.find(
-      (item) => item.subredditId === subreddit.id
+      (item) => item.subredditId === subredditId
     );
 
     // Remove subreddit when already added
     if (subredditExists) {
       const filteredSubreddit = selectedSubreddits.filter(
-        (item) => item.subredditId !== subreddit.id
+        (item) => item.subredditId !== subredditId
       );
       setSelectedSubreddits(filteredSubreddit);
       // Add subreddit to the local subreddit
@@ -74,7 +75,7 @@ export default function AddSubredditDialog({
           formatRedditImageLink(subreddit.icon_img) ||
           formatRedditImageLink(subreddit.community_icon) ||
           "",
-        subredditId: subreddit.id,
+        subredditId: subredditId,
         subredditName: subreddit.display_name,
         subredditTitle: subreddit.title,
         subredditUrl: subreddit.url,
@@ -87,7 +88,7 @@ export default function AddSubredditDialog({
 
   const { data, isLoading, mutate } = useSWR(
     debouncedSearch?.length > 2 ? `subreddits-${debouncedSearch}` : null,
-    () => getSubreddits(searchInput)
+    () => getSubreddits(debouncedSearch)
   );
 
   function _onSearchInputChange(e: ChangeEvent<HTMLInputElement>) {
@@ -287,10 +288,7 @@ function SearchDropdown({
                   </p>
                 </div>
               </div>
-              <Checkbox
-                checked={subredditAlreadySelected(subreddit.id)}
-                onChange={() => toggleSubredditSelection(subreddit)}
-              />
+              <Checkbox checked={subredditAlreadySelected(subreddit.id)} />
             </div>
           );
         })

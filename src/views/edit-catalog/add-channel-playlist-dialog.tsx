@@ -23,7 +23,7 @@ import SelectForm from "./select-form";
 export default function AddChannelPlaylistDialog({
   revalidateCatalog,
 }: {
-  revalidateCatalog: KeyedMutator<ApiResponse<any>>;
+  revalidateCatalog: KeyedMutator<ApiResponse>;
 }) {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 

@@ -21,7 +21,7 @@ import { Label } from "~/shared/ui/label";
 import { useMetaValidate } from "~/widgets/use-meta-validate";
 
 interface UpdateCatalogMetaProps {
-  revalidateCatalog: KeyedMutator<ApiResponse<any>>;
+  revalidateCatalog: KeyedMutator<ApiResponse>;
   catalogId: string;
   title: string;
   description: string;

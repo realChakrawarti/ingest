@@ -94,13 +94,12 @@ export async function getContentsByCatalog(catalogId: string) {
   const youtubeList = catalogList?.filter((item) => item.type !== "subreddit");
   const redditList = catalogList?.filter((item) => item.type === "subreddit");
 
+  // TODO: This is restrictive as catalog must at-least have a channel/playlist, having only subreddit doesn't cut
   if (!youtubeList?.length) {
     return "Catalog is empty.";
   }
 
-  // TODO: Maybe we can skip the filtering, but will be difficult to parse when subreddits are added?
   const channelListData = youtubeList.filter((item) => item.type === "channel");
-
   const playlistData = youtubeList.filter((item) => item.type === "playlist");
 
   const currentTime = Date.now();
@@ -121,7 +120,7 @@ export async function getContentsByCatalog(catalogId: string) {
     Log.info(`Too early to revalidate channels logo.`);
   }
 
-  // Get last updated, check if time has been 4 hours or not, if so make call to YouTube API,
+  // Get last updated, check if time has been 4 hours or not, if so make call to YouTube API and Reddit API
   // if not fetch from firestore
   const lastUpdated = catalogSnapData?.data?.updatedAt.toDate();
   const lastUpdatedTime = lastUpdated.getTime();
@@ -264,9 +263,8 @@ async function getSubredditPosts(list: ZCatalogSubreddit[]) {
         postDomain: item.domain ?? "",
         postId: item.id,
         postImage:
-          formatRedditImageLink(item?.preview?.images[0]?.source.url) ?? "",
+          formatRedditImageLink(item?.preview?.images[0]?.source?.url) ?? "",
         postPermalink: item.permalink,
-        postPreview: item.preview ?? "",
         postSelftext: item.selftext ?? "",
         postThumbnail: formatRedditImageLink(item?.thumbnail) ?? "",
         postTitle: item.title,

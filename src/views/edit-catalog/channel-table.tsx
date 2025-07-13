@@ -36,7 +36,7 @@ function ChannelTable({
       <TableBody>
         {channels?.length === 0 ? (
           <TableRow>
-            <TableCell colSpan={5} className="h-4 text-center">
+            <TableCell colSpan={4} className="h-4 text-center">
               No channel added yet.
             </TableCell>
           </TableRow>

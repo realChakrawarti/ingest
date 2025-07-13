@@ -108,9 +108,27 @@ const CatalogVideoListSchema = z.object({
   week: z.array(VideoMetadataSchema).default([]),
 });
 
+const CatalogSubredditPostSchema = z.object({
+  postAuthor: z.string(),
+  postCommentsCount: z.number().default(0),
+  postCreatedAt: z.number(),
+  postDomain: z.string(),
+  postId: z.string(),
+  postImage: z.string(),
+  postPermalink: z.string(),
+  postSelftext: z.string().optional(),
+  postThumbnail: z.string().optional(),
+  postTitle: z.string(),
+  postType: z.string(),
+  postUrl: z.string(),
+  postVideo: z.string(),
+  postVotes: z.number(),
+  subreddit: z.string(),
+});
+
 const CatalogDocumentSchema = CatalogMetaSchema.extend({
   data: z.object({
-    posts: z.array(z.any()),
+    posts: z.array(CatalogSubredditPostSchema),
     totalPosts: z.number().default(0),
     totalVideos: z.number(),
     updatedAt: TimestampSchema,
@@ -137,28 +155,8 @@ const CatalogByUserSchema = CatalogMetaSchema.extend({
 
 const VideosByCatalogSchema = CatalogMetaSchema.extend({
   nextUpdate: z.string(),
-  posts: z.array(z.any()),
+  posts: z.array(CatalogSubredditPostSchema),
   videos: CatalogVideoListSchema,
-});
-
-const CatalogSubredditPostSchema = z.object({
-  postAuthor: z.string(),
-  postCommentsCount: z.number().default(0),
-  postCreatedAt: z.number(),
-  postDomain: z.string(),
-  postId: z.string(),
-  postImage: z.string(),
-  postPermalink: z.string(),
-  postPreview: z.any(),
-  postSelftext: z.string().optional(),
-  postThumbnail: z.string().optional(),
-  postTitle: z.string(),
-  postType: z.string(),
-  postUrl: z.string(),
-  postVideo: z.string(),
-  postVotes: z.number(),
-  subreddit: z.string(),
-  // subredditIcon: z.string(),
 });
 
 export type ZCatalogSubredditPost = z.infer<typeof CatalogSubredditPostSchema>;

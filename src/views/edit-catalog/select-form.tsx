@@ -27,7 +27,7 @@ export default function SelectForm({
   revalidateCatalog,
   setIsDialogOpen,
 }: {
-  revalidateCatalog: KeyedMutator<ApiResponse<any>>;
+  revalidateCatalog: KeyedMutator<ApiResponse>;
   setIsDialogOpen: (_open: boolean) => void;
 }) {
   const [selectionType, setSelectionType] = useState<

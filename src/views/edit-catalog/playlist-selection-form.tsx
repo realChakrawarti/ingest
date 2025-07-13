@@ -23,7 +23,7 @@ export default function PlaylistSelectionForm({
   revalidateCatalog,
   setIsDialogOpen,
 }: {
-  revalidateCatalog: KeyedMutator<ApiResponse<any>>;
+  revalidateCatalog: KeyedMutator<ApiResponse>;
   setIsDialogOpen: (_open: boolean) => void;
 }) {
   const {
@@ -243,10 +243,7 @@ function PlaylistItemCheckbox({
       className="flex items-center space-x-3 p-3 border rounded-lg hover:bg-muted/50 cursor-pointer"
       onClick={() => togglePlaylistSelection(playlist)}
     >
-      <Checkbox
-        checked={playlistAlreadySelected(playlist.playlistId)}
-        onChange={() => togglePlaylistSelection(playlist)}
-      />
+      <Checkbox checked={playlistAlreadySelected(playlist.playlistId)} />
       <div className="flex-1 min-w-0">
         <div className="font-medium">{playlist.playlistTitle}</div>
         <div className="text-sm text-muted-foreground">

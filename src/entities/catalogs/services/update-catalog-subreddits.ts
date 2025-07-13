@@ -11,11 +11,7 @@ export async function updateCatalogSubreddits(
 ) {
   const userCatalogRef = refs.userCatalogs(userId).doc(catalogId);
 
-  if (!subreddits[0]?.subredditName) {
-    throw Error("Provided playlist doesn't contain any channel");
-  }
-
-  if (subreddits.length) {
+  if (subreddits?.length) {
     await userCatalogRef.update({
       list: FieldValue.arrayUnion(...subreddits),
       updatedAt: new Date(),

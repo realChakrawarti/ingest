@@ -1,23 +1,23 @@
 "use client";
 
-import Linkify from "linkify-react";
-import { ArrowUp, CalendarClock, MessageSquare } from "lucide-react";
+import {
+  ArrowUp,
+  CalendarClock,
+  ExternalLink,
+  MessageSquare,
+} from "lucide-react";
 import Slider, { type Settings } from "react-slick";
 
 import type { ZCatalogSubredditPost } from "~/entities/catalogs/models";
 
 import useScreenWidth from "~/shared/hooks/use-screen-width";
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "~/shared/ui/sheet";
+import formatLargeNumber from "~/shared/utils/format-large-number";
 import { getDifferenceString } from "~/shared/utils/time-diff";
 
 import { OutLink } from "~/widgets/out-link";
+import OverlayTip from "~/widgets/overlay-tip";
+
+import PostDetailSheet from "./post-detail-sheet";
 
 export default function PostCard({
   posts,
@@ -43,13 +43,14 @@ export default function PostCard({
   const screenWidth = useScreenWidth();
   return (
     <div
-      className="px-0 md:px-3"
+      className="px-0 md:px-3 min-w-full"
       style={{ width: `${screenWidth}px` }}
       id="posts-container"
     >
-      <div className="border rounded-md border-spacing-x-2 border-spacing-y-2 px-2">
+      <div className="border rounded-md border-spacing-x-2 border-spacing-y-2">
         <Slider {...settings}>
-          {posts?.map((post) => {
+          {posts?.map((post, idx) => {
+            const totalPosts = posts.length;
             const currentTime = Date.now() / 1000;
             const createdAt = getDifferenceString(
               (currentTime - post.postCreatedAt) / 60,
@@ -59,7 +60,14 @@ export default function PostCard({
 
             return (
               <div key={post.postId} className="flex gap-3 min-h-8 min-w-full">
-                <div className="container">
+                <OverlayTip
+                  id="post-count"
+                  className="absolute top-0 right-0 rounded-l-md p-1 text-xs bg-primary/10 z-50"
+                >
+                  {(idx + 1).toString().padStart(2, "0")}/
+                  {totalPosts.toString().padStart(2, "0")}
+                </OverlayTip>
+                <div className="container px-3">
                   <div className="flex mb-2 gap-1 text-xs text-muted-foreground">
                     <span>
                       On{" "}
@@ -90,14 +98,15 @@ export default function PostCard({
 
                   <div className="flex items-center gap-2 mt-2 text-xs text-muted-foreground">
                     <ArrowUp className="size-3" />
-                    <span className="text-primary">{post.postVotes}</span>
+                    <span>{formatLargeNumber(post.postVotes)} votes</span>
                     <span>•</span>
                     <MessageSquare className="size-3" />
                     <span>{post.postCommentsCount} comments</span>
                     {post.postDomain !== `self.${post.subreddit}` && (
                       <>
                         <span>•</span>
-                        <span className="text-primary">{post.postDomain}</span>
+                        <ExternalLink className="size-3" />
+                        <span>{post.postDomain}</span>
                       </>
                     )}
                   </div>
@@ -114,57 +123,5 @@ export default function PostCard({
         </Slider>
       </div>
     </div>
-  );
-}
-
-function PostDetailSheet({ post }: { post: ZCatalogSubredditPost }) {
-  return (
-    <Sheet>
-      <SheetTrigger asChild>
-        <p
-          className="tracking-wide hover:text-primary/80 text-foreground
-        line-clamp-2 text-sm"
-        >
-          {post.postTitle}
-        </p>
-      </SheetTrigger>
-      <SheetContent className="overflow-y-auto w-full md:max-w-[450px]">
-        <SheetHeader className="text-left">
-          <SheetTitle>
-            <OutLink href={`https://www.reddit.com${post.postPermalink}`}>
-              <p>{post.postTitle}</p>
-            </OutLink>
-          </SheetTitle>
-          <SheetDescription className="sr-only">
-            {/* // TODO: Maybe consider adding post meta? */}
-            {post.postTitle}
-          </SheetDescription>
-        </SheetHeader>
-        <div className="my-4">
-          {post.postImage ? (
-            <img
-              src={post.postImage}
-              alt={post.postTitle}
-              className="w-full h-auto max-h-96 object-contain"
-            />
-          ) : null}
-          {post.postSelftext ? (
-            <Linkify
-              className={`text-sm whitespace-pre-wrap font-slalom`}
-              as="pre"
-              options={{
-                className:
-                  "cursor-pointer text-[hsl(var(--primary))] hover:text-[hsl(var(--primary))]/70",
-                rel: "noopener noreferrer external",
-                target: "_blank",
-              }}
-            >
-              {post?.postSelftext}
-            </Linkify>
-          ) : null}
-          {/* {JSON.stringify(post, null, 2)} */}
-        </div>
-      </SheetContent>
-    </Sheet>
   );
 }

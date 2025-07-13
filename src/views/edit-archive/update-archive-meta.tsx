@@ -21,7 +21,7 @@ import { Label } from "~/shared/ui/label";
 import { useMetaValidate } from "~/widgets/use-meta-validate";
 
 interface UpdateArchiveMetaProps {
-  revalidateArchive: KeyedMutator<ApiResponse<any>>;
+  revalidateArchive: KeyedMutator<ApiResponse>;
   archiveId: string;
   title: string;
   description: string;

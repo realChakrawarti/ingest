@@ -1,6 +1,3 @@
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
-
 import type { Metadata } from "next/types";
 
 import appConfig from "~/shared/app-config";
@@ -21,7 +18,7 @@ export async function generateMetadata({
 }: PublicCatalogParams): Promise<Metadata> {
   const { catalogId } = params;
 
-  const result = await fetchApi(`/catalogs/${catalogId}/videos`);
+  const result = await fetchApi(`/catalogs/${catalogId}/contents`);
   const catalogData = result.data;
 
   return {

@@ -46,7 +46,7 @@ export default async function PubliCatalog({
   duration: "short" | "medium" | "long" | null;
 }) {
   const result = await fetchApi<ZVideosByCatalog>(
-    `/catalogs/${catalogId}/videos`
+    `/catalogs/${catalogId}/contents`
   );
 
   const catalogData = result.data;

@@ -94,8 +94,8 @@ const useCatalogStore = create<State & Actions>((set) => ({
     set({ searchPlaylists: searchPlaylists }),
   setSelectedPlaylists: (selectedPlaylists) =>
     set({ selectedPlaylists: selectedPlaylists }),
-  setSelectedSubreddits: (selectedSubreddt) => {
-    set({ selectedSubreddits: selectedSubreddt });
+  setSelectedSubreddits: (selectedSubreddit) => {
+    set({ selectedSubreddits: selectedSubreddit });
   },
   setVideoLink: (link) => {
     return set((state) => ({

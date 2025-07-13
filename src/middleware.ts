@@ -63,7 +63,6 @@ export const config = {
     "/api/catalogs/:catalogId/playlist",
     "/api/catalogs/:catalogId/subreddit",
     "/api/catalogs/:catalogId/update",
-    "/api/catalogs/:catalogId/video",
     // YouTube Routes
     "/api/youtube/video",
     "/api/youtube/playlists",
