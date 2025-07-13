@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.8.3](https://github.com/realChakrawarti/ingest/compare/v1.8.2...v1.8.3) (2025-07-13)
+
+
+### Features
+
+* add subreddit post sheet ([46fe3dc](https://github.com/realChakrawarti/ingest/commit/46fe3dc72a5d33dbfaffb49721aa046d3563b33b))
+* add subreddit posts to catalogs ([c4b8b42](https://github.com/realChakrawarti/ingest/commit/c4b8b42fcfbce9c665311dba05aaf82a6be3450f))
+* add subreddit search ([e01493b](https://github.com/realChakrawarti/ingest/commit/e01493b65b50e1ea089fc5c1e5d96711282b33ba))
+* **catalog-api:** support subreddit posts in catalogs & subreddit on user.catalog.id doc ([8d71afc](https://github.com/realChakrawarti/ingest/commit/8d71afc8389d541401bde119702b8a054d16e171))
+
+
+### Bug Fixes
+
+* coderabbit suggestion ([f5d4cf4](https://github.com/realChakrawarti/ingest/commit/f5d4cf447f069328e87cb4b4ed1996e2cf8d563e))
+* filter channels, navigate using left and right arrow with smooth scrolling ([e52e0d5](https://github.com/realChakrawarti/ingest/commit/e52e0d5c4767b1dc7656a0e5768279f02c0b45df))
+
 ### [1.8.2](https://github.com/realChakrawarti/ingest/compare/v1.8.1...v1.8.2) (2025-07-08)
 
 
