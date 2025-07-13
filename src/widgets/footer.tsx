@@ -9,10 +9,7 @@ export default function Footer() {
         <div>
           <p className="text-xs dark:text-gray-300">
             Developed by{" "}
-            <OutLink
-              className="cursor-pointer text-[hsl(var(--primary))] hover:text-[hsl(var(--primary))]/70"
-              href={`https://${appConfig.domain}`}
-            >
+            <OutLink href={`https://${appConfig.domain}`}>
               {appConfig.organization}
             </OutLink>
           </p>

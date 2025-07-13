@@ -1,7 +1,6 @@
 import { useLiveQuery } from "dexie-react-hooks";
 import Linkify from "linkify-react";
 import { Clock8, HardDriveDownloadIcon } from "lucide-react";
-import { Inter } from "next/font/google";
 
 import type { ZVideoMetadataCompatible } from "~/entities/catalogs/models";
 
@@ -27,8 +26,6 @@ import OverlayTip from "../overlay-tip";
 interface WatchLaterProps extends Pick<YouTubeCardOptions, "addWatchLater"> {
   videoData: ZVideoMetadataCompatible;
 }
-
-const inter = Inter({ subsets: ["latin"] });
 
 function ChannelMeta({
   hideAvatar,
@@ -67,13 +64,12 @@ function ChannelMeta({
         </h3>
         <div className="flex items-center gap-2 text-xs text-muted-foreground">
           <OutLink
-            className="hover:underline text-nowrap overflow-hidden"
+            variant="reset"
             href={`https://youtube.com/channel/${channelId}`}
             target="_blank"
+            title={channelTitle}
           >
-            <abbr className="no-underline cursor-pointer" title={channelTitle}>
-              {channelTitle}
-            </abbr>
+            {channelTitle}
           </OutLink>
           <b>•</b>
           <span className="text-nowrap">{timeElapsed}</span>
@@ -229,14 +225,8 @@ function DownloadVideo({ videoId }: { videoId: string }) {
     toast({
       description: (
         <p>
-          Opening{" "}
-          <OutLink
-            className="cursor-pointer text-[hsl(var(--primary))] hover:text-[hsl(var(--primary))]/70"
-            href="https://cobalt.tools"
-          >
-            cobalt.tools
-          </OutLink>{" "}
-          in a new tab. Please paste the video link.
+          Opening <OutLink href="https://cobalt.tools">cobalt.tools</OutLink> in
+          a new tab. Please paste the video link.
         </p>
       ),
       title: "Video link has copied to the clipboard.",

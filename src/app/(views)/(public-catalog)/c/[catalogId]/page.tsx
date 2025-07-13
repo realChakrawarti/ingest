@@ -18,7 +18,7 @@ export async function generateMetadata({
 }: PublicCatalogParams): Promise<Metadata> {
   const { catalogId } = params;
 
-  const result = await fetchApi(`/catalogs/${catalogId}/videos`);
+  const result = await fetchApi(`/catalogs/${catalogId}/contents`);
   const catalogData = result.data;
 
   return {

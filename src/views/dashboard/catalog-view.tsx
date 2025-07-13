@@ -51,10 +51,7 @@ export default function CatalogView() {
         <h1 className="text-lg lg:text-xl flex items-center gap-3">
           <BookOpenIcon />
           <p>Catalogs</p>
-          <Badge
-            className="text-lg lg:text-xl text-primary font-hilmar"
-            variant="outline"
-          >
+          <Badge className="text-lg lg:text-xl text-primary" variant="outline">
             {catalogsData?.length ?? 0}/{appConfig.limitCatalogs}
           </Badge>
         </h1>

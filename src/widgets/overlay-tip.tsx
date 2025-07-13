@@ -17,7 +17,7 @@ export default function OverlayTip({
     <div
       id={id}
       className={cn(
-        "bg-[rgba(0,0,0,0.6)] text-white/90 backdrop-blur-sm font-hilmar tracking-wider",
+        "bg-[rgba(0,0,0,0.6)] text-white/90 backdrop-blur-sm tracking-wide",
         className
       )}
     >

@@ -103,12 +103,7 @@ ${feedback}
         description: (
           <p>
             Issue link:{" "}
-            <OutLink
-              href={result.data.data}
-              className="cursor-pointer text-[hsl(var(--primary))] hover:text-[hsl(var(--primary))]/70"
-            >
-              {result.data.data}
-            </OutLink>
+            <OutLink href={result.data.data}>{result.data.data}</OutLink>
           </p>
         ),
         title: result.message,

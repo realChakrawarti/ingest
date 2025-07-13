@@ -41,7 +41,7 @@ function formatTimeDifferenceWithMonths(timeDiff: number) {
   return { days, hours, minutes, months };
 }
 
-function getDifferenceString(
+export function getDifferenceString(
   deltaMinutes: number,
   suffix: "ago" | "later",
   suffixEnabled: boolean = false
