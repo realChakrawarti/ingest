@@ -128,9 +128,9 @@ const CatalogSubredditPostSchema = z.object({
 
 const CatalogDocumentSchema = CatalogMetaSchema.extend({
   data: z.object({
-    posts: z.array(CatalogSubredditPostSchema),
+    posts: z.array(CatalogSubredditPostSchema).optional(),
     totalPosts: z.number().default(0),
-    totalVideos: z.number(),
+    totalVideos: z.number().default(0),
     updatedAt: TimestampSchema,
     videos: CatalogVideoListSchema.optional(),
   }),

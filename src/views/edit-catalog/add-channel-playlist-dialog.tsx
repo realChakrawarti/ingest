@@ -5,6 +5,8 @@ import { ChevronLeft } from "lucide-react";
 import { useState } from "react";
 import type { KeyedMutator } from "swr";
 
+import type { ZCatalogByID } from "~/entities/catalogs/models";
+
 import type { ApiResponse } from "~/shared/lib/next/nx-response";
 import { Button } from "~/shared/ui/button";
 import {
@@ -23,7 +25,7 @@ import SelectForm from "./select-form";
 export default function AddChannelPlaylistDialog({
   revalidateCatalog,
 }: {
-  revalidateCatalog: KeyedMutator<ApiResponse>;
+  revalidateCatalog: KeyedMutator<ApiResponse<ZCatalogByID>>;
 }) {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 

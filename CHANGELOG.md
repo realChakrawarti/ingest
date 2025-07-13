@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.8.4](https://github.com/realChakrawarti/ingest/compare/v1.8.3...v1.8.4) (2025-07-13)
+
+
+### Bug Fixes
+
+* build failing and update seed data ([7a9d57b](https://github.com/realChakrawarti/ingest/commit/7a9d57b93639780d4643a9f1c4d8cdc8d4a84235))
+
 ### [1.8.3](https://github.com/realChakrawarti/ingest/compare/v1.8.2...v1.8.3) (2025-07-13)
 
 

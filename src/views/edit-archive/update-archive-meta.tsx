@@ -2,6 +2,8 @@ import { Edit } from "lucide-react";
 import type { FormEvent } from "react";
 import type { KeyedMutator } from "swr";
 
+import type { ZArchiveByID } from "~/entities/archives/models";
+
 import { toast } from "~/shared/hooks/use-toast";
 import fetchApi from "~/shared/lib/api/fetch";
 import type { ApiResponse } from "~/shared/lib/next/nx-response";
@@ -21,7 +23,7 @@ import { Label } from "~/shared/ui/label";
 import { useMetaValidate } from "~/widgets/use-meta-validate";
 
 interface UpdateArchiveMetaProps {
-  revalidateArchive: KeyedMutator<ApiResponse>;
+  revalidateArchive: KeyedMutator<ApiResponse<ZArchiveByID>>;
   archiveId: string;
   title: string;
   description: string;
