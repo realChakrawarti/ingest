@@ -1,6 +1,8 @@
 import type { FormEvent } from "react";
 import type { KeyedMutator } from "swr";
 
+import type { ZCatalogByUser } from "~/entities/catalogs/models";
+
 import { useConfetti } from "~/shared/hooks/use-confetti";
 import { toast } from "~/shared/hooks/use-toast";
 import fetchApi from "~/shared/lib/api/fetch";
@@ -23,7 +25,7 @@ import { useMetaValidate } from "~/widgets/use-meta-validate";
 
 interface CreateCatalogDialogProps {
   disabled: boolean;
-  revalidateCatalogs: KeyedMutator<ApiResponse>;
+  revalidateCatalogs: KeyedMutator<ApiResponse<ZCatalogByUser[]>>;
 }
 
 export default function CreateCatalogDialog({

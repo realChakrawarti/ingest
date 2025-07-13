@@ -25,6 +25,7 @@ export async function createCatalog(userId: string, meta: ZCatalogMeta) {
     // Add a doc to catalog collection
     batch.set(catalogRef, {
       data: {
+        totalPosts: 0,
         totalVideos: 0,
         updatedAt: Timestamp.fromDate(new Date(0)),
       },

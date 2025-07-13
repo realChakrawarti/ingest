@@ -4,7 +4,10 @@ import { useParams } from "next/navigation";
 import { type ChangeEvent, useState } from "react";
 import useSWR, { type KeyedMutator } from "swr";
 
-import type { ZCatalogSubreddit } from "~/entities/catalogs/models";
+import type {
+  ZCatalogByID,
+  ZCatalogSubreddit,
+} from "~/entities/catalogs/models";
 
 import useDebounce from "~/shared/hooks/use-debounce";
 import { toast } from "~/shared/hooks/use-toast";
@@ -41,7 +44,7 @@ async function getSubreddits(query: string) {
 export default function AddSubredditDialog({
   revalidateCatalog,
 }: {
-  revalidateCatalog: KeyedMutator<ApiResponse>;
+  revalidateCatalog: KeyedMutator<ApiResponse<ZCatalogByID>>;
 }) {
   const [searchInput, setSearchInput] = useState<string>("");
   const debouncedSearch = useDebounce(searchInput, 1000);

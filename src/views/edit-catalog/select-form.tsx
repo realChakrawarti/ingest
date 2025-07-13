@@ -3,7 +3,7 @@ import { useParams } from "next/navigation";
 import { useState } from "react";
 import type { KeyedMutator } from "swr";
 
-import type { ZCatalogChannel } from "~/entities/catalogs/models";
+import type { ZCatalogByID, ZCatalogChannel } from "~/entities/catalogs/models";
 
 import { toast } from "~/shared/hooks/use-toast";
 import fetchApi from "~/shared/lib/api/fetch";
@@ -27,7 +27,7 @@ export default function SelectForm({
   revalidateCatalog,
   setIsDialogOpen,
 }: {
-  revalidateCatalog: KeyedMutator<ApiResponse>;
+  revalidateCatalog: KeyedMutator<ApiResponse<ZCatalogByID>>;
   setIsDialogOpen: (_open: boolean) => void;
 }) {
   const [selectionType, setSelectionType] = useState<

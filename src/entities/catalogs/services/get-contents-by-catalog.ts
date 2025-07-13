@@ -70,7 +70,7 @@ export async function getContentsByCatalog(catalogId: string) {
     week: [],
   };
 
-  let postResults: ZCatalogSubredditPost[] = [];
+  let postResults: ZCatalogSubredditPost[] | undefined = [];
 
   const catalogRef = refs.catalogs.doc(catalogId);
   const catalogSnap = await catalogRef.get();

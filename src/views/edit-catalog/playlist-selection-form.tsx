@@ -4,7 +4,10 @@ import { useParams } from "next/navigation";
 import { type ChangeEvent, useEffect, useState } from "react";
 import type { KeyedMutator } from "swr";
 
-import type { ZCatalogPlaylist } from "~/entities/catalogs/models";
+import type {
+  ZCatalogByID,
+  ZCatalogPlaylist,
+} from "~/entities/catalogs/models";
 import type { ChannelPlaylist } from "~/entities/youtube/models";
 
 import { toast } from "~/shared/hooks/use-toast";
@@ -23,7 +26,7 @@ export default function PlaylistSelectionForm({
   revalidateCatalog,
   setIsDialogOpen,
 }: {
-  revalidateCatalog: KeyedMutator<ApiResponse>;
+  revalidateCatalog: KeyedMutator<ApiResponse<ZCatalogByID>>;
   setIsDialogOpen: (_open: boolean) => void;
 }) {
   const {
