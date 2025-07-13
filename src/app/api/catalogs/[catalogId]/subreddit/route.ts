@@ -2,8 +2,9 @@ import { revalidatePath } from "next/cache";
 import type { NextRequest } from "next/server";
 import { z } from "zod/v4";
 
-import { deletePlaylist, updateCatalogPlaylists } from "~/entities/catalogs";
-import { CatalogPlaylistSchema } from "~/entities/catalogs/models";
+import { CatalogSubredditSchema } from "~/entities/catalogs/models";
+import { deleteSubreddit } from "~/entities/catalogs/services/delete-subreddit";
+import { updateCatalogSubreddits } from "~/entities/catalogs/services/update-catalog-subreddits";
 
 import { getUserIdHeader } from "~/shared/lib/next/get-user-id-header";
 import { NxResponse } from "~/shared/lib/next/nx-response";
@@ -33,26 +34,26 @@ export async function PATCH(request: NextRequest, ctx: ContextParams) {
   const body = await request.json();
 
   const { success, data, error } = z
-    .array(CatalogPlaylistSchema)
+    .array(CatalogSubredditSchema)
     .safeParse(body);
 
   if (success) {
     try {
-      await updateCatalogPlaylists(userId, catalogId, data);
-      return NxResponse.success("Playlist update successfully.", {}, 200);
+      await updateCatalogSubreddits(userId, catalogId, data);
+      return NxResponse.success("Subreddit update successfully.", {}, 200);
     } catch (err) {
       if (err instanceof Error) {
         return NxResponse.fail(
           err.message,
-          { code: "CATALOG_PLAYLIST_UPDATE", details: err.message },
+          { code: "CATALOG_SUBREDDIT_UPDATE", details: err.message },
           400
         );
       }
       return NxResponse.fail(
-        "Unable to update catalog playlists.",
+        "Unable to update catalog subreddits.",
         {
-          code: "CATALOG_PLAYLIST_UPDATE",
-          details: "Unable to update catalog playlists.",
+          code: "CATALOG_SUBREDDIT_UPDATE",
+          details: "Unable to update catalog subreddits.",
         },
         400
       );
@@ -72,20 +73,20 @@ export async function DELETE(request: NextRequest, ctx: ContextParams) {
 
   const body = await request.json();
 
-  const { success, error, data } = CatalogPlaylistSchema.safeParse(body);
+  const { success, error, data } = CatalogSubredditSchema.safeParse(body);
 
   if (success) {
     try {
-      await deletePlaylist(userId, catalogId, data);
+      await deleteSubreddit(userId, catalogId, data);
       revalidatePath(`/c/${catalogId}`);
-      return NxResponse.success("Playlist deleted successfully.", {}, 200);
+      return NxResponse.success("Subreddit deleted successfully.", {}, 200);
     } catch (err) {
       Log.fail(err);
       return NxResponse.fail(
-        "Unable to delete playlist from the catalog.",
+        "Unable to delete subreddit from the catalog.",
         {
-          code: "PLAYLIST_DELETE_FAILED",
-          details: "Unable to delete playlist from the catalog.",
+          code: "SUBREDDIT_DELETE_FAILED",
+          details: "Unable to delete subreddit from the catalog.",
         },
         400
       );

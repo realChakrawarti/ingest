@@ -1,11 +1,11 @@
 @font-face {
   font-family: hilmar;
-  src: url(../../../public/Hilmar-Medium.otf);
+  src: url(../../../public/fonts/Hilmar-Light.otf);
 }
 
 @font-face {
   font-family: slalom;
-  src: url(../../../public/ca-slalom-regular.woff2);
+  src: url(../../../public/fonts/CaSlalom-Regular.woff2);
 }
 
 .font-hilmar {

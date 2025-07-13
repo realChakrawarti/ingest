@@ -23,7 +23,7 @@ import { useMetaValidate } from "~/widgets/use-meta-validate";
 
 interface CreateCatalogDialogProps {
   disabled: boolean;
-  revalidateCatalogs: KeyedMutator<ApiResponse<any>>;
+  revalidateCatalogs: KeyedMutator<ApiResponse>;
 }
 
 export default function CreateCatalogDialog({

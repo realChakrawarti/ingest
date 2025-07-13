@@ -25,9 +25,20 @@ export const CatalogPlaylistSchema = BaseCatalogSchema.extend({
   type: z.literal("playlist"),
 });
 
+export const CatalogSubredditSchema = z.object({
+  subredditDescription: z.string(),
+  subredditIcon: z.string(),
+  subredditId: z.string(),
+  subredditName: z.string(),
+  subredditTitle: z.string(),
+  subredditUrl: z.string(),
+  type: z.literal("subreddit"),
+});
+
 const CatalogListSchema = z.discriminatedUnion("type", [
   CatalogChannelSchema,
   CatalogPlaylistSchema,
+  CatalogSubredditSchema,
 ]);
 
 const TimestampSchema = z.custom<Timestamp>(
@@ -97,8 +108,28 @@ const CatalogVideoListSchema = z.object({
   week: z.array(VideoMetadataSchema).default([]),
 });
 
+const CatalogSubredditPostSchema = z.object({
+  postAuthor: z.string(),
+  postCommentsCount: z.number().default(0),
+  postCreatedAt: z.number(),
+  postDomain: z.string(),
+  postId: z.string(),
+  postImage: z.string(),
+  postPermalink: z.string(),
+  postSelftext: z.string().optional(),
+  postThumbnail: z.string().optional(),
+  postTitle: z.string(),
+  postType: z.string(),
+  postUrl: z.string(),
+  postVideo: z.string(),
+  postVotes: z.number(),
+  subreddit: z.string(),
+});
+
 const CatalogDocumentSchema = CatalogMetaSchema.extend({
   data: z.object({
+    posts: z.array(CatalogSubredditPostSchema),
+    totalPosts: z.number().default(0),
     totalVideos: z.number(),
     updatedAt: TimestampSchema,
     videos: CatalogVideoListSchema.optional(),
@@ -124,14 +155,19 @@ const CatalogByUserSchema = CatalogMetaSchema.extend({
 
 const VideosByCatalogSchema = CatalogMetaSchema.extend({
   nextUpdate: z.string(),
+  posts: z.array(CatalogSubredditPostSchema),
   videos: CatalogVideoListSchema,
 });
+
+export type ZCatalogSubredditPost = z.infer<typeof CatalogSubredditPostSchema>;
 
 export type ZCatalogMeta = z.infer<typeof CatalogMetaSchema>;
 
 export type ZCatalogChannel = z.infer<typeof CatalogChannelSchema>;
 
 export type ZCatalogPlaylist = z.infer<typeof CatalogPlaylistSchema>;
+
+export type ZCatalogSubreddit = z.infer<typeof CatalogSubredditSchema>;
 
 export type ZCatalogList = z.infer<typeof CatalogListSchema>;
 

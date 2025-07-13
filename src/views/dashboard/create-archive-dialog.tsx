@@ -23,7 +23,7 @@ import { useMetaValidate } from "~/widgets/use-meta-validate";
 
 interface CreateArchiveDialogProps {
   disabled: boolean;
-  revalidateArchives: KeyedMutator<ApiResponse<any>>;
+  revalidateArchives: KeyedMutator<ApiResponse>;
 }
 
 // TODO: Consider using reducer to handle state updates, revalidate and show notification

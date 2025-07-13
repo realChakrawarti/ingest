@@ -1,3 +1,5 @@
+import type { ZCatalogPlaylist } from "~/entities/catalogs/models";
+
 import { Button } from "~/shared/ui/button";
 import { DeleteIcon } from "~/shared/ui/icons";
 import {
@@ -14,7 +16,7 @@ import { DeleteModal } from "~/widgets/delete-modal";
 import { OutLink } from "~/widgets/out-link";
 
 interface PlaylistTableProps {
-  playlists: any[];
+  playlists: ZCatalogPlaylist[];
   handleDelete: (_id: string) => void;
 }
 
@@ -51,7 +53,7 @@ export default function PlaylistTable({
               channelHandle,
             } = playlist;
             return (
-              <TableRow key={playlist?.id}>
+              <TableRow key={playlist?.playlistId}>
                 <TableCell>{idx + 1}</TableCell>
                 <TableCell>{playlistTitle}</TableCell>
                 <TableCell>{playlistId}</TableCell>
@@ -66,7 +68,6 @@ export default function PlaylistTable({
                     ) : null}
                     {channelHandle ? (
                       <OutLink
-                        className="text-indigo-600 hover:text-indigo-500 visited:text-indigo-700"
                         href={`https://www.youtube.com/${channelHandle}`}
                       >
                         <p>{channelTitle}</p>

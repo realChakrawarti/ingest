@@ -1,4 +1,4 @@
-import type { ZCatalogChannel } from "~/entities/catalogs/models";
+import type { ZCatalogSubreddit } from "~/entities/catalogs/models";
 
 import { Button } from "~/shared/ui/button";
 import { DeleteIcon } from "~/shared/ui/icons";
@@ -15,71 +15,77 @@ import {
 import { DeleteModal } from "~/widgets/delete-modal";
 import { OutLink } from "~/widgets/out-link";
 
-function ChannelTable({
-  channels,
+interface SubredditTableProps {
+  subreddits: ZCatalogSubreddit[];
+  handleDelete: (_id: string) => void;
+}
+
+export default function SubredditTable({
+  subreddits,
   handleDelete,
-}: {
-  channels: ZCatalogChannel[];
-  handleDelete: (id: string) => Promise<void>;
-}) {
+}: SubredditTableProps) {
   return (
     <Table>
-      <TableCaption>A list of channels.</TableCaption>
+      <TableCaption>A list of subreddits.</TableCaption>
       <TableHeader>
         <TableRow>
           <TableHead className="max-w-[50px]">SL No</TableHead>
-          <TableHead className="max-w-[150px]">Channel</TableHead>
-          <TableHead>Channel ID</TableHead>
+          <TableHead>Subreddit</TableHead>
+          <TableHead>Subreddit ID</TableHead>
           <TableHead></TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
-        {channels?.length === 0 ? (
+        {subreddits?.length === 0 ? (
           <TableRow>
             <TableCell colSpan={4} className="h-4 text-center">
-              No channel added yet.
+              No subreddit added yet.
             </TableCell>
           </TableRow>
         ) : (
-          channels?.map((catalogChannel, idx: number) => {
-            const { channelHandle, channelId, channelLogo, channelTitle } =
-              catalogChannel;
+          subreddits?.map((subreddit, idx: number) => {
+            const {
+              subredditName,
+              subredditIcon,
+              subredditUrl,
+              subredditTitle,
+              subredditId,
+            } = subreddit;
             return (
-              <TableRow key={channelId}>
+              <TableRow key={subredditId}>
                 <TableCell>{idx + 1}</TableCell>
                 <TableCell>
                   <div className="flex gap-2 items-center">
-                    {channelLogo ? (
+                    {subredditIcon ? (
                       <img
-                        src={channelLogo}
-                        alt={channelTitle}
+                        src={subredditIcon}
+                        alt={subredditUrl}
                         className="size-6 rounded-lg"
                       />
                     ) : null}
-
-                    {channelHandle ? (
-                      <OutLink
-                        href={`https://www.youtube.com/${channelHandle}`}
-                      >
-                        <p>{channelTitle}</p>
+                    {subredditUrl ? (
+                      <OutLink href={`https://www.reddit.com${subredditUrl}`}>
+                        <p>{subredditTitle}</p>
                       </OutLink>
                     ) : (
-                      <p>{channelTitle}</p>
+                      <p>{subredditTitle}</p>
                     )}
                   </div>
                 </TableCell>
-                <TableCell>{channelId}</TableCell>
+                <TableCell>
+                  r/{subredditName} - ({subredditId})
+                </TableCell>
                 <TableCell>
                   <DeleteModal
                     label={
                       <>
                         This action cannot be undone. This will permanently
                         remove{" "}
-                        <span className="text-primary">{channelTitle}</span>{" "}
-                        channel from the catalog?
+                        <span className="text-primary">{subredditTitle}</span>{" "}
+                        subreddit from the catalog?
                       </>
                     }
-                    onDelete={() => handleDelete(channelId)}
+                    onDelete={() => handleDelete(subredditId)}
                   >
                     <Button variant="outline">
                       <DeleteIcon
@@ -97,5 +103,3 @@ function ChannelTable({
     </Table>
   );
 }
-
-export default ChannelTable;

@@ -1,6 +1,6 @@
 import type { NextRequest } from "next/server";
 
-import { getVideosByCatalog } from "~/entities/catalogs";
+import { getContentsByCatalog } from "~/entities/catalogs";
 
 import { NxResponse } from "~/shared/lib/next/nx-response";
 import Log from "~/shared/utils/terminal-logger";
@@ -16,7 +16,7 @@ export async function GET(_request: NextRequest, ctx: ContextParams) {
 
   if (catalogId) {
     try {
-      const data = await getVideosByCatalog(catalogId);
+      const data = await getContentsByCatalog(catalogId);
 
       if (typeof data === "string") {
         return NxResponse.fail(data, { code: "UNKNOWN", details: data }, 400);
