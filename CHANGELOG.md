@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.8.7](https://github.com/realChakrawarti/ingest/compare/v1.8.6...v1.8.7) (2025-07-14)
+
+
+### Bug Fixes
+
+* add logging while fetching sub-reddit data ([ae986f0](https://github.com/realChakrawarti/ingest/commit/ae986f06c2e8354e30f8b9af828213bb4105fd8c))
+
 ### [1.8.6](https://github.com/realChakrawarti/ingest/compare/v1.8.5...v1.8.6) (2025-07-14)
 
 
