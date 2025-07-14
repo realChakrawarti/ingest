@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.8.6](https://github.com/realChakrawarti/ingest/compare/v1.8.5...v1.8.6) (2025-07-14)
+
+
+### Bug Fixes
+
+* don't cache the subreddit response while catalog is being generated ([d025ef9](https://github.com/realChakrawarti/ingest/commit/d025ef987311bc4b011a7fdd0ebf6e6e00557d2a))
+
 ### [1.8.5](https://github.com/realChakrawarti/ingest/compare/v1.8.4...v1.8.5) (2025-07-14)
 
 
