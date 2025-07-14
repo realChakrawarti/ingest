@@ -10,6 +10,8 @@ const envVariables = z.object({
   NEXT_PUBLIC_API_BASE_URL: z.string(),
   NEXT_PUBLIC_FIREBASE_API_KEY: z.string(),
   OCTOKIT_API: z.string(),
+  REDDIT_CLIENT_ID: z.string(),
+  REDDIT_CLIENT_SECRET: z.string(),
   YOUTUBE_API_KEY: z.string(),
 });
 
