@@ -261,7 +261,10 @@ async function getSubredditPosts(list: ZCatalogSubreddit[]) {
       return fetch(redditUrl, {
         cache: "no-store",
       })
-        .then((data) => data.json())
+        .then((data) => {
+          console.log(">><<", data);
+          return data.json();
+        })
         .catch((err) => Log.fail(err));
     });
     const postResults = await Promise.allSettled(postPromises);
