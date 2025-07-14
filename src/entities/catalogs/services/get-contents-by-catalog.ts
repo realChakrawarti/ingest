@@ -234,17 +234,21 @@ export async function getContentsByCatalog(catalogId: string) {
 
 async function getSubredditPosts(list: ZCatalogSubreddit[]) {
   const postList: ZCatalogSubredditPost[] = [];
-  const postPromises = list.map((item) =>
-    fetch(`https://www.reddit.com/r/${item.subredditName}/hot.json?limit=15`)
-  );
-
   try {
+    const postPromises = list.map((item) =>
+      fetch(
+        `https://www.reddit.com/r/${item.subredditName}/hot.json?limit=15`,
+        {
+          cache: "no-store",
+        }
+      )
+        .then((data) => data.json())
+        .catch((err) => Log.fail(err))
+    );
     const postResults = await Promise.all(postPromises);
 
     for (const result of postResults) {
-      const data = await result.json();
-
-      const allPosts = data.data.children.map((child: any) => child.data);
+      const allPosts = result.data.children.map((child: any) => child.data);
       for (let i = 0; i < allPosts.length; i++) {
         const item = allPosts[i];
 
