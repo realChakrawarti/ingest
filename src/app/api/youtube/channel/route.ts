@@ -2,6 +2,7 @@ import type { NextRequest } from "next/server";
 
 import { getChannelDetails } from "~/entities/youtube";
 import { getChannelDetailsFromVideoId } from "~/entities/youtube/services/get-channel-details";
+
 import { NxResponse } from "~/shared/lib/next/nx-response";
 
 export async function GET(request: NextRequest) {

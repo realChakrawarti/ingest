@@ -61,6 +61,24 @@ async function updateChannelLogos(
   });
 }
 
+export async function getCatalogMeta(catalogId: string) {
+  const catalogRef = refs.catalogs.doc(catalogId);
+  const catalogSnap = await catalogRef.get();
+
+  if (!catalogSnap.exists) {
+    return "Document doesn't exists";
+  }
+
+  const catalogSnapData = catalogSnap.data();
+
+  Log.info("Catalog metadata is being returned.");
+
+  return {
+    description: catalogSnapData?.description,
+    title: catalogSnapData?.title,
+  };
+}
+
 export async function getContentsByCatalog(catalogId: string) {
   const videoList: ZVideoMetadataWithoutContent[] = [];
 
@@ -246,42 +264,54 @@ async function getSubredditPosts(list: ZCatalogSubreddit[]) {
         .then((data) => data.json())
         .catch((err) => Log.fail(err));
     });
-    const postResults = await Promise.all(postPromises);
+    const postResults = await Promise.allSettled(postPromises);
 
     for (const result of postResults) {
-      const allPosts = result.data.children.map((child: any) => child.data);
-      for (let i = 0; i < allPosts.length; i++) {
-        const item = allPosts[i];
+      if (result.status === "fulfilled") {
+        const allPosts = result.value?.data?.children?.map(
+          (child: any) => child?.data
+        );
 
-        // TODO: is_gallery checks if the post gallery, later integrate gallery?
-        // Skips this iteration: 1 week older and the post is a gallery (collection of images)
-        if (
-          Date.now() / 1000 - item?.created_utc > time.weeks(1) / 1000 ||
-          item?.is_gallery
-        ) {
-          continue;
+        if (allPosts?.length) {
+          for (let i = 0; i < allPosts.length; i++) {
+            const item = allPosts[i];
+
+            // TODO: is_gallery checks if the post gallery, later integrate gallery?
+            // Skips this iteration: 1 week older and the post is a gallery (collection of images)
+            if (
+              Date.now() / 1000 - item?.created_utc > time.weeks(1) / 1000 ||
+              item?.is_gallery
+            ) {
+              continue;
+            }
+
+            const postContentInfo: ZCatalogSubredditPost = {
+              postAuthor: item.author,
+              postCommentsCount: item.num_comments,
+              postCreatedAt: item?.created_utc,
+              postDomain: item.domain ?? "",
+              postId: item.id,
+              postImage:
+                formatRedditImageLink(item?.preview?.images[0]?.source?.url) ??
+                "",
+              postPermalink: item.permalink,
+              postSelftext: item.selftext ?? "",
+              postThumbnail: formatRedditImageLink(item?.thumbnail) ?? "",
+              postTitle: item.title,
+              postType: item.post_hint ?? "",
+              postUrl: item.url,
+              postVideo: item?.media?.reddit_video?.fallback_url ?? "",
+              postVotes: item.score,
+              subreddit: item.subreddit,
+            };
+
+            postList.push(postContentInfo);
+          }
+        } else {
+          Log.warn(`The subreddits in the catalog contains no posts.`);
         }
-
-        const postContentInfo: ZCatalogSubredditPost = {
-          postAuthor: item.author,
-          postCommentsCount: item.num_comments,
-          postCreatedAt: item?.created_utc,
-          postDomain: item.domain ?? "",
-          postId: item.id,
-          postImage:
-            formatRedditImageLink(item?.preview?.images[0]?.source?.url) ?? "",
-          postPermalink: item.permalink,
-          postSelftext: item.selftext ?? "",
-          postThumbnail: formatRedditImageLink(item?.thumbnail) ?? "",
-          postTitle: item.title,
-          postType: item.post_hint ?? "",
-          postUrl: item.url,
-          postVideo: item?.media?.reddit_video?.fallback_url ?? "",
-          postVotes: item.score,
-          subreddit: item.subreddit,
-        };
-
-        postList.push(postContentInfo);
+      } else {
+        Log.fail(result.reason);
       }
     }
   } catch (err) {
