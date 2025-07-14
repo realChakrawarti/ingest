@@ -24,24 +24,23 @@ interface FAQItem {
 
 const faqs: FAQItem[] = [
   {
-    answer: `${appConfig.marketName} lets you create personalized collections of YouTube content. Instead of just subscribing to channels, you can build custom catalogs tailored to your interests. This makes it much easier to find exactly the videos you want to watch, when you want to watch them.`,
+    answer: `${appConfig.marketName} lets you create personalized collections of content from both YouTube and Reddit. You can build custom catalogs tailored to your interests, making it much easier to find exactly the videos and trending posts you want to see, when you want to see them. You don't even need to sign up or log in to watch videos or read posts.`,
     question: `What can I do with ${appConfig.marketName}?`,
   },
   {
-    answer: `It's simple! You select the YouTube channels you like, and you can even choose specific playlists from those channels for finer-grained control. ${appConfig.marketName} then automatically adds new videos to your curated catalogs, so you don't miss anything. Think of it as your own personalized TV guide for YouTube!`,
-    question: `How do I use ${appConfig.marketName} to organize my YouTube content?`,
+    answer: `It's simple! You can select the YouTube channels you like, and even choose specific playlists from those channels for finer control. You can also add your favorite subreddits to your catalogs. ${appConfig.marketName} then automatically adds new videos or trending posts to your curated catalogs, so you don't miss anything. Think of it as your own personalized feed for YouTube and Reddit!`,
+    question: `How do I use ${appConfig.marketName} to organize my content?`,
   },
   {
-    answer: `${appConfig.marketName} checks for new videos from your selected channels and playlists every 4 hours, so your catalogs are always up-to-date.`,
-    question: "How often are new videos added to my catalogs?",
+    answer: `${appConfig.marketName} checks for new content from your selected channels, playlists, and subreddits every 4 hours, so your catalogs are always up-to-date.`,
+    question: "How often are new videos and posts added to my catalogs?",
   },
   {
     answer: `Yes, ${appConfig.marketName} is designed to work seamlessly on mobile devices. Access your catalogs from your smartphone or tablet anytime, anywhere.`,
     question: `Can I use ${appConfig.marketName} on my phone or tablet?`,
   },
   {
-    answer:
-      "We take your privacy seriously. Your viewing history and personal data are encrypted and never shared with anyone. You have full control over your data.",
+    answer: `We take your privacy seriously. Your viewing history and personal data are encrypted and never shared with anyone. Your watching history is stored directly on your device, and you have full control over your data.`,
     question: `How secure is my data on ${appConfig.marketName}?`,
   },
   {
@@ -51,11 +50,11 @@ const faqs: FAQItem[] = [
   },
   {
     answer:
-      "Yes, you can download videos anonymously using the privacy-focused cobalt.tools website. This allows you to save videos without revealing your identity or browsing history.",
+      "Yes, you can download videos anonymously using the privacy-focused cobalt.tools website. This allows you to save videos without revealing your identity or Browse history.",
     question: "Can I download videos anonymously?",
   },
   {
-    answer: `Yes! ${appConfig.marketName} is completely open source and is hosted on GitHub. You can view the code, contribute to the project, or even host your own version.  Check it out here: ${appConfig.githubRepo}.`,
+    answer: `Yes! ${appConfig.marketName} is completely open source and is hosted on GitHub. You can view the code, contribute to the project, or even host your own version. Check it out here: ${appConfig.githubRepo}.`,
     question: `Is ${appConfig.marketName} open source?`,
   },
 ];
