@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.8.8](https://github.com/realChakrawarti/ingest/compare/v1.8.7...v1.8.8) (2025-07-14)
+
+
+### Bug Fixes
+
+* adding further validation & add `/contents?meta` endpoint for catalog meta info ([b190427](https://github.com/realChakrawarti/ingest/commit/b190427dd472f36c7b9a6055bc4921e19d93ea0a))
+
 ### [1.8.7](https://github.com/realChakrawarti/ingest/compare/v1.8.6...v1.8.7) (2025-07-14)
 
 
