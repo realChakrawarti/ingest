@@ -88,7 +88,7 @@ export default function PostCard({
                     </span>
                     <span>•</span>
                     <CalendarClock className="size-3" />
-                    <span>{createdAt}</span>
+                    <span suppressHydrationWarning>{createdAt}</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <div className="flex-1">
