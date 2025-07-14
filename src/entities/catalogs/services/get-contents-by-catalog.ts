@@ -8,8 +8,10 @@ import {
   YOUTUBE_VIDEOS_DATA,
 } from "~/shared/lib/api/youtube-endpoints";
 import { refs } from "~/shared/lib/firebase/refs";
+import getRedditAccessToken, {
+  RedditUserAgent,
+} from "~/shared/lib/reddit/get-access-token";
 import formatRedditImageLink from "~/shared/utils/format-reddit-image-link";
-import isDevelopment from "~/shared/utils/is-development";
 import Log from "~/shared/utils/terminal-logger";
 import { time } from "~/shared/utils/time";
 
@@ -252,27 +254,22 @@ export async function getContentsByCatalog(catalogId: string) {
 }
 
 async function getSubredditPosts(list: ZCatalogSubreddit[]) {
+  const accessToken = await getRedditAccessToken();
+
   const postList: ZCatalogSubredditPost[] = [];
   try {
     const postPromises = list.map(async (item) => {
-      const redditUrl = `https://api.reddit.com/r/${item.subredditName}/hot.json?limit=15`;
-
+      const redditUrl = `https://oauth.reddit.com/r/${item.subredditName}/hot.json?limit=15`;
       const headers = new Headers();
       headers.set("Accept", "application/json");
-
-      if (!isDevelopment()) {
-        headers.set(
-          "User-Agent",
-          `web:${appConfig.subDomain}.707x.in:v${appConfig.version} (by /u/CURVX)`
-        );
-      }
+      headers.set("User-Agent", RedditUserAgent);
+      headers.set("Authorization", `Bearer ${accessToken}`);
 
       return fetch(redditUrl, {
         cache: "no-store",
         headers: headers,
       })
         .then((data) => {
-          console.log(">>>", data);
           return data.json();
         })
         .catch((err) => Log.fail(err));
