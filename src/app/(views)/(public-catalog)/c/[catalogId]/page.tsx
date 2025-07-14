@@ -1,5 +1,7 @@
 import type { Metadata } from "next/types";
 
+import type { ZCatalogMeta } from "~/entities/catalogs/models";
+
 import appConfig from "~/shared/app-config";
 import fetchApi from "~/shared/lib/api/fetch";
 
@@ -18,7 +20,9 @@ export async function generateMetadata({
 }: PublicCatalogParams): Promise<Metadata> {
   const { catalogId } = params;
 
-  const result = await fetchApi(`/catalogs/${catalogId}/contents`);
+  const result = await fetchApi<ZCatalogMeta>(
+    `/catalogs/${catalogId}/contents?meta=true`
+  );
   const catalogData = result.data;
 
   return {
