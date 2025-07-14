@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.8.13](https://github.com/realChakrawarti/ingest/compare/v1.8.12...v1.8.13) (2025-07-14)
+
+
+### Features
+
+* update branding with new taglines and faq answers ([041898e](https://github.com/realChakrawarti/ingest/commit/041898ec61bf1f4ba11793d31cc07bea36eea379))
+* update branding with new taglines and faq answers ([9ff06b6](https://github.com/realChakrawarti/ingest/commit/9ff06b6ccd44dd20f4246d0c43f0c681111d8819))
+
 ### [1.8.12](https://github.com/realChakrawarti/ingest/compare/v1.8.11...v1.8.12) (2025-07-14)
 
 

@@ -17,19 +17,19 @@ import { cn } from "~/shared/utils/tailwind-merge";
 const features = [
   {
     description:
-      "Create custom catalogs for your favorite channels, tailored to your interests.",
+      "Create custom catalogs for your favorite channels, playlists and subreddits tailored to your interests.",
     icon: <Book className="h-5 w-5" />,
     title: "Personalized Catalogs",
   },
   {
     description:
-      "Stay up-to-date with the latest videos from your channels, automatically updated every 4 hours.",
+      "Stay up-to-date with the latest videos and posts from your channels and subreddits, automatically updated every 4 hours.",
     icon: <RefreshCw className="h-5 w-5" />,
     title: "Automated Updates",
   },
   {
     description:
-      "A clean and user-friendly design makes it easy to navigate and find the videos you want.",
+      "A clean and user-friendly design makes it easy to navigate and find the videos and posts you want.",
     icon: <LayoutGrid className="h-5 w-5" />,
     title: "Simple and Intuitive Interface",
   },
@@ -59,9 +59,9 @@ const features = [
   },
   {
     description:
-      "Your data privacy is our top priority. We use industry-standard security measures to protect your information.",
+      "Your data privacy is our top priority. Your viewing data never leaves your device.",
     icon: <Shield className="h-5 w-5" />,
-    title: "Privacy-Focused",
+    title: "Offline Privacy-Focused",
   },
 ];
 
