@@ -3,7 +3,7 @@
     ".next": false,
     "node_modules": false,
     ".commitlintrc.json": true,
-    ".env.example": false,
+    ".env.example": true,
     ".eslintrc.json": false,
     ".gitignore": false,
     ".versionrc.json": true,
@@ -19,7 +19,7 @@
     "/D:/Personal/yt-catalog": false,
     "tsconfig.json": false,
     "next.config.mjs": false,
-    "DEPENDENCIES.md": false,
+    "DEPENDENCIES.md": true,
     ".husky": false
   },
   "editor.codeActionsOnSave": {
