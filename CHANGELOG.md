@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.8.12](https://github.com/realChakrawarti/ingest/compare/v1.8.11...v1.8.12) (2025-07-14)
+
+
+### Features
+
+* add reddit api to facilitate server rendering ([75f12f5](https://github.com/realChakrawarti/ingest/commit/75f12f582e34a46af9f6c23d9220100780dd1b83))
+
 ### [1.8.11](https://github.com/realChakrawarti/ingest/compare/v1.8.10...v1.8.11) (2025-07-14)
 
 
