@@ -30,10 +30,10 @@ export async function GET(_request: NextRequest, ctx: ContextParams) {
     } catch (err) {
       Log.fail(err);
       return NxResponse.fail(
-        "Unable to fetch catalog videos.",
+        "Unable to fetch catalog contents.",
         {
-          code: "CATALOG_VIDEOS",
-          details: "Unable to fetch catalog videos.",
+          code: "FAILED_CATALOG_VIDEOS",
+          details: "Unable to fetch catalog contents.",
         },
         400
       );

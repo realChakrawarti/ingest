@@ -154,7 +154,7 @@ export async function getContentsByCatalog(catalogId: string) {
     }
 
     if (redditList?.length) {
-      postResults = (await getSubredditPosts(redditList)) ?? [];
+      postResults = await getSubredditPosts(redditList);
     }
 
     const videoResults = await Promise.allSettled(videoListPromise);
@@ -238,46 +238,51 @@ async function getSubredditPosts(list: ZCatalogSubreddit[]) {
     fetch(`https://www.reddit.com/r/${item.subredditName}/hot.json?limit=15`)
   );
 
-  const postResults = await Promise.all(postPromises);
+  try {
+    const postResults = await Promise.all(postPromises);
 
-  for (const result of postResults) {
-    const data = await result.json();
+    for (const result of postResults) {
+      const data = await result.json();
 
-    const allPosts = data.data.children.map((child: any) => child.data);
-    for (let i = 0; i < allPosts.length; i++) {
-      const item = allPosts[i];
+      const allPosts = data.data.children.map((child: any) => child.data);
+      for (let i = 0; i < allPosts.length; i++) {
+        const item = allPosts[i];
 
-      // TODO: is_gallery checks if the post gallery, later integrate gallery?
-      // Skips this iteration: 1 week older and the post is a gallery (collection of images)
-      if (
-        Date.now() / 1000 - item?.created_utc > time.weeks(1) / 1000 ||
-        item?.is_gallery
-      ) {
-        continue;
+        // TODO: is_gallery checks if the post gallery, later integrate gallery?
+        // Skips this iteration: 1 week older and the post is a gallery (collection of images)
+        if (
+          Date.now() / 1000 - item?.created_utc > time.weeks(1) / 1000 ||
+          item?.is_gallery
+        ) {
+          continue;
+        }
+
+        const postContentInfo: ZCatalogSubredditPost = {
+          postAuthor: item.author,
+          postCommentsCount: item.num_comments,
+          postCreatedAt: item?.created_utc,
+          postDomain: item.domain ?? "",
+          postId: item.id,
+          postImage:
+            formatRedditImageLink(item?.preview?.images[0]?.source?.url) ?? "",
+          postPermalink: item.permalink,
+          postSelftext: item.selftext ?? "",
+          postThumbnail: formatRedditImageLink(item?.thumbnail) ?? "",
+          postTitle: item.title,
+          postType: item.post_hint ?? "",
+          postUrl: item.url,
+          postVideo: item?.media?.reddit_video?.fallback_url ?? "",
+          postVotes: item.score,
+          subreddit: item.subreddit,
+        };
+
+        postList.push(postContentInfo);
       }
-
-      const postContentInfo: ZCatalogSubredditPost = {
-        postAuthor: item.author,
-        postCommentsCount: item.num_comments,
-        postCreatedAt: item?.created_utc,
-        postDomain: item.domain ?? "",
-        postId: item.id,
-        postImage:
-          formatRedditImageLink(item?.preview?.images[0]?.source?.url) ?? "",
-        postPermalink: item.permalink,
-        postSelftext: item.selftext ?? "",
-        postThumbnail: formatRedditImageLink(item?.thumbnail) ?? "",
-        postTitle: item.title,
-        postType: item.post_hint ?? "",
-        postUrl: item.url,
-        postVideo: item?.media?.reddit_video?.fallback_url ?? "",
-        postVotes: item.score,
-        subreddit: item.subreddit,
-      };
-
-      postList.push(postContentInfo);
     }
+  } catch (err) {
+    Log.fail(err);
   }
+
   return postList;
 }
 
