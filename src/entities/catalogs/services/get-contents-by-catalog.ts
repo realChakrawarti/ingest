@@ -256,13 +256,19 @@ async function getSubredditPosts(list: ZCatalogSubreddit[]) {
     const postPromises = list.map(async (item) => {
       const redditUrl = `https://www.reddit.com/r/${item.subredditName}/hot.json?limit=15`;
 
-      Log.info(`Fetching data from external source: ${redditUrl}`);
+      const headers = new Headers();
+      headers.append(
+        "User-Agent",
+        `${appConfig.subDomain}:${appConfig.domain}:v${appConfig.version}`
+      );
+
+      appConfig;
 
       return fetch(redditUrl, {
         cache: "no-store",
+        headers: headers,
       })
         .then((data) => {
-          console.log(">><<", data);
           return data.json();
         })
         .catch((err) => Log.fail(err));
