@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.8.10](https://github.com/realChakrawarti/ingest/compare/v1.8.9...v1.8.10) (2025-07-14)
+
+
+### Bug Fixes
+
+* add `User-Agent` while making call to Reddit Public API to get pass blocked status ([311f994](https://github.com/realChakrawarti/ingest/commit/311f9948a024b0ac59e540561a8cfe4ca11bb632))
+
 ### [1.8.9](https://github.com/realChakrawarti/ingest/compare/v1.8.8...v1.8.9) (2025-07-14)
 
 ### [1.8.8](https://github.com/realChakrawarti/ingest/compare/v1.8.7...v1.8.8) (2025-07-14)
