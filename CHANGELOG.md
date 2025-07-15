@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.8.15](https://github.com/realChakrawarti/ingest/compare/v1.8.14...v1.8.15) (2025-07-15)
+
+
+### Bug Fixes
+
+* duration check for catalog next update ([36203af](https://github.com/realChakrawarti/ingest/commit/36203afdc49db3a7f8e2b57fe06c7f444f99047d))
+
 ### [1.8.14](https://github.com/realChakrawarti/ingest/compare/v1.8.13...v1.8.14) (2025-07-15)
 
 
