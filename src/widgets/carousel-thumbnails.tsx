@@ -15,9 +15,10 @@ function ThumbnailCarousel({
 }) {
   const settings: Settings = {
     arrows: false,
-    autoplaySpeed: 2500,
-    cssEase: "linear",
+    autoplaySpeed: 3000,
+    cssEase: "ease-in",
     dots: false,
+    fade: true,
     // Refer: https://github.com/akiran/react-slick/issues/1171
     infinite: thumbnails.length > 1,
     slidesToScroll: 1,

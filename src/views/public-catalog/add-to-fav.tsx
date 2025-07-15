@@ -3,8 +3,8 @@
 import { useLiveQuery } from "dexie-react-hooks";
 import { StarIcon } from "lucide-react";
 import { useEffect, useState } from "react";
+import { toast } from "sonner";
 
-import { toast } from "~/shared/hooks/use-toast";
 import { indexedDB } from "~/shared/lib/api/dexie";
 
 export const AddToFavorites = ({
@@ -36,7 +36,7 @@ export const AddToFavorites = ({
 
   const addToFav = async () => {
     if (catalogExists) {
-      toast({ title: "Catalog removed from favorites." });
+      toast("Catalog removed from favorites.");
 
       await indexedDB["favorites"].delete(catalogId);
     }
@@ -48,7 +48,7 @@ export const AddToFavorites = ({
         title: catalogTitle,
       };
       await indexedDB["favorites"].add(favCatalog);
-      toast({ title: "Catalog added to favorites." });
+      toast("Catalog added to favorites.");
     }
   };
 

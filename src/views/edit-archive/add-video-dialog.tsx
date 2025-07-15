@@ -1,8 +1,8 @@
 import { type ChangeEvent, useState } from "react";
+import { toast } from "sonner";
 
 import type { ZYouTubeVideoMetadata } from "~/entities/youtube/models";
 
-import { toast } from "~/shared/hooks/use-toast";
 import fetchApi from "~/shared/lib/api/fetch";
 import { Regex } from "~/shared/lib/constants";
 import { Button } from "~/shared/ui/button";
@@ -70,7 +70,7 @@ export default function AddVideoDialog({
       );
 
       if (!result.success) {
-        toast({ title: result.message });
+        toast(result.message);
         return;
       }
 
@@ -80,7 +80,7 @@ export default function AddVideoDialog({
       });
 
       if (resultAdd.success) {
-        toast({ title: resultAdd.message });
+        toast(resultAdd.message);
         revalidateArchive();
       }
 
@@ -90,7 +90,7 @@ export default function AddVideoDialog({
       });
     } catch (err) {
       Log.fail(String(err));
-      toast({ title: "Something went wrong." });
+      toast("Something went wrong.");
     }
   };
 

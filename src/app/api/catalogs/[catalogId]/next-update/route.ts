@@ -13,7 +13,9 @@ type ContextParams = {
   };
 };
 
-export async function GET(request: NextRequest, ctx: ContextParams) {
+// TODO: Maybe deprecate this endpoint? I having hard time properly integrating the flow on the UI to refreshing the page
+// when the catalog is stale
+export async function GET(_request: NextRequest, ctx: ContextParams) {
   const { catalogId } = ctx.params;
   const result = await getNextUpdate(catalogId);
   const currentTime = Date.now();

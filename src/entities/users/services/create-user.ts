@@ -18,8 +18,8 @@ export const createUser = async (uid: string): Promise<string> => {
       createdAt: new Date(),
     });
 
-    return "User created successfully";
+    return "User created successfully.";
   }
 
-  return "User loggedIn successfully";
+  return "User loggedIn successfully.";
 };

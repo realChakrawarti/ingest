@@ -44,8 +44,6 @@ import {
 } from "~/shared/ui/sidebar";
 import { cn } from "~/shared/utils/tailwind-merge";
 
-import NextUpdate from "~/views/public-catalog/next-update";
-
 import AuthButton from "./auth-buttons";
 import Feedback from "./feedback";
 
@@ -79,11 +77,6 @@ export default function AppSidebar() {
             </Button>
           ) : null}
           <Feedback />
-        </div>
-
-        {catalogId ? <Separator /> : <></>}
-        <div className="px-2">
-          {catalogId ? <NextUpdate catalogId={catalogId} /> : <></>}
         </div>
       </SidebarFooter>
     </Sidebar>

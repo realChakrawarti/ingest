@@ -86,6 +86,9 @@ importers:
       slick-carousel:
         specifier: ^1.8.1
         version: 1.8.1(jquery@3.7.1)
+      sonner:
+        specifier: ^2.0.6
+        version: 2.0.6(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       swr:
         specifier: ^2.3.3
         version: 2.3.3(react@18.3.1)
@@ -5114,6 +5117,12 @@ packages:
   socks@2.8.4:
     resolution: {integrity: sha512-D3YaD0aRxR3mEcqnidIs7ReYJFVzWdd6fXJYUM8ixcQcJRGTka/b3saV0KflYhyVJXKhb947GndU35SxYNResQ==}
     engines: {node: '>= 10.0.0', npm: '>= 3.0.0'}
+
+  sonner@2.0.6:
+    resolution: {integrity: sha512-yHFhk8T/DK3YxjFQXIrcHT1rGEeTLliVzWbO0xN8GberVun2RiBnxAjXAYpZrqwEVHBG9asI/Li8TAAhN9m59Q==}
+    peerDependencies:
+      react: ^18.0.0 || ^19.0.0 || ^19.0.0-rc
+      react-dom: ^18.0.0 || ^19.0.0 || ^19.0.0-rc
 
   sort-any@2.0.0:
     resolution: {integrity: sha512-T9JoiDewQEmWcnmPn/s9h/PH9t3d/LSWi0RgVmXSuDYeZXTZOZ1/wrK2PHaptuR1VXe3clLLt0pD6sgVOwjNEA==}
@@ -11328,6 +11337,11 @@ snapshots:
     dependencies:
       ip-address: 9.0.5
       smart-buffer: 4.2.0
+
+  sonner@2.0.6(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
+    dependencies:
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
 
   sort-any@2.0.0:
     dependencies:

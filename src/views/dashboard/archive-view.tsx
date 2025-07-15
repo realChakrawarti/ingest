@@ -1,7 +1,7 @@
+import { toast } from "sonner";
 import useSWR from "swr";
 
 import appConfig from "~/shared/app-config";
-import { toast } from "~/shared/hooks/use-toast";
 import fetchApi from "~/shared/lib/api/fetch";
 import { Badge } from "~/shared/ui/badge";
 import { ArchiveIcon } from "~/shared/ui/icons";
@@ -30,7 +30,7 @@ export default function ArchiveView() {
           method: "DELETE",
         });
         mutate();
-        toast({ title: result.message });
+        toast(result.message);
       } catch (err) {
         Log.fail(err);
       }
