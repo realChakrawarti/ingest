@@ -1,9 +1,9 @@
 import { Check, Clock, Copy, Trash2 } from "lucide-react";
 import Link from "next/link";
 import { type ReactNode, useState } from "react";
+import { toast } from "sonner";
 
 import appConfig from "~/shared/app-config";
-import { toast } from "~/shared/hooks/use-toast";
 import { Button } from "~/shared/ui/button";
 import {
   Card,
@@ -37,9 +37,7 @@ function CopyButton({ id, type }: { id: string; type: "catalog" | "archive" }) {
       .writeText(`${appConfig.url}/${exploreType}/${id}`)
       .then(() => {
         setCopied(true);
-        toast({
-          title: `${exploreName} link has been copied to your clipboard.`,
-        });
+        toast(`${exploreName} link has been copied to your clipboard.`);
         setTimeout(() => setCopied(false), 2000);
       });
   };

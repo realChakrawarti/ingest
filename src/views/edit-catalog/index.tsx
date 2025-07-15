@@ -3,11 +3,11 @@
 import { Info } from "lucide-react";
 import Link from "next/link";
 import { useEffect } from "react";
+import { toast } from "sonner";
 import useSWR from "swr";
 
 import type { ZCatalogByID } from "~/entities/catalogs/models";
 
-import { useToast } from "~/shared/hooks/use-toast";
 import fetchApi from "~/shared/lib/api/fetch";
 import { Badge } from "~/shared/ui/badge";
 import { Button } from "~/shared/ui/button";
@@ -31,8 +31,6 @@ import UpdateCatalogMeta from "./update-catalog-meta";
 // Make a separate endpoint for updating catalog's title and description
 
 export default function EditCatalog({ catalogId }: { catalogId: string }) {
-  const { toast } = useToast();
-
   const {
     data: catalogs,
     isLoading,
@@ -85,12 +83,12 @@ export default function EditCatalog({ catalogId }: { catalogId: string }) {
     });
 
     if (result.success) {
-      toast({
-        title: `${deleteChannel.channelTitle}'s channel deleted from the catalog.`,
-      });
+      toast(
+        `${deleteChannel.channelTitle}'s channel deleted from the catalog.`
+      );
       revalidateCatalog();
     } else {
-      toast({ title: "Something went wrong." });
+      toast("Something went wrong.");
     }
   };
 
@@ -108,14 +106,14 @@ export default function EditCatalog({ catalogId }: { catalogId: string }) {
     });
 
     if (result.success) {
-      toast({
-        title: `${
+      toast(
+        `${
           deletePlaylist.type === "playlist" && deletePlaylist.playlistTitle
-        }'s playlist deleted from the catalog.`,
-      });
+        }'s playlist deleted from the catalog.`
+      );
       revalidateCatalog();
     } else {
-      toast({ title: "Something went wrong." });
+      toast("Something went wrong.");
     }
   };
 
@@ -134,14 +132,14 @@ export default function EditCatalog({ catalogId }: { catalogId: string }) {
     });
 
     if (result.success) {
-      toast({
-        title: `${
+      toast(
+        `${
           deleteSubreddit.type === "subreddit" && deleteSubreddit.subredditTitle
-        } subreddit deleted from the catalog.`,
-      });
+        } subreddit deleted from the catalog.`
+      );
       revalidateCatalog();
     } else {
-      toast({ title: "Something went wrong." });
+      toast("Something went wrong.");
     }
   };
 

@@ -2,6 +2,7 @@ import { SiReddit } from "@icons-pack/react-simple-icons";
 import { Check, Loader2, Search } from "lucide-react";
 import { useParams } from "next/navigation";
 import { type ChangeEvent, useState } from "react";
+import { toast } from "sonner";
 import useSWR, { type KeyedMutator } from "swr";
 
 import type {
@@ -10,7 +11,6 @@ import type {
 } from "~/entities/catalogs/models";
 
 import useDebounce from "~/shared/hooks/use-debounce";
-import { toast } from "~/shared/hooks/use-toast";
 import fetchApi from "~/shared/lib/api/fetch";
 import type { ApiResponse } from "~/shared/lib/next/nx-response";
 import { Avatar, AvatarFallback, AvatarImage } from "~/shared/ui/avatar";
@@ -108,11 +108,11 @@ export default function AddSubredditDialog({
       });
 
       if (result.success) {
-        toast({ title: "Catalog has been updated with new subreddits." });
+        toast("Catalog has been updated with new subreddits.");
         revalidateCatalog();
         resetTempData();
       } else {
-        toast({ title: "Something went wrong!" });
+        toast("Something went wrong!");
       }
       setSearchInput("");
       await mutate(undefined); // Clear the data

@@ -1,4 +1,4 @@
-import { ClockIcon, Info, type LucideIcon } from "lucide-react";
+import { Info } from "lucide-react";
 import dynamic from "next/dynamic";
 import type { ReactNode } from "react";
 
@@ -12,7 +12,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "~/shared/ui/dropdown-menu";
-import { MonthIcon, ThreeDotIcon, WeekIcon } from "~/shared/ui/icons";
+import { ThreeDotIcon } from "~/shared/ui/icons";
 
 import BackLink from "~/widgets/back-link";
 import GridContainer from "~/widgets/grid-container";
@@ -28,7 +28,7 @@ import YouTubeCard from "~/widgets/youtube/youtube-card";
 import { AddToFavorites } from "./add-to-fav";
 import FilterChannel, { CurrentActive } from "./filter-channel";
 import { filterVideos, getActiveChannelIds } from "./helper-methods";
-import { ShowNextUpdateBanner } from "./next-update";
+import NextUpdateToast from "./next-update-toast";
 import SubredditPosts from "./subreddit-posts";
 
 // Refer: https://nextjs.org/docs/pages/building-your-application/optimizing/lazy-loading#with-no-ssr
@@ -52,6 +52,7 @@ export default async function PubliCatalog({
   const catalogData = result.data;
 
   const posts = catalogData?.posts;
+  const nextUpdate = catalogData?.nextUpdate;
 
   const videos = catalogData?.videos;
   const catalogTitle = catalogData?.title ?? "";
@@ -81,7 +82,7 @@ export default async function PubliCatalog({
 
   return (
     <>
-      <ShowNextUpdateBanner />
+      <NextUpdateToast nextUpdate={nextUpdate} />
       <PublicMainContainer className="space-y-4">
         <PublicHeaderTitle>
           <div className="space-y-0">
@@ -139,7 +140,7 @@ export default async function PubliCatalog({
 
         {/* Today */}
         {today?.length ? (
-          <VideoSection icon={ClockIcon} label="Today">
+          <VideoSection label="Today">
             {today.map((video) => (
               <YouTubeCard
                 key={video.videoId}
@@ -151,7 +152,7 @@ export default async function PubliCatalog({
         ) : null}
         {/* This week */}
         {week?.length ? (
-          <VideoSection icon={WeekIcon} label="This week">
+          <VideoSection label="This week">
             {week.map((video) => (
               <YouTubeCard
                 key={video.videoId}
@@ -163,7 +164,7 @@ export default async function PubliCatalog({
         ) : null}
         {/* This month */}
         {month?.length ? (
-          <VideoSection icon={MonthIcon} label="This month">
+          <VideoSection label="This month">
             {month.map((video) => (
               <YouTubeCard
                 key={video.videoId}
@@ -182,10 +183,9 @@ export default async function PubliCatalog({
 type VideoSectionProps = {
   label: string;
   children: ReactNode;
-  icon: LucideIcon;
 };
 
-function VideoSection({ label, children, icon: Icon }: VideoSectionProps) {
+function VideoSection({ label, children }: VideoSectionProps) {
   const id = label.replaceAll(" ", "-").toLowerCase();
   return (
     <section className="px-0 md:px-3 space-y-4">
@@ -194,7 +194,6 @@ function VideoSection({ label, children, icon: Icon }: VideoSectionProps) {
         <h2 id={id} className="text-lg">
           <a href={`#${id}`}>{label}</a>
         </h2>
-        <Icon />
       </div>
       <GridContainer>{children}</GridContainer>
     </section>

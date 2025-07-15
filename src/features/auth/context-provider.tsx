@@ -16,8 +16,8 @@ import {
   useLayoutEffect,
   useState,
 } from "react";
+import { toast } from "sonner";
 
-import { useToast } from "~/shared/hooks/use-toast";
 import fetchApi from "~/shared/lib/api/fetch";
 import { Routes } from "~/shared/lib/constants";
 import { client } from "~/shared/lib/firebase/client";
@@ -41,7 +41,6 @@ const AuthContext = createContext<UserContext>({
 
 export default function AuthContextProvider({ children }: PropsWithChildren) {
   const router = useRouter();
-  const { toast } = useToast();
 
   const [userState, setUserState] = useState<User | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
@@ -82,7 +81,7 @@ export default function AuthContextProvider({ children }: PropsWithChildren) {
           body: JSON.stringify({ token: userToken }),
           method: "POST",
         });
-        toast({ title: result.message });
+        toast(result.message);
         router.push(Routes.DASHBOARD);
       }
     } catch (err) {
@@ -95,7 +94,7 @@ export default function AuthContextProvider({ children }: PropsWithChildren) {
     signOut(client.auth);
     window.localStorage.clear();
     const result = await fetchApi("/logout");
-    toast({ title: result.message });
+    toast(result.message);
     router.push(Routes.ROOT);
   };
 

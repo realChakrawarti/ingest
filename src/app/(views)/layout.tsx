@@ -7,7 +7,7 @@ import type { Metadata } from "next";
 import Script from "next/script";
 
 import appConfig from "~/shared/app-config";
-import { Toaster } from "~/shared/ui/toaster";
+import { Toaster } from "~/shared/ui/sonner";
 import isDevelopment from "~/shared/utils/is-development";
 
 import AppSidebar from "~/widgets/app-sidebar";
@@ -50,7 +50,7 @@ export default function RootLayout({
             <Footer />
           </div>
         </Providers>
-        <Toaster />
+        <Toaster closeButton visibleToasts={1} position="top-right" />
       </body>
       {process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID && (
         <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID} />

@@ -1,11 +1,11 @@
 import { Loader2 } from "lucide-react";
 import { useParams } from "next/navigation";
 import { useState } from "react";
+import { toast } from "sonner";
 import type { KeyedMutator } from "swr";
 
 import type { ZCatalogByID, ZCatalogChannel } from "~/entities/catalogs/models";
 
-import { toast } from "~/shared/hooks/use-toast";
 import fetchApi from "~/shared/lib/api/fetch";
 import type { ApiResponse } from "~/shared/lib/next/nx-response";
 import { Button } from "~/shared/ui/button";
@@ -62,19 +62,19 @@ export default function SelectForm({
     );
 
     if (playlistWithChannelExists) {
-      toast({
-        description: `Remove ${channelInfo.channelTitle} playlists to add this channel.`,
-        title: `${channelInfo.channelTitle} has already added specific playlists.`,
-      });
+      toast(
+        `${channelInfo.channelTitle} has already added specific playlists.`,
+        {
+          description: `Remove ${channelInfo.channelTitle} playlists to add this channel.`,
+        }
+      );
 
       setSelectionType(null);
       return;
     }
 
     if (channelExists) {
-      toast({
-        title: `${channelInfo.channelTitle}'s channel is already added.`,
-      });
+      toast(`${channelInfo.channelTitle}'s channel is already added.`);
       setSelectionType(null);
       return;
     }
@@ -101,7 +101,7 @@ export default function SelectForm({
         setIsDialogOpen(false);
       }
 
-      toast({ title: result.message });
+      toast(result.message);
     } catch (err) {
       if (err instanceof Error) {
         Log.fail(err.message);
@@ -123,11 +123,13 @@ export default function SelectForm({
     );
 
     if (channelExists) {
-      toast({
-        description:
-          "Please remove the channel before proceeding to add specific playlist from the same channel.",
-        title: `${channelInfo.channelTitle}'s channel is already added to the catalog.`,
-      });
+      toast(
+        `${channelInfo.channelTitle}'s channel is already added to the catalog.`,
+        {
+          description:
+            "Please remove the channel before proceeding to add specific playlist from the same channel.",
+        }
+      );
       setSelectionType(null);
       return;
     }
@@ -139,14 +141,14 @@ export default function SelectForm({
       );
 
       if (!result.success) {
-        toast({ title: result.message });
+        toast(result.message);
         return;
       }
 
       const playlists = result.data;
 
       if (!playlists.length) {
-        toast({ title: `No playlist created by ${channelInfo.channelTitle}` });
+        toast(`No playlist created by ${channelInfo.channelTitle}`);
         return;
       }
 

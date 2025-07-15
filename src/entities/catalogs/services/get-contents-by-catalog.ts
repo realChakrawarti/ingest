@@ -112,16 +112,20 @@ export async function getContentsByCatalog(catalogId: string) {
   const userSnapData = userCatalogSnap.data();
   const catalogList = userSnapData?.list;
 
-  const youtubeList = catalogList?.filter((item) => item.type !== "subreddit");
-  const redditList = catalogList?.filter((item) => item.type === "subreddit");
+  const youtubeList =
+    catalogList?.filter((item) => item.type !== "subreddit") ?? [];
+  const redditList =
+    catalogList?.filter((item) => item.type === "subreddit") ?? [];
 
   // TODO: This is restrictive as catalog must at-least have a channel/playlist, having only subreddit doesn't cut
-  if (!youtubeList?.length) {
+  if (!youtubeList.length && !redditList.length) {
     return "Catalog is empty.";
   }
 
-  const channelListData = youtubeList.filter((item) => item.type === "channel");
-  const playlistData = youtubeList.filter((item) => item.type === "playlist");
+  const channelListData =
+    youtubeList.filter((item) => item.type === "channel") ?? [];
+  const playlistData =
+    youtubeList.filter((item) => item.type === "playlist") ?? [];
 
   const currentTime = Date.now();
   const lastUpdatedCatalogList =
@@ -133,8 +137,9 @@ export async function getContentsByCatalog(catalogId: string) {
     appConfig.channelLogoUpdatePeriod
   ) {
     const updatedList = await updateChannelLogos(youtubeList);
+    // Update the YouTube list channel logos and keep the Reddit list intact
     await userCatalogRef.set({
-      list: updatedList,
+      list: [...updatedList, ...redditList],
       updatedAt: Timestamp.fromDate(new Date()),
     });
   } else {
@@ -162,19 +167,19 @@ export async function getContentsByCatalog(catalogId: string) {
 
     const videoListPromise: Promise<ZVideoMetadataWithoutContent[]>[] = [];
 
-    if (playlistData?.length) {
-      playlistData?.forEach((playlist) => {
+    if (playlistData.length) {
+      playlistData.forEach((playlist) => {
         videoListPromise.push(getPlaylistVideos(playlist));
       });
     }
 
-    if (channelListData?.length) {
-      channelListData?.forEach((channel) => {
+    if (channelListData.length) {
+      channelListData.forEach((channel) => {
         videoListPromise.push(getChannelVideos(channel));
       });
     }
 
-    if (redditList?.length) {
+    if (redditList.length) {
       postResults = await getSubredditPosts(redditList);
     }
 

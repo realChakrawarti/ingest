@@ -1,10 +1,10 @@
 import { useLiveQuery } from "dexie-react-hooks";
 import Linkify from "linkify-react";
 import { Clock8, HardDriveDownloadIcon } from "lucide-react";
+import { toast } from "sonner";
 
 import type { ZVideoMetadataCompatible } from "~/entities/catalogs/models";
 
-import { toast } from "~/shared/hooks/use-toast";
 import { indexedDB } from "~/shared/lib/api/dexie";
 import type { YouTubeCardOptions } from "~/shared/types-schema/types";
 import { Avatar, AvatarFallback, AvatarImage } from "~/shared/ui/avatar";
@@ -128,15 +128,12 @@ function CopyLink({ videoId }: Pick<ZVideoMetadataCompatible, "videoId">) {
     navigator.clipboard
       .writeText(`https://www.youtube.com/watch?v=${id}`)
       .then(() => {
-        toast({
+        toast("Link copied", {
           description: "The video link has been copied to your clipboard.",
-          title: "Link copied",
         });
       })
       .catch(() => {
-        toast({
-          title: "Unable to access clipboard. Please copy manually.",
-        });
+        toast("Unable to access clipboard. Please copy manually.");
       });
   }
   return (
@@ -169,10 +166,10 @@ function WatchLater({ addWatchLater, videoData }: WatchLaterProps) {
     }
 
     if (checkIfExists(existingVideos, videoData.videoId)) {
-      toast({ title: "Video already added." });
+      toast("Video already added.");
     } else {
       await indexedDB["watch-later"].add(videoData);
-      toast({ title: `"${videoData.videoTitle}" added to watch later.` });
+      toast(`"${videoData.videoTitle}" added to watch later.`);
     }
   }
 
@@ -198,7 +195,7 @@ function RemoveWatchLater({
   Pick<ZVideoMetadataCompatible, "videoId">) {
   async function removeFromWatchLater(videoId: string) {
     await indexedDB["watch-later"].delete(videoId);
-    toast({ title: "Video has been removed from watch later." });
+    toast("Video has been removed from watch later.");
   }
 
   if (removeWatchLater) {
@@ -222,14 +219,13 @@ function DownloadVideo({ videoId }: { videoId: string }) {
     const videoLink = `https://www.youtube.com/watch?v=${id}`;
 
     navigator.clipboard.writeText(videoLink);
-    toast({
+    toast("Video link has copied to the clipboard.", {
       description: (
         <p>
           Opening <OutLink href="https://cobalt.tools">cobalt.tools</OutLink> in
           a new tab. Please paste the video link.
         </p>
       ),
-      title: "Video link has copied to the clipboard.",
     });
     setTimeout(() => {
       window.open("https://cobalt.tools", "_blank");
