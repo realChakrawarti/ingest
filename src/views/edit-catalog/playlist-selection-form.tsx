@@ -2,6 +2,7 @@ import Fuse from "fuse.js";
 import { Check, Loader2, Search } from "lucide-react";
 import { useParams } from "next/navigation";
 import { type ChangeEvent, useEffect, useState } from "react";
+import { toast } from "sonner";
 import type { KeyedMutator } from "swr";
 
 import type {
@@ -10,7 +11,6 @@ import type {
 } from "~/entities/catalogs/models";
 import type { ChannelPlaylist } from "~/entities/youtube/models";
 
-import { toast } from "~/shared/hooks/use-toast";
 import fetchApi from "~/shared/lib/api/fetch";
 import type { ApiResponse } from "~/shared/lib/next/nx-response";
 import { Badge } from "~/shared/ui/badge";
@@ -82,11 +82,11 @@ export default function PlaylistSelectionForm({
       });
 
       if (result.success) {
-        toast({ title: "Catalog has been updated with new playlists." });
+        toast("Catalog has been updated with new playlists.");
         revalidateCatalog();
         resetTempData();
       } else {
-        toast({ title: "Something went wrong!" });
+        toast("Something went wrong!");
       }
       setIsDialogOpen(false);
     } catch (err) {

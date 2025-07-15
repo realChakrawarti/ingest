@@ -1,10 +1,10 @@
 import { Edit } from "lucide-react";
 import type { FormEvent } from "react";
+import { toast } from "sonner";
 import type { KeyedMutator } from "swr";
 
 import type { ZArchiveByID } from "~/entities/archives/models";
 
-import { toast } from "~/shared/hooks/use-toast";
 import fetchApi from "~/shared/lib/api/fetch";
 import type { ApiResponse } from "~/shared/lib/next/nx-response";
 import { Button } from "~/shared/ui/button";
@@ -51,7 +51,7 @@ export default function UpdateArchiveMeta({
     });
 
     if (!result.success) {
-      toast({ title: result.message });
+      toast(result.message);
     } else {
       revalidateArchive();
     }

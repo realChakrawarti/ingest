@@ -5,7 +5,10 @@ import {
   CalendarClock,
   ExternalLink,
   MessageSquare,
+  Pause,
+  Play,
 } from "lucide-react";
+import { type MouseEvent, useRef, useState } from "react";
 import Slider, { type Settings } from "react-slick";
 
 import type { ZCatalogSubredditPost } from "~/entities/catalogs/models";
@@ -26,29 +29,64 @@ export default function PostCard({
 }) {
   const settings: Settings = {
     arrows: false,
-    autoplay: true,
     autoplaySpeed: 3500,
-    // cssEase: "ease-in",
+    cssEase: "ease-in",
+    dots: false,
     fade: true,
     // Refer: https://github.com/akiran/react-slick/issues/1171
     infinite: posts.length > 1,
-    pauseOnFocus: true,
-    pauseOnHover: true,
     slidesToScroll: 1,
     slidesToShow: 1,
     swipeToSlide: true,
-    waitForAnimate: false,
   };
 
+  const sliderRef = useRef<Slider | null>(null);
+  const [slidesPlaying, setSlidesPlaying] = useState<boolean>(false);
+
   const screenWidth = useScreenWidth();
+
+  const playSlides = (e: MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
+    setSlidesPlaying(true);
+    sliderRef.current?.slickPlay();
+  };
+
+  const pauseSlides = (e: MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
+    setSlidesPlaying(false);
+    sliderRef.current?.slickPause();
+  };
+
   return (
     <div
       className="px-0 md:px-3 min-w-full"
       style={{ width: `${screenWidth}px` }}
       id="posts-container"
     >
-      <div className="border rounded-md border-spacing-x-2 border-spacing-y-2">
-        <Slider {...settings}>
+      <div className="relative border rounded-md border-spacing-x-2 border-spacing-y-2">
+        <div className="absolute right-0 bottom-3 z-50">
+          <OverlayTip
+            id="slider-play-pause"
+            className="grid size-6 rounded-l-md cursor-pointer"
+          >
+            {slidesPlaying ? (
+              <span
+                className="grid place-items-center size-full"
+                onMouseDown={pauseSlides}
+              >
+                <Pause className="size-4" />
+              </span>
+            ) : (
+              <span
+                className="grid place-items-center size-full"
+                onMouseDown={playSlides}
+              >
+                <Play className="size-4" />
+              </span>
+            )}
+          </OverlayTip>
+        </div>
+        <Slider ref={sliderRef} {...settings}>
           {posts?.map((post, idx) => {
             const totalPosts = posts.length;
             const currentTime = Date.now() / 1000;
@@ -62,7 +100,7 @@ export default function PostCard({
               <div key={post.postId} className="flex gap-3 min-h-8 min-w-full">
                 <OverlayTip
                   id="post-count"
-                  className="absolute top-0 right-0 rounded-l-md p-1 text-xs bg-primary/10 z-50"
+                  className="absolute text-foreground top-0 right-0 rounded-l-md p-1 text-xs bg-primary/10 z-50"
                 >
                   {(idx + 1).toString().padStart(2, "0")}/
                   {totalPosts.toString().padStart(2, "0")}
@@ -90,9 +128,15 @@ export default function PostCard({
                     <CalendarClock className="size-3" />
                     <span suppressHydrationWarning>{createdAt}</span>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <div className="flex-1">
+                  <div className="w-[90%] flex items-center gap-2">
+                    <div className="flex-1 flex items-center gap-2">
                       <PostDetailSheet post={post} />
+                      <p
+                        className="tracking-wide hover:text-primary/80 text-foreground
+        line-clamp-2 text-sm"
+                      >
+                        {post.postTitle}
+                      </p>
                     </div>
                   </div>
 
@@ -102,17 +146,23 @@ export default function PostCard({
                     <span>•</span>
                     <MessageSquare className="size-3" />
                     <span>{post.postCommentsCount} comments</span>
-                    {post.postDomain !== `self.${post.subreddit}` && (
-                      <>
-                        <span>•</span>
-                        <ExternalLink className="size-3" />
-                        <span>{post.postDomain}</span>
-                      </>
-                    )}
+                    {post.postDomain !== `self.${post.subreddit}` &&
+                      post.postDomain !== "i.redd.it" && (
+                        <>
+                          <span>•</span>
+                          <OutLink
+                            href={post.postUrl}
+                            className="flex gap-1 items-center"
+                          >
+                            <ExternalLink className="size-3" />
+                            <span>{post.postDomain}</span>
+                          </OutLink>
+                        </>
+                      )}
                   </div>
 
                   {post.postSelftext && (
-                    <p className="text-sm text-muted-foreground mt-2 line-clamp-2">
+                    <p className="w-[90%] text-sm text-muted-foreground mt-2 line-clamp-2">
                       {post.postSelftext}
                     </p>
                   )}

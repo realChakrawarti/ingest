@@ -5,10 +5,10 @@ import {
   useEffect,
   useState,
 } from "react";
+import { toast } from "sonner";
 
 import type { ChannelDetails } from "~/entities/youtube/models";
 
-import { toast } from "~/shared/hooks/use-toast";
 import fetchApi from "~/shared/lib/api/fetch";
 import { Regex } from "~/shared/lib/constants";
 import { Button } from "~/shared/ui/button";
@@ -53,7 +53,7 @@ export default function InputURLForm() {
         );
 
         if (!result.success) {
-          toast({ title: result.message });
+          toast(result.message);
           return;
         }
 
@@ -96,7 +96,7 @@ export default function InputURLForm() {
         const result = await fetchApi<ChannelDetails>(endpoint);
 
         if (!result.success) {
-          toast({ title: result.message });
+          toast(result.message);
           return;
         }
 

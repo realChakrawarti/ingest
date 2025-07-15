@@ -1,8 +1,8 @@
 import type { FormEvent } from "react";
+import { toast } from "sonner";
 import type { KeyedMutator } from "swr";
 
 import { useConfetti } from "~/shared/hooks/use-confetti";
-import { toast } from "~/shared/hooks/use-toast";
 import fetchApi from "~/shared/lib/api/fetch";
 import type { ApiResponse } from "~/shared/lib/next/nx-response";
 import { Button } from "~/shared/ui/button";
@@ -48,11 +48,11 @@ export default function CreateArchiveDialog({
 
     if (result.success) {
       revalidateArchives();
-      toast({ title: result.message });
+      toast(result.message);
       resetState();
       triggerConfetti();
     } else {
-      toast({ title: "Failed to create archive." });
+      toast("Failed to create archive.");
     }
   };
 

@@ -2,9 +2,9 @@
 
 import { CopyIcon, ShareIcon } from "lucide-react";
 import { useMemo } from "react";
+import { toast } from "sonner";
 
 import appConfig from "~/shared/app-config";
-import { toast } from "~/shared/hooks/use-toast";
 
 type ShareCatalogProps = {
   catalogId: string;
@@ -28,9 +28,8 @@ export default function ShareCatalog({
 
   const copyLink = () => {
     window.navigator.clipboard.writeText(shareData.url);
-    toast({
+    toast("Link copied", {
       description: "The video link has been copied to your clipboard.",
-      title: "Link copied",
     });
   };
 
@@ -39,10 +38,10 @@ export default function ShareCatalog({
       await window.navigator.share(shareData);
     } catch (err) {
       if (err instanceof Error) {
-        return toast({ title: err.message });
+        return toast(err.message);
       }
 
-      return toast({ title: "Something went wrong!" });
+      return toast("Something went wrong!");
     }
   };
 

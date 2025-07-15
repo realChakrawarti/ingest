@@ -1,10 +1,10 @@
 "use client";
 
+import { toast } from "sonner";
 import useSWR from "swr";
 
 import type { ZArchiveByID } from "~/entities/archives/models";
 
-import { toast } from "~/shared/hooks/use-toast";
 import fetchApi from "~/shared/lib/api/fetch";
 import { Separator } from "~/shared/ui/separator";
 
@@ -40,7 +40,7 @@ export default function EditArchive({ archiveId }: { archiveId: string }) {
     if (result.success) {
       revalidateArchive();
     }
-    toast({ title: result.message });
+    toast(result.message);
   }
 
   return (

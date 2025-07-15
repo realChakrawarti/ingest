@@ -1,8 +1,9 @@
 import Linkify from "linkify-react";
-import { ArrowUp, ExternalLink, MessageSquare } from "lucide-react";
+import { ArrowUp, ExternalLink, MessageSquare, PanelRight } from "lucide-react";
 
 import type { ZCatalogSubredditPost } from "~/entities/catalogs/models";
 
+import { Badge } from "~/shared/ui/badge";
 import { Separator } from "~/shared/ui/separator";
 import {
   Sheet,
@@ -15,6 +16,8 @@ import {
 import formatLargeNumber from "~/shared/utils/format-large-number";
 
 import { OutLink } from "~/widgets/out-link";
+
+import PostComments from "./post-comments";
 export default function PostDetailSheet({
   post,
 }: {
@@ -23,35 +26,39 @@ export default function PostDetailSheet({
   return (
     <Sheet>
       <SheetTrigger asChild>
-        <p
-          className="tracking-wide hover:text-primary/80 text-foreground
-        line-clamp-2 text-sm"
-        >
-          {post.postTitle}
-        </p>
+        <Badge className="cursor-pointers flex items-center gap-1">
+          <PanelRight className="size-3" />
+          Expand
+        </Badge>
       </SheetTrigger>
       <SheetContent className="overflow-y-auto w-full md:max-w-[450px]">
         <SheetHeader className="text-left">
           <SheetTitle>
             <OutLink href={`https://www.reddit.com${post.postPermalink}`}>
+              <Badge className="mb-2 space-x-2">
+                <ExternalLink className="size-4" />
+                <p className="text-md">Open on Reddit</p>
+              </Badge>
               <p>{post.postTitle}</p>
             </OutLink>
           </SheetTitle>
           <SheetDescription>
             <div className="flex items-center gap-2 mt-2 text-sm text-muted-foreground">
-              <ArrowUp className="size-3" />
+              <ArrowUp className="size-4" />
               <span>{formatLargeNumber(post.postVotes)} votes</span>
               <span>•</span>
-              <MessageSquare className="size-3" />
+              <MessageSquare className="size-4" />
               <span>{post.postCommentsCount} comments</span>
-              {post.postDomain !== `self.${post.subreddit}` && (
-                <>
-                  <span>•</span>
-                  <ExternalLink className="size-3" />
-                  <span>{post.postDomain}</span>
-                </>
-              )}
             </div>
+            {post.postDomain !== `self.${post.subreddit}` &&
+              post.postDomain !== "i.redd.it" && (
+                <div className="mt-2 flex gap-2 items-center">
+                  <ExternalLink className="size-4" />
+                  <OutLink href={post.postUrl}>
+                    <span>{post.postDomain}</span>
+                  </OutLink>
+                </div>
+              )}
           </SheetDescription>
         </SheetHeader>
         <div className="my-4">
@@ -89,6 +96,8 @@ export default function PostDetailSheet({
               </Linkify>
             </>
           ) : null}
+          <Separator className="my-3" />
+          <PostComments subreddit={post.subreddit} postId={post.postId} />
         </div>
       </SheetContent>
     </Sheet>

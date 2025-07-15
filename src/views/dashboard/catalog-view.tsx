@@ -1,11 +1,11 @@
 "use client";
 
+import { toast } from "sonner";
 import useSWR from "swr";
 
 import type { ZCatalogByUser } from "~/entities/catalogs/models";
 
 import appConfig from "~/shared/app-config";
-import { toast } from "~/shared/hooks/use-toast";
 import fetchApi from "~/shared/lib/api/fetch";
 import { Badge } from "~/shared/ui/badge";
 import { BookOpenIcon } from "~/shared/ui/icons";
@@ -38,7 +38,7 @@ export default function CatalogView() {
           method: "DELETE",
         });
         mutate();
-        toast({ title: result.message });
+        toast(result.message);
       } catch (err) {
         Log.fail(err);
       }

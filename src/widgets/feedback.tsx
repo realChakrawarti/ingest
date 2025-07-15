@@ -8,8 +8,8 @@ import {
   PlusCircle,
 } from "lucide-react";
 import { useState } from "react";
+import { toast } from "sonner";
 
-import { toast } from "~/shared/hooks/use-toast";
 import fetchApi from "~/shared/lib/api/fetch";
 import { Button } from "~/shared/ui/button";
 import {
@@ -99,18 +99,17 @@ ${feedback}
     });
 
     if (result.success) {
-      toast({
+      toast(result.message, {
         description: (
           <p>
             Issue link:{" "}
             <OutLink href={result.data.data}>{result.data.data}</OutLink>
           </p>
         ),
-        title: result.message,
       });
       setFeedbackData(initialFeedbackData);
     } else {
-      toast({ title: "Unable to shared feedback." });
+      toast("Unable to shared feedback.");
     }
   };
   return (
