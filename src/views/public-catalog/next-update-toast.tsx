@@ -13,7 +13,7 @@ export default function NextUpdateToast({
   useEffect(() => {
     if (nextUpdate) {
       const [when, updateString] = getTimeDifference(nextUpdate);
-      if (when > 0) {
+      if (when < 0) {
         toast("You are currently viewing an older version.", {
           description:
             "A new version of the catalog is available. Please refresh the page.",
