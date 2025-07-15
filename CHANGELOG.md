@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.8.14](https://github.com/realChakrawarti/ingest/compare/v1.8.13...v1.8.14) (2025-07-15)
+
+
+### Bug Fixes
+
+* replace radix toast w/sonner, catalog next update on toast & subreddit post comment integration ([7224acb](https://github.com/realChakrawarti/ingest/commit/7224acbe0ff90593c912144470b0186f915a62f0))
+* subreddit posts, fix catalog overwriting list replacing subreddit ([4a86d32](https://github.com/realChakrawarti/ingest/commit/4a86d32d92879246cc61bf6ca7e3a391c15f6c66))
+
 ### [1.8.13](https://github.com/realChakrawarti/ingest/compare/v1.8.12...v1.8.13) (2025-07-14)
 
 
