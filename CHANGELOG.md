@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.8.16](https://github.com/realChakrawarti/ingest/compare/v1.8.15...v1.8.16) (2025-07-16)
+
+
+### Features
+
+* post slides arrows to move up & down ([9e5a04d](https://github.com/realChakrawarti/ingest/commit/9e5a04d80f46b96b2e9e8f27837e4953e28efe17))
+
 ### [1.8.15](https://github.com/realChakrawarti/ingest/compare/v1.8.14...v1.8.15) (2025-07-15)
 
 
