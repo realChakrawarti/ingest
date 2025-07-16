@@ -26,7 +26,7 @@ export default function PostDetailSheet({
   return (
     <Sheet>
       <SheetTrigger asChild>
-        <Badge className="cursor-pointers flex items-center gap-1">
+        <Badge className="cursor-pointer flex items-center gap-1">
           <PanelRight className="size-3" />
           Expand
         </Badge>
@@ -35,7 +35,7 @@ export default function PostDetailSheet({
         <SheetHeader className="text-left">
           <SheetTitle>
             <OutLink href={`https://www.reddit.com${post.postPermalink}`}>
-              <Badge className="mb-2 space-x-2">
+              <Badge className="mb-2 space-x-2 cursor-pointer">
                 <ExternalLink className="size-4" />
                 <p className="text-md">Open on Reddit</p>
               </Badge>
