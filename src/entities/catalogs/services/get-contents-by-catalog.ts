@@ -8,10 +8,10 @@ import {
   YOUTUBE_VIDEOS_DATA,
 } from "~/shared/lib/api/youtube-endpoints";
 import { refs } from "~/shared/lib/firebase/refs";
-import getRedditAccessToken, {
-  RedditUserAgent,
-} from "~/shared/lib/reddit/get-access-token";
+import getRedditAccessToken from "~/shared/lib/reddit/get-access-token";
+import { redditRequestHeaders } from "~/shared/lib/reddit/reddit-header";
 import formatRedditImageLink from "~/shared/utils/format-reddit-image-link";
+import isDevelopment from "~/shared/utils/is-development";
 import Log from "~/shared/utils/terminal-logger";
 import { time } from "~/shared/utils/time";
 
@@ -133,8 +133,8 @@ export async function getContentsByCatalog(catalogId: string) {
 
   // Update channel logos
   if (
-    currentTime - lastUpdatedCatalogList >
-    appConfig.channelLogoUpdatePeriod
+    currentTime - lastUpdatedCatalogList > appConfig.channelLogoUpdatePeriod &&
+    !isDevelopment()
   ) {
     const updatedList = await updateChannelLogos(youtubeList);
     // Update the YouTube list channel logos and keep the Reddit list intact
@@ -154,7 +154,10 @@ export async function getContentsByCatalog(catalogId: string) {
   let recentUpdate = new Date(currentTime);
   let pageviews = 0;
 
-  if (currentTime - lastUpdatedTime > appConfig.catalogUpdatePeriod) {
+  if (
+    currentTime - lastUpdatedTime > appConfig.catalogUpdatePeriod &&
+    !isDevelopment()
+  ) {
     try {
       pageviews = await getPageviewByCatalogId(catalogId);
     } catch (err) {
@@ -265,9 +268,7 @@ async function getSubredditPosts(list: ZCatalogSubreddit[]) {
   try {
     const postPromises = list.map(async (item) => {
       const redditUrl = `https://oauth.reddit.com/r/${item.subredditName}/hot.json?limit=15`;
-      const headers = new Headers();
-      headers.set("Accept", "application/json");
-      headers.set("User-Agent", RedditUserAgent);
+      const headers = redditRequestHeaders();
       headers.set("Authorization", `Bearer ${accessToken}`);
 
       return fetch(redditUrl, {

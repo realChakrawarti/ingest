@@ -6,6 +6,7 @@ import useSWRMutation from "swr/mutation";
 
 import type { ZCatalogSubredditPost } from "~/entities/catalogs/models";
 
+import { redditRequestHeaders } from "~/shared/lib/reddit/reddit-header";
 import { Button } from "~/shared/ui/button";
 import {
   Collapsible,
@@ -18,8 +19,13 @@ import { getDifferenceString } from "~/shared/utils/time-diff";
 import { OutLink } from "~/widgets/out-link";
 
 async function getPostComments(subreddit: string, postId: string) {
+  const headers = redditRequestHeaders();
+
   const response = await fetch(
-    `https://www.reddit.com/r/${subreddit}/comments/${postId}.json?limit=20&sort=top`
+    `https://oauth.reddit.com/r/${subreddit}/comments/${postId}.json?limit=20&sort=top`,
+    {
+      headers: headers,
+    }
   );
   const data = await response.json();
   const results = data[1].data.children

@@ -1,14 +1,16 @@
 "use client";
 
 import {
+  ArrowDownCircle,
   ArrowUp,
+  ArrowUpCircle,
   CalendarClock,
   ExternalLink,
   MessageSquare,
   Pause,
   Play,
 } from "lucide-react";
-import { type MouseEvent, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import Slider, { type Settings } from "react-slick";
 
 import type { ZCatalogSubredditPost } from "~/entities/catalogs/models";
@@ -45,14 +47,12 @@ export default function PostCard({
 
   const screenWidth = useScreenWidth();
 
-  const playSlides = (e: MouseEvent<HTMLButtonElement>) => {
-    e.stopPropagation();
+  const playSlides = () => {
     setSlidesPlaying(true);
     sliderRef.current?.slickPlay();
   };
 
-  const pauseSlides = (e: MouseEvent<HTMLButtonElement>) => {
-    e.stopPropagation();
+  const pauseSlides = () => {
     setSlidesPlaying(false);
     sliderRef.current?.slickPause();
   };
@@ -65,24 +65,43 @@ export default function PostCard({
     >
       <div className="relative border rounded-md border-spacing-x-2 border-spacing-y-2">
         <div className="absolute right-0 bottom-3 z-50">
+          {/* Next & Previous slides */}
+          <div className="absolute right-0 bottom-7 z-50 flex flex-col gap-1">
+            <OverlayTip
+              id="previous-post"
+              className="flex items-center justify-center size-6 rounded-l-md cursor-pointer"
+            >
+              <ArrowUpCircle
+                onClick={() => {
+                  pauseSlides();
+                  sliderRef?.current?.slickNext();
+                }}
+                className="size-4"
+              />
+            </OverlayTip>
+            <OverlayTip
+              id="next-post"
+              className="flex items-center justify-center size-6 rounded-l-md cursor-pointer"
+            >
+              <ArrowDownCircle
+                onClick={() => {
+                  pauseSlides();
+                  sliderRef?.current?.slickPrev();
+                }}
+                className="size-4"
+              />
+            </OverlayTip>
+          </div>
+
+          {/* Play & Pause slides */}
           <OverlayTip
             id="slider-play-pause"
-            className="grid size-6 rounded-l-md cursor-pointer"
+            className="grid place-items-center size-6 rounded-l-md cursor-pointer"
           >
             {slidesPlaying ? (
-              <span
-                className="grid place-items-center size-full"
-                onMouseDown={pauseSlides}
-              >
-                <Pause className="size-4" />
-              </span>
+              <Pause onClick={pauseSlides} className="size-4" />
             ) : (
-              <span
-                className="grid place-items-center size-full"
-                onMouseDown={playSlides}
-              >
-                <Play className="size-4" />
-              </span>
+              <Play onClick={playSlides} className="size-4" />
             )}
           </OverlayTip>
         </div>

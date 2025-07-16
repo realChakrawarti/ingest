@@ -2,6 +2,8 @@
 
 import appConfig from "~/shared/app-config";
 
+import { redditRequestHeaders } from "./reddit-header";
+
 export const RedditUserAgent = `web:ingest.707x.in:v${appConfig.version} (by /u/CURVX)`;
 
 export default async function getRedditAccessToken() {
@@ -17,14 +19,13 @@ export default async function getRedditAccessToken() {
     grant_type: "client_credentials",
   });
 
+  const headers = redditRequestHeaders();
+  headers.set("Authorization", `Basic ${credentials}`);
+  headers.set("Content-Type", "application/x-www-form-urlencoded");
+
   const result = await fetch(redditAuthUrl, {
     body: requestBody.toString(),
-    headers: {
-      Accept: "application/json",
-      Authorization: `Basic ${credentials}`,
-      "Content-Type": "application/x-www-form-urlencoded",
-      "User-Agent": RedditUserAgent,
-    },
+    headers: headers,
     method: "POST",
   });
 
