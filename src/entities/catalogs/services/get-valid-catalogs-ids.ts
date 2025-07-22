@@ -33,6 +33,7 @@ export async function getValidCatalogIds() {
           pageviews: catalogData.pageviews ?? 0,
           thumbnails: getVideoThumbnails(catalogData),
           title: catalogData?.title,
+          totalPosts: catalogData?.data.totalPosts,
           totalVideos: catalogData?.data?.totalVideos,
           updatedAt: catalogData?.data.updatedAt,
         };

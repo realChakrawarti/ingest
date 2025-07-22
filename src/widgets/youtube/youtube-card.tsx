@@ -47,6 +47,7 @@ export default function YouTubeCard(props: YouTubeCardProps) {
         <WatchedStatus videoId={video.videoId} />
         {showVideoCategory ? (
           <VideoCategory
+            publishedAt={video.publishedAt}
             videoId={video.videoId}
             videoComments={video.videoComments ?? 0}
             videoLikes={video.videoLikes ?? 0}

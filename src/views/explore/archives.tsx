@@ -17,7 +17,7 @@ export default async function Archives() {
   return (
     <PublicMainContainer>
       <PublicHeaderTitle>
-        <div className="flex items-start gap-2">
+        <div className="flex items-center gap-2">
           <BackLink href="/explore" />
           <h1 className="text-lg lg:text-xl tracking-wide">Archives</h1>
         </div>

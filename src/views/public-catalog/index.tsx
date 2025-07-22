@@ -1,8 +1,7 @@
-import { Info } from "lucide-react";
 import dynamic from "next/dynamic";
 import type { ReactNode } from "react";
 
-import type { ZVideosByCatalog } from "~/entities/catalogs/models";
+import type { ZContentByCatalog } from "~/entities/catalogs/models";
 
 import fetchApi from "~/shared/lib/api/fetch";
 import type { YouTubeCardOptions } from "~/shared/types-schema/types";
@@ -16,7 +15,6 @@ import { ThreeDotIcon } from "~/shared/ui/icons";
 
 import BackLink from "~/widgets/back-link";
 import GridContainer from "~/widgets/grid-container";
-import JustTip from "~/widgets/just-the-tip";
 import {
   PublicHeaderTitle,
   PublicMainContainer,
@@ -26,6 +24,7 @@ import ScrollTop from "~/widgets/scroll-top";
 import YouTubeCard from "~/widgets/youtube/youtube-card";
 
 import { AddToFavorites } from "./add-to-fav";
+import CatalogInformationPopover from "./catalog-information-popover";
 import FilterChannel, { CurrentActive } from "./filter-channel";
 import { filterVideos, getActiveChannelIds } from "./helper-methods";
 import NextUpdateToast from "./next-update-toast";
@@ -45,7 +44,7 @@ export default async function PubliCatalog({
   catalogId: string;
   duration: "short" | "medium" | "long" | null;
 }) {
-  const result = await fetchApi<ZVideosByCatalog>(
+  const result = await fetchApi<ZContentByCatalog>(
     `/catalogs/${catalogId}/contents`
   );
 
@@ -94,9 +93,13 @@ export default async function PubliCatalog({
                     <h1 className="text-lg lg:text-xl tracking-wide">
                       {catalogTitle}
                     </h1>
-                    <JustTip label={catalogDescription}>
-                      <Info className="size-4" />
-                    </JustTip>
+                    <CatalogInformationPopover
+                      pageviews={catalogData.pageviews}
+                      description={catalogData?.description ?? ""}
+                      totalVideos={catalogData.totalVideos}
+                      totalPosts={catalogData.totalPosts}
+                      nextUpdate={catalogData.nextUpdate}
+                    />
                   </span>
                 </div>
               </div>

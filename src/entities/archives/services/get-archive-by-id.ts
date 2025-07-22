@@ -1,3 +1,4 @@
+import { timestampUTC } from "~/shared/lib/firebase/admin";
 import { refs } from "~/shared/lib/firebase/refs";
 import Log from "~/shared/utils/terminal-logger";
 
@@ -27,6 +28,7 @@ export async function getArchiveById(archiveId: string) {
       const archiveResponseData: ZArchiveByID = {
         description: data.description,
         title: data.title,
+        updatedAt: timestampUTC(data.data.updatedAt),
         videos: data.data.videos,
       };
 

@@ -23,7 +23,7 @@ export default function HeroSection() {
               </div>
               {/* End Title */}
               <div className="mt-5 max-w-3xl">
-                <p className="text-lg text-muted-foreground leading-wide font-slalom">
+                <p className="text-lg text-muted-foreground leading-wide font-outfit">
                   Tired of endless scrolling through digital noise? Simplify
                   internet feed - just as good food nourishes the body, curated
                   content fuels the mind.

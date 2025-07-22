@@ -1,6 +1,6 @@
 "use client";
 
-import { EyeIcon, Pause, Play, VideoIcon } from "lucide-react";
+import { EyeIcon, File, Pause, Play, VideoIcon } from "lucide-react";
 import Link from "next/link";
 import { type MouseEvent, useRef, useState } from "react";
 import type Slider from "react-slick";
@@ -102,9 +102,14 @@ export default function DetailsCard({ validData, path }: DetailsCardProps) {
       {validData?.pageviews ? (
         <Pageview pageviews={validData.pageviews} />
       ) : null}
-      {validData?.totalVideos ? (
-        <TotalVideos totalVideos={validData.totalVideos} />
-      ) : null}
+      <div className="flex flex-col gap-2 absolute top-2 left-0 z-20">
+        {validData?.totalVideos ? (
+          <TotalVideos totalVideos={validData.totalVideos} />
+        ) : null}
+        {validData?.totalPosts ? (
+          <TotalPosts totalPosts={validData.totalPosts} />
+        ) : null}
+      </div>
     </section>
   );
 }
@@ -113,10 +118,22 @@ function TotalVideos({ totalVideos }: { totalVideos: number }) {
   return (
     <OverlayTip
       id="total-videos"
-      className="flex gap-1 absolute top-2 left-0 items-center px-[5px] py-2 rounded-r-md z-20"
+      className="flex gap-1  items-center px-[5px] py-2 rounded-r-md"
     >
       <p className="text-xs">{totalVideos}</p>
       <VideoIcon className="size-3" />
+    </OverlayTip>
+  );
+}
+
+function TotalPosts({ totalPosts }: { totalPosts: number }) {
+  return (
+    <OverlayTip
+      id="total-posts"
+      className="flex gap-1 items-center px-[5px] py-2 rounded-r-md"
+    >
+      <p className="text-xs">{totalPosts}</p>
+      <File className="size-3" />
     </OverlayTip>
   );
 }
