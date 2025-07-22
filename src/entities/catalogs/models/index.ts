@@ -132,7 +132,7 @@ const CatalogDocumentSchema = CatalogMetaSchema.extend({
     totalPosts: z.number().default(0),
     totalVideos: z.number().default(0),
     updatedAt: TimestampSchema,
-    videos: CatalogVideoListSchema.optional(),
+    videos: CatalogVideoListSchema,
   }),
   pageviews: z.number().optional(),
   videoRef: DocumentReferenceSchema,
@@ -144,6 +144,7 @@ const CatalogValidSchema = z.object({
   pageviews: z.number().default(0),
   thumbnails: z.array(z.string()),
   title: z.string(),
+  totalPosts: z.number(),
   totalVideos: z.number(),
   updatedAt: TimestampSchema,
 });
@@ -153,9 +154,12 @@ const CatalogByUserSchema = CatalogMetaSchema.extend({
   updatedAt: z.string(),
 });
 
-const VideosByCatalogSchema = CatalogMetaSchema.extend({
+const ContentByCatalogSchema = CatalogMetaSchema.extend({
   nextUpdate: z.string(),
+  pageviews: z.number(),
   posts: z.array(CatalogSubredditPostSchema),
+  totalPosts: z.number().default(0),
+  totalVideos: z.number().default(0),
   videos: CatalogVideoListSchema,
 });
 
@@ -183,7 +187,7 @@ export type ZCatalogVideoListSchema = z.infer<typeof CatalogVideoListSchema>;
 
 export type ZCatalogDocument = z.infer<typeof CatalogDocumentSchema>;
 
-export type ZVideosByCatalog = z.infer<typeof VideosByCatalogSchema>;
+export type ZContentByCatalog = z.infer<typeof ContentByCatalogSchema>;
 
 export type ZCatalogByUser = z.infer<typeof CatalogByUserSchema>;
 

@@ -7,6 +7,7 @@ import type { ZVideoContentInfo } from "~/entities/catalogs/models";
 
 import appConfig from "~/shared/app-config";
 import { indexedDB } from "~/shared/lib/api/dexie";
+import { time } from "~/shared/utils/time";
 
 import OverlayTip from "../overlay-tip";
 import useActivePlayerRef from "./use-active-player";
@@ -88,17 +89,28 @@ const Icons = {
   Trending: TrendingUp,
 } as const;
 
+function olderThanAWeek(date: string) {
+  const currentTime = Date.now();
+  const dateTime = new Date(date).getTime();
+
+  return currentTime - dateTime > time.weeks(1);
+}
+
 export function VideoCategory({
   videoViews,
   videoLikes,
   videoComments,
   videoId,
+  publishedAt,
 }: Omit<ZVideoContentInfo, "videoDuration" | "videoAvailability"> & {
   videoId: string;
+  publishedAt: string;
 }) {
   const activePlayerRef = useActivePlayerRef();
 
   const videoProgress = useLiveQuery(() => indexedDB["history"].get(videoId));
+
+  if (olderThanAWeek(publishedAt)) return null;
 
   const category = categorizeVideoSimplified(
     videoViews,

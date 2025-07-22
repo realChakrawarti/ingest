@@ -265,7 +265,7 @@ function SearchDropdown({
               className="p-3 hover:bg-accent cursor-pointer flex items-start justify-between gap-2 transition-colors border-b border-border last:border-b-0"
               onClick={() => toggleSubredditSelection(subreddit)}
             >
-              <div className="flex items-start gap-3">
+              <div className="flex items-center gap-3">
                 <Avatar className="size-8 rounded-lg">
                   <AvatarImage
                     src={

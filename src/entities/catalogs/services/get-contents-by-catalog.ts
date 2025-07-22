@@ -22,6 +22,7 @@ import type {
   ZCatalogSubreddit,
   ZCatalogSubredditPost,
   ZCatalogVideoListSchema,
+  ZContentByCatalog,
   ZVideoContentInfo,
   ZVideoMetadataWithoutContent,
 } from "../models";
@@ -82,16 +83,19 @@ export async function getCatalogMeta(catalogId: string) {
   };
 }
 
-export async function getContentsByCatalog(catalogId: string) {
+export async function getContentsByCatalog(
+  catalogId: string
+): Promise<ZContentByCatalog | string> {
   const videoList: ZVideoMetadataWithoutContent[] = [];
 
-  let videoFilterData: ZCatalogVideoListSchema | undefined = {
+  let videoFilterData: ZCatalogVideoListSchema = {
     day: [],
     month: [],
     week: [],
   };
 
   let postResults: ZCatalogSubredditPost[] | undefined = [];
+  let totalVideos: number = 0;
 
   const catalogRef = refs.catalogs.doc(catalogId);
   const catalogSnap = await catalogRef.get();
@@ -205,6 +209,8 @@ export async function getContentsByCatalog(catalogId: string) {
       return dateB - dateA;
     });
 
+    totalVideos = videoList.length;
+
     const videoIds = videoList.map((video) => video.videoId);
 
     const videoDetails = await addVideoDuration(videoIds);
@@ -228,7 +234,7 @@ export async function getContentsByCatalog(catalogId: string) {
       data: {
         posts: postResults,
         totalPosts: postResults.length,
-        totalVideos: videoList.length,
+        totalVideos: totalVideos,
         updatedAt: recentUpdate,
         videos: videoFilterData,
       },
@@ -243,6 +249,8 @@ export async function getContentsByCatalog(catalogId: string) {
     videoFilterData = catalogSnapData?.data.videos;
     postResults = catalogSnapData?.data.posts;
     recentUpdate = lastUpdated;
+    totalVideos = catalogSnapData?.data?.totalVideos;
+    pageviews = catalogSnapData?.pageviews ?? 0;
     Log.info(
       `Returning cached data for the catalog ${catalogId}, next update on ${new Date(
         lastUpdatedTime + appConfig.catalogUpdatePeriod
@@ -255,8 +263,11 @@ export async function getContentsByCatalog(catalogId: string) {
     nextUpdate: new Date(
       recentUpdate.getTime() + appConfig.catalogUpdatePeriod
     ).toUTCString(),
-    posts: postResults,
+    pageviews: pageviews,
+    posts: postResults ?? [],
     title: catalogSnapData?.title,
+    totalPosts: postResults?.length ?? 0,
+    totalVideos: totalVideos,
     videos: videoFilterData,
   };
 }

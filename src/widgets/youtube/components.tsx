@@ -106,7 +106,7 @@ function DescriptionSheet({
         </SheetHeader>
         <div className="mt-4">
           <Linkify
-            className={`text-sm whitespace-pre-wrap font-slalom`}
+            className={`text-sm whitespace-pre-wrap font-outfit`}
             as="pre"
             options={{
               className:
