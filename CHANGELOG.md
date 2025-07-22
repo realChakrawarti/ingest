@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.8.17](https://github.com/realChakrawarti/ingest/compare/v1.8.16...v1.8.17) (2025-07-22)
+
+
+### Bug Fixes
+
+* coderabbit suggestion ([12b0de5](https://github.com/realChakrawarti/ingest/commit/12b0de5644ef78bad281fc40231893b735c74f0a))
+* initialize videos field on create-catalog ([b3134b7](https://github.com/realChakrawarti/ingest/commit/b3134b781f496a269c7b3d83c50bb46b0f3e369c))
+* remove redundant files, change font, add catalog/archive details popover ([5501993](https://github.com/realChakrawarti/ingest/commit/550199397a889f060b1db050b1d4dc83a78fb7f4))
+* remove redundant files, change font, add details popover ([40c513c](https://github.com/realChakrawarti/ingest/commit/40c513c54d05e7442356238ae124b6cb2c47cd0a))
+
 ### [1.8.16](https://github.com/realChakrawarti/ingest/compare/v1.8.15...v1.8.16) (2025-07-16)
 
 
