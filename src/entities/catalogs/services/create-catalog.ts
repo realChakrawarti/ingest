@@ -28,6 +28,7 @@ export async function createCatalog(userId: string, meta: ZCatalogMeta) {
         totalPosts: 0,
         totalVideos: 0,
         updatedAt: Timestamp.fromDate(new Date(0)),
+        videos: { day: [], month: [], week: [] },
       },
       description: meta.description,
       title: meta.title,

@@ -83,7 +83,7 @@ export default function PostDetailSheet({
             <>
               <Separator className="my-3" />
               <Linkify
-                className={`text-sm whitespace-pre-wrap font-slalom`}
+                className={`text-sm whitespace-pre-wrap font-outfit`}
                 as="pre"
                 options={{
                   className:

@@ -3,22 +3,23 @@ import { z } from "zod/v4";
 
 import { YouTubeVideoMetadataSchema } from "~/entities/youtube/models";
 
+const TimestampSchema = z.custom<Timestamp>(
+  (value) => value instanceof Timestamp
+);
+
 const ArchiveMetaSchema = z.object({
   description: z.string(),
   title: z.string(),
 });
 
 const ArchiveByIDSchema = ArchiveMetaSchema.extend({
+  updatedAt: z.string(),
   videos: z.array(YouTubeVideoMetadataSchema),
 });
 
 export type ZArchiveMeta = z.infer<typeof ArchiveMetaSchema>;
 
 export type ZArchiveByID = z.infer<typeof ArchiveByIDSchema>;
-
-const TimestampSchema = z.custom<Timestamp>(
-  (value) => value instanceof Timestamp
-);
 
 const UserArchiveDocumentSchema = z.object({
   updatedAt: TimestampSchema,
@@ -59,6 +60,7 @@ const ArchiveValidSchema = z.object({
   pageviews: z.number().optional(),
   thumbnails: z.array(z.string()),
   title: z.string(),
+  totalPosts: z.number().optional(),
   totalVideos: z.number(),
   updatedAt: TimestampSchema,
 });

@@ -66,44 +66,28 @@ export default function PostCard({
       <div className="relative border rounded-md border-spacing-x-2 border-spacing-y-2">
         <div className="absolute right-0 bottom-3 z-50">
           {/* Next & Previous slides */}
-          <div className="absolute right-0 bottom-7 z-50 flex flex-col gap-1">
-            <OverlayTip
-              id="previous-post"
-              className="flex items-center justify-center size-6 rounded-l-md cursor-pointer"
-            >
-              <ArrowUpCircle
-                onClick={() => {
-                  pauseSlides();
-                  sliderRef?.current?.slickNext();
-                }}
-                className="size-4"
-              />
-            </OverlayTip>
-            <OverlayTip
-              id="next-post"
-              className="flex items-center justify-center size-6 rounded-l-md cursor-pointer"
-            >
-              <ArrowDownCircle
-                onClick={() => {
-                  pauseSlides();
-                  sliderRef?.current?.slickPrev();
-                }}
-                className="size-4"
-              />
-            </OverlayTip>
-          </div>
-
-          {/* Play & Pause slides */}
-          <OverlayTip
-            id="slider-play-pause"
-            className="grid place-items-center size-6 rounded-l-md cursor-pointer"
-          >
+          <div className="absolute right-0 bottom-1 z-50 flex flex-col gap-1.5 px-1 [&>*]:cursor-pointer text-muted-foreground">
+            <ArrowUpCircle
+              onClick={() => {
+                pauseSlides();
+                sliderRef?.current?.slickNext();
+              }}
+              className="size-6"
+            />
+            <ArrowDownCircle
+              onClick={() => {
+                pauseSlides();
+                sliderRef?.current?.slickPrev();
+              }}
+              className="size-6"
+            />
+            {/* Play & Pause slides */}
             {slidesPlaying ? (
-              <Pause onClick={pauseSlides} className="size-4" />
+              <Pause onClick={pauseSlides} className="size-6" />
             ) : (
-              <Play onClick={playSlides} className="size-4" />
+              <Play onClick={playSlides} className="size-6" />
             )}
-          </OverlayTip>
+          </div>
         </div>
         <Slider ref={sliderRef} {...settings}>
           {posts?.map((post, idx) => {

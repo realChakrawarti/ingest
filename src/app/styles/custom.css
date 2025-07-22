@@ -4,18 +4,17 @@
 }
 
 @font-face {
-  font-family: slalom;
-  src: url(../../../public/fonts/CaSlalom-Regular.woff2);
+  font-family: outfit;
+  src: url(../../../public/fonts/Outfit.woff2);
 }
 
 .font-hilmar {
   font-family: hilmar;
 }
 
-.font-slalom {
-  font-family: slalom;
+.font-outfit {
+  font-family: outfit;
 }
-
 
 @keyframes scroll {
   0% {
