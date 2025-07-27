@@ -37,7 +37,7 @@ export function FilterSubreddit({ subreddits }: { subreddits: string[] }) {
           className="w-[200px] justify-between"
         >
           {value
-            ? `r/${subreddits.find((framework) => framework === value)}`
+            ? `r/${subreddits.find((subreddit) => subreddit === value)}`
             : "All"}
           <ChevronsUpDown className="opacity-50" />
         </Button>

@@ -18,6 +18,16 @@ export async function middleware(request: NextRequest) {
   const authSessionToken = cookies().get(SESSION_COOKIE_NAME)?.value;
 
   if (!authSessionToken) {
+    if (request.nextUrl.pathname.startsWith("/api/")) {
+      return NxResponse.fail(
+        "No authentication session found.",
+        {
+          code: "NO_AUTH_SESSION_FOUND",
+          details: "No authentication session found.",
+        },
+        401
+      );
+    }
     return NextResponse.redirect(new URL("/", request.url));
   }
   try {
