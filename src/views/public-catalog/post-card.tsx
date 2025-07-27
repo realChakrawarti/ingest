@@ -10,7 +10,8 @@ import {
   Pause,
   Play,
 } from "lucide-react";
-import { useRef, useState } from "react";
+import { useQueryState } from "nuqs";
+import { useEffect, useRef, useState } from "react";
 import Slider, { type Settings } from "react-slick";
 
 import type { ZCatalogSubredditPost } from "~/entities/catalogs/models";
@@ -57,9 +58,20 @@ export default function PostCard({
     sliderRef.current?.slickPause();
   };
 
+  const [subreddit] = useQueryState("subreddit");
+
+  const filterSubreddits = subreddit
+    ? posts.filter((post) => post.subreddit === subreddit)
+    : posts;
+
+  // biome-ignore lint/correctness/useExhaustiveDependencies: Run this effect when subreddit changes
+  useEffect(() => {
+    sliderRef.current?.slickGoTo(0);
+  }, [subreddit]);
+
   return (
     <div
-      className="px-0 md:px-3 min-w-full"
+      className="px-0 md:px-3 min-w-full container"
       style={{ width: `${screenWidth}px` }}
       id="posts-container"
     >
@@ -90,8 +102,8 @@ export default function PostCard({
           </div>
         </div>
         <Slider ref={sliderRef} {...settings}>
-          {posts?.map((post, idx) => {
-            const totalPosts = posts.length;
+          {filterSubreddits?.map((post, idx) => {
+            const totalPosts = filterSubreddits.length;
             const currentTime = Date.now() / 1000;
             const createdAt = getDifferenceString(
               (currentTime - post.postCreatedAt) / 60,
