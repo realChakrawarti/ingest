@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.8.18](https://github.com/realChakrawarti/ingest/compare/v1.8.17...v1.8.18) (2025-07-28)
+
+
+### Features
+
+* add filtering subreddit, update subreddit width ([8a55038](https://github.com/realChakrawarti/ingest/commit/8a5503802695acdd1a20544bf5cf5c67576bb25d))
+* add filtering subreddit, update subreddit width and auth check ([91f0e3f](https://github.com/realChakrawarti/ingest/commit/91f0e3f327c70deb37424694ae5264ff338afb6f))
+
+
+### Bug Fixes
+
+* coderabbit suggestion ([41209a7](https://github.com/realChakrawarti/ingest/commit/41209a7280b26c28647aa12d8eb48c20706e3f62))
+
 ### [1.8.17](https://github.com/realChakrawarti/ingest/compare/v1.8.16...v1.8.17) (2025-07-22)
 
 
