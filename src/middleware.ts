@@ -18,11 +18,17 @@ export async function middleware(request: NextRequest) {
   const authSessionToken = cookies().get(SESSION_COOKIE_NAME)?.value;
 
   if (!authSessionToken) {
-    return NxResponse.fail(
-      "Not authorized.",
-      { code: "UNAUTHORIZED", details: "Not authorized." },
-      401
-    );
+    if (request.nextUrl.pathname.startsWith("/api/")) {
+      return NxResponse.fail(
+        "No authentication session found.",
+        {
+          code: "NO_AUTH_SESSION_FOUND",
+          details: "No authentication session found.",
+        },
+        401
+      );
+    }
+    return NextResponse.redirect(new URL("/", request.url));
   }
   try {
     const decodeUserDetails =
@@ -49,6 +55,10 @@ export async function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
+    // Views
+    "/dashboard",
+    "/catalogs/:catalogId/edit",
+    "/archives/:archiveId/edit",
     // Archives Routes
     "/api/archives",
     "/api/archives/:archiveId/add-video",
