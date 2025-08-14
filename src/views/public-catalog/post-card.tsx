@@ -7,6 +7,7 @@ import {
   CalendarClock,
   ExternalLink,
   MessageSquare,
+  PanelRight,
   Pause,
   Play,
 } from "lucide-react";
@@ -17,6 +18,7 @@ import Slider, { type Settings } from "react-slick";
 import type { ZCatalogSubredditPost } from "~/entities/catalogs/models";
 
 import useScreenWidth from "~/shared/hooks/use-screen-width";
+import { Badge } from "~/shared/ui/badge";
 import formatLargeNumber from "~/shared/utils/format-large-number";
 import { getDifferenceString } from "~/shared/utils/time-diff";
 
@@ -69,27 +71,39 @@ export default function PostCard({
     sliderRef.current?.slickGoTo(0);
   }, [subreddit]);
 
+  const nextSlide = () => sliderRef?.current?.slickNext();
+  const previousSlide = () => sliderRef?.current?.slickPrev();
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [sheetOpen, setSheetOpen] = useState(false);
+
+  const handleSheetOpen = (isOpen: boolean) => {
+    setSheetOpen(isOpen);
+  };
+
+  const currentPost = filterSubreddits[currentIndex];
+
   return (
     <div
-      className="px-0 md:px-3 min-w-full container"
+      // TODO: Add a min height so post navigate and post count elements doesn't overlap
+      className="px-0 md:px-3 min-w-full container min-h-36"
       style={{ width: `${screenWidth}px` }}
       id="posts-container"
     >
-      <div className="relative border rounded-md border-spacing-x-2 border-spacing-y-2">
+      <div className="relative border rounded-md border-spacing-x-2 border-spacing-y-2 h-full">
         <div className="absolute right-0 bottom-3 z-50">
           {/* Next & Previous slides */}
           <div className="absolute right-0 bottom-1 z-50 flex flex-col gap-1.5 px-1 [&>*]:cursor-pointer text-muted-foreground">
             <ArrowUpCircle
               onClick={() => {
                 pauseSlides();
-                sliderRef?.current?.slickNext();
+                nextSlide();
               }}
               className="size-6"
             />
             <ArrowDownCircle
               onClick={() => {
                 pauseSlides();
-                sliderRef?.current?.slickPrev();
+                previousSlide();
               }}
               className="size-6"
             />
@@ -101,7 +115,11 @@ export default function PostCard({
             )}
           </div>
         </div>
-        <Slider ref={sliderRef} {...settings}>
+        <Slider
+          ref={sliderRef}
+          {...settings}
+          beforeChange={(_, newIndex) => setCurrentIndex(newIndex)}
+        >
           {filterSubreddits?.map((post, idx) => {
             const totalPosts = filterSubreddits.length;
             const currentTime = Date.now() / 1000;
@@ -145,7 +163,13 @@ export default function PostCard({
                   </div>
                   <div className="w-[90%] flex items-center gap-2">
                     <div className="flex-1 flex items-center gap-2">
-                      <PostDetailSheet post={post} />
+                      <Badge
+                        onClick={() => setSheetOpen(true)}
+                        className="cursor-pointer flex items-center gap-1"
+                      >
+                        <PanelRight className="size-3" />
+                        Expand
+                      </Badge>
                       <p
                         className="tracking-wide hover:text-primary/80 text-foreground
         line-clamp-2 text-sm"
@@ -186,6 +210,14 @@ export default function PostCard({
             );
           })}
         </Slider>
+
+        <PostDetailSheet
+          sheetOpen={sheetOpen}
+          handleSheetOpen={handleSheetOpen}
+          nextSlide={nextSlide}
+          previousSlide={previousSlide}
+          post={currentPost}
+        />
       </div>
     </div>
   );

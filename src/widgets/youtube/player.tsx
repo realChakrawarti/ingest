@@ -175,6 +175,7 @@ export default function YoutubePlayer(
       onClick={loadIFrameElement}
     >
       <YouTubeEmbed
+        style={`background-image: url(${video.videoThumbnail})`}
         params={enableJsApi ? `${iframeParams}&enablejsapi=1` : iframeParams}
         videoid={videoId}
         js-api={enableJsApi}

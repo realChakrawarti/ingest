@@ -1,5 +1,11 @@
 import Linkify from "linkify-react";
-import { ArrowUp, ExternalLink, MessageSquare, PanelRight } from "lucide-react";
+import {
+  ArrowLeftCircle,
+  ArrowRightCircle,
+  ArrowUp,
+  ExternalLink,
+  MessageSquare,
+} from "lucide-react";
 
 import type { ZCatalogSubredditPost } from "~/entities/catalogs/models";
 
@@ -11,7 +17,6 @@ import {
   SheetDescription,
   SheetHeader,
   SheetTitle,
-  SheetTrigger,
 } from "~/shared/ui/sheet";
 import formatLargeNumber from "~/shared/utils/format-large-number";
 
@@ -20,17 +25,19 @@ import { OutLink } from "~/widgets/out-link";
 import PostComments from "./post-comments";
 export default function PostDetailSheet({
   post,
+  nextSlide,
+  previousSlide,
+  sheetOpen,
+  handleSheetOpen,
 }: {
   post: ZCatalogSubredditPost;
+  nextSlide: () => void;
+  previousSlide: () => void;
+  sheetOpen: boolean;
+  handleSheetOpen: (isOpen: boolean) => void;
 }) {
   return (
-    <Sheet>
-      <SheetTrigger asChild>
-        <Badge className="cursor-pointer flex items-center gap-1">
-          <PanelRight className="size-3" />
-          Expand
-        </Badge>
-      </SheetTrigger>
+    <Sheet open={sheetOpen} onOpenChange={handleSheetOpen}>
       <SheetContent className="overflow-y-auto w-full md:max-w-[450px]">
         <SheetHeader className="text-left">
           <SheetTitle>
@@ -43,12 +50,24 @@ export default function PostDetailSheet({
             </OutLink>
           </SheetTitle>
           <SheetDescription>
-            <div className="flex items-center gap-2 mt-2 text-sm text-muted-foreground">
-              <ArrowUp className="size-4" />
-              <span>{formatLargeNumber(post.postVotes)} votes</span>
-              <span>•</span>
-              <MessageSquare className="size-4" />
-              <span>{post.postCommentsCount} comments</span>
+            <div className="flex items-center justify-between mt-2 text-sm text-muted-foreground">
+              <div className="flex items-center gap-2">
+                <ArrowUp className="size-4" />
+                <span>{formatLargeNumber(post.postVotes)} votes</span>
+                <span>•</span>
+                <MessageSquare className="size-4" />
+                <span>{post.postCommentsCount} comments</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <ArrowLeftCircle
+                  className="size-5 cursor-pointer "
+                  onClick={() => previousSlide()}
+                />
+                <ArrowRightCircle
+                  className="size-5 cursor-pointer"
+                  onClick={() => nextSlide()}
+                />
+              </div>
             </div>
             {post.postDomain !== `self.${post.subreddit}` &&
               post.postDomain !== "i.redd.it" && (
@@ -97,7 +116,11 @@ export default function PostDetailSheet({
             </>
           ) : null}
           <Separator className="my-3" />
-          <PostComments subreddit={post.subreddit} postId={post.postId} />
+          <PostComments
+            key={post.postId}
+            subreddit={post.subreddit}
+            postId={post.postId}
+          />
         </div>
       </SheetContent>
     </Sheet>
