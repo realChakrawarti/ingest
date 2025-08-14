@@ -4,10 +4,15 @@ import { getFirestore } from "firebase/firestore";
 import { client } from "~/shared/lib/firebase/client";
 
 // Initialize Firestore
-export const firestore = getFirestore(client.app);
+const firestore = getFirestore(client.app);
 
 // Initalize Google Authentication Provider
-export const googleProvider = new GoogleAuthProvider();
+const googleProvider = new GoogleAuthProvider();
+googleProvider.setCustomParameters({
+  prompt: "select_account",
+});
 
 // Initialize GitHub Authentication Provider
-export const githubProvider = new GithubAuthProvider();
+const githubProvider = new GithubAuthProvider();
+
+export { firestore, googleProvider, githubProvider };
