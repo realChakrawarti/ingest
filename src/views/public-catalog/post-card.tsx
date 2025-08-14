@@ -84,7 +84,6 @@ export default function PostCard({
 
   return (
     <div
-      // TODO: Add a min height so post navigate and post count elements doesn't overlap
       className="px-0 md:px-3 min-w-full container min-h-36"
       style={{ width: `${screenWidth}px` }}
       id="posts-container"
