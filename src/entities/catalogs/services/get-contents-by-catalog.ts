@@ -213,7 +213,7 @@ export async function getContentsByCatalog(
 
     const videoIds = videoList.map((video) => video.videoId);
 
-    const videoDetails = await addVideoDuration(videoIds);
+    const videoDetails = await addVideoMetaInformation(videoIds);
 
     // Filter by day (24 hour), week (7 days) and month (30 days)
     for (const video of videoList) {
@@ -396,6 +396,7 @@ async function getVideosFromCatalogItem(
         channelId: item.snippet.channelId,
         channelLogo: channelLogo,
         channelTitle: item.snippet.channelTitle,
+        defaultVideoLanguage: "",
         publishedAt: item.contentDetails.videoPublishedAt,
         videoDescription: item.snippet.description,
         videoId: item.contentDetails.videoId,
@@ -436,9 +437,9 @@ function chunkVideoIds(
   return chunkVideoIds(videoIds, chunkSize, result);
 }
 
-async function addVideoDuration(videoIds: string[]) {
+async function addVideoMetaInformation(videoIds: string[]) {
   const chunkedVideoIds = chunkVideoIds(videoIds, 50);
-  const videoIdsDuration = new Map();
+  const videoMetaInformation = new Map();
 
   const videoPromises = chunkedVideoIds.map((item) =>
     fetch(YOUTUBE_VIDEOS_DATA(item))
@@ -449,17 +450,18 @@ async function addVideoDuration(videoIds: string[]) {
   for (const result of results) {
     const data = await result.json();
     data.items.forEach((item: any) => {
-      const videoContentInfo: ZVideoContentInfo = {
+      const videoContentInfo = {
+        defaultVideoLanguage: item.snippet.defaultAudioLanguage,
         videoAvailability: item.snippet.liveBroadcastContent,
         videoComments: parseInt(item.statistics.commentCount || "0"),
         videoDuration: youtubeDurationToSeconds(item.contentDetails.duration),
         videoLikes: parseInt(item.statistics.likeCount || "0"),
         videoViews: parseInt(item.statistics.viewCount || "0"),
       } satisfies ZVideoContentInfo;
-      videoIdsDuration.set(item.id, videoContentInfo);
+      videoMetaInformation.set(item.id, videoContentInfo);
     });
   }
-  return videoIdsDuration;
+  return videoMetaInformation;
 }
 
 function youtubeDurationToSeconds(duration: string) {

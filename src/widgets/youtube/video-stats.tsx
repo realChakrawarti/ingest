@@ -14,7 +14,10 @@ export default function VideoStats({
   videoLikes,
   videoComments,
   videoId,
-}: Omit<ZVideoContentInfo, "videoDuration" | "videoAvailability"> & {
+}: Omit<
+  ZVideoContentInfo,
+  "videoDuration" | "videoAvailability" | "defaultVideoLanguage"
+> & {
   videoId: string;
 }) {
   const activePlayerRef = useActivePlayerRef();

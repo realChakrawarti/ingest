@@ -214,7 +214,13 @@ function RemoveWatchLater({
   return null;
 }
 
-function DownloadVideo({ videoId }: { videoId: string }) {
+function DownloadVideo({
+  videoId,
+  cobaltYTInstances,
+}: {
+  videoId: string;
+  cobaltYTInstances: string[];
+}) {
   function handleDownload(id: string) {
     const videoLink = `https://www.youtube.com/watch?v=${id}`;
 
@@ -222,13 +228,16 @@ function DownloadVideo({ videoId }: { videoId: string }) {
     toast("Video link has copied to the clipboard.", {
       description: (
         <p>
-          Opening <OutLink href="https://cobalt.tools">cobalt.tools</OutLink> in
-          a new tab. Please paste the video link.
+          Opening a valid{" "}
+          <OutLink href={cobaltYTInstances[0]}>
+            cobalt.tools community instance
+          </OutLink>{" "}
+          in a new tab. Please paste the video link.
         </p>
       ),
     });
     setTimeout(() => {
-      window.open("https://cobalt.tools", "_blank");
+      window.open(cobaltYTInstances[0], "_blank");
     }, 1500);
   }
 

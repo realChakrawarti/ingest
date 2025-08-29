@@ -102,7 +102,10 @@ export function VideoCategory({
   videoComments,
   videoId,
   publishedAt,
-}: Omit<ZVideoContentInfo, "videoDuration" | "videoAvailability"> & {
+}: Omit<
+  ZVideoContentInfo,
+  "videoDuration" | "videoAvailability" | "defaultVideoLanguage"
+> & {
   videoId: string;
   publishedAt: string;
 }) {

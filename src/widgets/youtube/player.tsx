@@ -12,8 +12,6 @@ import Log from "~/shared/utils/terminal-logger";
 
 import { useVideoTracking } from "./use-video-tracking";
 
-const iframeParams = `rel=0&playsinline=1&origin=${appConfig.url}`;
-
 function getPlayingState(
   playerState: Record<string, number>,
   playingState: number
@@ -41,6 +39,23 @@ async function playerControl(
   });
 
   iframe.contentWindow?.postMessage(payload, "*");
+}
+
+function getPlayerParams(
+  enabledJsApi: boolean,
+  audioLanguage: string | undefined
+) {
+  let iframeParams = `rel=0&playsinline=1&origin=${appConfig.url}`;
+
+  if (enabledJsApi) {
+    iframeParams += "&enablejsapi=1";
+  }
+
+  if (audioLanguage) {
+    iframeParams += `hl=${audioLanguage}`;
+  }
+
+  return iframeParams;
 }
 
 // TODO: picture-in-picture - https://codepen.io/jh3y/pen/wBBOdNv
@@ -163,6 +178,8 @@ export default function YoutubePlayer(
     };
   }, [_onStateChange, stopTracking]);
 
+  const playerParams = getPlayerParams(enableJsApi, video.defaultVideoLanguage);
+
   return (
     <div
       tabIndex={0}
@@ -176,7 +193,7 @@ export default function YoutubePlayer(
     >
       <YouTubeEmbed
         style={`background-image: url(${video.videoThumbnail})`}
-        params={enableJsApi ? `${iframeParams}&enablejsapi=1` : iframeParams}
+        params={playerParams}
         videoid={videoId}
         js-api={enableJsApi}
       />
