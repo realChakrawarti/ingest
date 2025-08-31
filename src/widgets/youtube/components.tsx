@@ -229,15 +229,15 @@ function DownloadVideo({
       description: (
         <p>
           Opening a valid{" "}
-          <OutLink href={cobaltYTInstances[0]}>
+          <OutLink href={`https://${cobaltYTInstances[0]}`}>
             cobalt.tools community instance
           </OutLink>{" "}
-          in a new tab. Please paste the video link.
+          in a new tab. Please paste the video link there.
         </p>
       ),
     });
     setTimeout(() => {
-      window.open(cobaltYTInstances[0], "_blank");
+      window.open(`https://${cobaltYTInstances[0]}`, "_blank");
     }, 1500);
   }
 

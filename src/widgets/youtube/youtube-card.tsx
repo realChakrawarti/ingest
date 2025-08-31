@@ -49,7 +49,7 @@ type CobaltInstances = {
 
 async function getCobaltYTInstances() {
   try {
-    const result = await fetch("https://cobalt.directory/api.json");
+    const result = await fetch("https://cobalt.directory/api_frontends.json");
     const all = (await result.json()) as CobaltInstances;
     return all.youtube;
   } catch (_err) {
