@@ -22,11 +22,13 @@ export default function ShowCardOption({
   removeWatchLater,
   markWatched,
   video,
+  cobaltYTInstances,
 }: Pick<
   YouTubeCardOptions,
   "addWatchLater" | "removeWatchLater" | "markWatched"
 > & {
   video: ZVideoMetadataCompatible;
+  cobaltYTInstances: string[];
 }) {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -58,8 +60,11 @@ export default function ShowCardOption({
             videoId={video.videoId}
             removeWatchLater={removeWatchLater}
           />
-          {video?.videoAvailability === "none" ? (
-            <DownloadVideo videoId={video.videoId} />
+          {video?.videoAvailability === "none" && cobaltYTInstances.length ? (
+            <DownloadVideo
+              cobaltYTInstances={cobaltYTInstances}
+              videoId={video.videoId}
+            />
           ) : null}
         </PopoverContent>
       </Popover>

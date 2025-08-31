@@ -84,11 +84,11 @@ export default function PostCard({
 
   return (
     <div
-      className="px-0 md:px-3 min-w-full container min-h-36"
+      className="px-0 md:px-3 min-w-full container"
       style={{ width: `${screenWidth}px` }}
       id="posts-container"
     >
-      <div className="relative border rounded-md border-spacing-x-2 border-spacing-y-2 h-full">
+      <div className="relative border rounded-md border-spacing-x-2 border-spacing-y-2 h-full min-h-44">
         <div className="absolute right-0 bottom-3 z-50">
           {/* Next & Previous slides */}
           <div className="absolute right-0 bottom-1 z-50 flex flex-col gap-1.5 px-1 [&>*]:cursor-pointer text-muted-foreground">
