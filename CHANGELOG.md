@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.9.3](https://github.com/realChakrawarti/ingest/compare/v1.9.2...v1.9.3) (2025-08-31)
+
+
+### Bug Fixes
+
+* include `defaultVideoLanguage` in archive videos data ([f9be6cf](https://github.com/realChakrawarti/ingest/commit/f9be6cf2b31b4568ef04f0ba472a773d5c55fba7))
+
 ### [1.9.2](https://github.com/realChakrawarti/ingest/compare/v1.9.1...v1.9.2) (2025-08-31)
 
 
