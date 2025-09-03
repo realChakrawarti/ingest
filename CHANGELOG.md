@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.9.4](https://github.com/realChakrawarti/ingest/compare/v1.9.3...v1.9.4) (2025-09-03)
+
+
+### Bug Fixes
+
+* missing `&hl` in player params ([a5cecb3](https://github.com/realChakrawarti/ingest/commit/a5cecb31cf27bff0a8c2a04abd03cbf7efb34d44))
+
 ### [1.9.3](https://github.com/realChakrawarti/ingest/compare/v1.9.2...v1.9.3) (2025-08-31)
 
 
