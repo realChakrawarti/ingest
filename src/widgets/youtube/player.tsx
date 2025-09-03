@@ -52,7 +52,7 @@ function getPlayerParams(
   }
 
   if (audioLanguage) {
-    iframeParams += `hl=${audioLanguage}`;
+    iframeParams += `&hl=${audioLanguage}`;
   }
 
   return iframeParams;
