@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.10.0](https://github.com/realChakrawarti/ingest/compare/v1.9.5...v1.10.0) (2025-09-10)
+
+### [1.9.5](https://github.com/realChakrawarti/ingest/compare/v1.9.4...v1.9.5) (2025-09-10)
+
+
+### Bug Fixes
+
+* set `defaultVideoLanguage` to empty string when YouTube API returns undefined ([e4dfbf9](https://github.com/realChakrawarti/ingest/commit/e4dfbf9c5f98e1d91fbce254aa66b4b3a545b62f))
+
 ### [1.9.4](https://github.com/realChakrawarti/ingest/compare/v1.9.3...v1.9.4) (2025-09-03)
 
 

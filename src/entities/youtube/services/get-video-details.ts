@@ -12,7 +12,7 @@ export async function getVideoDetails(videoIdParam: string) {
   const data: ZYouTubeVideoMetadata = {
     channelId: videoData.channelId,
     channelTitle: videoData.channelTitle,
-    defaultVideoLanguage: videoData.defaultAudioLanguage,
+    defaultVideoLanguage: videoData.defaultAudioLanguage ?? "",
     publishedAt: videoData.publishedAt,
     videoDescription: videoData.description,
     videoId: videoIdParam,
