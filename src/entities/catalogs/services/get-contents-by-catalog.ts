@@ -451,7 +451,7 @@ async function addVideoMetaInformation(videoIds: string[]) {
     const data = await result.json();
     data.items.forEach((item: any) => {
       const videoContentInfo = {
-        defaultVideoLanguage: item.snippet.defaultAudioLanguage,
+        defaultVideoLanguage: item.snippet.defaultAudioLanguage ?? "",
         videoAvailability: item.snippet.liveBroadcastContent,
         videoComments: parseInt(item.statistics.commentCount || "0"),
         videoDuration: youtubeDurationToSeconds(item.contentDetails.duration),
