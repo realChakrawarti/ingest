@@ -11,3 +11,5 @@ export const Regex = {
   YOUTUBE_VIDEO_LINK:
     /^.*(?:(?:youtu\.be\/|v\/|vi\/|u\/\w\/|embed\/|shorts\/)|(?:(?:watch)?\?v(?:i)?=|&v(?:i)?=))([^#&?]*).*/,
 };
+
+export const LOCAL_USER_SETTINGS = "local-user-settings";

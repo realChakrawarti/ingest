@@ -46,12 +46,10 @@ import { cn } from "~/shared/utils/tailwind-merge";
 
 import AuthButton from "./auth-buttons";
 import Feedback from "./feedback";
+import { UserSettings } from "./user-settings";
 
 export default function AppSidebar() {
   const { user, logout } = useAuth();
-  const pathname = usePathname();
-
-  const catalogId = pathname.includes("/c/") && pathname.split("/c/")[1];
 
   return (
     <Sidebar className="border-r">
@@ -76,6 +74,7 @@ export default function AppSidebar() {
               <p className="tracking-wide">Logout</p>
             </Button>
           ) : null}
+          <UserSettings />
           <Feedback />
         </div>
       </SidebarFooter>

@@ -48,6 +48,7 @@ const ToggleGroupItem = React.forwardRef<
           size: context.size || size,
           variant: context.variant || variant,
         }),
+        "text-sm tracking-wide",
         className
       )}
       {...props}
