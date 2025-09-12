@@ -2,9 +2,10 @@
 
 import { useEffect, useState } from "react";
 
-import appConfig from "~/shared/app-config";
+import { useLocalStorage } from "~/shared/hooks/use-local-storage";
 import { indexedDB } from "~/shared/lib/api/dexie";
-import type { History } from "~/shared/types-schema/types";
+import { LOCAL_USER_SETTINGS } from "~/shared/lib/constants";
+import type { History, TUserSettings } from "~/shared/types-schema/types";
 
 import GridContainer from "~/widgets/grid-container";
 import {
@@ -16,6 +17,10 @@ import YouTubeCard from "~/widgets/youtube/youtube-card";
 
 export default function ContinueWatching() {
   const [history, setHistory] = useState<History[]>([]);
+  const [localUserSettings] = useLocalStorage<TUserSettings>(
+    LOCAL_USER_SETTINGS,
+    null
+  );
 
   useEffect(() => {
     const getWatchHistory = async () => {
@@ -26,7 +31,7 @@ export default function ContinueWatching() {
           .sortBy("updatedAt")) ?? [];
 
       const filteredIndexedHistory = indexedHistory.filter(
-        (item) => item.completed < appConfig.watchedPercentage
+        (item) => item.completed < localUserSettings.watchedPercentage
       );
       setHistory(filteredIndexedHistory);
     };

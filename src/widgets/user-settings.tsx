@@ -1,10 +1,23 @@
 "use client";
 
-import { Settings } from "lucide-react";
+import { Check, ChevronsUpDown, Settings } from "lucide-react";
+import { useState } from "react";
+import { toast } from "sonner";
 
+import appConfig from "~/shared/app-config";
 import { useLocalStorage } from "~/shared/hooks/use-local-storage";
-import { LOCAL_USER_SETTINGS } from "~/shared/lib/constants";
+import { indexedDB } from "~/shared/lib/api/dexie";
+import { LOCAL_USER_SETTINGS, videoLanguages } from "~/shared/lib/constants";
+import type { TUserSettings } from "~/shared/types-schema/types";
 import { Button } from "~/shared/ui/button";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "~/shared/ui/command";
 import {
   Dialog,
   DialogContent,
@@ -15,6 +28,7 @@ import {
 } from "~/shared/ui/dialog";
 import { Input } from "~/shared/ui/input";
 import { Label } from "~/shared/ui/label";
+import { Popover, PopoverContent, PopoverTrigger } from "~/shared/ui/popover";
 import {
   Select,
   SelectContent,
@@ -22,22 +36,54 @@ import {
   SelectTrigger,
   SelectValue,
 } from "~/shared/ui/select";
+import { Separator } from "~/shared/ui/separator";
+import { Slider } from "~/shared/ui/slider";
 import { ToggleGroup, ToggleGroupItem } from "~/shared/ui/toggle-group";
 import { cn } from "~/shared/utils/tailwind-merge";
 
-export interface TUserSettings {
-  playbackRate: number;
-  historyDays: number;
-  syncId: string;
-}
+const initialSettings = {
+  historyDays: 15,
+  playbackRate: 1,
+  syncId: "",
+  videoLanguage: "",
+  watchedPercentage: appConfig.watchedPercentage,
+};
 
 export function UserSettings() {
-  const [localUserSettings, setlocalUserSettings] =
-    useLocalStorage<TUserSettings>(LOCAL_USER_SETTINGS, {
-      historyDays: 15,
-      playbackRate: 1,
-      syncId: "",
-    });
+  const [_, setlocalUserSettings] = useLocalStorage<TUserSettings>(
+    LOCAL_USER_SETTINGS,
+    initialSettings
+  );
+
+  const [userSettings, setUserSettings] = useState<TUserSettings>(
+    JSON.parse(localStorage.getItem(LOCAL_USER_SETTINGS) ?? "{}")
+  );
+
+  function handleLocalChange(key: keyof TUserSettings, value: any) {
+    setUserSettings((prev) => ({ ...prev, [key]: value }));
+  }
+
+  function resetSettings() {
+    setlocalUserSettings(initialSettings);
+    toast("Global settings has been reset.");
+    window.location.reload();
+  }
+
+  function applySettings() {
+    setlocalUserSettings(userSettings);
+    toast("Global settings has been updated.");
+    window.location.reload();
+  }
+
+  async function clearHistory() {
+    await indexedDB["history"].clear();
+    toast("Watch history has been cleared.");
+  }
+
+  async function clearWatchLater() {
+    await indexedDB["watch-later"].clear();
+    toast("Watch later has been cleared.");
+  }
 
   return (
     <section>
@@ -62,46 +108,62 @@ export function UserSettings() {
               Personalize your global experience
             </DialogDescription>
           </DialogHeader>
-
           <form className="flex flex-col gap-3">
-            <div className="grid grid-cols-[125px_1fr] items-center gap-2 justify-start">
-              <Label htmlFor="playback-rate" className="text-base text-primary">
+            <div className="grid grid-cols-1 md:grid-cols-[140px_1fr] items-center gap-2 justify-start">
+              <Label htmlFor="playback-rate" className=" text-primary">
                 Playback Rate
               </Label>
               <ToggleGroup
                 id="playback-rate"
                 type="single"
-                value={localUserSettings?.playbackRate?.toString()}
+                value={userSettings?.playbackRate?.toString()}
                 onValueChange={(value) =>
                   value &&
-                  setlocalUserSettings({
-                    ...localUserSettings,
-                    playbackRate: Number.parseFloat(value),
-                  })
+                  handleLocalChange("playbackRate", Number.parseFloat(value))
                 }
                 className="flex gap-1 items-center"
               >
-                <ToggleGroupItem value="0.5">0.5x</ToggleGroupItem>
-                <ToggleGroupItem value="0.75">0.75x</ToggleGroupItem>
-                <ToggleGroupItem value="1">1.0x</ToggleGroupItem>
-                <ToggleGroupItem value="1.25">1.25x</ToggleGroupItem>
-                <ToggleGroupItem value="1.5">1.5x</ToggleGroupItem>
-                <ToggleGroupItem value="1.75">1.75x</ToggleGroupItem>
-                <ToggleGroupItem value="2">2x</ToggleGroupItem>
+                <ToggleGroupItem className="p-1 h-6" value="0.5">
+                  0.5x
+                </ToggleGroupItem>
+                <ToggleGroupItem className="p-1 h-6" value="0.75">
+                  0.75x
+                </ToggleGroupItem>
+                <ToggleGroupItem className="p-1 h-6" value="1">
+                  1.0x
+                </ToggleGroupItem>
+                <ToggleGroupItem className="p-1 h-6" value="1.25">
+                  1.25x
+                </ToggleGroupItem>
+                <ToggleGroupItem className="p-1 h-6" value="1.5">
+                  1.5x
+                </ToggleGroupItem>
+                <ToggleGroupItem className="p-1 h-6" value="1.75">
+                  1.75x
+                </ToggleGroupItem>
+                <ToggleGroupItem className="p-1 h-6" value="2">
+                  2x
+                </ToggleGroupItem>
               </ToggleGroup>
             </div>
+            <div className="grid grid-cols-1 md:grid-cols-[140px_1fr] items-center gap-2 justify-start">
+              <Label className=" text-primary" htmlFor="audio-language">
+                Audio Language
+              </Label>
+              <VideoLanguagesCombo
+                handleLocalChange={handleLocalChange}
+                localUserSettings={userSettings}
+              />
+            </div>
 
-            <div className="grid grid-cols-[125px_1fr] items-center gap-2 justify-start">
-              <Label className="text-base text-primary" htmlFor="history-days">
+            <div className="grid grid-cols-1 md:grid-cols-[140px_1fr] items-center gap-2 justify-start">
+              <Label className=" text-primary" htmlFor="history-days">
                 Keep History
               </Label>
               <Select
-                value={localUserSettings?.historyDays?.toString()}
+                value={userSettings?.historyDays?.toString()}
                 onValueChange={(value) =>
-                  setlocalUserSettings({
-                    ...localUserSettings,
-                    historyDays: value,
-                  })
+                  handleLocalChange("historyDays", value)
                 }
               >
                 <SelectTrigger id="history-days" className="w-auto">
@@ -117,26 +179,136 @@ export function UserSettings() {
               </Select>
             </div>
 
-            <div className="grid grid-cols-[125px_1fr] items-center gap-2 justify-start">
-              <Label className="text-base text-primary" htmlFor="sync-id">
-                Sync ID <sup>soon</sup>
+            <div className="grid grid-cols-1 md:grid-cols-[140px_1fr] items-center gap-2 justify-start">
+              <Label className=" text-primary" htmlFor="sync-id">
+                Sync ID <sup className="text-white">soon</sup>
               </Label>
               <Input
                 disabled
                 id="sync-id"
-                value={localUserSettings.syncId}
-                onChange={(e) =>
-                  setlocalUserSettings({
-                    ...localUserSettings,
-                    syncId: e.target.value,
-                  })
-                }
+                value={userSettings.syncId}
+                onChange={(e) => handleLocalChange("syncId", e.target.value)}
                 placeholder="Enter SyncID for cross-device synchronization"
               />
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-[140px_1fr] items-center gap-2 justify-start">
+              <Label className=" text-primary" htmlFor="watched-percentage">
+                Mark as Watched ({userSettings.watchedPercentage}%)
+              </Label>
+              <Slider
+                onValueChange={(value) =>
+                  handleLocalChange("watchedPercentage", value[0])
+                }
+                id="watched-percentage"
+                value={[userSettings.watchedPercentage]}
+                min={80}
+                max={100}
+                step={5}
+              />
+            </div>
+            <Separator orientation="horizontal" />
+            <div className="grid grid-cols-1 md:grid-cols-[140px_1fr] items-center gap-2 justify-start">
+              <Label htmlFor="clear-watch-later" className="text-primary">
+                Clear all Watch later
+              </Label>
+              <Button
+                variant="outline"
+                id="clear-watch-later"
+                onClick={clearWatchLater}
+              >
+                Clear
+              </Button>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-[140px_1fr] items-center gap-2 justify-start">
+              <Label htmlFor="clear-history" className="text-primary">
+                Clear history records
+              </Label>
+              <Button
+                variant="outline"
+                id="clear-history"
+                onClick={clearHistory}
+              >
+                Clear
+              </Button>
+            </div>
+            <Separator orientation="horizontal" />
+            <div className="grid grid-cols-[1fr_1fr] items-center gap-2 justify-start">
+              <Button onClick={resetSettings}>Reset</Button>
+              <Button onClick={applySettings}>Apply</Button>
             </div>
           </form>
         </DialogContent>
       </Dialog>
     </section>
+  );
+}
+
+export function VideoLanguagesCombo({
+  localUserSettings,
+  handleLocalChange,
+}: {
+  localUserSettings: TUserSettings;
+  handleLocalChange: (key: keyof TUserSettings, value: any) => void;
+}) {
+  const [open, setOpen] = useState(false);
+
+  const localLanguage = localUserSettings.videoLanguage;
+
+  return (
+    <div className="w-full">
+      <Popover open={open} onOpenChange={setOpen}>
+        <PopoverTrigger asChild>
+          <Button
+            variant="outline"
+            // biome-ignore lint/a11y/useSemanticElements: ShadCN semantics
+            role="combobox"
+            aria-expanded={open}
+            className="w-full justify-between"
+          >
+            {localLanguage
+              ? videoLanguages.find(
+                  (language) => language.value === localLanguage
+                )?.label
+              : "Default"}
+            <ChevronsUpDown className="opacity-50" />
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent className="w-full p-0">
+          <Command className="w-full">
+            <CommandInput placeholder="Search language..." className="h-9" />
+            <CommandList>
+              <CommandEmpty>No such language found.</CommandEmpty>
+              <CommandGroup>
+                {videoLanguages.map((language) => (
+                  <CommandItem
+                    key={language.value}
+                    value={language.value}
+                    onSelect={(currentValue) => {
+                      if (currentValue === localLanguage) {
+                        handleLocalChange("videoLanguage", "zxx");
+                      } else {
+                        handleLocalChange("videoLanguage", currentValue);
+                      }
+
+                      setOpen(false);
+                    }}
+                  >
+                    {language.label}
+                    <Check
+                      className={cn(
+                        "ml-auto",
+                        localLanguage === language.value
+                          ? "opacity-100"
+                          : "opacity-0"
+                      )}
+                    />
+                  </CommandItem>
+                ))}
+              </CommandGroup>
+            </CommandList>
+          </Command>
+        </PopoverContent>
+      </Popover>
+    </div>
   );
 }

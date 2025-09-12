@@ -9,10 +9,10 @@ import appConfig from "~/shared/app-config";
 import { useLocalStorage } from "~/shared/hooks/use-local-storage";
 import { indexedDB } from "~/shared/lib/api/dexie";
 import { LOCAL_USER_SETTINGS } from "~/shared/lib/constants";
+import type { TUserSettings } from "~/shared/types-schema/types";
 import { cn } from "~/shared/utils/tailwind-merge";
 import Log from "~/shared/utils/terminal-logger";
 
-import type { TUserSettings } from "../user-settings";
 import { useVideoTracking } from "./use-video-tracking";
 
 function getPlayingState(
@@ -46,7 +46,8 @@ async function playerControl(
 
 function getPlayerParams(
   enabledJsApi: boolean,
-  audioLanguage: string | undefined
+  audioLanguage: string | undefined,
+  localVideoLanguageSettings: string
 ) {
   let iframeParams = `rel=0&playsinline=1&origin=${appConfig.url}`;
 
@@ -54,7 +55,10 @@ function getPlayerParams(
     iframeParams += "&enablejsapi=1";
   }
 
-  if (audioLanguage) {
+  // Global settings video language takes precedence over deafult videoLanguage
+  if (localVideoLanguageSettings) {
+    iframeParams += `&hl=${localVideoLanguageSettings}`;
+  } else if (audioLanguage) {
     iframeParams += `&hl=${audioLanguage}`;
   }
 
@@ -197,7 +201,11 @@ export default function YoutubePlayer(
     };
   }, [_onStateChange, stopTracking]);
 
-  const playerParams = getPlayerParams(enableJsApi, video.defaultVideoLanguage);
+  const playerParams = getPlayerParams(
+    enableJsApi,
+    video.defaultVideoLanguage,
+    localUserSettings.videoLanguage
+  );
 
   return (
     <div

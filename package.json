@@ -28,6 +28,7 @@
     "@next/third-parties": "^14.2.24",
     "canvas-confetti": "^1.9.3",
     "class-variance-authority": "^0.7.1",
+    "cloudflare": "^5.0.0",
     "clsx": "^2.1.1",
     "cmdk": "^1.1.1",
     "dexie": "^4.0.11",

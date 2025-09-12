@@ -28,5 +28,13 @@ type FavoriteData = {
   description: string;
 };
 
+export interface TUserSettings {
+  playbackRate: number;
+  historyDays: number;
+  syncId: string;
+  videoLanguage: string;
+  watchedPercentage: number;
+}
+
 export type { FavoriteData };
 export type TitleDescriptionType = z.infer<typeof TitleDescriptionSchema>;

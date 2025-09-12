@@ -22,8 +22,8 @@ export function GitHubStargazer({
     `https://api.github.com/repos/${owner}/${repo}`,
     (url) => fetch(url).then((res) => res.json()),
     {
-      refreshInterval: 10 * 60 * 1000,
-      revalidateOnFocus: false, // 10 minutes
+      refreshInterval: 10 * 60 * 1000, // 10 minutes
+      revalidateOnFocus: false,
     }
   );
 

@@ -1,6 +1,9 @@
 import { z } from "zod/v4";
 
 const envVariables = z.object({
+  CLOUDFLARE_ACCOUNT_ID: z.string(),
+  CLOUDFLARE_API_TOKEN: z.string(),
+  CLOUDFLARE_KV_NAMESPACE_ID: z.string(),
   FIREBASE_CLIENT_EMAIL: z.string(),
   FIREBASE_PRIVATE_KEY: z.string(),
   FIREBASE_PROJECT_ID: z.string(),
