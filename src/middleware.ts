@@ -78,5 +78,8 @@ export const config = {
     "/api/youtube/playlists",
     // User Routes
     "/api/logout",
+    // User session
+    "/api/session",
+    "/api/session/user",
   ],
 };

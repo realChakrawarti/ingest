@@ -1,10 +1,12 @@
 "use client";
 
 import { Check, ChevronsUpDown, Settings } from "lucide-react";
-import { useState } from "react";
+import { type ChangeEvent, useState } from "react";
 import { toast } from "sonner";
+import useSWR from "swr";
 
 import appConfig from "~/shared/app-config";
+import useDebounce from "~/shared/hooks/use-debounce";
 import { useLocalStorage } from "~/shared/hooks/use-local-storage";
 import { indexedDB } from "~/shared/lib/api/dexie";
 import { LOCAL_USER_SETTINGS, videoLanguages } from "~/shared/lib/constants";
@@ -49,10 +51,26 @@ const initialSettings = {
   watchedPercentage: appConfig.watchedPercentage,
 };
 
+async function checkSyncId(syncId: string) {
+  const result = await fetch(`/session/valid?syncId=${syncId}`);
+  return result.json();
+}
+
 export function UserSettings() {
   const [_, setlocalUserSettings] = useLocalStorage<TUserSettings>(
     LOCAL_USER_SETTINGS,
     initialSettings
+  );
+
+  const [syncId, setSyncId] = useState<string>("");
+  const debouncedSyncId = useDebounce(syncId, 1000);
+
+  const { data, isLoading, mutate } = useSWR(
+    null,
+    () => checkSyncId(debouncedSyncId),
+    {
+      revalidateOnMount: false,
+    }
   );
 
   const [userSettings, setUserSettings] = useState<TUserSettings>(
@@ -85,6 +103,15 @@ export function UserSettings() {
     toast("Watch later has been cleared.");
   }
 
+  async function validateSyncId(e: ChangeEvent<HTMLInputElement>) {
+    setSyncId(e.target.value);
+
+    if (e.target.value.length === 16) {
+      await mutate();
+      console.log(">>>", data);
+    }
+  }
+
   return (
     <section>
       <Dialog>
@@ -109,6 +136,20 @@ export function UserSettings() {
             </DialogDescription>
           </DialogHeader>
           <form className="flex flex-col gap-3">
+            <div className="grid grid-cols-1 md:grid-cols-[140px_1fr] items-center gap-2 justify-start">
+              <Label className=" text-primary" htmlFor="sync-id">
+                Sync ID
+              </Label>
+              <div className="space-y-1">
+                <Input
+                  id="sync-id"
+                  value={userSettings.syncId}
+                  onChange={(e) => validateSyncId(e)}
+                  placeholder="Enter SyncID for cross-device synchronization"
+                />
+              </div>
+            </div>
+            <Separator orientation="horizontal" />
             <div className="grid grid-cols-1 md:grid-cols-[140px_1fr] items-center gap-2 justify-start">
               <Label htmlFor="playback-rate" className=" text-primary">
                 Playback Rate
@@ -177,19 +218,6 @@ export function UserSettings() {
                   <SelectItem value="0">Never</SelectItem>
                 </SelectContent>
               </Select>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-[140px_1fr] items-center gap-2 justify-start">
-              <Label className=" text-primary" htmlFor="sync-id">
-                Sync ID <sup className="text-white">soon</sup>
-              </Label>
-              <Input
-                disabled
-                id="sync-id"
-                value={userSettings.syncId}
-                onChange={(e) => handleLocalChange("syncId", e.target.value)}
-                placeholder="Enter SyncID for cross-device synchronization"
-              />
             </div>
             <div className="grid grid-cols-1 md:grid-cols-[140px_1fr] items-center gap-2 justify-start">
               <Label className=" text-primary" htmlFor="watched-percentage">
