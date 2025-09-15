@@ -1,11 +1,12 @@
 "use client";
 
 import { Check, Copy } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import useSWR from "swr";
 import useSWRMutation from "swr/mutation";
 
+import { useLocalUserSettings } from "~/shared/hooks/use-local-user-settings";
 import fetchApi from "~/shared/lib/api/fetch";
 import { Button } from "~/shared/ui/button";
 import { Separator } from "~/shared/ui/separator";
@@ -17,23 +18,35 @@ import ArchiveView from "./archive-view";
 import CatalogView from "./catalog-view";
 
 export default function Dashboard() {
-  const { data, trigger, isMutating } = useSWRMutation("/session", (url) =>
+  const {
+    data,
+    trigger: generateSyncId,
+    isMutating,
+  } = useSWRMutation("/session", (url) =>
     fetchApi(url, { cache: "no-store", method: "POST" })
   );
+
+  const { setLocalUserSettingsField } = useLocalUserSettings(null);
 
   const {
     data: userSyncID,
     isLoading,
-    mutate,
+    mutate: revalidateSyncId,
   } = useSWR("/session/user", (url) => fetchApi(url, { cache: "no-store" }), {
     revalidateOnFocus: false,
   });
 
   const [copied, setCopied] = useState<boolean>(false);
 
+  useEffect(() => {
+    if (userSyncID?.data.syncId) {
+      setLocalUserSettingsField("syncId", userSyncID.data.syncId);
+    }
+  }, [userSyncID, setLocalUserSettingsField]);
+
   async function createSyncID() {
-    await trigger();
-    mutate();
+    await generateSyncId();
+    revalidateSyncId();
 
     if (data?.success) {
       toast("Created SyncID successfuly.");

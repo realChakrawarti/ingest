@@ -2,10 +2,9 @@
 
 import { useEffect, useState } from "react";
 
-import { useLocalStorage } from "~/shared/hooks/use-local-storage";
+import { useLocalUserSettings } from "~/shared/hooks/use-local-user-settings";
 import { indexedDB } from "~/shared/lib/api/dexie";
-import { LOCAL_USER_SETTINGS } from "~/shared/lib/constants";
-import type { History, TUserSettings } from "~/shared/types-schema/types";
+import type { History } from "~/shared/types-schema/types";
 
 import GridContainer from "~/widgets/grid-container";
 import {
@@ -17,10 +16,8 @@ import YouTubeCard from "~/widgets/youtube/youtube-card";
 
 export default function ContinueWatching() {
   const [history, setHistory] = useState<History[]>([]);
-  const [localUserSettings] = useLocalStorage<TUserSettings>(
-    LOCAL_USER_SETTINGS,
-    null
-  );
+
+  const { localUserSettings } = useLocalUserSettings(null);
 
   useEffect(() => {
     const getWatchHistory = async () => {

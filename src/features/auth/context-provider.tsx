@@ -92,7 +92,6 @@ export default function AuthContextProvider({ children }: PropsWithChildren) {
 
   const logout = async () => {
     signOut(client.auth);
-    window.localStorage.clear();
     const result = await fetchApi("/logout");
     toast(result.message);
     router.push(Routes.ROOT);

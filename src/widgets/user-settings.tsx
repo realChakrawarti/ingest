@@ -1,16 +1,16 @@
 "use client";
 
 import { Check, ChevronsUpDown, Settings } from "lucide-react";
-import { type ChangeEvent, useState } from "react";
+import { useLayoutEffect, useState } from "react";
 import { toast } from "sonner";
-import useSWR from "swr";
+
+import type { ZUserSettings } from "~/entities/users/models";
 
 import appConfig from "~/shared/app-config";
-import useDebounce from "~/shared/hooks/use-debounce";
-import { useLocalStorage } from "~/shared/hooks/use-local-storage";
+import { useLocalUserSettings } from "~/shared/hooks/use-local-user-settings";
 import { indexedDB } from "~/shared/lib/api/dexie";
+import fetchApi from "~/shared/lib/api/fetch";
 import { LOCAL_USER_SETTINGS, videoLanguages } from "~/shared/lib/constants";
-import type { TUserSettings } from "~/shared/types-schema/types";
 import { Button } from "~/shared/ui/button";
 import {
   Command,
@@ -42,6 +42,7 @@ import { Separator } from "~/shared/ui/separator";
 import { Slider } from "~/shared/ui/slider";
 import { ToggleGroup, ToggleGroupItem } from "~/shared/ui/toggle-group";
 import { cn } from "~/shared/utils/tailwind-merge";
+import Log from "~/shared/utils/terminal-logger";
 
 const initialSettings = {
   historyDays: 15,
@@ -52,43 +53,84 @@ const initialSettings = {
 };
 
 async function checkSyncId(syncId: string) {
-  const result = await fetch(`/session/valid?syncId=${syncId}`);
-  return result.json();
+  console.log("Validating SyncID: ", syncId);
+  const result = fetchApi(`/session/valid?syncId=${syncId}`);
+  return result;
 }
 
-export function UserSettings() {
-  const [_, setlocalUserSettings] = useLocalStorage<TUserSettings>(
-    LOCAL_USER_SETTINGS,
-    initialSettings
-  );
+const playbackRates = [0.5, 0.75, 1.0, 1.25, 1.5, 1.75, 2.0];
+const historyPeriods = [0, 15, 30, 60, 90];
 
-  const [syncId, setSyncId] = useState<string>("");
-  const debouncedSyncId = useDebounce(syncId, 1000);
+async function pushUserSettings(settings: ZUserSettings) {
+  const { syncId, ...filterSettings } = settings;
 
-  const { data, isLoading, mutate } = useSWR(
-    null,
-    () => checkSyncId(debouncedSyncId),
+  const result = await fetchApi(
+    `/session/update?type=settings&syncId=${syncId}`,
     {
-      revalidateOnMount: false,
+      body: JSON.stringify(filterSettings),
+      method: "PUT",
     }
   );
 
-  const [userSettings, setUserSettings] = useState<TUserSettings>(
-    JSON.parse(localStorage.getItem(LOCAL_USER_SETTINGS) ?? "{}")
+  if (result.success) {
+    toast("Settings has been pushed and is ready to synced across devices.");
+  }
+}
+
+async function getUserSettings(syncId: string) {
+  try {
+    const result = await fetchApi(
+      `/session/get?type=settings&syncId=${syncId}`
+    );
+    if (result.success) {
+      console.log(">>>Fetched sync data", result.data);
+      return result.data;
+    }
+  } catch (err) {
+    Log.fail(err);
+  }
+
+  return null;
+}
+
+export function UserSettings() {
+  const { localUserSettings, setLocalUserSettings, setLocalUserSettingsField } =
+    useLocalUserSettings(initialSettings);
+
+  const [syncId, setSyncId] = useState<string>(() => {
+    if (globalThis.localStorage?.getItem(LOCAL_USER_SETTINGS)) {
+      const parsedData = JSON.parse(
+        globalThis.localStorage.getItem(LOCAL_USER_SETTINGS) ?? "{}"
+      );
+
+      return parsedData.syncId ?? "";
+    }
+  });
+
+  useLayoutEffect(() => {
+    if (syncId) {
+      getUserSettings(syncId);
+    }
+  }, []);
+
+  const [userSettings, setUserSettings] = useState<ZUserSettings>(
+    JSON.parse(globalThis.localStorage?.getItem(LOCAL_USER_SETTINGS) ?? "{}")
   );
 
-  function handleLocalChange(key: keyof TUserSettings, value: any) {
+  function handleLocalChange(key: keyof ZUserSettings, value: any) {
     setUserSettings((prev) => ({ ...prev, [key]: value }));
   }
 
   function resetSettings() {
-    setlocalUserSettings(initialSettings);
+    setLocalUserSettings(initialSettings);
     toast("Global settings has been reset.");
     window.location.reload();
   }
 
-  function applySettings() {
-    setlocalUserSettings(userSettings);
+  async function applySettings() {
+    setLocalUserSettings(userSettings);
+    await pushUserSettings(userSettings);
+
     toast("Global settings has been updated.");
     window.location.reload();
   }
@@ -103,12 +145,23 @@ export function UserSettings() {
     toast("Watch later has been cleared.");
   }
 
-  async function validateSyncId(e: ChangeEvent<HTMLInputElement>) {
-    setSyncId(e.target.value);
+  async function validateSyncId() {
+    if (syncId?.length === 16) {
+      try {
+        const result = await checkSyncId(syncId);
 
-    if (e.target.value.length === 16) {
-      await mutate();
-      console.log(">>>", data);
+        if (result.success) {
+          setLocalUserSettingsField("syncId", syncId);
+          toast("Provided SyncID is valid.");
+          const syncedData = await getUserSettings(syncId);
+          if (syncedData) {
+            console.log(">>>SYNCED DATA", syncedData);
+            setLocalUserSettings({ syncId, ...syncedData });
+          }
+        }
+      } catch (_err) {
+        toast("Provided SyncID doesn't match any user.");
+      }
     }
   }
 
@@ -135,18 +188,36 @@ export function UserSettings() {
               Personalize your global experience
             </DialogDescription>
           </DialogHeader>
-          <form className="flex flex-col gap-3">
+          <form
+            onSubmit={(e) => e.preventDefault()}
+            className="flex flex-col gap-3"
+          >
             <div className="grid grid-cols-1 md:grid-cols-[140px_1fr] items-center gap-2 justify-start">
               <Label className=" text-primary" htmlFor="sync-id">
                 Sync ID
               </Label>
               <div className="space-y-1">
-                <Input
-                  id="sync-id"
-                  value={userSettings.syncId}
-                  onChange={(e) => validateSyncId(e)}
-                  placeholder="Enter SyncID for cross-device synchronization"
-                />
+                <div className="flex gap-1 items-center">
+                  <Input
+                    id="sync-id"
+                    value={syncId}
+                    onChange={(e) => setSyncId(e.target.value)}
+                    placeholder="Enter SyncID for cross-device synchronization"
+                  />
+                  {localUserSettings.syncId ? (
+                    <Button
+                      onClick={() => {
+                        setSyncId("");
+                        setLocalUserSettingsField("syncId", "");
+                      }}
+                      variant="outline"
+                    >
+                      Reset
+                    </Button>
+                  ) : (
+                    <Button onClick={validateSyncId}>Validate</Button>
+                  )}
+                </div>
               </div>
             </div>
             <Separator orientation="horizontal" />
@@ -164,27 +235,15 @@ export function UserSettings() {
                 }
                 className="flex gap-1 items-center"
               >
-                <ToggleGroupItem className="p-1 h-6" value="0.5">
-                  0.5x
-                </ToggleGroupItem>
-                <ToggleGroupItem className="p-1 h-6" value="0.75">
-                  0.75x
-                </ToggleGroupItem>
-                <ToggleGroupItem className="p-1 h-6" value="1">
-                  1.0x
-                </ToggleGroupItem>
-                <ToggleGroupItem className="p-1 h-6" value="1.25">
-                  1.25x
-                </ToggleGroupItem>
-                <ToggleGroupItem className="p-1 h-6" value="1.5">
-                  1.5x
-                </ToggleGroupItem>
-                <ToggleGroupItem className="p-1 h-6" value="1.75">
-                  1.75x
-                </ToggleGroupItem>
-                <ToggleGroupItem className="p-1 h-6" value="2">
-                  2x
-                </ToggleGroupItem>
+                {playbackRates.map((rate) => (
+                  <ToggleGroupItem
+                    key={rate}
+                    className="p-1 h-6"
+                    value={rate.toString()}
+                  >
+                    {rate}x
+                  </ToggleGroupItem>
+                ))}
               </ToggleGroup>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-[140px_1fr] items-center gap-2 justify-start">
@@ -211,11 +270,11 @@ export function UserSettings() {
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="15">15 days</SelectItem>
-                  <SelectItem value="30">30 days</SelectItem>
-                  <SelectItem value="60">60 days</SelectItem>
-                  <SelectItem value="90">90 days</SelectItem>
-                  <SelectItem value="0">Never</SelectItem>
+                  {historyPeriods.map((period) => (
+                    <SelectItem key={period} value={period.toString()}>
+                      {period !== 0 ? `${period} days` : "Never"}
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
             </div>
@@ -275,8 +334,11 @@ export function VideoLanguagesCombo({
   localUserSettings,
   handleLocalChange,
 }: {
-  localUserSettings: TUserSettings;
-  handleLocalChange: (key: keyof TUserSettings, value: any) => void;
+  localUserSettings: ZUserSettings;
+  handleLocalChange: (
+    key: keyof ZUserSettings,
+    value: ZUserSettings[keyof ZUserSettings]
+  ) => void;
 }) {
   const [open, setOpen] = useState(false);
 

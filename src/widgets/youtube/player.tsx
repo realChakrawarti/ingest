@@ -6,10 +6,8 @@ import { useCallback, useEffect, useRef } from "react";
 import type { ZVideoMetadataCompatible } from "~/entities/catalogs/models";
 
 import appConfig from "~/shared/app-config";
-import { useLocalStorage } from "~/shared/hooks/use-local-storage";
+import { useLocalUserSettings } from "~/shared/hooks/use-local-user-settings";
 import { indexedDB } from "~/shared/lib/api/dexie";
-import { LOCAL_USER_SETTINGS } from "~/shared/lib/constants";
-import type { TUserSettings } from "~/shared/types-schema/types";
 import { cn } from "~/shared/utils/tailwind-merge";
 import Log from "~/shared/utils/terminal-logger";
 
@@ -83,10 +81,7 @@ export default function YoutubePlayer(
     video,
   });
 
-  const [localUserSettings] = useLocalStorage<TUserSettings>(
-    LOCAL_USER_SETTINGS,
-    null
-  );
+  const { localUserSettings } = useLocalUserSettings(null);
 
   const _onStateChange = useCallback(
     async (event: YT.OnStateChangeEvent) => {

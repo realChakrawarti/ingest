@@ -9,3 +9,12 @@ const UserSettingsSchema = z.object({
 });
 
 export type ZUserSettings = z.infer<typeof UserSettingsSchema>;
+
+export const SyncTypesSchema = z.literal([
+  "favorites",
+  "history",
+  "settings",
+  "watchLater",
+]);
+
+export type ZSyncTypes = z.infer<typeof SyncTypesSchema>;

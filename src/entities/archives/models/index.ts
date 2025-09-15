@@ -36,7 +36,7 @@ const ArchiveVideoSchema = YouTubeVideoMetadataSchema;
 
 export const ArchiveDocumentSchema = z.object({
   data: z.object({
-    totalVideos: z.number().default(0),
+    totalVideos: z.number().prefault(0),
     updatedAt: TimestampSchema,
     videos: z.optional(z.array(ArchiveVideoSchema)),
   }),

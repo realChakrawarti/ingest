@@ -3,10 +3,9 @@ import { toast } from "sonner";
 
 import type { ZVideoMetadataCompatible } from "~/entities/catalogs/models";
 
-import { useLocalStorage } from "~/shared/hooks/use-local-storage";
+import { useLocalUserSettings } from "~/shared/hooks/use-local-user-settings";
 import { indexedDB } from "~/shared/lib/api/dexie";
-import { LOCAL_USER_SETTINGS } from "~/shared/lib/constants";
-import type { History, TUserSettings } from "~/shared/types-schema/types";
+import type { History } from "~/shared/types-schema/types";
 import { time } from "~/shared/utils/time";
 
 import currentlyPlayingStore from "./currently-playing-store";
@@ -57,10 +56,7 @@ export function useVideoTracking({
     await indexedDB["history"].put(getPercentCompleted(player, video));
   };
 
-  const [localUserSettings] = useLocalStorage<TUserSettings>(
-    LOCAL_USER_SETTINGS,
-    null
-  );
+  const { localUserSettings } = useLocalUserSettings(null);
 
   const startTracking = () => {
     if (trackingRef.current) return;

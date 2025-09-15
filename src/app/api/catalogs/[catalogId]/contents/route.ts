@@ -50,7 +50,7 @@ export async function GET(request: NextRequest, ctx: ContextParams) {
           code: "FAILED_CATALOG_VIDEOS",
           details: "Unable to fetch catalog contents.",
         },
-        400
+        404
       );
     }
   }
