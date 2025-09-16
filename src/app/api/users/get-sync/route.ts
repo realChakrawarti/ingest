@@ -1,17 +1,16 @@
 import type { NextRequest } from "next/server";
 
-import { updateSession } from "~/entities/users";
+import { getSyncType } from "~/entities/users";
 import { SyncTypesSchema } from "~/entities/users/models";
 
 import { refs } from "~/shared/lib/firebase/refs";
 import { NxResponse } from "~/shared/lib/next/nx-response";
 
-export async function PUT(request: NextRequest) {
-  const body = await request.json();
+export async function GET(request: NextRequest) {
   const type = request.nextUrl.searchParams.get("type") ?? "";
   const syncId = request.nextUrl.searchParams.get("syncId") ?? "";
 
-  const userQuery = refs.users.where("sessionId", "==", syncId).limit(1);
+  const userQuery = refs.users.where("syncId", "==", syncId).limit(1);
 
   const userSnapshot = await userQuery.get();
 
@@ -34,13 +33,15 @@ export async function PUT(request: NextRequest) {
   }
 
   try {
-    await updateSession(safeType, syncId, body);
-    return NxResponse.success("Session was been synced with cloud.", {}, 201);
+    const data = await getSyncType(safeType, syncId);
+
+    return NxResponse.success("Retrieved sync data successfully.", data, 200);
   } catch (err) {
-    return NxResponse.fail(
-      "Unable to update the session",
-      { code: "SESSION_UPDATE_FAILED", details: JSON.stringify(err) },
-      500
-    );
+    if (err instanceof Error)
+      return NxResponse.fail(
+        err.message,
+        { code: "KEY_UNAVAILABLE", details: err.message },
+        404
+      );
   }
 }

@@ -1,11 +1,11 @@
 import { refs } from "~/shared/lib/firebase/refs";
 import { createNanoidToken } from "~/shared/utils/nanoid-token";
 
-export async function createSession(userId: string) {
+export async function createSyncId(userId: string) {
   const userRef = refs.users.doc(userId);
-  const sessionId = createNanoidToken(16);
+  const generatedSyncId = createNanoidToken(16);
   await userRef.update({
-    sessionId: sessionId,
+    syncId: generatedSyncId,
     updatedAt: new Date(),
   });
 }

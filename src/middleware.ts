@@ -9,8 +9,8 @@ import { verifyFirebaseSessionCookie } from "./shared/lib/firebase/verify-sessio
 
 const whiteListedEndpoints = [
   "/api/catalogs/valid",
-  "/api/session/valid",
-  "/api/session/update",
+  "/api/users/update-sync",
+  "/api/users/get-sync",
 ];
 
 export async function middleware(request: NextRequest) {
@@ -84,8 +84,7 @@ export const config = {
     "/api/youtube/playlists",
     // User Routes
     "/api/logout",
-    // User session
-    "/api/session",
-    "/api/session/user",
+    // User sync
+    "/api/users/sync",
   ],
 };

@@ -1,4 +1,4 @@
-export { createSession } from "./services/create-session";
+export { createSyncId } from "./services/create-sync-id";
 export { createUser } from "./services/create-user";
-export { getSessionType } from "./services/get-session-type";
-export { updateSession } from "./services/update-session";
+export { getSyncType } from "./services/get-sync-type";
+export { updateSync } from "./services/update-sync";

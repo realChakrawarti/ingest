@@ -1,6 +1,6 @@
 "use client";
 
-import { Check, Copy } from "lucide-react";
+import { Dices, Trash2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import useSWR from "swr";
@@ -9,6 +9,8 @@ import useSWRMutation from "swr/mutation";
 import { useLocalUserSettings } from "~/shared/hooks/use-local-user-settings";
 import fetchApi from "~/shared/lib/api/fetch";
 import { Button } from "~/shared/ui/button";
+import { ThreeDotIcon } from "~/shared/ui/icons";
+import { Popover, PopoverContent, PopoverTrigger } from "~/shared/ui/popover";
 import { Separator } from "~/shared/ui/separator";
 import { Skeleton } from "~/shared/ui/skeleton";
 
@@ -22,21 +24,19 @@ export default function Dashboard() {
     data,
     trigger: generateSyncId,
     isMutating,
-  } = useSWRMutation("/session", (url) =>
+  } = useSWRMutation("/users/sync", (url) =>
     fetchApi(url, { cache: "no-store", method: "POST" })
   );
-
-  const { setLocalUserSettingsField } = useLocalUserSettings(null);
 
   const {
     data: userSyncID,
     isLoading,
     mutate: revalidateSyncId,
-  } = useSWR("/session/user", (url) => fetchApi(url, { cache: "no-store" }), {
+  } = useSWR("/users/sync", (url) => fetchApi(url, { cache: "no-store" }), {
     revalidateOnFocus: false,
   });
 
-  const [copied, setCopied] = useState<boolean>(false);
+  const { setLocalUserSettingsField } = useLocalUserSettings(null);
 
   useEffect(() => {
     if (userSyncID?.data.syncId) {
@@ -55,11 +55,11 @@ export default function Dashboard() {
 
   function handleCopy(syncId: string) {
     navigator.clipboard.writeText(syncId).then(() => {
-      setCopied(true);
       toast(`SyncID has been copied to your clipboard.`);
-      setTimeout(() => setCopied(false), 2000);
     });
   }
+
+  const [open, setIsOpen] = useState<boolean>(false);
 
   return (
     <div className="flex first:pt-3 last:pb-3 flex-col gap-3">
@@ -67,20 +67,45 @@ export default function Dashboard() {
         <h1 className="px-3 text-2xl tracking-wide">Dashboard</h1>
         {isLoading && <Skeleton className="w-40 h-7 mx-3" />}
         {userSyncID && !isLoading && (
-          <div className="mx-3 flex items-center gap-2">
+          <div className="mx-3 flex items-center gap-2 relative">
             <p>
-              <span className="text-primary">SyncID</span>:{" "}
-              {userSyncID.data.syncId}
+              <span className="text-foreground-muted">
+                {userSyncID.data.syncId}
+              </span>
             </p>
-            {copied ? (
-              <Check className="text-green-600" size={16} />
-            ) : (
-              <Copy
-                onClick={() => handleCopy(userSyncID.data.syncId)}
-                className="cursor-pointer text-primary"
-                size={16}
-              />
-            )}
+            <div className="relative">
+              <Popover open={open} onOpenChange={setIsOpen}>
+                <PopoverTrigger asChild>
+                  <Button variant="ghost" size="icon" className="size-6">
+                    <ThreeDotIcon className="h-6 w-6" />
+                    <span className="sr-only">Open menu</span>
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent
+                  onClick={() => setIsOpen(false)}
+                  side="top"
+                  align="end"
+                  className="w-[200px] border-none rounded-lg p-1"
+                >
+                  <Button
+                    variant="ghost"
+                    className="flex gap-2 justify-start hover:bg-accent rounded-lg p-2 text-sm cursor-pointer w-full"
+                    onClick={() => handleCopy(userSyncID.data.syncId)}
+                  >
+                    <Trash2 className="h-4 w-4 mr-2" />
+                    Delete SyncID
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    className="flex gap-2 justify-start hover:bg-accent rounded-lg p-2 text-sm cursor-pointer w-full"
+                    onClick={() => handleCopy(userSyncID.data.syncId)}
+                  >
+                    <Dices className="h-4 w-4 mr-2" />
+                    Re-roll SyncID
+                  </Button>
+                </PopoverContent>
+              </Popover>
+            </div>
           </div>
         )}
         {!userSyncID && !isLoading && (

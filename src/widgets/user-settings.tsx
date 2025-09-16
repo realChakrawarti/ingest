@@ -1,8 +1,9 @@
 "use client";
 
 import { Check, ChevronsUpDown, Settings } from "lucide-react";
-import { useLayoutEffect, useState } from "react";
+import { type PropsWithChildren, useState } from "react";
 import { toast } from "sonner";
+import useSWRMutation from "swr/mutation";
 
 import type { ZUserSettings } from "~/entities/users/models";
 
@@ -28,7 +29,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "~/shared/ui/dialog";
-import { Input } from "~/shared/ui/input";
 import { Label } from "~/shared/ui/label";
 import { Popover, PopoverContent, PopoverTrigger } from "~/shared/ui/popover";
 import {
@@ -42,7 +42,9 @@ import { Separator } from "~/shared/ui/separator";
 import { Slider } from "~/shared/ui/slider";
 import { ToggleGroup, ToggleGroupItem } from "~/shared/ui/toggle-group";
 import { cn } from "~/shared/utils/tailwind-merge";
-import Log from "~/shared/utils/terminal-logger";
+import { getTimeDifference } from "~/shared/utils/time-diff";
+
+import Spinner from "./spinner";
 
 const initialSettings = {
   historyDays: 15,
@@ -52,66 +54,55 @@ const initialSettings = {
   watchedPercentage: appConfig.watchedPercentage,
 };
 
-async function checkSyncId(syncId: string) {
-  console.log("Validating SyncID: ", syncId);
-  const result = fetchApi(`/session/valid?syncId=${syncId}`);
-  return result;
-}
-
 const playbackRates = [0.5, 0.75, 1.0, 1.25, 1.5, 1.75, 2.0];
 const historyPeriods = [0, 15, 30, 60, 90];
 
-async function pushUserSettings(settings: ZUserSettings) {
-  const { syncId, ...filterSettings } = settings;
+// async function pushUserSettings(settings: ZUserSettings) {
+//   const { syncId, ...filterSettings } = settings;
 
-  const result = await fetchApi(
-    `/session/update?type=settings&syncId=${syncId}`,
-    {
-      body: JSON.stringify(filterSettings),
-      method: "PUT",
-    }
+//   const result = await fetchApi(
+//     `/users/update-sync?type=settings&syncId=${syncId}`,
+//     {
+//       body: JSON.stringify(filterSettings),
+//       method: "PUT",
+//     }
+//   );
+
+//   if (result.success) {
+//     toast("Settings has been pushed and is ready to synced across devices.");
+//   }
+// }
+
+function FormElementContainer({ children }: PropsWithChildren) {
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-[140px_1fr] items-center gap-2 justify-items-start">
+      {children}
+    </div>
   );
-
-  if (result.success) {
-    toast("Settings has been pushed and is ready to synced across devices.");
-  }
-}
-
-async function getUserSettings(syncId: string) {
-  try {
-    const result = await fetchApi(
-      `/session/get?type=settings&syncId=${syncId}`
-    );
-    if (result.success) {
-      console.log(">>>Fetched sync data", result.data);
-      return result.data;
-    }
-  } catch (err) {
-    Log.fail(err);
-  }
-
-  return null;
 }
 
 export function UserSettings() {
-  const { localUserSettings, setLocalUserSettings, setLocalUserSettingsField } =
+  const { localUserSettings, setLocalUserSettings } =
     useLocalUserSettings(initialSettings);
 
-  const [syncId, setSyncId] = useState<string>(() => {
-    if (globalThis.localStorage?.getItem(LOCAL_USER_SETTINGS)) {
-      const parsedData = JSON.parse(
-        globalThis.localStorage.getItem(LOCAL_USER_SETTINGS) ?? "{}"
-      );
+  const { data: remoteUserSettings, trigger } = useSWRMutation(
+    `${localUserSettings.syncId}:settings`,
+    () =>
+      fetchApi(
+        `/users/get-sync?type=settings&syncId=${localUserSettings.syncId}`
+      )
+  );
 
-      return parsedData.syncId ?? "";
+  const { trigger: pushUserSettings, isMutating } = useSWRMutation(
+    `update-${localUserSettings.syncId}:settings`,
+    (_url, args: any) => {
+      const { syncId, ...filterSettings } = args.settings;
+      return fetchApi(`/users/update-sync?type=settings&syncId=${syncId}`, {
+        body: JSON.stringify(filterSettings),
+        method: "PUT",
+      });
     }
-  });
-
-  useLayoutEffect(() => {
-    if (syncId) {
-      getUserSettings(syncId);
-    }
-  }, []);
+  );
 
   const [userSettings, setUserSettings] = useState<ZUserSettings>(
     JSON.parse(globalThis.localStorage?.getItem(LOCAL_USER_SETTINGS) ?? "{}")
@@ -132,7 +123,9 @@ export function UserSettings() {
     await pushUserSettings(userSettings);
 
     toast("Global settings has been updated.");
-    window.location.reload();
+    setTimeout(() => {
+      window.location.reload();
+    }, 1500);
   }
 
   async function clearHistory() {
@@ -145,24 +138,16 @@ export function UserSettings() {
     toast("Watch later has been cleared.");
   }
 
-  async function validateSyncId() {
-    if (syncId?.length === 16) {
-      try {
-        const result = await checkSyncId(syncId);
+  async function handleSettingsSync() {
+    await trigger();
 
-        if (result.success) {
-          setLocalUserSettingsField("syncId", syncId);
-          toast("Provided SyncID is valid.");
-          const syncedData = await getUserSettings(syncId);
-          if (syncedData) {
-            console.log(">>>SYNCED DATA", syncedData);
-            setLocalUserSettings({ syncId, ...syncedData });
-          }
-        }
-      } catch (_err) {
-        toast("Provided SyncID doesn't match any user.");
-      }
+    if (remoteUserSettings?.success) {
+      setLocalUserSettings({
+        ...localUserSettings,
+        ...remoteUserSettings.data,
+      });
     }
+    toast(remoteUserSettings?.message);
   }
 
   return (
@@ -192,36 +177,46 @@ export function UserSettings() {
             onSubmit={(e) => e.preventDefault()}
             className="flex flex-col gap-3"
           >
-            <div className="grid grid-cols-1 md:grid-cols-[140px_1fr] items-center gap-2 justify-start">
+            <FormElementContainer>
               <Label className=" text-primary" htmlFor="sync-id">
                 Sync ID
               </Label>
-              <div className="space-y-1">
-                <div className="flex gap-1 items-center">
-                  <Input
-                    id="sync-id"
-                    value={syncId}
-                    onChange={(e) => setSyncId(e.target.value)}
-                    placeholder="Enter SyncID for cross-device synchronization"
-                  />
-                  {localUserSettings.syncId ? (
+              <div className="space-y-1 text-sm w-full">
+                {localUserSettings.syncId ? (
+                  <div className="flex gap-1 items-center justify-between">
+                    <p>{localUserSettings.syncId}</p>
                     <Button
-                      onClick={() => {
-                        setSyncId("");
-                        setLocalUserSettingsField("syncId", "");
-                      }}
+                      className="flex items-center gap-2"
+                      disabled={isMutating}
                       variant="outline"
+                      onClick={handleSettingsSync}
                     >
-                      Reset
+                      {isMutating ? (
+                        <>
+                          Syncing...
+                          <Spinner className="size-4" />
+                        </>
+                      ) : (
+                        "Sync"
+                      )}
                     </Button>
-                  ) : (
-                    <Button onClick={validateSyncId}>Validate</Button>
-                  )}
-                </div>
+                  </div>
+                ) : (
+                  <p>Login to create and setup SyncID</p>
+                )}
+                {remoteUserSettings?.data && (
+                  <p className="text-xs ">
+                    Updated{" "}
+                    {getTimeDifference(
+                      remoteUserSettings?.data?.updatedAt,
+                      true
+                    )[1].toLowerCase()}
+                  </p>
+                )}
               </div>
-            </div>
+            </FormElementContainer>
             <Separator orientation="horizontal" />
-            <div className="grid grid-cols-1 md:grid-cols-[140px_1fr] items-center gap-2 justify-start">
+            <FormElementContainer>
               <Label htmlFor="playback-rate" className=" text-primary">
                 Playback Rate
               </Label>
@@ -245,8 +240,8 @@ export function UserSettings() {
                   </ToggleGroupItem>
                 ))}
               </ToggleGroup>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-[140px_1fr] items-center gap-2 justify-start">
+            </FormElementContainer>
+            <FormElementContainer>
               <Label className=" text-primary" htmlFor="audio-language">
                 Audio Language
               </Label>
@@ -254,9 +249,9 @@ export function UserSettings() {
                 handleLocalChange={handleLocalChange}
                 localUserSettings={userSettings}
               />
-            </div>
+            </FormElementContainer>
 
-            <div className="grid grid-cols-1 md:grid-cols-[140px_1fr] items-center gap-2 justify-start">
+            <FormElementContainer>
               <Label className=" text-primary" htmlFor="history-days">
                 Keep History
               </Label>
@@ -266,7 +261,7 @@ export function UserSettings() {
                   handleLocalChange("historyDays", value)
                 }
               >
-                <SelectTrigger id="history-days" className="w-auto">
+                <SelectTrigger id="history-days" className="w-full">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -277,8 +272,8 @@ export function UserSettings() {
                   ))}
                 </SelectContent>
               </Select>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-[140px_1fr] items-center gap-2 justify-start">
+            </FormElementContainer>
+            <FormElementContainer>
               <Label className=" text-primary" htmlFor="watched-percentage">
                 Mark as Watched ({userSettings.watchedPercentage}%)
               </Label>
@@ -289,39 +284,50 @@ export function UserSettings() {
                 id="watched-percentage"
                 value={[userSettings.watchedPercentage]}
                 min={80}
-                max={100}
-                step={5}
+                max={98}
+                step={2}
               />
-            </div>
+            </FormElementContainer>
             <Separator orientation="horizontal" />
-            <div className="grid grid-cols-1 md:grid-cols-[140px_1fr] items-center gap-2 justify-start">
+            <FormElementContainer>
               <Label htmlFor="clear-watch-later" className="text-primary">
                 Clear all Watch later
               </Label>
               <Button
+                className="w-full"
                 variant="outline"
                 id="clear-watch-later"
                 onClick={clearWatchLater}
               >
                 Clear
               </Button>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-[140px_1fr] items-center gap-2 justify-start">
+            </FormElementContainer>
+            <FormElementContainer>
               <Label htmlFor="clear-history" className="text-primary">
                 Clear history records
               </Label>
               <Button
+                className="w-full"
                 variant="outline"
                 id="clear-history"
                 onClick={clearHistory}
               >
                 Clear
               </Button>
-            </div>
+            </FormElementContainer>
             <Separator orientation="horizontal" />
             <div className="grid grid-cols-[1fr_1fr] items-center gap-2 justify-start">
               <Button onClick={resetSettings}>Reset</Button>
-              <Button onClick={applySettings}>Apply</Button>
+              <Button disabled={isMutating} onClick={applySettings}>
+                {isMutating ? (
+                  <>
+                    <Spinner className="size-4" />
+                    Applying...
+                  </>
+                ) : (
+                  "Apply"
+                )}
+              </Button>
             </div>
           </form>
         </DialogContent>
