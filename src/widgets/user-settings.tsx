@@ -57,22 +57,6 @@ const initialSettings = {
 const playbackRates = [0.5, 0.75, 1.0, 1.25, 1.5, 1.75, 2.0];
 const historyPeriods = [0, 15, 30, 60, 90];
 
-// async function pushUserSettings(settings: ZUserSettings) {
-//   const { syncId, ...filterSettings } = settings;
-
-//   const result = await fetchApi(
-//     `/users/update-sync?type=settings&syncId=${syncId}`,
-//     {
-//       body: JSON.stringify(filterSettings),
-//       method: "PUT",
-//     }
-//   );
-
-//   if (result.success) {
-//     toast("Settings has been pushed and is ready to synced across devices.");
-//   }
-// }
-
 function FormElementContainer({ children }: PropsWithChildren) {
   return (
     <div className="grid grid-cols-1 md:grid-cols-[140px_1fr] items-center gap-2 justify-items-start">
@@ -85,18 +69,18 @@ export function UserSettings() {
   const { localUserSettings, setLocalUserSettings } =
     useLocalUserSettings(initialSettings);
 
-  const { data: remoteUserSettings, trigger } = useSWRMutation(
-    `${localUserSettings.syncId}:settings`,
-    () =>
-      fetchApi(
-        `/users/get-sync?type=settings&syncId=${localUserSettings.syncId}`
-      )
+  const {
+    data: remoteUserSettings,
+    trigger,
+    isMutating: isSyncing,
+  } = useSWRMutation(`${localUserSettings.syncId}:settings`, () =>
+    fetchApi(`/users/get-sync?type=settings&syncId=${localUserSettings.syncId}`)
   );
 
   const { trigger: pushUserSettings, isMutating } = useSWRMutation(
     `update-${localUserSettings.syncId}:settings`,
-    (_url, args: any) => {
-      const { syncId, ...filterSettings } = args.settings;
+    (_, { arg }: { arg: { settings: ZUserSettings } }) => {
+      const { syncId, ...filterSettings } = arg.settings;
       return fetchApi(`/users/update-sync?type=settings&syncId=${syncId}`, {
         body: JSON.stringify(filterSettings),
         method: "PUT",
@@ -120,9 +104,23 @@ export function UserSettings() {
 
   async function applySettings() {
     setLocalUserSettings(userSettings);
-    await pushUserSettings(userSettings);
 
-    toast("Global settings has been updated.");
+    if (!localUserSettings.syncId) {
+      toast("Global settings has been updated.", {
+        description: "Please wait, page will refresh automatically.",
+      });
+      return;
+    }
+
+    const pushedResult = await pushUserSettings({ settings: userSettings });
+
+    if (pushedResult?.success) {
+      toast("Settings has been pushed and is ready to synced across devices.", {
+        description: "Please wait, page will refresh automatically.",
+      });
+      await trigger();
+    }
+
     setTimeout(() => {
       window.location.reload();
     }, 1500);
@@ -139,15 +137,17 @@ export function UserSettings() {
   }
 
   async function handleSettingsSync() {
-    await trigger();
+    const syncResult = await trigger();
 
-    if (remoteUserSettings?.success) {
-      setLocalUserSettings({
+    if (syncResult?.success) {
+      const syncData = {
         ...localUserSettings,
-        ...remoteUserSettings.data,
-      });
+        ...syncResult.data,
+      };
+      setUserSettings(syncData);
+      setLocalUserSettings(syncData);
     }
-    toast(remoteUserSettings?.message);
+    toast(syncResult?.message);
   }
 
   return (
@@ -187,11 +187,11 @@ export function UserSettings() {
                     <p>{localUserSettings.syncId}</p>
                     <Button
                       className="flex items-center gap-2"
-                      disabled={isMutating}
+                      disabled={isSyncing || isMutating}
                       variant="outline"
                       onClick={handleSettingsSync}
                     >
-                      {isMutating ? (
+                      {isSyncing ? (
                         <>
                           Syncing...
                           <Spinner className="size-4" />
