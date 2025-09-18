@@ -97,7 +97,7 @@ export default function ShowCardOption({
           />
           {video?.videoAvailability === "none" ? (
             <DownloadVideo
-              disabled={Boolean(cobaltYTInstances?.youtube?.length)}
+              disabled={!cobaltYTInstances?.youtube?.length}
               cobaltYTInstances={cobaltYTInstances?.youtube ?? []}
               videoId={video.videoId}
             />

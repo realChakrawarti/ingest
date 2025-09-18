@@ -6,6 +6,10 @@ import type { ZSyncTypes } from "../models";
 export async function getSyncType(type: ZSyncTypes, syncId: string) {
   const key = `${syncId}:${type}`;
   try {
+    if (!namespaceId || !accountId) {
+      throw new Error("Cloudflare: NamespaceID or AccounID is missing.");
+    }
+
     const value = await kv.values.get(namespaceId, key, {
       account_id: accountId,
     });

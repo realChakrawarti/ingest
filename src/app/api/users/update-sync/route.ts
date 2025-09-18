@@ -11,15 +11,11 @@ export async function PUT(request: NextRequest) {
   const type = request.nextUrl.searchParams.get("type") ?? "";
   const syncId = request.nextUrl.searchParams.get("syncId") ?? "";
 
-  const userQuery = refs.users.where("syncId", "==", syncId).limit(1);
-
-  const userSnapshot = await userQuery.get();
-
-  if (userSnapshot.empty) {
+  if (!type || !syncId) {
     return NxResponse.fail(
-      "Provided SyncID is not valid.",
-      { code: "INVALID_SYNC_ID", details: "SyncID not valid" },
-      422
+      "Missing required query parameters",
+      { code: "BAD_REQUEST", details: "Type & SyncId are required." },
+      400
     );
   }
 
@@ -33,13 +29,28 @@ export async function PUT(request: NextRequest) {
     );
   }
 
+  const userQuery = refs.users.where("syncId", "==", syncId).limit(1);
+
+  const userSnapshot = await userQuery.get();
+
+  if (userSnapshot.empty) {
+    return NxResponse.fail(
+      "Provided SyncID is not valid.",
+      { code: "INVALID_SYNC_ID", details: "SyncID not valid" },
+      422
+    );
+  }
+
   try {
     await updateSync(safeType, syncId, body);
     return NxResponse.success("Session was been synced with cloud.", {}, 201);
   } catch (err) {
     return NxResponse.fail(
       "Unable to update the session",
-      { code: "SESSION_UPDATE_FAILED", details: JSON.stringify(err) },
+      {
+        code: "SESSION_UPDATE_FAILED",
+        details: err instanceof Error ? err.message : String(err),
+      },
       500
     );
   }

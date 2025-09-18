@@ -1,6 +1,6 @@
 import { revalidatePath } from "next/cache";
 import type { NextRequest } from "next/server";
-import { z } from "zod/v4";
+import { z } from "zod";
 
 import { CatalogSubredditSchema } from "~/entities/catalogs/models";
 import { deleteSubreddit } from "~/entities/catalogs/services/delete-subreddit";

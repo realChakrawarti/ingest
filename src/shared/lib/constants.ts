@@ -14,6 +14,17 @@ export const Regex = {
 
 export const LOCAL_USER_SETTINGS = "local-user-settings";
 
+// Refer: https://stackoverflow.com/questions/71192605/how-do-i-get-youtube-shorts-from-youtube-api-data-v3/76602819#76602819
+export const YouTubePrefix = {
+  ALL_UPLOADS: "UU",
+  LIVE_STREAMS: "UULV",
+  POPULAR_LIVE_STREAMS: "UUPV",
+  POPULAR_SHORTS: "UUPS",
+  POPULAR_VIDEOS: "UULP",
+  SHORTS: "UUSH",
+  VIDEOS: "UULF",
+} as const;
+
 export const videoLanguages = [
   {
     label: "Default",

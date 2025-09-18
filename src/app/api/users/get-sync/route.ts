@@ -10,15 +10,11 @@ export async function GET(request: NextRequest) {
   const type = request.nextUrl.searchParams.get("type") ?? "";
   const syncId = request.nextUrl.searchParams.get("syncId") ?? "";
 
-  const userQuery = refs.users.where("syncId", "==", syncId).limit(1);
-
-  const userSnapshot = await userQuery.get();
-
-  if (userSnapshot.empty) {
+  if (!type || !syncId) {
     return NxResponse.fail(
-      "Provided SyncID is not valid.",
-      { code: "INVALID_SYNC_ID", details: "SyncID not valid" },
-      422
+      "Missing required query parameters",
+      { code: "BAD_REQUEST", details: "Type & SyncId are required." },
+      400
     );
   }
 
@@ -28,6 +24,18 @@ export async function GET(request: NextRequest) {
     return NxResponse.fail(
       error.message,
       { code: "INVALID_SYNC_TYPE", details: error.message },
+      422
+    );
+  }
+
+  const userQuery = refs.users.where("syncId", "==", syncId).limit(1);
+
+  const userSnapshot = await userQuery.get();
+
+  if (userSnapshot.empty) {
+    return NxResponse.fail(
+      "Provided SyncID is not valid.",
+      { code: "INVALID_SYNC_ID", details: "SyncID not valid" },
       422
     );
   }

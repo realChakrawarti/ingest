@@ -1,5 +1,5 @@
 import { DocumentReference, Timestamp } from "firebase-admin/firestore";
-import { z } from "zod/v4";
+import { z } from "zod";
 
 import { YouTubeVideoMetadataSchema } from "~/entities/youtube/models";
 

@@ -1,4 +1,4 @@
-import { z } from "zod/v4";
+import { z } from "zod";
 
 const envVariables = z.object({
   CLOUDFLARE_ACCOUNT_ID: z.string(),

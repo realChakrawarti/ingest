@@ -224,6 +224,7 @@ function DownloadVideo({
   videoId: string;
   cobaltYTInstances: string[];
 }) {
+  const target = cobaltYTInstances[0];
   function handleDownload(id: string) {
     if (disabled) {
       toast(
@@ -239,20 +240,19 @@ function DownloadVideo({
       description: (
         <p>
           Opening a valid{" "}
-          <OutLink href={`https://${cobaltYTInstances[0]}`}>
-            cobalt.tools community instance
-          </OutLink>{" "}
-          in a new tab. Please paste the video link there.
+          <OutLink href={target}>cobalt.tools community instance</OutLink> in a
+          new tab. Please paste the video link there.
         </p>
       ),
     });
     setTimeout(() => {
-      window.open(`https://${cobaltYTInstances[0]}`, "_blank");
+      window.open(target, "_blank");
     }, 1500);
   }
 
   return (
     <Button
+      disabled={disabled || Boolean(target)}
       variant="ghost"
       className={cn(
         "flex gap-2 justify-start hover:bg-accent rounded-lg p-2 text-xs cursor-pointer w-full",

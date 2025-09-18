@@ -45,7 +45,7 @@ async function playerControl(
 function getPlayerParams(
   enabledJsApi: boolean,
   audioLanguage: string | undefined,
-  localVideoLanguageSettings: string
+  localVideoLanguageSettings?: string
 ) {
   let iframeParams = `rel=0&playsinline=1&origin=${appConfig.url}`;
 
@@ -53,7 +53,7 @@ function getPlayerParams(
     iframeParams += "&enablejsapi=1";
   }
 
-  // Global settings video language takes precedence over deafult videoLanguage
+  // Global settings video language takes precedence over default videoLanguage
   if (localVideoLanguageSettings) {
     iframeParams += `&hl=${localVideoLanguageSettings}`;
   } else if (audioLanguage) {
@@ -199,7 +199,7 @@ export default function YoutubePlayer(
   const playerParams = getPlayerParams(
     enableJsApi,
     video.defaultVideoLanguage,
-    localUserSettings.videoLanguage
+    localUserSettings?.videoLanguage
   );
 
   return (

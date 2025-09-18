@@ -13,7 +13,7 @@ type ContextParams = {
 
 export async function GET(request: NextRequest, ctx: ContextParams) {
   const { catalogId } = ctx.params;
-  const onlyMeta = request.nextUrl.searchParams.get("meta") ?? false;
+  const onlyMeta = request.nextUrl.searchParams.get("meta") === "true";
 
   if (catalogId) {
     try {
@@ -50,7 +50,7 @@ export async function GET(request: NextRequest, ctx: ContextParams) {
           code: "FAILED_CATALOG_VIDEOS",
           details: "Unable to fetch catalog contents.",
         },
-        404
+        500
       );
     }
   }

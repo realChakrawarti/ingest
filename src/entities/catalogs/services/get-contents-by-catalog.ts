@@ -7,6 +7,7 @@ import {
   YOUTUBE_CHANNEL_PLAYLIST_VIDEOS,
   YOUTUBE_VIDEOS_DATA,
 } from "~/shared/lib/api/youtube-endpoints";
+import { YouTubePrefix } from "~/shared/lib/constants";
 import { refs } from "~/shared/lib/firebase/refs";
 import getRedditAccessToken from "~/shared/lib/reddit/get-access-token";
 import { redditRequestHeaders } from "~/shared/lib/reddit/reddit-header";
@@ -417,7 +418,7 @@ async function getVideosFromCatalogItem(
 }
 
 function createPlaylistId(channelId: string) {
-  return `${channelId.substring(0, 1)}U${channelId.substring(2)}`;
+  return `${YouTubePrefix.VIDEOS}${channelId.substring(2)}`;
 }
 
 function chunkVideoIds(

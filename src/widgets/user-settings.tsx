@@ -112,7 +112,9 @@ export function UserSettings() {
       return;
     }
 
-    const pushedResult = await pushUserSettings({ settings: userSettings });
+    const pushedResult = await pushUserSettings({
+      settings: { ...userSettings, syncId: localUserSettings.syncId },
+    });
 
     if (pushedResult?.success) {
       toast("Settings has been pushed and is ready to synced across devices.", {
@@ -155,7 +157,7 @@ export function UserSettings() {
       <Dialog>
         <DialogTrigger asChild>
           <Button
-            aria-label="Open feedback modal"
+            aria-label="Open settings modal"
             variant="ghost"
             className={cn(
               "w-full justify-start px-2",
@@ -381,7 +383,7 @@ export function VideoLanguagesCombo({
                     value={language.value}
                     onSelect={(currentValue) => {
                       if (currentValue === localLanguage) {
-                        handleLocalChange("videoLanguage", "zxx");
+                        handleLocalChange("videoLanguage", "");
                       } else {
                         handleLocalChange("videoLanguage", currentValue);
                       }

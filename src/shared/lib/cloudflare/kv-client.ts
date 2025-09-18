@@ -1,3 +1,5 @@
+import "server-only";
+
 import Cloudflare from "cloudflare";
 
 const client = new Cloudflare({

@@ -230,10 +230,12 @@ function FilterVideosModal() {
         </DialogHeader>
         <div className="flex flex-col gap-3 items-start">
           <div className="flex items-center gap-3">
-            <Label className="text-base text-primary">Duration</Label>
+            <Label htmlFor="video-duration" className="text-base text-primary">
+              Duration
+            </Label>
             <ToggleGroup
+              id="video-duration"
               value={duration ?? ""}
-              aria-label="Duration of video"
               type="single"
               onValueChange={_onValueChange}
             >
