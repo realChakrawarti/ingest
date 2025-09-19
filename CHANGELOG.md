@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.10.2](https://github.com/realChakrawarti/ingest/compare/v1.10.1...v1.10.2) (2025-09-19)
+
+
+### Bug Fixes
+
+* set initial user settings ([b045a6e](https://github.com/realChakrawarti/ingest/commit/b045a6e57c3fce8d1cd1ead4f3cd87f579d31e90))
+
 ### [1.10.1](https://github.com/realChakrawarti/ingest/compare/v1.10.0...v1.10.1) (2025-09-19)
 
 
