@@ -117,9 +117,12 @@ export function UserSettings() {
     });
 
     if (pushedResult?.success) {
-      toast("Settings has been pushed and is ready to synced across devices.", {
-        description: "Please wait, page will refresh automatically.",
-      });
+      toast(
+        "Settings have been pushed and are ready to synced across devices.",
+        {
+          description: "Please wait, page will refresh automatically.",
+        }
+      );
       await trigger();
     }
 

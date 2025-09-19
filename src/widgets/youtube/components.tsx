@@ -226,7 +226,7 @@ function DownloadVideo({
 }) {
   const target = cobaltYTInstances[0];
   function handleDownload(id: string) {
-    if (disabled) {
+    if (disabled || !target) {
       toast(
         "Cobalt instances currently unavailable. Please try again after sometime."
       );
@@ -246,13 +246,13 @@ function DownloadVideo({
       ),
     });
     setTimeout(() => {
-      window.open(target, "_blank");
+      window.open(target, "_blank", "noopener,noreferrer");
     }, 1500);
   }
 
   return (
     <Button
-      disabled={disabled || Boolean(target)}
+      disabled={disabled || !target}
       variant="ghost"
       className={cn(
         "flex gap-2 justify-start hover:bg-accent rounded-lg p-2 text-xs cursor-pointer w-full",

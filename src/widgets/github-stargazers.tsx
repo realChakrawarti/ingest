@@ -1,11 +1,12 @@
 "use client";
 
 import { StarIcon } from "lucide-react";
-import Link from "next/link";
 import useSWR from "swr";
 
 import { Skeleton } from "~/shared/ui/skeleton";
 import { cn } from "~/shared/utils/tailwind-merge";
+
+import { OutLink } from "./out-link";
 
 interface StargazerProps {
   owner: string;
@@ -33,13 +34,12 @@ export function GitHubStargazer({
       {isLoading ? (
         <Skeleton className="w-7" />
       ) : (
-        <Link
+        <OutLink
           className={cn(
             "flex items-center gap-1 text-sm transition-colors duration-200 group/star",
             className
           )}
           tabIndex={0}
-          prefetch={false}
           href={`https://github.com/${owner}/${repo}`}
           target="_blank"
           aria-label={`Star ${owner}/${repo} on GitHub`}
@@ -47,13 +47,14 @@ export function GitHubStargazer({
           <StarIcon
             tabIndex={-1}
             className="w-4 h-4 text-yellow-400 group-hover/star:fill-yellow-400"
+            aria-hidden="true"
           />
-          <span className="tracking-wide">
-            {(data?.stargazers_count.toLocaleString() ?? Boolean(error))
-              ? "-"
-              : "0"}
-          </span>
-        </Link>
+          {data?.stargazers_count ? (
+            <span className="tracking-wide text-foreground">
+              {data?.stargazers_count}
+            </span>
+          ) : null}
+        </OutLink>
       )}
     </div>
   );

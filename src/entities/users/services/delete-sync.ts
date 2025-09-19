@@ -9,10 +9,6 @@ import { syncTypes } from "../models";
 export async function deleteSync(userId: string, syncId: string) {
   const userRef = refs.users.doc(userId);
 
-  if (!namespaceId || !accountId) {
-    throw new Error("Cloudflare: NamespaceID or AccountID is missing.");
-  }
-
   await userRef.update({
     syncId: FieldValue.delete(),
     updatedAt: new Date(),

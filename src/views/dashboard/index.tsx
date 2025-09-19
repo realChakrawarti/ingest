@@ -138,7 +138,7 @@ export default function Dashboard() {
             />
           </div>
         )}
-        {!userSyncID?.data.syncId && !isLoading && userSyncError && (
+        {!userSyncID?.data.syncId && !isLoading && (
           <Button onClick={createSyncID} className="mx-3" variant="outline">
             {isGenerating ? (
               <span className="flex items-center gap-2">
