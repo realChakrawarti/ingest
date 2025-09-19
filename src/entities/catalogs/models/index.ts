@@ -1,5 +1,5 @@
 import { DocumentReference, Timestamp } from "firebase-admin/firestore";
-import { z } from "zod/v4";
+import { z } from "zod";
 
 export const CatalogMetaSchema = z.object({
   description: z.string(),
@@ -104,14 +104,14 @@ const DocumentReferenceSchema = z.custom<
 >((value) => value instanceof DocumentReference);
 
 const CatalogVideoListSchema = z.object({
-  day: z.array(VideoMetadataSchema).default([]),
-  month: z.array(VideoMetadataSchema).default([]),
-  week: z.array(VideoMetadataSchema).default([]),
+  day: z.array(VideoMetadataSchema).prefault([]),
+  month: z.array(VideoMetadataSchema).prefault([]),
+  week: z.array(VideoMetadataSchema).prefault([]),
 });
 
 const CatalogSubredditPostSchema = z.object({
   postAuthor: z.string(),
-  postCommentsCount: z.number().default(0),
+  postCommentsCount: z.number().prefault(0),
   postCreatedAt: z.number(),
   postDomain: z.string(),
   postId: z.string(),
@@ -130,8 +130,8 @@ const CatalogSubredditPostSchema = z.object({
 const CatalogDocumentSchema = CatalogMetaSchema.extend({
   data: z.object({
     posts: z.array(CatalogSubredditPostSchema).optional(),
-    totalPosts: z.number().default(0),
-    totalVideos: z.number().default(0),
+    totalPosts: z.number().prefault(0),
+    totalVideos: z.number().prefault(0),
     updatedAt: TimestampSchema,
     videos: CatalogVideoListSchema,
   }),
@@ -142,7 +142,7 @@ const CatalogDocumentSchema = CatalogMetaSchema.extend({
 const CatalogValidSchema = z.object({
   description: z.string(),
   id: z.string(),
-  pageviews: z.number().default(0),
+  pageviews: z.number().prefault(0),
   thumbnails: z.array(z.string()),
   title: z.string(),
   totalPosts: z.number(),
@@ -159,8 +159,8 @@ const ContentByCatalogSchema = CatalogMetaSchema.extend({
   nextUpdate: z.string(),
   pageviews: z.number(),
   posts: z.array(CatalogSubredditPostSchema),
-  totalPosts: z.number().default(0),
-  totalVideos: z.number().default(0),
+  totalPosts: z.number().prefault(0),
+  totalVideos: z.number().prefault(0),
   videos: CatalogVideoListSchema,
 });
 

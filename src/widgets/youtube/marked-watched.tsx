@@ -3,7 +3,7 @@ import { Check, Square } from "lucide-react";
 
 import type { ZVideoMetadataCompatible } from "~/entities/catalogs/models";
 
-import appConfig from "~/shared/app-config";
+import { useLocalUserSettings } from "~/shared/hooks/use-local-user-settings";
 import { indexedDB } from "~/shared/lib/api/dexie";
 import type { History } from "~/shared/types-schema/types";
 import { Button } from "~/shared/ui/button";
@@ -17,6 +17,8 @@ export default function MarkedWatched({
     indexedDB["history"].get(video.videoId)
   );
 
+  const { localUserSettings } = useLocalUserSettings(null);
+
   async function markUnwatched() {
     const payload: History = {
       completed: 0,
@@ -28,7 +30,10 @@ export default function MarkedWatched({
     await indexedDB["history"].put(payload);
   }
 
-  if (videoProgress && videoProgress.completed > appConfig.watchedPercentage) {
+  if (
+    videoProgress &&
+    videoProgress.completed > localUserSettings.watchedPercentage
+  ) {
     return (
       <Button
         variant="ghost"
@@ -44,7 +49,7 @@ export default function MarkedWatched({
   // TODO: When a playing video is marked as watched, maybe stop the video?
   // Currently using the playerRef from "playing-currently-store" de-syncs the playerRef, needs further investigation
   async function markWatched() {
-    const percentCompleted = appConfig.watchedPercentage + 1;
+    const percentCompleted = localUserSettings.watchedPercentage + 1;
     const markedCompletionDuration = video?.videoDuration
       ? video.videoDuration -
         parseInt(

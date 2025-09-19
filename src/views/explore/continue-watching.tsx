@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 
-import appConfig from "~/shared/app-config";
+import { useLocalUserSettings } from "~/shared/hooks/use-local-user-settings";
 import { indexedDB } from "~/shared/lib/api/dexie";
 import type { History } from "~/shared/types-schema/types";
 
@@ -17,6 +17,8 @@ import YouTubeCard from "~/widgets/youtube/youtube-card";
 export default function ContinueWatching() {
   const [history, setHistory] = useState<History[]>([]);
 
+  const { localUserSettings } = useLocalUserSettings(null);
+
   useEffect(() => {
     const getWatchHistory = async () => {
       const indexedHistory =
@@ -26,7 +28,7 @@ export default function ContinueWatching() {
           .sortBy("updatedAt")) ?? [];
 
       const filteredIndexedHistory = indexedHistory.filter(
-        (item) => item.completed < appConfig.watchedPercentage
+        (item) => item.completed < localUserSettings.watchedPercentage
       );
       setHistory(filteredIndexedHistory);
     };

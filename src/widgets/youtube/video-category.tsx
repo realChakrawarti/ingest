@@ -5,7 +5,7 @@ import { FlameIcon, MessageSquareText, TrendingUp } from "lucide-react";
 
 import type { ZVideoContentInfo } from "~/entities/catalogs/models";
 
-import appConfig from "~/shared/app-config";
+import { useLocalUserSettings } from "~/shared/hooks/use-local-user-settings";
 import { indexedDB } from "~/shared/lib/api/dexie";
 import { time } from "~/shared/utils/time";
 
@@ -110,6 +110,7 @@ export function VideoCategory({
   publishedAt: string;
 }) {
   const activePlayerRef = useActivePlayerRef();
+  const { localUserSettings } = useLocalUserSettings(null);
 
   const videoProgress = useLiveQuery(() => indexedDB["history"].get(videoId));
 
@@ -127,7 +128,8 @@ export function VideoCategory({
 
   if (
     category === "Inconclusive" ||
-    (videoProgress && videoProgress.completed > appConfig.watchedPercentage)
+    (videoProgress &&
+      videoProgress.completed > localUserSettings.watchedPercentage)
   ) {
     return null;
   } else {

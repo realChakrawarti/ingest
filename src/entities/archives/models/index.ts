@@ -1,5 +1,5 @@
 import { DocumentReference, Timestamp } from "firebase-admin/firestore";
-import { z } from "zod/v4";
+import { z } from "zod";
 
 import { YouTubeVideoMetadataSchema } from "~/entities/youtube/models";
 
@@ -36,7 +36,7 @@ const ArchiveVideoSchema = YouTubeVideoMetadataSchema;
 
 export const ArchiveDocumentSchema = z.object({
   data: z.object({
-    totalVideos: z.number().default(0),
+    totalVideos: z.number().prefault(0),
     updatedAt: TimestampSchema,
     videos: z.optional(z.array(ArchiveVideoSchema)),
   }),

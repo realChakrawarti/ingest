@@ -6,6 +6,7 @@ import { useCallback, useEffect, useRef } from "react";
 import type { ZVideoMetadataCompatible } from "~/entities/catalogs/models";
 
 import appConfig from "~/shared/app-config";
+import { useLocalUserSettings } from "~/shared/hooks/use-local-user-settings";
 import { indexedDB } from "~/shared/lib/api/dexie";
 import { cn } from "~/shared/utils/tailwind-merge";
 import Log from "~/shared/utils/terminal-logger";
@@ -43,7 +44,8 @@ async function playerControl(
 
 function getPlayerParams(
   enabledJsApi: boolean,
-  audioLanguage: string | undefined
+  audioLanguage: string | undefined,
+  localVideoLanguageSettings?: string
 ) {
   let iframeParams = `rel=0&playsinline=1&origin=${appConfig.url}`;
 
@@ -51,7 +53,10 @@ function getPlayerParams(
     iframeParams += "&enablejsapi=1";
   }
 
-  if (audioLanguage) {
+  // Global settings video language takes precedence over default videoLanguage
+  if (localVideoLanguageSettings) {
+    iframeParams += `&hl=${localVideoLanguageSettings}`;
+  } else if (audioLanguage) {
     iframeParams += `&hl=${audioLanguage}`;
   }
 
@@ -75,6 +80,8 @@ export default function YoutubePlayer(
     thisPlayerRef,
     video,
   });
+
+  const { localUserSettings } = useLocalUserSettings(null);
 
   const _onStateChange = useCallback(
     async (event: YT.OnStateChangeEvent) => {
@@ -115,6 +122,9 @@ export default function YoutubePlayer(
         }
         case playerState.PLAYING: {
           playerIframe.style.opacity = "1";
+          thisPlayerRef.current?.setPlaybackRate(
+            localUserSettings?.playbackRate ?? 1
+          );
           playerIframe.setAttribute("playing", "true");
 
           // Stop other players
@@ -139,7 +149,13 @@ export default function YoutubePlayer(
         }
       }
     },
-    [videoTitle, startTracking, stopTracking, videoId]
+    [
+      videoTitle,
+      startTracking,
+      stopTracking,
+      videoId,
+      localUserSettings?.playbackRate,
+    ]
   );
 
   async function loadIFrameElement() {
@@ -164,7 +180,9 @@ export default function YoutubePlayer(
       // Play the video when continued after stopping, rest code in buffering
       thisPlayerRef.current?.playVideo();
     }
-
+    thisPlayerRef.current?.setPlaybackRate(
+      localUserSettings?.playbackRate ?? 1.0
+    );
     loaded.current = true;
   }
 
@@ -178,7 +196,11 @@ export default function YoutubePlayer(
     };
   }, [_onStateChange, stopTracking]);
 
-  const playerParams = getPlayerParams(enableJsApi, video.defaultVideoLanguage);
+  const playerParams = getPlayerParams(
+    enableJsApi,
+    video.defaultVideoLanguage,
+    localUserSettings?.videoLanguage
+  );
 
   return (
     <div

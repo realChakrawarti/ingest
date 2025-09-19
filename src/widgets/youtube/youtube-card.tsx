@@ -20,44 +20,7 @@ interface YouTubeCardProps {
   options?: Partial<YouTubeCardOptions>;
 }
 
-type CobaltInstances = {
-  youtube: string[];
-  facebook: string[];
-  rutube: string[];
-  bluesky: string[];
-  tumblr: string[];
-  "youtube-music": string[];
-  bilibili: string[];
-  pinterest: string[];
-  instagram: string[];
-  soundcloud: string[];
-  odnoklassniki: string[];
-  dailymotion: string[];
-  snapchat: string[];
-  "youtube-shorts": string[];
-  twitter: string[];
-  loom: string[];
-  vimeo: string[];
-  xiaohongshu: string[];
-  "twitch-clips": string[];
-  vk: string[];
-  streamable: string[];
-  tiktok: string[];
-  reddit: string[];
-  newgrounds: string[];
-};
-
-async function getCobaltYTInstances() {
-  try {
-    const result = await fetch("https://cobalt.directory/api_frontends.json");
-    const all = (await result.json()) as CobaltInstances;
-    return all.youtube;
-  } catch (_err) {
-    return [];
-  }
-}
-
-export default async function YouTubeCard(props: YouTubeCardProps) {
+export default function YouTubeCard(props: YouTubeCardProps) {
   const { video, options } = props;
 
   const { videoId, videoTitle, videoDescription } = video;
@@ -72,8 +35,6 @@ export default async function YouTubeCard(props: YouTubeCardProps) {
     showDuration = false,
     showVideoCategory = false,
   } = options ?? {};
-
-  const downloadCobaltLinks = await getCobaltYTInstances();
 
   return (
     <div key={videoId} id="player-card" className="flex flex-col group/player">
@@ -114,7 +75,6 @@ export default async function YouTubeCard(props: YouTubeCardProps) {
         addWatchLater={addWatchLater}
         removeWatchLater={removeWatchLater}
         markWatched={markWatched}
-        cobaltYTInstances={downloadCobaltLinks}
       />
       <div className="p-3">
         <ChannelMeta hideAvatar={hideAvatar} video={video} />

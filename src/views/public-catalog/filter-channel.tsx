@@ -12,10 +12,13 @@ import { Button } from "~/shared/ui/button";
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogFooter,
   DialogHeader,
+  DialogTitle,
   DialogTrigger,
 } from "~/shared/ui/dialog";
+import { Label } from "~/shared/ui/label";
 import { ToggleGroup, ToggleGroupItem } from "~/shared/ui/toggle-group";
 import { cn } from "~/shared/utils/tailwind-merge";
 
@@ -221,13 +224,18 @@ function FilterVideosModal() {
         </Button>
       </DialogTrigger>
       <DialogContent className="">
-        <DialogHeader title="Filter videos">Filter videos</DialogHeader>
-        <div className="flex flex-col gap-4 items-start">
-          <div className="flex items-center gap-1">
-            <p className="text-md text-primary">Duration</p>
+        <DialogHeader title="Filter videos">
+          <DialogTitle>Filter videos</DialogTitle>
+          <DialogDescription>Fine-tune your feed</DialogDescription>
+        </DialogHeader>
+        <div className="flex flex-col gap-3 items-start">
+          <div className="flex items-center gap-3">
+            <Label htmlFor="video-duration" className="text-base text-primary">
+              Duration
+            </Label>
             <ToggleGroup
+              id="video-duration"
               value={duration ?? ""}
-              aria-label="Duration of video"
               type="single"
               onValueChange={_onValueChange}
             >

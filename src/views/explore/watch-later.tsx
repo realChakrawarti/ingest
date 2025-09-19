@@ -40,7 +40,7 @@ export default function WatchLater() {
               />
             ))
           ) : (
-            <div>No videos found.</div>
+            <div className="px-2 md:px-0">No videos found.</div>
           )}
         </GridContainer>
       </PublicContentContainer>

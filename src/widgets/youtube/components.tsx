@@ -18,6 +18,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "~/shared/ui/sheet";
+import { cn } from "~/shared/utils/tailwind-merge";
 import { getTimeDifference } from "~/shared/utils/time-diff";
 
 import { OutLink } from "../out-link";
@@ -215,13 +216,23 @@ function RemoveWatchLater({
 }
 
 function DownloadVideo({
+  disabled = false,
   videoId,
   cobaltYTInstances,
 }: {
+  disabled?: boolean;
   videoId: string;
   cobaltYTInstances: string[];
 }) {
+  const target = cobaltYTInstances[0];
   function handleDownload(id: string) {
+    if (disabled || !target) {
+      toast(
+        "Cobalt instances currently unavailable. Please try again after sometime."
+      );
+      return;
+    }
+
     const videoLink = `https://www.youtube.com/watch?v=${id}`;
 
     navigator.clipboard.writeText(videoLink);
@@ -229,22 +240,24 @@ function DownloadVideo({
       description: (
         <p>
           Opening a valid{" "}
-          <OutLink href={`https://${cobaltYTInstances[0]}`}>
-            cobalt.tools community instance
-          </OutLink>{" "}
-          in a new tab. Please paste the video link there.
+          <OutLink href={target}>cobalt.tools community instance</OutLink> in a
+          new tab. Please paste the video link there.
         </p>
       ),
     });
     setTimeout(() => {
-      window.open(`https://${cobaltYTInstances[0]}`, "_blank");
+      window.open(target, "_blank", "noopener,noreferrer");
     }, 1500);
   }
 
   return (
     <Button
+      disabled={disabled || !target}
       variant="ghost"
-      className="flex gap-2 justify-start hover:bg-accent rounded-lg p-2 text-xs cursor-pointer w-full"
+      className={cn(
+        "flex gap-2 justify-start hover:bg-accent rounded-lg p-2 text-xs cursor-pointer w-full",
+        disabled && "cursor-not-allowed"
+      )}
       onClick={() => handleDownload(videoId)}
     >
       <HardDriveDownloadIcon className="h-4 w-4 mr-2" />

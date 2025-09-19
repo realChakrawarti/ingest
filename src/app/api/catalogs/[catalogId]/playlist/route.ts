@@ -1,6 +1,6 @@
 import { revalidatePath } from "next/cache";
 import type { NextRequest } from "next/server";
-import { z } from "zod/v4";
+import { z } from "zod";
 
 import { deletePlaylist, updateCatalogPlaylists } from "~/entities/catalogs";
 import { CatalogPlaylistSchema } from "~/entities/catalogs/models";

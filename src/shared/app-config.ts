@@ -15,7 +15,7 @@ class AppConfig {
   private _organization = "707x Labs";
   private _subDomain = "ingest";
   private _version = packageInfo.version;
-  private _watchedPercentage = 95;
+  private _watchedPercentage = 94;
 
   get channelLogoUpdatePeriod(): number {
     return this._channelLogoUpdatePeriod;

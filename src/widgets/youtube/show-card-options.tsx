@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import useSWR from "swr";
 
 import type { ZVideoMetadataCompatible } from "~/entities/catalogs/models";
 
@@ -17,20 +18,54 @@ import {
 } from "./components";
 import MarkedWatched from "./marked-watched";
 
+type CobaltInstances = {
+  youtube: string[];
+  facebook: string[];
+  rutube: string[];
+  bluesky: string[];
+  tumblr: string[];
+  "youtube-music": string[];
+  bilibili: string[];
+  pinterest: string[];
+  instagram: string[];
+  soundcloud: string[];
+  odnoklassniki: string[];
+  dailymotion: string[];
+  snapchat: string[];
+  "youtube-shorts": string[];
+  twitter: string[];
+  loom: string[];
+  vimeo: string[];
+  xiaohongshu: string[];
+  "twitch-clips": string[];
+  vk: string[];
+  streamable: string[];
+  tiktok: string[];
+  reddit: string[];
+  newgrounds: string[];
+};
+
 export default function ShowCardOption({
   addWatchLater,
   removeWatchLater,
   markWatched,
   video,
-  cobaltYTInstances,
 }: Pick<
   YouTubeCardOptions,
   "addWatchLater" | "removeWatchLater" | "markWatched"
 > & {
   video: ZVideoMetadataCompatible;
-  cobaltYTInstances: string[];
 }) {
   const [isOpen, setIsOpen] = useState(false);
+
+  const { data: cobaltYTInstances } = useSWR(
+    "https://cobalt.directory/api_frontends.json",
+    (url) => fetch(url).then((res) => res.json() as Promise<CobaltInstances>),
+    {
+      refreshInterval: 5 * 60 * 1000, // 5 minutes
+      revalidateOnFocus: false,
+    }
+  );
 
   return (
     <div className="relative">
@@ -60,9 +95,10 @@ export default function ShowCardOption({
             videoId={video.videoId}
             removeWatchLater={removeWatchLater}
           />
-          {video?.videoAvailability === "none" && cobaltYTInstances.length ? (
+          {video?.videoAvailability === "none" ? (
             <DownloadVideo
-              cobaltYTInstances={cobaltYTInstances}
+              disabled={!cobaltYTInstances?.youtube?.length}
+              cobaltYTInstances={cobaltYTInstances?.youtube ?? []}
               videoId={video.videoId}
             />
           ) : null}

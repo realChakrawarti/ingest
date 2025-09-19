@@ -7,11 +7,17 @@ import Log from "~/shared/utils/terminal-logger";
 
 import { verifyFirebaseSessionCookie } from "./shared/lib/firebase/verify-session-cookie";
 
+const whiteListedEndpoints = [
+  "/api/catalogs/valid",
+  "/api/users/update-sync",
+  "/api/users/get-sync",
+];
+
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
-  // Conditional logic to explicitly ignore /api/catalogs/valid
-  if (pathname === "/api/catalogs/valid") {
-    // Allow this specific path to bypass middleware logic
+  // Allow this specific path to bypass middleware logic
+  if (whiteListedEndpoints.includes(pathname)) {
+    Log.info(`Whitelisted endpoint hit: ${pathname}`);
     return NextResponse.next();
   }
 
@@ -78,5 +84,7 @@ export const config = {
     "/api/youtube/playlists",
     // User Routes
     "/api/logout",
+    // User sync
+    "/api/users/sync",
   ],
 };
