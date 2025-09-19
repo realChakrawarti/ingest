@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.10.1](https://github.com/realChakrawarti/ingest/compare/v1.10.0...v1.10.1) (2025-09-19)
+
+
+### Features
+
+* add cloudflare kv cross-device sync-session storage ([1dc0518](https://github.com/realChakrawarti/ingest/commit/1dc0518069be4a7aab8e48f03edb292dfd40015b))
+* add other settings like mark watched %, remove history, remove watch later and reset ([ed87ee5](https://github.com/realChakrawarti/ingest/commit/ed87ee577e72b5af58d6e1423f8fc4f22dd4e058))
+* add settings in sidebar with dialog ([a94949b](https://github.com/realChakrawarti/ingest/commit/a94949b5f6c5d3631173f8cd21ed49f04395aa86))
+* add settings on the sidebar & sync on multiple devices ([2d25814](https://github.com/realChakrawarti/ingest/commit/2d25814bfba796fa63889f52dc1c34d5c6234833))
+* setup routes for session sync ([8a5ad51](https://github.com/realChakrawarti/ingest/commit/8a5ad51cfe1efb809564bdfb871926f104784c10))
+
+
+### Bug Fixes
+
+* allow deletion of syncId from dashboard ([1bab07f](https://github.com/realChakrawarti/ingest/commit/1bab07f282ac0bb355e29ecbee217d51cacb6f58))
+* cleanup syncing user settings logic ([367b711](https://github.com/realChakrawarti/ingest/commit/367b711a36651a8d3675ced79aa460635d3c7a0b))
+* coderabbit suggestion ([a971a82](https://github.com/realChakrawarti/ingest/commit/a971a8296cd0fa9f55a437f6560a47675d3ab4b9))
+* replace endpoints for updating sync state ([949d708](https://github.com/realChakrawarti/ingest/commit/949d708d1818939151b533d70f719b4abe23515b))
+
 ## [1.10.0](https://github.com/realChakrawarti/ingest/compare/v1.9.5...v1.10.0) (2025-09-10)
 
 ### [1.9.5](https://github.com/realChakrawarti/ingest/compare/v1.9.4...v1.9.5) (2025-09-10)

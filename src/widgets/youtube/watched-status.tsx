@@ -3,7 +3,7 @@
 import { useLiveQuery } from "dexie-react-hooks";
 import { Check } from "lucide-react";
 
-import appConfig from "~/shared/app-config";
+import { useLocalUserSettings } from "~/shared/hooks/use-local-user-settings";
 import { indexedDB } from "~/shared/lib/api/dexie";
 
 import OverlayTip from "../overlay-tip";
@@ -11,7 +11,12 @@ import OverlayTip from "../overlay-tip";
 export function WatchedStatus({ videoId }: { videoId: string }) {
   const videoProgress = useLiveQuery(() => indexedDB["history"].get(videoId));
 
-  if (videoProgress && videoProgress.completed > appConfig.watchedPercentage) {
+  const { localUserSettings } = useLocalUserSettings(null);
+
+  if (
+    videoProgress &&
+    videoProgress.completed > localUserSettings.watchedPercentage
+  ) {
     return (
       <div className="absolute top-2 left-[2px] md:left-0 group/status cursor-default">
         <OverlayTip

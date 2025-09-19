@@ -1,6 +1,6 @@
 {
   "name": "ingest",
-  "version": "1.10.0",
+  "version": "1.10.1",
   "scripts": {
     "dev": "concurrently \"pnpm run emulate-firebase\" \"next dev\" --kill-others",
     "dev:seed": "concurrently \"pnpm run emulate-firebase:import-seed\" \"next dev\" --kill-others",
@@ -28,6 +28,7 @@
     "@next/third-parties": "^14.2.24",
     "canvas-confetti": "^1.9.3",
     "class-variance-authority": "^0.7.1",
+    "cloudflare": "^5.0.0",
     "clsx": "^2.1.1",
     "cmdk": "^1.1.1",
     "dexie": "^4.0.11",
@@ -54,7 +55,7 @@
     "tailwind-merge": "^2.6.0",
     "tailwind-variants": "^0.2.1",
     "tailwindcss-animate": "^1.0.7",
-    "zod": "^3.25.67",
+    "zod": "^4.1.8",
     "zustand": "^5.0.3"
   },
   "devDependencies": {
