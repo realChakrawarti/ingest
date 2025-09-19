@@ -62,6 +62,7 @@ export default function ShowCardOption({
     "https://cobalt.directory/api_frontends.json",
     (url) => fetch(url).then((res) => res.json() as Promise<CobaltInstances>),
     {
+      errorRetryCount: 0,
       refreshInterval: 5 * 60 * 1000, // 5 minutes
       revalidateOnFocus: false,
     }

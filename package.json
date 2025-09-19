@@ -1,6 +1,6 @@
 {
   "name": "ingest",
-  "version": "1.10.1",
+  "version": "1.10.2",
   "scripts": {
     "dev": "concurrently \"pnpm run emulate-firebase\" \"next dev\" --kill-others",
     "dev:seed": "concurrently \"pnpm run emulate-firebase:import-seed\" \"next dev\" --kill-others",

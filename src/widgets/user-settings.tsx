@@ -88,9 +88,14 @@ export function UserSettings() {
     }
   );
 
-  const [userSettings, setUserSettings] = useState<ZUserSettings>(
-    JSON.parse(globalThis.localStorage?.getItem(LOCAL_USER_SETTINGS) ?? "{}")
-  );
+  const [userSettings, setUserSettings] = useState<ZUserSettings>(() => {
+    const localSettings = globalThis.localStorage?.getItem(LOCAL_USER_SETTINGS);
+    if (localSettings) {
+      return JSON.parse(localSettings);
+    }
+
+    return initialSettings;
+  });
 
   function handleLocalChange(key: keyof ZUserSettings, value: any) {
     setUserSettings((prev) => ({ ...prev, [key]: value }));
@@ -103,13 +108,15 @@ export function UserSettings() {
   }
 
   async function applySettings() {
-    setLocalUserSettings(userSettings);
+    setLocalUserSettings({ ...localUserSettings, ...userSettings });
 
     if (!localUserSettings.syncId) {
       toast("Global settings has been updated.", {
         description: "Please wait, page will refresh automatically.",
       });
-      return;
+      setTimeout(() => {
+        window.location.reload();
+      }, 1500);
     }
 
     const pushedResult = await pushUserSettings({
@@ -142,17 +149,30 @@ export function UserSettings() {
   }
 
   async function handleSettingsSync() {
-    const syncResult = await trigger();
+    const pushedResult = await pushUserSettings({
+      settings: { ...userSettings, syncId: localUserSettings.syncId },
+    });
 
-    if (syncResult?.success) {
-      const syncData = {
-        ...localUserSettings,
-        ...syncResult.data,
-      };
-      setUserSettings(syncData);
-      setLocalUserSettings(syncData);
+    if (pushedResult?.success) {
+      toast(
+        "Settings have been pushed and are ready to synced across devices.",
+        {
+          description: "Please wait, page will refresh automatically.",
+        }
+      );
+
+      const syncResult = await trigger();
+
+      if (syncResult?.success) {
+        const syncData = {
+          ...localUserSettings,
+          ...syncResult.data,
+        };
+        setUserSettings(syncData);
+        setLocalUserSettings(syncData);
+      }
+      toast(syncResult?.message);
     }
-    toast(syncResult?.message);
   }
 
   return (

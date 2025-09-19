@@ -3,7 +3,7 @@
     ".next": false,
     "node_modules": false,
     ".commitlintrc.json": true,
-    ".env.example": true,
+    ".env.example": false,
     ".eslintrc.json": false,
     ".gitignore": false,
     ".versionrc.json": true,
