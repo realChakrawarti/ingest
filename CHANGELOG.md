@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.10.3](https://github.com/realChakrawarti/ingest/compare/v1.10.2...v1.10.3) (2025-09-21)
+
+
+### Bug Fixes
+
+* archive `defaultVideoLanguage` is made optional in `YouTubeVideoMetadataSchema` ([d65ef3a](https://github.com/realChakrawarti/ingest/commit/d65ef3acc3230dabff7fd6e1ab047c7ca0427fba))
+
 ### [1.10.2](https://github.com/realChakrawarti/ingest/compare/v1.10.1...v1.10.2) (2025-09-19)
 
 
