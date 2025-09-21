@@ -20,9 +20,17 @@ import Providers from "./context";
 export const metadata: Metadata = {
   applicationName: `${appConfig.marketName}`,
   description:
-    "Discover new channels, curate your favorite videos, and stay organized.",
-  keywords: ["youtube", "catalog", "channels", "videos", "organize"],
-  title: `${appConfig.marketName} - Organize Your YouTube Universe`,
+    "Discover new YouTube channels, subreddits. Curate your content across channel & subreddits. Stay organized.",
+  keywords: [
+    "youtube",
+    "catalog",
+    "channels",
+    "videos",
+    "organize",
+    "reddit",
+    "subreddits",
+  ],
+  title: `${appConfig.marketName} - Organize Your YouTube & Reddit Universe`,
 };
 
 export default function RootLayout({

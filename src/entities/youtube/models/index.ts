@@ -25,7 +25,7 @@ export type ChannelDetails = {
 export const YouTubeVideoMetadataSchema = z.object({
   channelId: z.string(),
   channelTitle: z.string(),
-  defaultVideoLanguage: z.string(),
+  defaultVideoLanguage: z.string().optional(),
   publishedAt: z.string(),
   videoDescription: z.string(),
   videoId: z.string(),
