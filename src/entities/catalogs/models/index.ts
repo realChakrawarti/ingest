@@ -57,7 +57,7 @@ const CatalogByIDSchema = z.object({
 });
 
 const VideoContentInfoSchema = z.object({
-  defaultVideoLanguage: z.string(),
+  defaultVideoLanguage: z.string().optional(),
   videoAvailability: z.enum(["live", "none", "upcoming"]).optional(),
   videoComments: z.number(),
   videoDuration: z.number(),
