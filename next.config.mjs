@@ -11,11 +11,11 @@ const nextConfig = {
 };
 
 export default withSentryConfig(nextConfig, {
-  org: process.env.SENTRI_ORG,
-  project: process.env.SENTRI_PROJECT,
-  silent: !process.env.SENTRI_CI,
-  disableLogger: process.env.SENTRI_LOGGER,
-  authToken: process.env.SENTRI_AUTH_TOKEN,
+  org: process.env.SENTRY_ORG,
+  project: process.env.SENTRY_PROJECT,
+  silent: !process.env.SENTRY_CI,
+  disableLogger: process.env.SENTRY_LOGGER,
+  authToken: process.env.SENTRY_AUTH_TOKEN,
   widenClientFileUpload: true,
   tunnelRoute: true,
   automaticVercelMonitors: true,
