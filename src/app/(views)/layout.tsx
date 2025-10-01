@@ -18,7 +18,7 @@ import { ReactScan } from "~/widgets/react-scan";
 
 import Providers from "./context";
 
-export const metadata: Metadata = {
+export const generateMetadata: Metadata = {
   applicationName: `${appConfig.marketName}`,
   description:
     "Discover new YouTube channels, subreddits. Curate your content across channel & subreddits. Stay organized.",
@@ -33,8 +33,8 @@ export const metadata: Metadata = {
   ],
   title: `${appConfig.marketName} - Organize Your YouTube & Reddit Universe`,
   other: {
-      ...Sentry.getTraceData(),
-    },
+    ...Sentry.getTraceData(),
+  },
 };
 
 export default function RootLayout({

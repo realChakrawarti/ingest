@@ -17,7 +17,7 @@ export default withSentryConfig(nextConfig, {
   disableLogger: process.env.SENTRY_LOGGER,
   authToken: process.env.SENTRY_AUTH_TOKEN,
   widenClientFileUpload: true,
-  tunnelRoute: true,
+  tunnelRoute: "?!sentry-report",
   automaticVercelMonitors: true,
   reactComponentAnnotation: {
     enabled: true,
