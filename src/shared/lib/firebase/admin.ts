@@ -11,18 +11,24 @@ import appConfig from "~/shared/app-config";
 import isDevelopment from "~/shared/utils/is-development";
 import Log from "~/shared/utils/terminal-logger";
 
-const appOptions: AppOptions = {
-  credential: cert({
-    clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
-    privateKey:
-      process.env.FIREBASE_PRIVATE_KEY.split(String.raw`\n`).join("\n"),
-    projectId: process.env.FIREBASE_PROJECT_ID,
-  }),
-};
+let appOptions: AppOptions;
 
 if (isDevelopment()) {
   process.env.FIRESTORE_EMULATOR_HOST = "localhost:8080";
   process.env.FIREBASE_AUTH_EMULATOR_HOST = "localhost:9099";
+
+  appOptions = {
+    projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+  };
+} else {
+  appOptions = {
+    credential: cert({
+      clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
+      privateKey:
+        process.env.FIREBASE_PRIVATE_KEY.split(String.raw`\n`).join("\n"),
+      projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+    }),
+  };
 }
 
 const appInstanceName = `${appConfig.name}-server`;
