@@ -1,12 +1,12 @@
 {
   "name": "ingest",
-  "version": "1.10.4",
+  "version": "1.11.0",
   "scripts": {
     "dev": "concurrently \"pnpm run emulate-firebase\" \"next dev\" --kill-others",
     "dev:seed": "concurrently \"pnpm run emulate-firebase:import-seed\" \"next dev\" --kill-others",
-    "emulate-firebase": "firebase emulators:start --project ytcatalog707",
-    "emulate-firebase:import-seed": "firebase emulators:start --project ytcatalog707 --import=seed",
-    "emulate-firebase:export-seed": "firebase --project ytcatalog707 emulators:export seed",
+    "emulate-firebase": "firebase emulators:start --project ingest-dev",
+    "emulate-firebase:import-seed": "firebase emulators:start --project ingest-dev --import=seed",
+    "emulate-firebase:export-seed": "firebase --project ingest-dev emulators:export seed",
     "build": "next build",
     "start": "next start",
     "lint": "pnpm exec biome lint --log-kind=compact",
@@ -19,7 +19,7 @@
     "deps": "pnpx dependex"
   },
   "engines": {
-    "node": ">=22.0.0"
+    "node": "22.x"
   },
   "dependencies": {
     "@bprogress/next": "^3.2.12",

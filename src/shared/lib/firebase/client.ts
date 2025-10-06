@@ -15,7 +15,7 @@ const firebaseConfig: FirebaseOptions = {
   appId: "1:874223131522:web:1cbe3657cb8eed060ccd9b",
   authDomain: "ytcatalog707.firebaseapp.com",
   messagingSenderId: "874223131522",
-  projectId: "ytcatalog707",
+  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
   storageBucket: "ytcatalog707.appspot.com",
 };
 
