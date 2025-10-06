@@ -17,25 +17,26 @@ import Header from "~/widgets/header";
 import { ReactScan } from "~/widgets/react-scan";
 
 import Providers from "./context";
-
-export const generateMetadata: Metadata = {
-  applicationName: `${appConfig.marketName}`,
-  description:
-    "Discover new YouTube channels, subreddits. Curate your content across channel & subreddits. Stay organized.",
-  keywords: [
-    "youtube",
-    "catalog",
-    "channels",
-    "videos",
-    "organize",
-    "reddit",
-    "subreddits",
-  ],
-  title: `${appConfig.marketName} - Organize Your YouTube & Reddit Universe`,
-  other: {
-    ...Sentry.getTraceData(),
-  },
-};
+export const generateMetaData = ():Metadata =>{
+  return {
+    applicationName: `${appConfig.marketName}`,
+    description:
+      "Discover new YouTube channels, subreddits. Curate your content across channel & subreddits. Stay organized.",
+    keywords: [
+      "youtube",
+      "catalog",
+      "channels",
+      "videos",
+      "organize",
+      "reddit",
+      "subreddits",
+    ],
+    title: `${appConfig.marketName} - Organize Your YouTube & Reddit Universe`,
+    other: {
+      ...Sentry.getTraceData(),
+    },
+  }
+}
 
 export default function RootLayout({
   children,
