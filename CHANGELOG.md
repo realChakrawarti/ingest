@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.11.0](https://github.com/realChakrawarti/ingest/compare/v1.10.5...v1.11.0) (2025-10-06)
+
+### [1.10.5](https://github.com/realChakrawarti/ingest/compare/v1.10.4...v1.10.5) (2025-10-06)
+
+
+### Bug Fixes
+
+* update admin-sdk configuration to support emulation ([7f8454e](https://github.com/realChakrawarti/ingest/commit/7f8454e5cd6b77c4160283a650d814fe6fd2cf2b))
+
 ### [1.10.4](https://github.com/realChakrawarti/ingest/compare/v1.10.3...v1.10.4) (2025-09-22)
 
 

@@ -6,7 +6,7 @@ import { importX509, type JWTVerifyResult, jwtVerify } from "jose";
 import isDevelopment from "~/shared/utils/is-development";
 import Log from "~/shared/utils/terminal-logger";
 
-const FIREBASE_PROJECT_ID = process.env.FIREBASE_PROJECT_ID;
+const FIREBASE_PROJECT_ID = process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID;
 
 if (!FIREBASE_PROJECT_ID) {
   throw new Error(

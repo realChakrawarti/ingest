@@ -9,6 +9,7 @@ import { verifyFirebaseSessionCookie } from "./shared/lib/firebase/verify-sessio
 
 const whiteListedEndpoints = [
   "/api/catalogs/valid",
+  "/api/archives/valid",
   "/api/users/update-sync",
   "/api/users/get-sync",
 ];

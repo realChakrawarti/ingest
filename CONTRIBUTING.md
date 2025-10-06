@@ -54,6 +54,7 @@ This project uses the following technologies:
 - shadcn/ui: https://ui.shadcn.com/
 - v0: https://v0.dev/
 - IndexedDB API Wrapper (dexie.js): https://dexie.org/
+- Cloudflare KV: https://developers.cloudflare.com/api/resources/kv/
 
 ### Install Dependencies
 
@@ -98,7 +99,7 @@ Before you begin contributing, make sure you have the necessary dependencies ins
 
 ### Environment Variables
 
-Some functionalities might rely on environment variables. You can create a `.env.local` file in the root of your project directory and define any required variables there. Or alternatively, make a copy of `.env.example` file in the root directory and rename it to `.env.local`.
+The project relies on the environment variables. Make a copy of `.env.example` file in the root directory and rename it to `.env.local`.
 
 #### Create a YouTube Data API v3 key (free):
 
@@ -107,7 +108,7 @@ https://console.cloud.google.com/apis/api/youtube.googleapis.com
 - CREATE PROJECT -> Enable API -> Create Credentials -> Check Public Data -> Submit.
 - Once the API Key is visible copy that and paste it in `.env.local`
 
-🚨 **Please note:** Do not commit your `.env` file to version control. So if you use`.env.local`, it is already added to `.gitignore`.
+🚨 **Please note:** Do not commit your environment variable `.env(*)` file to the version control. If you are using `.env.local` as mentioned above, rest assured that it is already included in `.gitignore` file.
 
 ### Run the Project
 
@@ -119,7 +120,7 @@ The project includes various scripts for development tasks. You can run them usi
 pnpm dev
 ```
 
-#### Firebase emulation with seed data
+#### Firebase emulation with seed data (Recommended for first-time setup)
 
 ```bash
 pnpm dev:seed
