@@ -16,7 +16,7 @@ class AppConfig {
   private _subDomain = "ingest";
   private _version = packageInfo.version;
   private _watchedPercentage = 94;
-  private _tracesSampleRate = 1.0;
+  private _tracesSampleRate = 0.5;
 
   get channelLogoUpdatePeriod(): number {
     return this._channelLogoUpdatePeriod;
@@ -75,9 +75,12 @@ class AppConfig {
   get limitArchives(): number {
     return this._limitArchives;
   }
-  
-  get tracesSampleRate(): number {
-    return this._tracesSampleRate;
+
+  get tracesSampleRate(): number | undefined {
+    if (!isDevelopment()) {
+      return this._tracesSampleRate;
+    }
+    return undefined;
   }
 }
 
