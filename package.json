@@ -1,6 +1,6 @@
 {
   "name": "ingest",
-  "version": "1.11.0",
+  "version": "1.11.1",
   "scripts": {
     "dev": "concurrently \"pnpm run emulate-firebase\" \"next dev\" --kill-others",
     "dev:seed": "concurrently \"pnpm run emulate-firebase:import-seed\" \"next dev\" --kill-others",
@@ -26,6 +26,7 @@
     "@google-analytics/data": "^4.12.0",
     "@icons-pack/react-simple-icons": "^10.2.0",
     "@next/third-parties": "^14.2.24",
+    "@sentry/nextjs": "^10.15.0",
     "canvas-confetti": "^1.9.3",
     "class-variance-authority": "^0.7.1",
     "cloudflare": "^5.0.0",
