@@ -16,6 +16,12 @@ const envVariables = z.object({
   REDDIT_CLIENT_ID: z.string(),
   REDDIT_CLIENT_SECRET: z.string(),
   YOUTUBE_API_KEY: z.string(),
+  SENTRY_LOGGER: z.boolean(),
+  SENTRY_CI: z.boolean(),
+  SENTRY_PROJECT: z.string(),
+  SENTRY_ORG: z.string(),
+  NEXT_PUBLIC_SENTRY_DSN: z.string(),
+  SENTRY_AUTH_TOKEN: z.string(),
 });
 
 envVariables.parse(process.env);
