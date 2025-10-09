@@ -59,8 +59,13 @@ export default function ShowCardOption({
   const [isOpen, setIsOpen] = useState(false);
 
   const { data: cobaltYTInstances } = useSWR(
-    "https://cobalt.directory/api_frontends.json",
-    (url) => fetch(url).then((res) => res.json() as Promise<CobaltInstances>),
+    "https://cobalt.directory/api/working?type=frontends",
+    async (url) => {
+      const res = await fetch(url);
+      const json = await res.json();
+      // new structure: { timestamp, data: { youtube: [...] } }
+      return json.data as CobaltInstances;
+    },
     {
       errorRetryCount: 0,
       refreshInterval: 5 * 60 * 1000, // 5 minutes
