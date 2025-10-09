@@ -26,6 +26,19 @@
   }
 }
 
+/* Subtle grid background (used for layout aesthetics) */
+.bg-grid-slate-100 {
+  background-image: linear-gradient(to right, rgba(100, 116, 139, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(100, 116, 139, 0.05) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+.bg-grid-gray-800 {
+  background-image: linear-gradient(to right, rgba(31, 41, 55, 0.15) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(31, 41, 55, 0.15) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
 .pages-slider {
   height: 100px;
   margin: auto;
