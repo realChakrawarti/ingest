@@ -47,7 +47,6 @@ export default function VideoCard({ video, removeVideo }: VideoCardProps) {
             imageClassName="w-full h-full object-cover"
             sizes="(min-width: 1024px) 50vw, 100vw"
             fill
-            fallbackSrc={videoThumbnail}
           />
         </div>
         <Popover>

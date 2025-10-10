@@ -43,6 +43,7 @@ export default function SmartImage(props: SmartImageProps) {
   const [isLoaded, setIsLoaded] = useState(false);
   const [hasError, setHasError] = useState(false);
   const [clientHydrated, setClientHydrated] = useState(false);
+  const [attemptedFallback, setAttemptedFallback] = useState(false);
 
   useEffect(() => {
     setClientHydrated(true);
@@ -60,7 +61,7 @@ export default function SmartImage(props: SmartImageProps) {
     setIsLoaded(false);
   };
 
-  const effectiveSrc = hasError && fallbackSrc ? fallbackSrc : src;
+  const effectiveSrc = hasError && fallbackSrc && !attemptedFallback ? fallbackSrc : src;
 
   const effectiveLoading: NextImageProps["loading"] | undefined = useMemo(() => {
     if (priority) return undefined;
@@ -117,8 +118,22 @@ export default function SmartImage(props: SmartImageProps) {
   };
   
   const internalOnError = (e: any) => {
-    handleError();
+    // Check if we're already showing the fallback
+    const currentSrc = (e?.currentTarget as HTMLImageElement)?.src;
+    const isCurrentlyFallback = fallbackSrc && currentSrc?.includes(fallbackSrc);
     
+    if (isCurrentlyFallback || attemptedFallback) {
+      // Fallback already attempted or currently showing, stop retrying
+      setHasError(true);
+      setIsLoaded(false);
+    } else if (fallbackSrc) {
+      // Try fallback for the first time
+      setAttemptedFallback(true);
+      setHasError(false); // Reset error state to try fallback
+    } else {
+      // No fallback available, just set error
+      handleError();
+    }
     
     if (userOnError) {
       try {
@@ -155,16 +170,19 @@ export default function SmartImage(props: SmartImageProps) {
       {showSkeleton && (
         <div
           aria-hidden
-          className={`absolute inset-0 bg-gray-200 dark:bg-gray-800 motion-safe:animate-pulse z-10 pointer-events-none ${
+          aria-busy="true"
+          className={`absolute inset-0 bg-gray-200 dark:bg-gray-800 motion-safe:animate-pulse motion-reduce:bg-gradient-to-r motion-reduce:from-gray-200 motion-reduce:via-gray-300 motion-reduce:to-gray-200 dark:motion-reduce:from-gray-800 dark:motion-reduce:via-gray-700 dark:motion-reduce:to-gray-800 z-10 pointer-events-none ${
             skeletonClassName ?? ""
           }`.trim()}
-          style={{ willChange: "opacity" }}
+          style={{ 
+            willChange: "opacity"
+          }}
         />
       )}
 
-      <Image aria-hidden={decorative ? true : undefined} {...finalImageProps} />
+      <Image {...finalImageProps} />
 
-      {hasError && !fallbackSrc && (
+      {hasError && (!fallbackSrc || attemptedFallback) && (
         <div
           aria-live="polite"
           className="absolute inset-0 flex items-center justify-center text-xs font-semibold text-gray-600 select-none pointer-events-none"

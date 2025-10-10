@@ -9,7 +9,17 @@ import SmartImage from "~/shared/ui/SmartImage";
 // Load react-slick on client only to avoid SSR bundling/runtime issues
 const Slider = dynamic(() => import("react-slick").then((m) => m.default), {
   ssr: false,
-});
+}) as any;
+
+// Type for the Slider component instance
+type SliderInstance = {
+  slickNext: () => void;
+  slickPrev: () => void;
+  slickGoTo: (slide: number) => void;
+  slickPause: () => void;
+  slickPlay: () => void;
+  // Add other methods as needed
+};
 
 function ThumbnailCarousel({
   thumbnails,
@@ -18,7 +28,7 @@ function ThumbnailCarousel({
 }: {
   path: string;
   thumbnails: string[];
-  sliderRef: MutableRefObject<typeof Slider | null>;
+  sliderRef: MutableRefObject<SliderInstance | null>;
 }) {
   const settings: Settings = {
     arrows: false,
@@ -36,7 +46,7 @@ function ThumbnailCarousel({
 
   return (
     <div className="h-full w-full overflow-hidden">
-      <Slider className="h-full" {...settings}>
+      <Slider ref={sliderRef} className="h-full" {...settings}>
         {thumbnails?.map((thumb) => {
           const match = thumb?.match(/\/vi\/([^\/]+)/);
           const videoId = match?.[1] ?? "";
