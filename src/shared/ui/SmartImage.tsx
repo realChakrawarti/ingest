@@ -14,6 +14,11 @@ type SmartImageProps = Omit<NextImageProps, "onLoadingComplete"> & {
   ariaLive?: "polite" | "assertive" | undefined;
 };
 
+// Skeleton styling constants for better maintainability
+const SKELETON_BASE_CLASSES = "absolute inset-0 z-10 pointer-events-none";
+const SKELETON_COLOR_CLASSES = "bg-gray-200 dark:bg-gray-800";
+const SKELETON_ANIMATION_CLASSES = "motion-safe:animate-pulse motion-reduce:bg-gradient-to-r motion-reduce:from-gray-200 motion-reduce:via-gray-300 motion-reduce:to-gray-200 dark:motion-reduce:from-gray-800 dark:motion-reduce:via-gray-700 dark:motion-reduce:to-gray-800";
+
 
 export default function SmartImage(props: SmartImageProps) {
   const {
@@ -61,7 +66,7 @@ export default function SmartImage(props: SmartImageProps) {
     setIsLoaded(false);
   };
 
-  const effectiveSrc = hasError && fallbackSrc && !attemptedFallback ? fallbackSrc : src;
+  const effectiveSrc = (attemptedFallback || hasError) && fallbackSrc ? fallbackSrc : src;
 
   const effectiveLoading: NextImageProps["loading"] | undefined = useMemo(() => {
     if (priority) return undefined;
@@ -107,7 +112,7 @@ export default function SmartImage(props: SmartImageProps) {
       handleLoadingComplete();
     }
     
-    
+    // Notify that image loading completed
     if (userOnLoad) {
       try {
         userOnLoad(e);
@@ -169,7 +174,7 @@ export default function SmartImage(props: SmartImageProps) {
       {showSkeleton && (
         <div
           aria-hidden
-          className={`absolute inset-0 bg-gray-200 dark:bg-gray-800 motion-safe:animate-pulse motion-reduce:bg-gradient-to-r motion-reduce:from-gray-200 motion-reduce:via-gray-300 motion-reduce:to-gray-200 dark:motion-reduce:from-gray-800 dark:motion-reduce:via-gray-700 dark:motion-reduce:to-gray-800 z-10 pointer-events-none ${
+          className={`${SKELETON_BASE_CLASSES} ${SKELETON_COLOR_CLASSES} ${SKELETON_ANIMATION_CLASSES} ${
             skeletonClassName ?? ""
           }`.trim()}
           style={{ 
