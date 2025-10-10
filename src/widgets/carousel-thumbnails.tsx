@@ -11,13 +11,15 @@ const Slider = dynamic(() => import("react-slick").then((m) => m.default), {
   ssr: false,
 }) as any;
 
-// Type for the Slider component instance
-type SliderInstance = {
+// Type for the Slider component instance methods
+type SliderType = {
   slickNext: () => void;
   slickPrev: () => void;
   slickGoTo: (slide: number) => void;
   slickPause: () => void;
   slickPlay: () => void;
+  slickCurrentSlide: () => number;
+  slickSlideCount: () => number;
   // Add other methods as needed
 };
 
@@ -28,7 +30,7 @@ function ThumbnailCarousel({
 }: {
   path: string;
   thumbnails: string[];
-  sliderRef: MutableRefObject<SliderInstance | null>;
+  sliderRef: MutableRefObject<SliderType | null>;
 }) {
   const settings: Settings = {
     arrows: false,

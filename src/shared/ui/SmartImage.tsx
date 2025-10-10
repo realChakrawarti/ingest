@@ -118,12 +118,11 @@ export default function SmartImage(props: SmartImageProps) {
   };
   
   const internalOnError = (e: any) => {
-    // Check if we're already showing the fallback
-    const currentSrc = (e?.currentTarget as HTMLImageElement)?.src;
-    const isCurrentlyFallback = fallbackSrc && currentSrc?.includes(fallbackSrc);
+    // Check if we're already showing the fallback based on state
+    const isCurrentlyFallback = Boolean(fallbackSrc && attemptedFallback);
     
-    if (isCurrentlyFallback || attemptedFallback) {
-      // Fallback already attempted or currently showing, stop retrying
+    if (isCurrentlyFallback) {
+      // Fallback already attempted, stop retrying
       setHasError(true);
       setIsLoaded(false);
     } else if (fallbackSrc) {
@@ -170,7 +169,6 @@ export default function SmartImage(props: SmartImageProps) {
       {showSkeleton && (
         <div
           aria-hidden
-          aria-busy="true"
           className={`absolute inset-0 bg-gray-200 dark:bg-gray-800 motion-safe:animate-pulse motion-reduce:bg-gradient-to-r motion-reduce:from-gray-200 motion-reduce:via-gray-300 motion-reduce:to-gray-200 dark:motion-reduce:from-gray-800 dark:motion-reduce:via-gray-700 dark:motion-reduce:to-gray-800 z-10 pointer-events-none ${
             skeletonClassName ?? ""
           }`.trim()}
