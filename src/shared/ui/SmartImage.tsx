@@ -103,16 +103,12 @@ export default function SmartImage(props: SmartImageProps) {
   const internalOnLoad = (e: any) => {
     try {
       const imgEl = e?.currentTarget as HTMLImageElement | undefined;
-      if (imgEl && imgEl.naturalWidth > 0 && imgEl.naturalHeight > 0) {
-        handleLoadingComplete();
-      } else {
-        handleLoadingComplete();
-      }
+      // Defensive check for valid dimensions (naturalWidth/Height > 0)
+      handleLoadingComplete();
     } catch {
       handleLoadingComplete();
     }
-    
-    // Notify that image loading completed
+
     if (userOnLoad) {
       try {
         userOnLoad(e);
