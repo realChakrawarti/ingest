@@ -2,6 +2,7 @@ import type { ZVideoMetadataCompatible } from "~/entities/catalogs/models";
 
 import type { YouTubeCardOptions } from "~/shared/types-schema/types";
 import { Button } from "~/shared/ui/button";
+import SmartImage from "~/shared/ui/SmartImage";
 import { DeleteIcon, ThreeDotIcon } from "~/shared/ui/icons";
 import { Popover, PopoverContent, PopoverTrigger } from "~/shared/ui/popover";
 
@@ -38,7 +39,14 @@ export default function VideoCard({ video, removeVideo }: VideoCardProps) {
     <div className="flex flex-col gap-3">
       <div key={videoId} className="relative overflow-hidden rounded-lg">
         <div className="relative aspect-video overflow-hidden">
-          <img src={videoThumbnail} alt={videoTitle} />
+          <SmartImage
+            src={videoThumbnail}
+            alt={videoTitle}
+            aspectRatio={16 / 9}
+            containerClassName="w-full h-full"
+            imageClassName="object-cover"
+            fallbackSrc={videoThumbnail}
+          />
         </div>
         <Popover>
           <PopoverTrigger asChild>

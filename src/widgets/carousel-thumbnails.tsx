@@ -1,8 +1,15 @@
 "use client";
 
 import Link from "next/link";
+import dynamic from "next/dynamic";
 import type { MutableRefObject } from "react";
-import Slider, { type Settings } from "react-slick";
+import type { Settings } from "react-slick";
+import SmartImage from "~/shared/ui/SmartImage";
+
+// Load react-slick on client only to avoid SSR bundling/runtime issues
+const Slider = dynamic(() => import("react-slick").then((m) => m.default), {
+  ssr: false,
+});
 
 function ThumbnailCarousel({
   thumbnails,
@@ -11,7 +18,7 @@ function ThumbnailCarousel({
 }: {
   path: string;
   thumbnails: string[];
-  sliderRef: MutableRefObject<Slider | null>;
+  sliderRef: MutableRefObject<any>;
 }) {
   const settings: Settings = {
     arrows: false,
@@ -19,6 +26,7 @@ function ThumbnailCarousel({
     cssEase: "ease-in",
     dots: false,
     fade: true,
+    adaptiveHeight: false,
     // Refer: https://github.com/akiran/react-slick/issues/1171
     infinite: thumbnails.length > 1,
     slidesToScroll: 1,
@@ -27,17 +35,26 @@ function ThumbnailCarousel({
   };
 
   return (
-    <div className="size-full overflow-hidden">
-      <Slider ref={sliderRef} {...settings}>
+    <div className="h-full w-full overflow-hidden">
+      <Slider className="h-full" {...settings}>
         {thumbnails?.map((thumb) => {
           const videoId = thumb?.split("/vi/")[1].split("/")[0];
           return (
-            <div key={thumb}>
-              <Link prefetch={false} scroll={false} href={`${path}#${videoId}`}>
-                <img
-                  className="object-contain size-full"
+            <div key={thumb} className="relative h-full w-full">
+              <Link
+                className="block h-full w-full"
+                prefetch={false}
+                scroll={false}
+                href={`${path}#${videoId}`}
+              >
+                <SmartImage
                   src={thumb}
                   alt="thumbnail"
+                  width={640}
+                  height={360}
+                  sizes="(min-width: 1024px) 33vw, 100vw"
+                  containerClassName="size-full"
+                  imageClassName="w-full h-full object-contain"
                 />
               </Link>
             </div>
