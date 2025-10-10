@@ -44,7 +44,9 @@ export default function VideoCard({ video, removeVideo }: VideoCardProps) {
             alt={videoTitle}
             aspectRatio={16 / 9}
             containerClassName="w-full h-full"
-            imageClassName="object-cover"
+            imageClassName="w-full h-full object-cover"
+            sizes="(min-width: 1024px) 50vw, 100vw"
+            fill
             fallbackSrc={videoThumbnail}
           />
         </div>

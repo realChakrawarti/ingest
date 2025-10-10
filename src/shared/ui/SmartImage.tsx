@@ -11,6 +11,7 @@ type SmartImageProps = Omit<NextImageProps, "onLoadingComplete"> & {
   skeletonClassName?: string;
   aspectRatio?: number | string;
   decorative?: boolean;
+  ariaLive?: "polite" | "assertive" | undefined;
 };
 
 
@@ -28,6 +29,7 @@ export default function SmartImage(props: SmartImageProps) {
     aspectRatio,
     loading,
     decorative,
+    ariaLive,
     ...rest
   } = props as SmartImageProps & {
     src: NextImageProps["src"];
@@ -68,33 +70,77 @@ export default function SmartImage(props: SmartImageProps) {
   const hasAspect = aspectRatio !== undefined && aspectRatio !== null;
   const ratioStyle = useMemo(() => {
     if (!hasAspect) return undefined as React.CSSProperties | undefined;
-    const value = typeof aspectRatio === "number" ? aspectRatio : aspectRatio;
-    return { aspectRatio: String(value) } as React.CSSProperties;
+    return { aspectRatio: String(aspectRatio) } as React.CSSProperties;
   }, [hasAspect, aspectRatio]);
 
 
   const baseRest = rest as Partial<NextImageProps> & Record<string, unknown>;
-  const { src: _srcIgnored, alt: _altIgnored, ...imgRest } = baseRest;
+  const { 
+    src: _srcIgnored, 
+    alt: _altIgnored, 
+    onLoad: userOnLoad, 
+    onError: userOnError, 
+    width, 
+    height, 
+    fill, 
+    sizes, 
+    ...imgRest 
+  } = baseRest;
+  
   const effectiveAlt = (decorative ? "" : alt ?? "") as string;
+  
+  // Auto-enable fill when no dimensions provided but aspect/container is present
+  const shouldAutoFill = !width && !height && !fill && (hasAspect || containerClassName);
+  const effectiveFill = fill ?? shouldAutoFill;
+  const effectiveSizes = sizes ?? (shouldAutoFill ? "100vw" : undefined);
+  
+  const internalOnLoad = (e: any) => {
+    try {
+      const imgEl = e?.currentTarget as HTMLImageElement | undefined;
+      if (imgEl && imgEl.naturalWidth > 0 && imgEl.naturalHeight > 0) {
+        handleLoadingComplete();
+      } else {
+        handleLoadingComplete();
+      }
+    } catch {
+      handleLoadingComplete();
+    }
+    
+    
+    if (userOnLoad) {
+      try {
+        userOnLoad(e);
+      } catch (error) {
+        console.error("Error in user onLoad handler:", error);
+      }
+    }
+  };
+  
+  const internalOnError = (e: any) => {
+    handleError();
+    
+    
+    if (userOnError) {
+      try {
+        userOnError(e);
+      } catch (error) {
+        console.error("Error in user onError handler:", error);
+      }
+    }
+  };
+  
   const finalImageProps: NextImageProps = {
     ...(imgRest as NextImageProps),
     src: effectiveSrc as any,
     alt: effectiveAlt,
     priority,
     loading: effectiveLoading,
-    onLoad: (e: any) => {
-      try {
-        const imgEl = e?.currentTarget as HTMLImageElement | undefined;
-        if (imgEl && imgEl.naturalWidth > 0 && imgEl.naturalHeight > 0) {
-          handleLoadingComplete();
-        } else {
-          handleLoadingComplete();
-        }
-      } catch {
-        handleLoadingComplete();
-      }
-    },
-    onError: handleError as any,
+    width: effectiveFill ? undefined : width,
+    height: effectiveFill ? undefined : height,
+    fill: effectiveFill,
+    sizes: effectiveSizes,
+    onLoad: internalOnLoad as any,
+    onError: internalOnError as any,
     role: decorative ? "presentation" : undefined,
     className: `relative z-0 ${imageClassName ?? ""}`.trim(),
   } as NextImageProps;
@@ -103,7 +149,7 @@ export default function SmartImage(props: SmartImageProps) {
     <div
       className={`relative overflow-hidden ${(containerClassName ?? className) ?? ""}`.trim()}
       aria-busy={!isLoaded}
-      aria-live="polite"
+      aria-live={ariaLive}
       style={ratioStyle}
     >
       {showSkeleton && (

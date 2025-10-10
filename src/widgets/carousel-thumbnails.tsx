@@ -18,7 +18,7 @@ function ThumbnailCarousel({
 }: {
   path: string;
   thumbnails: string[];
-  sliderRef: MutableRefObject<any>;
+  sliderRef: MutableRefObject<typeof Slider | null>;
 }) {
   const settings: Settings = {
     arrows: false,
@@ -38,14 +38,16 @@ function ThumbnailCarousel({
     <div className="h-full w-full overflow-hidden">
       <Slider className="h-full" {...settings}>
         {thumbnails?.map((thumb) => {
-          const videoId = thumb?.split("/vi/")[1].split("/")[0];
+          const match = thumb?.match(/\/vi\/([^\/]+)/);
+          const videoId = match?.[1] ?? "";
+          const href = videoId ? `${path}#${videoId}` : path;
           return (
             <div key={thumb} className="relative h-full w-full">
               <Link
                 className="block h-full w-full"
                 prefetch={false}
                 scroll={false}
-                href={`${path}#${videoId}`}
+                href={href}
               >
                 <SmartImage
                   src={thumb}
