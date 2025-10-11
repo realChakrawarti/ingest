@@ -5,16 +5,19 @@ Scripts to add the `isPublic` field to existing catalogs and archives documents.
 ## Quick Start
 
 ### 1. Preview Migration (ALWAYS run this first)
+
 ```bash
 npm run migrate:is-public:dry-run
 ```
 
-### 2. Run Full Migration  
+### 2. Run Full Migration
+
 ```bash
 npm run migrate:is-public
 ```
 
 ### 3. Verify Results
+
 ```bash
 npm run verify:is-public
 ```

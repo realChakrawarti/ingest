@@ -9,6 +9,8 @@
  *   npm run verify:is-public
  */
 
+import type { CollectionReference, QueryDocumentSnapshot } from 'firebase-admin/firestore';
+
 import { refs } from '~/shared/lib/firebase/refs';
 
 const BATCH_SIZE = 100;
@@ -17,15 +19,15 @@ const BATCH_SIZE = 100;
  * Verify a collection
  */
 async function verifyCollection(
-  collectionRef: any, 
+  collectionRef: CollectionReference, 
   name: string
-): Promise<{ total: number; withField: number; samples: any[] }> {
+): Promise<{ total: number; withField: number; samples: Array<{ id: string; hasField: boolean; value: boolean | undefined }> }> {
   console.log(`🔍 Checking ${name}...`);
   
   let total = 0;
   let withField = 0;
-  const samples: any[] = [];
-  let lastDoc: any = null;
+  const samples: Array<{ id: string; hasField: boolean; value: boolean | undefined }> = [];
+  let lastDoc: QueryDocumentSnapshot | null = null;
   let hasMore = true;
 
   while (hasMore) {

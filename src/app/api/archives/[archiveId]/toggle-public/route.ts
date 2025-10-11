@@ -54,7 +54,21 @@ export async function PATCH(request: NextRequest, ctx: ContextParams) {
       );
     }
 
-    return NxResponse.success(message, {}, 200);
+    // Only return success for known success messages
+    if (
+      message.includes("has been made") ||
+      message.includes("already public") ||
+      message.includes("already private")
+    ) {
+      return NxResponse.success(message, {}, 200);
+    }
+
+    // Treat unknown messages as failures
+    return NxResponse.fail(
+      message,
+      { code: "UPDATE_FAILED", details: null },
+      500
+    );
   } catch (_error) {
     return NxResponse.fail(
       "Failed to parse request body.", 

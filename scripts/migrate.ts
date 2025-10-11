@@ -11,6 +11,8 @@
  *   npm run migrate:is-public          # Apply changes
  */
 
+import type { QueryDocumentSnapshot } from 'firebase-admin/firestore';
+
 import { admin } from '~/shared/lib/firebase/admin';
 import { refs } from '~/shared/lib/firebase/refs';
 
@@ -32,7 +34,7 @@ async function migrateCatalogs(): Promise<void> {
   console.log('📚 Migrating catalogs...');
   
   try {
-    let lastDoc: any = null;
+    let lastDoc: QueryDocumentSnapshot | null = null;
     let hasMore = true;
     let batchCount = 0;
 
@@ -52,7 +54,7 @@ async function migrateCatalogs(): Promise<void> {
         catalogsScanned++;
         const data = doc.data();
         
-        if (data.isPublic === undefined || data.isPublic === null) {
+        if (data.isPublic == null) {
           catalogsUpdated++;
           if (!DRY_RUN) {
             batch.update(doc.ref, { isPublic: true });
@@ -85,7 +87,7 @@ async function migrateArchives(): Promise<void> {
   console.log('📁 Migrating archives...');
   
   try {
-    let lastDoc: any = null;
+    let lastDoc: QueryDocumentSnapshot | null = null;
     let hasMore = true;
     let batchCount = 0;
 
@@ -105,7 +107,7 @@ async function migrateArchives(): Promise<void> {
         archivesScanned++;
         const data = doc.data();
         
-        if (data.isPublic === undefined || data.isPublic === null) {
+        if (data.isPublic == null) {
           archivesUpdated++;
           if (!DRY_RUN) {
             batch.update(doc.ref, { isPublic: true });
