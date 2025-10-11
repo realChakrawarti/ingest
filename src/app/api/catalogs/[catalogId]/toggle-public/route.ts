@@ -55,7 +55,7 @@ export async function PATCH(request: NextRequest, ctx: ContextParams) {
     }
 
     return NxResponse.success(message, {}, 200);
-  } catch (error) {
+  } catch (_error) {
     return NxResponse.fail(
       "Failed to parse request body.", 
       { code: "INVALID_JSON", details: null }, 
