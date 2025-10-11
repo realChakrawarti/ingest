@@ -26,6 +26,7 @@ export async function getValidArchiveIds() {
 
   const validArchiveQuery = refs.archives
     .where("data.videos", "!=", false)
+    .where("isPublic", "==", true)
     .limit(25);
   const validArchiveQuerySnapshot = await validArchiveQuery.get();
 
@@ -46,6 +47,7 @@ export async function getValidArchiveIds() {
         const metaData: ZArchiveValid = {
           description: archiveData?.description,
           id: archiveId,
+          isPublic: archiveData?.isPublic ?? true,
           thumbnails: getVideoThumbnails(archiveData.data),
           title: archiveData?.title,
           totalVideos: archiveData?.data.totalVideos,
