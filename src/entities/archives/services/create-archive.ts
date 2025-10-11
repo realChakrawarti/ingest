@@ -31,6 +31,7 @@ export async function createArchive(
         updatedAt: Timestamp.fromDate(new Date(0)),
       },
       description: archiveMeta.description,
+      isPublic: true, // Default to public
       title: archiveMeta.title,
       videoRef: userArchiveRef,
     });
