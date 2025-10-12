@@ -6,5 +6,9 @@ export { getArchiveById } from "./services/get-archive-by-id";
 export { getArchiveByUser } from "./services/get-archives-by-user";
 export { getValidArchiveIds } from "./services/get-valid-archive-ids";
 export { removeArchiveVideo } from "./services/remove-archive-video";
-export { updateArchiveMeta, type ArchiveUpdateResult } from "./services/update-archive-meta";
+export { 
+  updateArchiveMeta, 
+  type ArchiveUpdateResult, 
+  type ArchiveUpdateOptions 
+} from "./services/update-archive-meta";
 export { updateArchivePublicStatus } from "./services/update-archive-public-status";
