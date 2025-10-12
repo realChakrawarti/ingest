@@ -12,6 +12,7 @@
  */
 
 import type { QueryDocumentSnapshot } from 'firebase-admin/firestore';
+import { FieldPath } from 'firebase-admin/firestore';
 
 import { admin } from '~/shared/lib/firebase/admin';
 import { refs } from '~/shared/lib/firebase/refs';
@@ -39,7 +40,7 @@ async function migrateCatalogs(): Promise<void> {
     let batchCount = 0;
 
     while (hasMore) {
-      let query = refs.catalogs.limit(BATCH_SIZE);
+      let query = refs.catalogs.orderBy(FieldPath.documentId()).limit(BATCH_SIZE);
       if (lastDoc) {
         query = query.startAfter(lastDoc);
       }
@@ -92,7 +93,7 @@ async function migrateArchives(): Promise<void> {
     let batchCount = 0;
 
     while (hasMore) {
-      let query = refs.archives.limit(BATCH_SIZE);
+      let query = refs.archives.orderBy(FieldPath.documentId()).limit(BATCH_SIZE);
       if (lastDoc) {
         query = query.startAfter(lastDoc);
       }

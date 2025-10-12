@@ -12,6 +12,11 @@ export interface UpdateWithPublicStatusResult {
 }
 
 export interface UpdateWithPublicStatusOptions {
+  /**
+   * @deprecated This option is ignored for rate-limiting purposes.
+   * Rate-limiting is now based solely on the document's stored timestamp
+   * to prevent security bypasses.
+   */
   isPublicUpdatedAt?: Timestamp;
   entityName?: string;
 }
@@ -22,8 +27,9 @@ export interface UpdateWithPublicStatusOptions {
  * @param docRef - The Firestore document reference to update
  * @param updatePayload - The fields to update (including optional isPublic)
  * @param currentData - Already-fetched document data (optional, will fetch if not provided)
- * @param options - Optional configuration including isPublicUpdatedAt timestamp and entity name
+ * @param options - Optional configuration including entityName and deprecated isPublicUpdatedAt
  * @returns UpdateWithPublicStatusResult indicating success/failure with appropriate status codes
+ * @security Rate-limiting is enforced using only server-stored timestamps to prevent bypassing
  */
 export async function updateWithPublicStatus(
   docRef: DocumentReference<DocumentData>,
@@ -69,11 +75,12 @@ export async function updateWithPublicStatus(
           };
         }
 
-        // Compute lastUpdatedTimestamp using supplied or transaction document value
-        const lastUpdatedTimestamp = isPublicUpdatedAt || docData.isPublicUpdatedAt;
+        // SECURITY: Only use document's server-stored timestamp for rate-limiting
+        // to prevent rate-limit bypassing attempts
+        const serverTimestamp = docData.isPublicUpdatedAt;
 
         // Check rate limit only when the value is changing
-        const rateLimitResult: RateLimitResult = checkIsPublicRateLimit(lastUpdatedTimestamp);
+        const rateLimitResult: RateLimitResult = checkIsPublicRateLimit(serverTimestamp);
         if (!rateLimitResult.allowed) {
           return {
             success: false,

@@ -1,4 +1,4 @@
-import type { Timestamp, DocumentData } from "firebase-admin/firestore";
+import type { Timestamp } from "firebase-admin/firestore";
 import { refs } from "~/shared/lib/firebase/refs";
 import { 
   updateWithPublicStatus,
@@ -20,7 +20,6 @@ export interface CatalogUpdateResult {
 
 export interface CatalogUpdateOptions {
   isPublicUpdatedAt?: Timestamp;
-  currentData?: DocumentData | null;
 }
 
 export async function updateCatalogMeta(
@@ -29,7 +28,7 @@ export async function updateCatalogMeta(
   options: CatalogUpdateOptions = {}
 ): Promise<CatalogUpdateResult> {
   const catalogRef = refs.catalogs.doc(catalogId);
-  const { isPublicUpdatedAt, currentData } = options;
+  const { isPublicUpdatedAt } = options;
 
   const updateOptions: UpdateWithPublicStatusOptions = {
     isPublicUpdatedAt,
@@ -39,7 +38,7 @@ export async function updateCatalogMeta(
   const result: UpdateWithPublicStatusResult = await updateWithPublicStatus(
     catalogRef,
     payload,
-    currentData,
+    null, // Passing null for currentData as it's unused but still required in the signature
     updateOptions
   );
 
