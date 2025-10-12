@@ -15,11 +15,13 @@ const CatalogUpdateSchema = z.object({
   title: z.string()
     .min(4, "Title must be at least 4 characters long.")
     .max(24, "Title must be at most 24 characters long.")
-    .trim(),
+    .trim()
+    .optional(),
   description: z.string()
     .min(8, "Description must be at least 8 characters long.")
     .max(64, "Description must be at most 64 characters long.")
-    .trim(),
+    .trim()
+    .optional(),
   isPublic: z.boolean().optional(),
 }).strict(); // .strict() ensures no unknown keys are allowed
 
