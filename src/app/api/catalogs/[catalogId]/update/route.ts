@@ -93,8 +93,10 @@ export async function PATCH(request: NextRequest, ctx: ContextParams) {
 
   if (!result.success) {
     const statusCode = result.statusCode || 500;
-    const errorCode = statusCode === 429 ? "RATE_LIMIT_EXCEEDED" : 
-                     statusCode === 404 ? "NOT_FOUND" : "UPDATE_FAILED";
+    const errorCode =
+      statusCode === 429 ? "RATE_LIMIT_EXCEEDED" :
+      statusCode === 404 ? "NOT_FOUND" :
+      statusCode === 400 ? "INVALID_PAYLOAD" : "UPDATE_FAILED";
     
     return NxResponse.fail(
       result.message,
