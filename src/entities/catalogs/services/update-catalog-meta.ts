@@ -8,7 +8,7 @@ import {
 
 import type { ZCatalogMeta } from "../models";
 
-interface CatalogUpdatePayload extends ZCatalogMeta {
+interface CatalogUpdatePayload extends Partial<ZCatalogMeta> {
   isPublic?: boolean;
 }
 

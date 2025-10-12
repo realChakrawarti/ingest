@@ -8,7 +8,7 @@ import {
 
 import type { ZArchiveMeta } from "../models";
 
-interface ArchiveUpdatePayload extends ZArchiveMeta {
+interface ArchiveUpdatePayload extends Partial<ZArchiveMeta> {
   isPublic?: boolean;
 }
 

@@ -99,8 +99,8 @@ async function verify(): Promise<void> {
       console.log(`  ${i + 1}. ${sample.id}: isPublic=${sample.value}`);
     });
 
-  } catch (error) {
-    console.error('❌ Verification failed:', error);
+  } catch (_error) {
+    console.error('❌ Verification failed:', _error);
     process.exit(1);
   }
 }

@@ -14,7 +14,7 @@ export async function checkArchiveOwnership(
     const userArchiveRef = refs.userArchives(userId).doc(archiveId);
     const userArchiveSnap = await userArchiveRef.get();
     return userArchiveSnap.exists;
-  } catch (err) {
+  } catch (_err) {
     // Return false on any error (e.g., permission denied, network issues)
     return false;
   }

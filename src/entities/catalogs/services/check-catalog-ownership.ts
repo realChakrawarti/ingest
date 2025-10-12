@@ -14,7 +14,7 @@ export async function checkCatalogOwnership(
     const userCatalogRef = refs.userCatalogs(userId).doc(catalogId);
     const userCatalogSnap = await userCatalogRef.get();
     return userCatalogSnap.exists;
-  } catch (err) {
+  } catch (_err) {
     // Return false on any error (e.g., permission denied, network issues)
     return false;
   }

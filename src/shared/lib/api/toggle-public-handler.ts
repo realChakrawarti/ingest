@@ -47,7 +47,7 @@ export function createTogglePublicHandler(
     let userId: string;
     try {
       userId = getUserIdHeader();
-    } catch (error) {
+    } catch (_error) {
       return NxResponse.fail(
         "Authentication required.",
         { code: "UNAUTHENTICATED", details: "No valid session found." },
@@ -56,7 +56,20 @@ export function createTogglePublicHandler(
     }
 
     // Authorization: Check if user owns this entity
-    const isOwner = await ownershipCheckFn(userId, entityId);
+    let isOwner: boolean;
+    try {
+      isOwner = await ownershipCheckFn(userId, entityId);
+    } catch (_error) {
+      return NxResponse.fail(
+        "Internal error checking ownership.",
+        { 
+          code: "OWNERSHIP_CHECK_FAILED", 
+          details: _error instanceof Error ? _error.message : "Unknown error during ownership verification" 
+        },
+        500
+      );
+    }
+
     if (!isOwner) {
       return NxResponse.fail(
         `Access denied. You don't have permission to modify this ${entityName}.`,

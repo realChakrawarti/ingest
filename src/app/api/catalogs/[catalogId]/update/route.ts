@@ -22,7 +22,7 @@ export async function PATCH(request: NextRequest, ctx: ContextParams) {
   }
 
   // Parse JSON payload with error handling
-  let payload: any;
+  let payload: Record<string, unknown>;
   try {
     payload = await request.json();
   } catch (_error) {
@@ -57,5 +57,5 @@ export async function PATCH(request: NextRequest, ctx: ContextParams) {
     );
   }
 
-  return NxResponse.success(result.message, {}, result.statusCode || 201);
+  return NxResponse.success(result.message, {}, result.statusCode ?? 200);
 }

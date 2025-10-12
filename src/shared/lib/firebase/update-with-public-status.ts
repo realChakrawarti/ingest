@@ -1,6 +1,6 @@
 import type { DocumentReference, DocumentData, Timestamp } from "firebase-admin/firestore";
 import { 
-  checkIsPublicRateLimit, 
+  checkIsPublicRateLimit,
   getCurrentTimestamp,
   type RateLimitResult 
 } from "~/shared/lib/rate-limit/is-public-rate-limit";
@@ -35,14 +35,12 @@ export async function updateWithPublicStatus(
   const { isPublic, ...otherFields } = updatePayload;
 
   try {
-    // If isPublic is being updated, check rate limit
+    // If isPublic is being updated, use transaction for atomicity
     if (isPublic !== undefined) {
-      let docData = currentData;
-      
-      // If currentData is not provided or isPublicUpdatedAt is not available, fetch the document
-      if (!docData || (!isPublicUpdatedAt && !docData.isPublicUpdatedAt)) {
-        const docSnap = await docRef.get();
-        docData = docSnap.data();
+      const result = await docRef.firestore.runTransaction(async (transaction) => {
+        // Read document data within the transaction
+        const docSnap = await transaction.get(docRef);
+        const docData = docSnap.data();
         
         if (!docData) {
           return {
@@ -51,33 +49,53 @@ export async function updateWithPublicStatus(
             statusCode: 404
           };
         }
-      }
 
-      // Use provided timestamp or fallback to document data
-      const lastUpdatedTimestamp = isPublicUpdatedAt || docData.isPublicUpdatedAt;
+        // Determine if isPublic is actually changing
+        const currentIsPublic = (docData?.isPublic ?? true);
+        const willChange = currentIsPublic !== isPublic;
 
-      // Check rate limit for isPublic changes
-      const rateLimitResult: RateLimitResult = checkIsPublicRateLimit(lastUpdatedTimestamp);
+        if (!willChange) {
+          // No change to isPublic; proceed to update only other fields (if any)
+          if (Object.keys(otherFields).length === 0) {
+            return {
+              success: true,
+              message: 'No changes to apply.'
+            };
+          }
+          transaction.update(docRef, otherFields);
+          return {
+            success: true,
+            message: `${entityName} details updated successfully.`
+          };
+        }
 
-      if (!rateLimitResult.allowed) {
+        // Compute lastUpdatedTimestamp using supplied or transaction document value
+        const lastUpdatedTimestamp = isPublicUpdatedAt || docData.isPublicUpdatedAt;
+
+        // Check rate limit only when the value is changing
+        const rateLimitResult: RateLimitResult = checkIsPublicRateLimit(lastUpdatedTimestamp);
+        if (!rateLimitResult.allowed) {
+          return {
+            success: false,
+            message: rateLimitResult.message,
+            statusCode: 429
+          };
+        }
+
+        // Perform atomic update with isPublic and timestamp
+        transaction.update(docRef, {
+          ...otherFields,
+          isPublic,
+          isPublicUpdatedAt: getCurrentTimestamp(),
+        });
+
         return {
-          success: false,
-          message: rateLimitResult.message,
-          statusCode: 429
+          success: true,
+          message: `${entityName} details and privacy status updated successfully.`
         };
-      }
-
-      // Update with isPublic and timestamp
-      await docRef.update({
-        ...otherFields,
-        isPublic: isPublic,
-        isPublicUpdatedAt: getCurrentTimestamp(),
       });
 
-      return {
-        success: true,
-        message: `${entityName} details and privacy status updated successfully.`
-      };
+      return result;
     } else {
       // Update without isPublic
       // Check if there are any fields to update

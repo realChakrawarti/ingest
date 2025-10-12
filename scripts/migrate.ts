@@ -73,8 +73,8 @@ async function migrateCatalogs(): Promise<void> {
       
       console.log(`  ✓ Batch ${batchCount} (${snapshot.docs.length} docs)`);
     }
-  } catch (error) {
-    const errorMsg = `Catalogs error: ${error}`;
+  } catch (_error) {
+    const errorMsg = `Catalogs error: ${_error}`;
     console.error('❌', errorMsg);
     errors.push(errorMsg);
   }
@@ -126,8 +126,8 @@ async function migrateArchives(): Promise<void> {
       
       console.log(`  ✓ Batch ${batchCount} (${snapshot.docs.length} docs)`);
     }
-  } catch (error) {
-    const errorMsg = `Archives error: ${error}`;
+  } catch (_error) {
+    const errorMsg = `Archives error: ${_error}`;
     console.error('❌', errorMsg);
     errors.push(errorMsg);
   }
@@ -170,8 +170,8 @@ async function migrate(): Promise<void> {
       console.log('\n✅ Migration completed!');
     }
     
-  } catch (error) {
-    console.error('❌ Migration failed:', error);
+  } catch (_error) {
+    console.error('❌ Migration failed:', _error);
     process.exit(1);
   }
 }
