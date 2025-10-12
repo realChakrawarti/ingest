@@ -11,7 +11,7 @@ type ContextParams = {
 };
 
 // Define a strict schema for allowed catalog update fields
-const CatalogUpdateSchema = z.object({
+const CatalogUpdateSchema = z.strictObject({
   title: z.string()
     .min(4, "Title must be at least 4 characters long.")
     .max(24, "Title must be at most 24 characters long.")
@@ -23,7 +23,7 @@ const CatalogUpdateSchema = z.object({
     .trim()
     .optional(),
   isPublic: z.boolean().optional(),
-}).strict(); // .strict() ensures no unknown keys are allowed
+}); // z.strictObject ensures no unknown keys are allowed
 
 export async function PATCH(request: NextRequest, ctx: ContextParams) {
   const { catalogId } = ctx.params;
@@ -64,14 +64,16 @@ export async function PATCH(request: NextRequest, ctx: ContextParams) {
       issue => issue.code === 'unrecognized_keys'
     );
     
-  if (hasUnknownFields || errorDetails.length > 0) {
+    // Always return immediately on validation failure to prevent execution falling through
+    const errorMessage = hasUnknownFields 
+      ? "Unknown fields detected in payload. Only title, description, and isPublic are allowed." 
+      : "Invalid payload format or values.";
+      
     return NxResponse.fail(
-      hasUnknownFields
-        ? "Unknown fields detected in payload. Only title, description, and isPublic are allowed."
-        : "Invalid payload format or values.",
-      {
-        code: "INVALID_PAYLOAD",
-        details: errorDetails.length > 0 ? errorDetails : null
+      errorMessage,
+      { 
+        code: "INVALID_PAYLOAD", 
+        details: JSON.stringify(errorDetails) 
       },
       400
     );
