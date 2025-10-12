@@ -64,16 +64,14 @@ export async function PATCH(request: NextRequest, ctx: ContextParams) {
       issue => issue.code === 'unrecognized_keys'
     );
     
+  if (hasUnknownFields || errorDetails.length > 0) {
     return NxResponse.fail(
-      hasUnknownFields 
-        ? "Unknown fields detected in payload. Only title, description, and isPublic are allowed." 
+      hasUnknownFields
+        ? "Unknown fields detected in payload. Only title, description, and isPublic are allowed."
         : "Invalid payload format or values.",
-      { 
-        code: "INVALID_PAYLOAD", 
+      {
+        code: "INVALID_PAYLOAD",
         details: errorDetails.length > 0 ? errorDetails : null
-      },
-      400
-    );
       },
       400
     );
