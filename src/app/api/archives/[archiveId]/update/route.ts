@@ -1,6 +1,6 @@
 import type { NextRequest } from "next/server";
 
-import { updateArchiveMeta } from "~/entities/archives";
+import { updateArchiveMeta, type ArchiveUpdateResult } from "~/entities/archives";
 
 import { NxResponse } from "~/shared/lib/next/nx-response";
 
@@ -15,7 +15,19 @@ export async function PATCH(request: NextRequest, ctx: ContextParams) {
 
   const payload = await request.json();
 
-  const message = await updateArchiveMeta(archiveId, payload);
+  const result: ArchiveUpdateResult = await updateArchiveMeta(archiveId, payload);
 
-  return NxResponse.success(message, {}, 201);
+  if (!result.success) {
+    const statusCode = result.statusCode || 500;
+    const errorCode = statusCode === 429 ? "RATE_LIMIT_EXCEEDED" : 
+                     statusCode === 404 ? "NOT_FOUND" : "UPDATE_FAILED";
+    
+    return NxResponse.fail(
+      result.message,
+      { code: errorCode, details: null },
+      statusCode
+    );
+  }
+
+  return NxResponse.success(result.message, {}, 200);
 }

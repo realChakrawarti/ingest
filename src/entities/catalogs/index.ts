@@ -1,3 +1,4 @@
+export { checkCatalogOwnership } from "./services/check-catalog-ownership";
 export { createCatalog } from "./services/create-catalog";
 export { deleteCatalog } from "./services/delete-catalog";
 export { deleteChannel } from "./services/delete-channel";
@@ -11,6 +12,6 @@ export {
 export { getNextUpdate } from "./services/get-next-update";
 export { getValidCatalogIds } from "./services/get-valid-catalogs-ids";
 export { updateCatalogChannels } from "./services/update-catalog-channels";
-export { updateCatalogMeta } from "./services/update-catalog-meta";
+export { updateCatalogMeta, type CatalogUpdateResult } from "./services/update-catalog-meta";
 export { updateCatalogPlaylists } from "./services/update-catalog-playlists";
 export { updateCatalogPublicStatus } from "./services/update-catalog-public-status";

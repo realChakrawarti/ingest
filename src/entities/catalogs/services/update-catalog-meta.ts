@@ -11,10 +11,16 @@ interface CatalogUpdatePayload extends ZCatalogMeta {
   isPublic?: boolean;
 }
 
+export interface CatalogUpdateResult {
+  success: boolean;
+  message: string;
+  statusCode?: number;
+}
+
 export async function updateCatalogMeta(
   catalogId: string,
   payload: CatalogUpdatePayload
-) {
+): Promise<CatalogUpdateResult> {
   const { title, description, isPublic } = payload;
   const catalogRef = refs.catalogs.doc(catalogId);
 
@@ -26,7 +32,11 @@ export async function updateCatalogMeta(
       const catalogData = catalogSnap.data();
       
       if (!catalogData) {
-        return "Catalog not found.";
+        return {
+          success: false,
+          message: "Catalog not found.",
+          statusCode: 404
+        };
       }
 
       // Check rate limit for isPublic changes
@@ -35,7 +45,11 @@ export async function updateCatalogMeta(
       );
 
       if (!rateLimitResult.allowed) {
-        return rateLimitResult.message;
+        return {
+          success: false,
+          message: rateLimitResult.message,
+          statusCode: 429
+        };
       }
 
       // Update with isPublic and timestamp
@@ -46,7 +60,10 @@ export async function updateCatalogMeta(
         isPublicUpdatedAt: getCurrentTimestamp(),
       });
 
-      return "Catalog details and privacy status updated successfully.";
+      return {
+        success: true,
+        message: "Catalog details and privacy status updated successfully."
+      };
     } else {
       // Update without isPublic
       await catalogRef.update({
@@ -54,12 +71,23 @@ export async function updateCatalogMeta(
         title: title,
       });
 
-      return "Catalog details updated successfully.";
+      return {
+        success: true,
+        message: "Catalog details updated successfully."
+      };
     }
   } catch (err) {
     if (err instanceof Error) {
-      return err.message;
+      return {
+        success: false,
+        message: err.message,
+        statusCode: 500
+      };
     }
-    return "Unable to update catalog details.";
+    return {
+      success: false,
+      message: "Unable to update catalog details.",
+      statusCode: 500
+    };
   }
 }

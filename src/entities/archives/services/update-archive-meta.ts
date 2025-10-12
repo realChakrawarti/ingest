@@ -11,10 +11,16 @@ interface ArchiveUpdatePayload extends ZArchiveMeta {
   isPublic?: boolean;
 }
 
+export interface ArchiveUpdateResult {
+  success: boolean;
+  message: string;
+  statusCode?: number;
+}
+
 export async function updateArchiveMeta(
   archiveId: string,
   archiveMeta: ArchiveUpdatePayload
-) {
+): Promise<ArchiveUpdateResult> {
   const { title, description, isPublic } = archiveMeta;
   const archiveRef = refs.archives.doc(archiveId);
 
@@ -26,7 +32,11 @@ export async function updateArchiveMeta(
       const archiveData = archiveSnap.data();
       
       if (!archiveData) {
-        return "Archive not found.";
+        return {
+          success: false,
+          message: "Archive not found.",
+          statusCode: 404
+        };
       }
 
       // Check rate limit for isPublic changes
@@ -35,7 +45,11 @@ export async function updateArchiveMeta(
       );
 
       if (!rateLimitResult.allowed) {
-        return rateLimitResult.message;
+        return {
+          success: false,
+          message: rateLimitResult.message,
+          statusCode: 429
+        };
       }
 
       // Update with isPublic and timestamp
@@ -46,7 +60,10 @@ export async function updateArchiveMeta(
         isPublicUpdatedAt: getCurrentTimestamp(),
       });
 
-      return "Archive details and privacy status updated successfully.";
+      return {
+        success: true,
+        message: "Archive details and privacy status updated successfully."
+      };
     } else {
       // Update without isPublic
       await archiveRef.update({
@@ -54,12 +71,23 @@ export async function updateArchiveMeta(
         title: title,
       });
 
-      return "Archive details updated successfully.";
+      return {
+        success: true,
+        message: "Archive details updated successfully."
+      };
     }
   } catch (err) {
     if (err instanceof Error) {
-      return err.message;
+      return {
+        success: false,
+        message: err.message,
+        statusCode: 500
+      };
     }
-    return "Unable to update archive details.";
+    return {
+      success: false,
+      message: "Unable to update archive details.",
+      statusCode: 500
+    };
   }
 }

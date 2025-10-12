@@ -71,6 +71,7 @@ export const config = {
     "/api/archives/:archiveId/add-video",
     "/api/archives/:archiveId/delete",
     "/api/archives/:archiveId/remove-video",
+    "/api/archives/:archiveId/toggle-public",
     "/api/archives/:archiveId/update",
     // Catalogs Routes
     "/api/catalogs",
@@ -79,6 +80,7 @@ export const config = {
     "/api/catalogs/:catalogId/delete",
     "/api/catalogs/:catalogId/playlist",
     "/api/catalogs/:catalogId/subreddit",
+    "/api/catalogs/:catalogId/toggle-public",
     "/api/catalogs/:catalogId/update",
     // YouTube Routes
     "/api/youtube/video",

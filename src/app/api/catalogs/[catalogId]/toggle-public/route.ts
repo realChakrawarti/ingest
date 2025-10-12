@@ -1,6 +1,7 @@
 import type { NextRequest } from "next/server";
 
-import { updateCatalogPublicStatus } from "~/entities/catalogs";
+import { checkCatalogOwnership, updateCatalogPublicStatus } from "~/entities/catalogs";
+import { getUserIdHeader } from "~/shared/lib/next/get-user-id-header";
 import { NxResponse } from "~/shared/lib/next/nx-response";
 
 type ContextParams = {
@@ -15,6 +16,28 @@ interface TogglePublicStatusPayload {
 
 export async function PATCH(request: NextRequest, ctx: ContextParams) {
   const { catalogId } = ctx.params;
+
+  // Authentication: Get the current user from headers (set by middleware)
+  let userId: string;
+  try {
+    userId = getUserIdHeader();
+  } catch (error) {
+    return NxResponse.fail(
+      "Authentication required.",
+      { code: "UNAUTHENTICATED", details: "No valid session found." },
+      401
+    );
+  }
+
+  // Authorization: Check if user owns this catalog
+  const isOwner = await checkCatalogOwnership(userId, catalogId);
+  if (!isOwner) {
+    return NxResponse.fail(
+      "Access denied. You don't have permission to modify this catalog.",
+      { code: "FORBIDDEN", details: "User does not own this catalog." },
+      403
+    );
+  }
 
   try {
     const payload: TogglePublicStatusPayload = await request.json();

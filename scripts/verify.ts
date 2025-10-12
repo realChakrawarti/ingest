@@ -51,7 +51,7 @@ async function verifyCollection(
       if (samples.length < 3) {
         samples.push({
           id: doc.id,
-          hasField: data.isPublic !== undefined,
+          hasField: data.isPublic !== undefined && data.isPublic !== null,
           value: data.isPublic
         });
       }
