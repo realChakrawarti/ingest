@@ -70,7 +70,10 @@ export async function PATCH(request: NextRequest, ctx: ContextParams) {
         : "Invalid payload format or values.",
       { 
         code: "INVALID_PAYLOAD", 
-        details: JSON.stringify(errorDetails) 
+        details: errorDetails.length > 0 ? errorDetails : null
+      },
+      400
+    );
       },
       400
     );
