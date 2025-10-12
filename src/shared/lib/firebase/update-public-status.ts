@@ -1,7 +1,7 @@
 import type { DocumentReference, DocumentData } from "firebase-admin/firestore";
+import { FieldValue } from "firebase-admin/firestore";
 import { 
-  checkIsPublicRateLimit, 
-  getCurrentTimestamp,
+  checkIsPublicRateLimit,
   type RateLimitResult 
 } from "~/shared/lib/rate-limit/is-public-rate-limit";
 
@@ -27,51 +27,56 @@ export async function updatePublicStatus(
   entityName: string
 ): Promise<PublicStatusUpdateResult> {
   try {
-    // Get current document data to check last update time
-    const docSnap = await docRef.get();
-    const docData = docSnap.data();
-    
-    if (!docData) {
+    // Run the entire operation in a transaction to ensure atomicity
+    const result = await docRef.firestore.runTransaction(async (transaction) => {
+      // Read document data within the transaction
+      const docSnap = await transaction.get(docRef);
+      const docData = docSnap.data();
+      
+      if (!docData) {
+        return {
+          success: false,
+          error: 'NOT_FOUND' as const,
+          message: `${entityName} not found.`
+        };
+      }
+
+      // Check if the value is actually changing
+      const currentIsPublic = docData.isPublic ?? true;
+      if (currentIsPublic === isPublic) {
+        return {
+          success: false,
+          error: 'NO_CHANGE' as const,
+          message: `${entityName} is already ${isPublic ? 'public' : 'private'}.`
+        };
+      }
+
+      // Check rate limit for isPublic changes
+      const rateLimitResult: RateLimitResult = checkIsPublicRateLimit(
+        docData.isPublicUpdatedAt
+      );
+
+      if (!rateLimitResult.allowed) {
+        return {
+          success: false,
+          error: 'RATE_LIMIT' as const,
+          message: rateLimitResult.message
+        };
+      }
+
+      // Perform the atomic update with server timestamp
+      transaction.update(docRef, {
+        isPublic: isPublic,
+        isPublicUpdatedAt: FieldValue.serverTimestamp(),
+      });
+
       return {
-        success: false,
-        error: 'NOT_FOUND',
-        message: `${entityName} not found.`
+        success: true as const,
+        message: `${entityName} has been made ${isPublic ? 'public' : 'private'} successfully.`
       };
-    }
-
-    // Check if the value is actually changing
-    const currentIsPublic = docData.isPublic ?? true;
-    if (currentIsPublic === isPublic) {
-      return {
-        success: false,
-        error: 'NO_CHANGE',
-        message: `${entityName} is already ${isPublic ? 'public' : 'private'}.`
-      };
-    }
-
-    // Check rate limit for isPublic changes
-    const rateLimitResult: RateLimitResult = checkIsPublicRateLimit(
-      docData.isPublicUpdatedAt
-    );
-
-    if (!rateLimitResult.allowed) {
-      return {
-        success: false,
-        error: 'RATE_LIMIT',
-        message: rateLimitResult.message
-      };
-    }
-
-    // Update isPublic status and timestamp
-    await docRef.update({
-      isPublic: isPublic,
-      isPublicUpdatedAt: getCurrentTimestamp(),
     });
 
-    return {
-      success: true,
-      message: `${entityName} has been made ${isPublic ? 'public' : 'private'} successfully.`
-    };
+    return result;
   } catch (err) {
     if (err instanceof Error) {
       return {

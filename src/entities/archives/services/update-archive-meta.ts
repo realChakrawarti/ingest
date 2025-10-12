@@ -1,4 +1,4 @@
-import type { Timestamp } from "firebase-admin/firestore";
+import type { Timestamp, DocumentData } from "firebase-admin/firestore";
 import { refs } from "~/shared/lib/firebase/refs";
 import { 
   updateWithPublicStatus,
@@ -20,7 +20,7 @@ export interface ArchiveUpdateResult {
 
 export interface ArchiveUpdateOptions {
   isPublicUpdatedAt?: Timestamp;
-  currentData?: any;
+  currentData?: DocumentData | null;
 }
 
 export async function updateArchiveMeta(

@@ -80,6 +80,15 @@ export async function updateWithPublicStatus(
       };
     } else {
       // Update without isPublic
+      // Check if there are any fields to update
+      if (Object.keys(otherFields).length === 0) {
+        return {
+          success: false,
+          message: 'No updatable fields provided.',
+          statusCode: 400
+        };
+      }
+
       await docRef.update(otherFields);
 
       return {

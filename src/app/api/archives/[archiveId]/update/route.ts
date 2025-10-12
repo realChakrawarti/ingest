@@ -13,9 +13,38 @@ type ContextParams = {
 export async function PATCH(request: NextRequest, ctx: ContextParams) {
   const { archiveId } = ctx.params;
 
-  const payload = await request.json();
+  // Validate archive ID parameter
+  if (!archiveId || archiveId.trim() === '') {
+    return NxResponse.fail(
+      "Missing or invalid archive ID in request path.",
+      { code: "INVALID_PARAM", details: "archiveId parameter is required." },
+      400
+    );
+  }
 
-  const result: ArchiveUpdateResult = await updateArchiveMeta(archiveId, payload);
+  // Parse JSON payload with error handling
+  let payload: any;
+  try {
+    payload = await request.json();
+  } catch (_error) {
+    return NxResponse.fail(
+      "Failed to parse request body.",
+      { code: "INVALID_JSON", details: null },
+      400
+    );
+  }
+
+  // Execute update with proper error handling
+  let result: ArchiveUpdateResult;
+  try {
+    result = await updateArchiveMeta(archiveId, payload);
+  } catch (_error) {
+    return NxResponse.fail(
+      "An unexpected error occurred while updating the archive.",
+      { code: "UPDATE_FAILED", details: null },
+      500
+    );
+  }
 
   if (!result.success) {
     const statusCode = result.statusCode || 500;
@@ -29,5 +58,5 @@ export async function PATCH(request: NextRequest, ctx: ContextParams) {
     );
   }
 
-  return NxResponse.success(result.message, {}, 200);
+  return NxResponse.success(result.message, {}, result.statusCode || 201);
 }

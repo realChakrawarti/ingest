@@ -34,6 +34,15 @@ export function createTogglePublicHandler(
   return async function PATCH(request: NextRequest, ctx: ContextParams) {
     const entityId = ctx.params[entityIdKey];
 
+    // Validate entity ID parameter
+    if (!entityId || entityId.trim() === '') {
+      return NxResponse.fail(
+        `Missing or invalid ${entityName} ID in request path.`,
+        { code: "INVALID_PARAM", details: `${entityIdKey} parameter is required.` },
+        400
+      );
+    }
+
     // Authentication: Get the current user from headers (set by middleware)
     let userId: string;
     try {
@@ -56,53 +65,10 @@ export function createTogglePublicHandler(
       );
     }
 
+    // Parse JSON payload
+    let payload: TogglePublicStatusPayload;
     try {
-      const payload: TogglePublicStatusPayload = await request.json();
-      
-      if (typeof payload.isPublic !== 'boolean') {
-        return NxResponse.fail(
-          "Invalid payload. 'isPublic' must be a boolean.", 
-          { code: "INVALID_PAYLOAD", details: null }, 
-          400
-        );
-      }
-
-      const result = await updateFn(entityId, payload.isPublic);
-
-      if (!result.success) {
-        // Map error types to HTTP status codes
-        switch (result.error) {
-          case 'RATE_LIMIT':
-            return NxResponse.fail(
-              result.message,
-              { code: "RATE_LIMIT_EXCEEDED", details: null },
-              429
-            );
-          case 'NOT_FOUND':
-            return NxResponse.fail(
-              result.message,
-              { code: "NOT_FOUND", details: null },
-              404
-            );
-          case 'UPDATE_FAILED':
-            return NxResponse.fail(
-              result.message,
-              { code: "UPDATE_FAILED", details: null },
-              500
-            );
-          case 'NO_CHANGE':
-            // No change is considered a successful response (idempotent)
-            return NxResponse.success(result.message, {}, 200);
-          default:
-            return NxResponse.fail(
-              result.message,
-              { code: "UPDATE_FAILED", details: null },
-              500
-            );
-        }
-      }
-
-      return NxResponse.success(result.message, {}, 200);
+      payload = await request.json();
     } catch (_error) {
       return NxResponse.fail(
         "Failed to parse request body.", 
@@ -110,5 +76,60 @@ export function createTogglePublicHandler(
         400
       );
     }
+    
+    if (typeof payload.isPublic !== 'boolean') {
+      return NxResponse.fail(
+        "Invalid payload. 'isPublic' must be a boolean.", 
+        { code: "INVALID_PAYLOAD", details: null }, 
+        400
+      );
+    }
+
+    // Execute update function with proper error handling
+    let result: PublicStatusUpdateResult;
+    try {
+      result = await updateFn(entityId, payload.isPublic);
+    } catch (_error) {
+      return NxResponse.fail(
+        "An unexpected error occurred while updating the entity.",
+        { code: "UPDATE_FAILED", details: null },
+        500
+      );
+    }
+
+    if (!result.success) {
+      // Map error types to HTTP status codes
+      switch (result.error) {
+        case 'RATE_LIMIT':
+          return NxResponse.fail(
+            result.message,
+            { code: "RATE_LIMIT_EXCEEDED", details: null },
+            429
+          );
+        case 'NOT_FOUND':
+          return NxResponse.fail(
+            result.message,
+            { code: "NOT_FOUND", details: null },
+            404
+          );
+        case 'UPDATE_FAILED':
+          return NxResponse.fail(
+            result.message,
+            { code: "UPDATE_FAILED", details: null },
+            500
+          );
+        case 'NO_CHANGE':
+          // No change is considered a successful response (idempotent)
+          return NxResponse.success(result.message, {}, 200);
+        default:
+          return NxResponse.fail(
+            result.message,
+            { code: "UPDATE_FAILED", details: null },
+            500
+          );
+      }
+    }
+
+    return NxResponse.success(result.message, {}, 200);
   };
 }
