@@ -41,6 +41,8 @@ export const ArchiveDocumentSchema = z.object({
     videos: z.optional(z.array(ArchiveVideoSchema)),
   }),
   description: z.string(),
+  isPublic: z.boolean().optional().default(true),
+  isPublicUpdatedAt: TimestampSchema.optional(),
   title: z.string(),
   videoRef: DocumentReferenceSchema,
 });
@@ -57,6 +59,7 @@ export type ZArchiveByUser = z.infer<typeof ArchiveByUserSchema>;
 const ArchiveValidSchema = z.object({
   description: z.string(),
   id: z.string(),
+  isPublic: z.boolean().optional().default(true),
   pageviews: z.number().optional(),
   thumbnails: z.array(z.string()),
   title: z.string(),

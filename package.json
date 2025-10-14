@@ -16,7 +16,10 @@
     "release:patch": "standard-version --release-as patch",
     "release:major": "standard-version --release-as major",
     "ui:migrate": "pnpx shadcn@latest migrate radix",
-    "deps": "pnpx dependex"
+    "deps": "pnpx dependex",
+    "migrate:is-public": "tsx scripts/migrate.ts",
+    "migrate:is-public:dry-run": "tsx scripts/migrate.ts --dry-run",
+    "verify:is-public": "tsx scripts/verify.ts"
   },
   "engines": {
     "node": "22.x"
