@@ -1,7 +1,8 @@
 "use client";
 
 import { YouTubeEmbed } from "@next/third-parties/google";
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 
 import type { ZVideoMetadataCompatible } from "~/entities/catalogs/models";
 
@@ -63,6 +64,79 @@ function getPlayerParams(
   return iframeParams;
 }
 
+// Focus Mode Modal Component
+function FocusModal({
+  isOpen,
+  onClose,
+  children,
+}: {
+  isOpen: boolean;
+  onClose: () => void;
+  children: React.ReactNode;
+}) {
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+      
+      const handleEscape = (e: KeyboardEvent) => {
+        if (e.key === "Escape") {
+          onClose();
+        }
+      };
+      
+      document.addEventListener("keydown", handleEscape);
+      
+      return () => {
+        document.body.style.overflow = "";
+        document.removeEventListener("keydown", handleEscape);
+      };
+    }
+  }, [isOpen, onClose]);
+
+  if (!isOpen) return null;
+
+  return createPortal(
+    <div
+      className="fixed inset-0 z-[9999] flex items-center justify-center"
+      onClick={onClose}
+    >
+      {/* Dark backdrop */}
+      <div className="absolute inset-0 bg-black/90 backdrop-blur-sm" />
+      
+      {/* Modal content - SIZE CONTROLLED HERE */}
+      <div
+        className="relative z-10 w-[80vw] h-[87vh] flex flex-col mx-auto"
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* Close button */}
+        <button
+          onClick={onClose}
+          className="absolute -top-12 right-0 text-white hover:text-gray-300 transition-colors z-20"
+          aria-label="Close focus mode"
+        >
+          <svg
+            className="w-8 h-8"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M6 18L18 6M6 6l12 12"
+            />
+          </svg>
+        </button>
+        
+        {/* Player container - REMOVED THIS WRAPPER */}
+        {children}
+      </div>
+    </div>,
+    document.body
+  );
+}
+
 // TODO: picture-in-picture - https://codepen.io/jh3y/pen/wBBOdNv
 
 export default function YoutubePlayer(
@@ -75,6 +149,7 @@ export default function YoutubePlayer(
   const thisPlayerRef = useRef<YT.Player | null>(null);
   const loaded = useRef<boolean>(false);
   const isPlaying = useRef<boolean>(false);
+  const [isFocusMode, setIsFocusMode] = useState(false);
 
   const { stopTracking, startTracking } = useVideoTracking({
     thisPlayerRef,
@@ -202,23 +277,89 @@ export default function YoutubePlayer(
     localUserSettings?.videoLanguage
   );
 
-  return (
+  const PlayerContent = (
     <div
       tabIndex={0}
       className={cn(
-        "rounded-lg overflow-hidden mx-[2px] md:mx-0",
-        "group-hover/player:shadow-primary group-hover/player:shadow-[0_0_0_2px]",
-        "outline-none"
+        "rounded-lg overflow-hidden",
+        !isFocusMode && "mx-[2px] md:mx-0",
+        !isFocusMode && "group-hover/player:shadow-primary group-hover/player:shadow-[0_0_0_2px]",
+        "outline-none relative group/video",
+        isFocusMode && "w-full h-full flex items-center justify-center bg-black"
       )}
       ref={containerRef}
       onClick={loadIFrameElement}
     >
-      <YouTubeEmbed
-        style={`background-image: url(${video.videoThumbnail})`}
-        params={playerParams}
-        videoid={videoId}
-        js-api={enableJsApi}
-      />
+      {/* Focus Mode Button */}
+      {!isFocusMode && (
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            setIsFocusMode(true);
+          }}
+          className="absolute top-3 right-3 z-10 bg-black/60 hover:bg-black/80 text-white p-2 rounded-lg opacity-0 group-hover/video:opacity-100 transition-opacity duration-200"
+          aria-label="Enter focus mode"
+        >
+          <svg
+            className="w-5 h-5"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"
+            />
+          </svg>
+        </button>
+      )}
+      
+      <div 
+        className={cn(isFocusMode ? "w-full h-full" : "w-full h-full")}
+        style={isFocusMode ? {
+          position: 'relative',
+          width: '100%',
+          height: '100%'
+        } : undefined}
+      >
+        <style jsx global>{`
+          ${isFocusMode ? `
+            lite-youtube {
+              width: 100% !important;
+              height: 100% !important;
+              max-width: 100% !important;
+              aspect-ratio: unset !important;
+            }
+            lite-youtube iframe {
+              width: 100% !important;
+              height: 100% !important;
+            }
+          ` : ''}
+        `}</style>
+        <YouTubeEmbed
+          style={isFocusMode 
+            ? `width: 100%; height: 100%; max-width: 100%; background-image: url(${video.videoThumbnail})`
+            : `background-image: url(${video.videoThumbnail})`
+          }
+          params={playerParams}
+          videoid={videoId}
+          js-api={enableJsApi}
+        />
+      </div>
     </div>
+  );
+
+  return (
+    <>
+      {!isFocusMode ? (
+        PlayerContent
+      ) : null}
+      
+      <FocusModal isOpen={isFocusMode} onClose={() => setIsFocusMode(false)}>
+        {PlayerContent}
+      </FocusModal>
+    </>
   );
 }
