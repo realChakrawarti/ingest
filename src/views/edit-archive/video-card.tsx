@@ -2,7 +2,7 @@ import type { ZVideoMetadataCompatible } from "~/entities/catalogs/models";
 
 import type { YouTubeCardOptions } from "~/shared/types-schema/types";
 import { Button } from "~/shared/ui/button";
-import SmartImage from "~/shared/ui/SmartImage";
+import SmartImage from "~/widgets/SmartImage";
 import { DeleteIcon, ThreeDotIcon } from "~/shared/ui/icons";
 import { Popover, PopoverContent, PopoverTrigger } from "~/shared/ui/popover";
 

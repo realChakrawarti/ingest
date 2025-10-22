@@ -4,7 +4,7 @@ import Link from "next/link";
 import dynamic from "next/dynamic";
 import type { MutableRefObject } from "react";
 import type { Settings } from "react-slick";
-import SmartImage from "~/shared/ui/SmartImage";
+import SmartImage from "~/widgets/SmartImage";
 
 // Load react-slick on client only to avoid SSR bundling/runtime issues
 const Slider = dynamic(() => import("react-slick").then((m) => m.default), {

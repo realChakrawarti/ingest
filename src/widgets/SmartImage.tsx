@@ -95,16 +95,20 @@ export default function SmartImage(props: SmartImageProps) {
   
   const effectiveAlt = (decorative ? "" : alt ?? "") as string;
   
-  // Auto-enable fill when no dimensions provided but aspect/container is present
   const shouldAutoFill = !width && !height && !fill && (hasAspect || containerClassName);
   const effectiveFill = fill ?? shouldAutoFill;
   const effectiveSizes = sizes ?? (shouldAutoFill ? "100vw" : undefined);
   
-  const internalOnLoad = (e: any) => {
+  const internalOnLoad = (e: React.SyntheticEvent<HTMLImageElement>) => {
     try {
-      const imgEl = e?.currentTarget as HTMLImageElement | undefined;
+      const imgEl = e.currentTarget as HTMLImageElement;
       // Defensive check for valid dimensions (naturalWidth/Height > 0)
-      handleLoadingComplete();
+      if (imgEl && imgEl.naturalWidth > 0 && imgEl.naturalHeight > 0) {
+        handleLoadingComplete();
+      } else {
+        // Image loaded but has invalid dimensions, treat as error
+        handleError();
+      }
     } catch {
       handleLoadingComplete();
     }
@@ -118,20 +122,16 @@ export default function SmartImage(props: SmartImageProps) {
     }
   };
   
-  const internalOnError = (e: any) => {
-    // Check if we're already showing the fallback based on state
+  const internalOnError = (e: React.SyntheticEvent<HTMLImageElement>) => {
     const isCurrentlyFallback = Boolean(fallbackSrc && attemptedFallback);
     
     if (isCurrentlyFallback) {
-      // Fallback already attempted, stop retrying
       setHasError(true);
       setIsLoaded(false);
     } else if (fallbackSrc) {
-      // Try fallback for the first time
       setAttemptedFallback(true);
-      setHasError(false); // Reset error state to try fallback
+      setHasError(false); 
     } else {
-      // No fallback available, just set error
       handleError();
     }
     
@@ -146,7 +146,7 @@ export default function SmartImage(props: SmartImageProps) {
   
   const finalImageProps: NextImageProps = {
     ...(imgRest as NextImageProps),
-    src: effectiveSrc as any,
+    src: effectiveSrc,
     alt: effectiveAlt,
     priority,
     loading: effectiveLoading,
@@ -154,8 +154,8 @@ export default function SmartImage(props: SmartImageProps) {
     height: effectiveFill ? undefined : height,
     fill: effectiveFill,
     sizes: effectiveSizes,
-    onLoad: internalOnLoad as any,
-    onError: internalOnError as any,
+    onLoad: internalOnLoad,
+    onError: internalOnError,
     role: decorative ? "presentation" : undefined,
     className: `relative z-0 ${imageClassName ?? ""}`.trim(),
   } as NextImageProps;
