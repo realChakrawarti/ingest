@@ -48,6 +48,7 @@ export default function DetailsCard({ validData, path }: DetailsCardProps) {
           path={path}
           sliderRef={sliderRef}
           thumbnails={validData.thumbnails}
+          title={validData.title}
         />
 
         <div className="absolute right-0 bottom-3">

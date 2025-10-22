@@ -27,10 +27,12 @@ function ThumbnailCarousel({
   thumbnails,
   sliderRef,
   path,
+  title,
 }: {
   path: string;
   thumbnails: string[];
   sliderRef: MutableRefObject<SliderType | null>;
+  title?: string;
 }) {
   const settings: Settings = {
     arrows: false,
@@ -63,7 +65,7 @@ function ThumbnailCarousel({
               >
                 <SmartImage
                   src={thumb}
-                  alt="thumbnail"
+                  alt={title ? `Thumbnail for ${title}` : "Video thumbnail"}
                   width={640}
                   height={360}
                   sizes="(min-width: 1024px) 33vw, 100vw"

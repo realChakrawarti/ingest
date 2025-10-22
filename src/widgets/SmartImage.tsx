@@ -6,7 +6,9 @@ import React, { useEffect, useMemo, useState } from "react";
 type SmartImageProps = Omit<NextImageProps, "onLoadingComplete"> & {
   forceSkeleton?: boolean;
   fallbackSrc?: string;
+  /** @deprecated Use containerClassName to style the wrapper div */
   containerClassName?: string;
+  /** @deprecated Use className to style the image element (Next/Image parity) */
   imageClassName?: string;
   skeletonClassName?: string;
   aspectRatio?: number | string;
@@ -53,6 +55,12 @@ export default function SmartImage(props: SmartImageProps) {
   useEffect(() => {
     setClientHydrated(true);
   }, []);
+
+  useEffect(() => {
+    setIsLoaded(false);
+    setHasError(false);
+    setAttemptedFallback(false);
+  }, [src]);
 
   const showSkeleton = (forceSkeleton || !isLoaded) && clientHydrated;
 
@@ -157,12 +165,12 @@ export default function SmartImage(props: SmartImageProps) {
     onLoad: internalOnLoad,
     onError: internalOnError,
     role: decorative ? "presentation" : undefined,
-    className: `relative z-0 ${imageClassName ?? ""}`.trim(),
+    className: `relative z-0 ${className || imageClassName || ""}`.trim(),
   } as NextImageProps;
 
   return (
     <div
-      className={`relative overflow-hidden ${(containerClassName ?? className) ?? ""}`.trim()}
+      className={`relative overflow-hidden ${containerClassName ?? ""}`.trim()}
       aria-busy={!isLoaded}
       aria-live={ariaLive}
       style={ratioStyle}
