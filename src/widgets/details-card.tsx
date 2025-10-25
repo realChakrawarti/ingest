@@ -20,6 +20,8 @@ interface DetailsCardProps {
 
 export default function DetailsCard({ validData, path }: DetailsCardProps) {
   const sliderRef = useRef<Slider | null>(null);
+  const videoRef = useRef<HTMLVideoElement | null>(null); 
+
   const [slidesPlaying, setSlidesPlaying] = useState<boolean>(false);
 
   const playSlides = (e: MouseEvent<HTMLButtonElement>) => {
@@ -36,11 +38,23 @@ export default function DetailsCard({ validData, path }: DetailsCardProps) {
 
   return (
     <section
-      className={cn(
-        "border-none",
-        "flex flex-col gap-0 relative overflow-hidden",
-        "rounded-lg hover:bg-primary/10 bg-primary/5 transition-colors"
-      )}
+       className={cn(
+    "border-none flex flex-col gap-0 relative overflow-hidden",
+    "rounded-xl bg-primary/5 transition-all duration-300 ease-in-out",
+    "hover:bg-primary/10 hover:shadow-lg hover:scale-[1.03]",
+    "transform cursor-pointer"
+  )}
+  onMouseEnter={() => {
+    setSlidesPlaying(true);
+    sliderRef.current?.slickPlay();
+    videoRef.current?.play(); // 🆕 added for video autoplay
+  }}
+  onMouseLeave={() => {
+    setSlidesPlaying(false);
+    sliderRef.current?.slickPause();
+    videoRef.current?.pause(); // 🆕 added for video pause
+  }}
+  
     >
       <div className="relative aspect-video">
         {/* TODO: Function components cannot be given refs, consider moving to Next.js 15 which supports React 19 */}
@@ -88,7 +102,7 @@ export default function DetailsCard({ validData, path }: DetailsCardProps) {
           <div>
             <h2
               id={validData?.id}
-              className="group-hover:text-primary tracking-wide"
+              className="group-hover:text-primary tracking-wide font-semibold text-base sm:text-lg"
             >
               {validData?.title}
             </h2>
