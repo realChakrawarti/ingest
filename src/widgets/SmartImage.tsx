@@ -118,14 +118,17 @@ export default function SmartImage(props: SmartImageProps) {
   const internalOnLoad = (e: React.SyntheticEvent<HTMLImageElement>) => {
     try {
       const imgEl = e.currentTarget as HTMLImageElement;
-      // Defensive check for valid dimensions (naturalWidth/Height > 0)
+      
       if (imgEl && imgEl.naturalWidth > 0 && imgEl.naturalHeight > 0) {
+        setInvalidDimensions(false);
         handleLoadingComplete();
       } else {
         console.warn(`SmartImage: Image loaded but has invalid dimensions (${imgEl.naturalWidth}x${imgEl.naturalHeight}) for src: ${effectiveSrc}`);
+      
         setInvalidDimensions(true);
 
         if (fallbackSrc) {
+          setInvalidDimensions(false);
           setAttemptedFallback(true);
           setHasError(false);
         } else {
@@ -133,8 +136,9 @@ export default function SmartImage(props: SmartImageProps) {
           setIsLoaded(false);
         }
       }
-    } catch {
-      handleLoadingComplete();
+    } catch (err) {
+      console.error("SmartImage: error while validating image load:", err);
+      handleError();
     }
 
     if (userOnLoad) {
