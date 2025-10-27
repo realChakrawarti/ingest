@@ -122,10 +122,15 @@ export default function SmartImage(props: SmartImageProps) {
       if (imgEl && imgEl.naturalWidth > 0 && imgEl.naturalHeight > 0) {
         handleLoadingComplete();
       } else {
-        // Image loaded but has invalid dimensions - handle separately from errors
         console.warn(`SmartImage: Image loaded but has invalid dimensions (${imgEl.naturalWidth}x${imgEl.naturalHeight}) for src: ${effectiveSrc}`);
-        setInvalidDimensions(true);
-        setIsLoaded(false);
+        if (fallbackSrc) {
+          setInvalidDimensions(false);
+          setAttemptedFallback(true);
+          setHasError(false);
+        } else {
+          setIsLoaded(false);
+          handleLoadingComplete();
+        }
       }
     } catch {
       handleLoadingComplete();

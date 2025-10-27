@@ -3,6 +3,7 @@
 import { EyeIcon, File, Pause, Play, VideoIcon } from "lucide-react";
 import Link from "next/link";
 import { type MouseEvent, useRef, useState } from "react";
+import type Slider from "react-slick";
 
 import type { ZArchiveValid } from "~/entities/archives/models";
 import type { ZCatalogValid } from "~/entities/catalogs/models";
@@ -12,24 +13,13 @@ import { cn } from "~/shared/utils/tailwind-merge";
 import ThumbnailCarousel from "./carousel-thumbnails";
 import OverlayTip from "./overlay-tip";
 
-// Import the SliderType from carousel-thumbnails
-type SliderType = {
-  slickNext: () => void;
-  slickPrev: () => void;
-  slickGoTo: (slide: number) => void;
-  slickPause: () => void;
-  slickPlay: () => void;
-  slickCurrentSlide: () => number;
-  slickSlideCount: () => number;
-};
-
 interface DetailsCardProps {
   validData: ZCatalogValid | ZArchiveValid;
   path: string;
 }
 
 export default function DetailsCard({ validData, path }: DetailsCardProps) {
-  const sliderRef = useRef<SliderType | null>(null);
+  const sliderRef = useRef<Slider | null>(null);
   const [slidesPlaying, setSlidesPlaying] = useState<boolean>(false);
 
   const playSlides = (e: MouseEvent<HTMLButtonElement>) => {
