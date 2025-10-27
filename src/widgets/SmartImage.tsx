@@ -6,7 +6,7 @@ import React, { useEffect, useMemo, useState } from "react";
 type SmartImageProps = Omit<NextImageProps, "onLoadingComplete"> & {
   forceSkeleton?: boolean;
   fallbackSrc?: string;
-  /** @deprecated Use containerClassName to style the wrapper div */
+  /** Use containerClassName to style the wrapper div */
   containerClassName?: string;
   /** @deprecated Use className to style the image element (Next/Image parity) */
   imageClassName?: string;
@@ -14,6 +14,8 @@ type SmartImageProps = Omit<NextImageProps, "onLoadingComplete"> & {
   aspectRatio?: number | string;
   decorative?: boolean;
   ariaLive?: "polite" | "assertive" | undefined;
+  /** Enable automatic fill behavior when no explicit width/height provided */
+  autoFill?: boolean;
 };
 
 // Skeleton styling constants for better maintainability
@@ -37,29 +39,35 @@ export default function SmartImage(props: SmartImageProps) {
     loading,
     decorative,
     ariaLive,
+    autoFill = false,
     ...rest
   } = props as SmartImageProps & {
     src: NextImageProps["src"];
     alt: string;
   };
 
-  if (!alt && !decorative) {
-    console.warn("SmartImage: 'alt' prop is required for accessibility.");
-  }
-
   const [isLoaded, setIsLoaded] = useState(false);
   const [hasError, setHasError] = useState(false);
   const [clientHydrated, setClientHydrated] = useState(false);
   const [attemptedFallback, setAttemptedFallback] = useState(false);
+  const [invalidDimensions, setInvalidDimensions] = useState(false);
 
   useEffect(() => {
     setClientHydrated(true);
   }, []);
 
+  // Warn about missing alt prop only when alt or decorative changes
+  useEffect(() => {
+    if (!alt && !decorative) {
+      console.warn("SmartImage: 'alt' prop is required for accessibility.");
+    }
+  }, [alt, decorative]);
+
   useEffect(() => {
     setIsLoaded(false);
     setHasError(false);
     setAttemptedFallback(false);
+    setInvalidDimensions(false);
   }, [src]);
 
   const showSkeleton = (forceSkeleton || !isLoaded) && clientHydrated;
@@ -103,7 +111,7 @@ export default function SmartImage(props: SmartImageProps) {
   
   const effectiveAlt = (decorative ? "" : alt ?? "") as string;
   
-  const shouldAutoFill = !width && !height && !fill && (hasAspect || containerClassName);
+  const shouldAutoFill = autoFill && !width && !height && !fill;
   const effectiveFill = fill ?? shouldAutoFill;
   const effectiveSizes = sizes ?? (shouldAutoFill ? "100vw" : undefined);
   
@@ -114,8 +122,10 @@ export default function SmartImage(props: SmartImageProps) {
       if (imgEl && imgEl.naturalWidth > 0 && imgEl.naturalHeight > 0) {
         handleLoadingComplete();
       } else {
-        // Image loaded but has invalid dimensions, treat as error
-        handleError();
+        // Image loaded but has invalid dimensions - handle separately from errors
+        console.warn(`SmartImage: Image loaded but has invalid dimensions (${imgEl.naturalWidth}x${imgEl.naturalHeight}) for src: ${effectiveSrc}`);
+        setInvalidDimensions(true);
+        setIsLoaded(false);
       }
     } catch {
       handleLoadingComplete();
@@ -189,12 +199,12 @@ export default function SmartImage(props: SmartImageProps) {
 
       <Image {...finalImageProps} />
 
-      {hasError && (!fallbackSrc || attemptedFallback) && (
+      {(hasError || invalidDimensions) && (!fallbackSrc || attemptedFallback) && (
         <div
           aria-live="polite"
           className="absolute inset-0 flex items-center justify-center text-xs font-semibold text-gray-600 select-none pointer-events-none"
         >
-          Image unavailable
+          {invalidDimensions ? "Invalid image dimensions" : "Image unavailable"}
         </div>
       )}
     </div>
