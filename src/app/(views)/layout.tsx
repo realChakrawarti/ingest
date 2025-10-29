@@ -3,6 +3,7 @@ import "slick-carousel/slick/slick-theme.css";
 import "~/app/styles/globals.css";
 
 import { GoogleAnalytics } from "@next/third-parties/google";
+import * as Sentry from "@sentry/nextjs";
 import type { Metadata } from "next";
 import Script from "next/script";
 
@@ -16,22 +17,26 @@ import Header from "~/widgets/header";
 import { ReactScan } from "~/widgets/react-scan";
 
 import Providers from "./context";
-
-export const metadata: Metadata = {
-  applicationName: `${appConfig.marketName}`,
-  description:
-    "Discover new YouTube channels, subreddits. Curate your content across channel & subreddits. Stay organized.",
-  keywords: [
-    "youtube",
-    "catalog",
-    "channels",
-    "videos",
-    "organize",
-    "reddit",
-    "subreddits",
-  ],
-  title: `${appConfig.marketName} - Organize Your YouTube & Reddit Universe`,
-};
+export async function generateMetadata(): Promise<Metadata> {
+  return {
+    applicationName: `${appConfig.marketName}`,
+    description:
+      "Discover new YouTube channels, subreddits. Curate your content across channel & subreddits. Stay organized.",
+    keywords: [
+      "youtube",
+      "catalog",
+      "channels",
+      "videos",
+      "organize",
+      "reddit",
+      "subreddits",
+    ],
+    other: {
+      ...Sentry.getTraceData(),
+    },
+    title: `${appConfig.marketName} - Organize Your Digital Universe`,
+  };
+}
 
 export default function RootLayout({
   children,
