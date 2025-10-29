@@ -72,6 +72,11 @@ export default function UpdateArchiveMeta({
 	}
 
 	async function handleVisibilityToggle(checked: boolean) {
+		// Guard: Prevent redundant API calls if state hasn't changed
+		if (checked === isPublicState) {
+			return;
+		}
+
 		setIsPublicLoading(true);
 		try {
 			const result = await fetchApi(`/archives/${archiveId}/visibility`, {
