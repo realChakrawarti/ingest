@@ -132,24 +132,23 @@ export function VideoCategory({
       videoProgress.completed > localUserSettings.watchedPercentage)
   ) {
     return null;
-  } else {
-    const IconComponent = Icons[category];
-
-    return (
-      <div className="absolute top-2 left-[2px] md:left-0 cursor-default">
-        <OverlayTip
-          className="px-[5px] py-2 flex gap-1 place-items-center rounded-r-md"
-          id="video-category"
-          aria-label="Video category"
-        >
-          <div className="text-xs flex gap-1 items-center">
-            <IconComponent className="size-4" />
-            <p className="hidden group-hover/player:flex gap-1 items-center">
-              <span>{category}</span>
-            </p>
-          </div>
-        </OverlayTip>
-      </div>
-    );
   }
+  const IconComponent = Icons[category];
+
+  return (
+    <div className="absolute top-2 left-[2px] md:left-0 cursor-default">
+      <OverlayTip
+        className="px-[5px] py-2 flex gap-1 place-items-center rounded-r-md"
+        id="video-category"
+        aria-label="Video category"
+      >
+        <div className="text-xs flex gap-1 items-center">
+          <IconComponent className="size-4" />
+          <p className="hidden group-hover/player:flex gap-1 items-center">
+            <span>{category}</span>
+          </p>
+        </div>
+      </OverlayTip>
+    </div>
+  );
 }

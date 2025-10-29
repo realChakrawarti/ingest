@@ -34,9 +34,8 @@ export async function getArchiveById(archiveId: string) {
       };
 
       return archiveResponseData;
-    } else {
-      throw Error(error?.message ?? "Unable to parse archive by ID.");
     }
+    throw Error(error?.message ?? "Unable to parse archive by ID.");
   } catch (err) {
     Log.fatal("Unable to retrieve archive by id.", err);
   }

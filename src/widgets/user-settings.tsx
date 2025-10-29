@@ -379,9 +379,9 @@ export function VideoLanguagesCombo({
     <div className="w-full">
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
+          {/** biome-ignore lint/a11y/useSemanticElements: ShadCN semantics */}
           <Button
             variant="outline"
-            // biome-ignore lint/a11y/useSemanticElements: ShadCN semantics
             role="combobox"
             aria-expanded={open}
             className="w-full justify-between"

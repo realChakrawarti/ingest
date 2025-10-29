@@ -37,9 +37,8 @@ export async function getArchiveByUser(userId: string) {
             title: archiveData?.title,
             updatedAt: timestampUTC(archiveData.data.updatedAt),
           };
-        } else {
-          throw Error("Archive data is not available.");
         }
+        throw Error("Archive data is not available.");
       }
     );
 

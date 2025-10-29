@@ -46,7 +46,7 @@ class NxResponseBuilder {
   success<T>(
     message: string,
     data: T,
-    statusCode: number = 200
+    statusCode = 200
   ): NextResponse<ApiResponse<T>> {
     return this.createResponse(true, message, data, null, statusCode);
   }
@@ -61,7 +61,7 @@ class NxResponseBuilder {
   fail(
     message: string,
     error: ApiError,
-    statusCode: number = 400
+    statusCode = 400
   ): NextResponse<ApiResponse<null>> {
     return this.createResponse(false, message, null, error, statusCode);
   }

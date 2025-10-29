@@ -25,13 +25,12 @@ export async function DELETE(request: NextRequest, ctx: ContextParams) {
     await deleteChannel(userId, catalogId, data);
     revalidatePath(`/c/${catalogId}`);
     return NxResponse.success("Channel deleted successfully.", {}, 200);
-  } else {
-    return NxResponse.fail(
-      "Invalid data provided.",
-      { code: "INVALID_DATA", details: error.message },
-      422
-    );
   }
+  return NxResponse.fail(
+    "Invalid data provided.",
+    { code: "INVALID_DATA", details: error.message },
+    422
+  );
 }
 
 export async function PATCH(request: NextRequest, ctx: ContextParams) {
@@ -65,11 +64,10 @@ export async function PATCH(request: NextRequest, ctx: ContextParams) {
     }
 
     return NxResponse.success("Channel list updated successfully.", {}, 201);
-  } else {
-    return NxResponse.fail(
-      "Invalid data provided.",
-      { code: "INVALID_DATA", details: error.message },
-      422
-    );
   }
+  return NxResponse.fail(
+    "Invalid data provided.",
+    { code: "INVALID_DATA", details: error.message },
+    422
+  );
 }

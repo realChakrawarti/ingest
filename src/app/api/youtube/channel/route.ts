@@ -43,7 +43,7 @@ export async function GET(request: NextRequest) {
   try {
     const data = await getChannelDetails({ channelHandle, channelId });
     return NxResponse.success(
-      `Channel details fetched successfully.`,
+      "Channel details fetched successfully.",
       data,
       200
     );

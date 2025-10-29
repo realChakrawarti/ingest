@@ -33,7 +33,7 @@ export default function PlaylistTable({
           <TableHead className="max-w-[150px]">Playlist Title</TableHead>
           <TableHead>Playlist ID</TableHead>
           <TableHead className="text-center">Channel</TableHead>
-          <TableHead></TableHead>
+          <TableHead />
         </TableRow>
       </TableHeader>
       <TableBody>
