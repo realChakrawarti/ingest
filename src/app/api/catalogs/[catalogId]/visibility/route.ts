@@ -1,8 +1,14 @@
 import type { NextRequest } from "next/server";
+import { z } from "zod";
 
 import { updateCatalogVisibility } from "~/entities/catalogs";
 
+import { getUserIdHeader } from "~/shared/lib/next/get-user-id-header";
 import { NxResponse } from "~/shared/lib/next/nx-response";
+
+const VisibilityPayloadSchema = z.object({
+	isPublic: z.boolean(),
+});
 
 type ContextParams = {
 	params: {
@@ -11,23 +17,29 @@ type ContextParams = {
 };
 
 export async function PATCH(request: NextRequest, ctx: ContextParams) {
+	const userId = getUserIdHeader();
 	const { catalogId } = ctx.params;
 
 	const payload = await request.json();
-	const { isPublic } = payload;
+	const parsed = VisibilityPayloadSchema.safeParse(payload);
 
-	if (typeof isPublic !== "boolean") {
+	if (!parsed.success) {
+		const formattedError = parsed.error.format();
 		return NxResponse.fail(
 			"Invalid payload. isPublic must be a boolean.",
 			{
 				code: "INVALID_PAYLOAD",
-				details: "Expected a boolean value for isPublic field",
+				details:
+					formattedError.isPublic?._errors[0] ||
+					"Expected a boolean value for isPublic field",
 			},
 			400
 		);
 	}
 
-	const result = await updateCatalogVisibility(catalogId, isPublic);
+	const { isPublic } = parsed.data;
+
+	const result = await updateCatalogVisibility(userId, catalogId, isPublic);
 
 	if (!result.success) {
 		return NxResponse.fail(

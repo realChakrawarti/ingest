@@ -69,28 +69,25 @@ export default function UpdateCatalogMeta({
 	async function handleVisibilityToggle(checked: boolean) {
 		setIsPublicLoading(true);
 		try {
-			const URL = `${process.env.NEXT_PUBLIC_API_BASE_URL}/catalogs/${catalogId}/visibility`;
-			const response = await fetch(URL, {
+			const result = await fetchApi(`/catalogs/${catalogId}/visibility`, {
 				body: JSON.stringify({ isPublic: checked }),
 				method: "PATCH",
-				headers: {
-					"Content-Type": "application/json",
-				},
 			});
 
-			const result = await response.json();
-
-			if (result.success) {
-				setIsPublicState(checked);
-				toast.success(result.message);
-				revalidateCatalog();
-			} else {
-				// Show error details if available, otherwise show message
-				const errorMessage = result.error?.details || result.message;
+			// Success case
+			setIsPublicState(checked);
+			toast.success(result.message);
+			revalidateCatalog();
+		} catch (err: any) {
+			// Error case - fetchApi throws on failure, but we can access the response
+			if (err.cause) {
+				const errorResponse = await err.cause;
+				const errorMessage =
+					errorResponse.error?.details || errorResponse.message;
 				toast.error(errorMessage);
+			} else {
+				toast.error("Failed to update visibility status.");
 			}
-		} catch (err) {
-			toast.error("Failed to update visibility status.");
 		} finally {
 			setIsPublicLoading(false);
 		}
