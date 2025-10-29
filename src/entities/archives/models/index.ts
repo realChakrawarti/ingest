@@ -4,17 +4,19 @@ import { z } from "zod";
 import { YouTubeVideoMetadataSchema } from "~/entities/youtube/models";
 
 const TimestampSchema = z.custom<Timestamp>(
-  (value) => value instanceof Timestamp
+	(value) => value instanceof Timestamp
 );
 
 const ArchiveMetaSchema = z.object({
-  description: z.string(),
-  title: z.string(),
+	description: z.string(),
+	title: z.string(),
 });
 
 const ArchiveByIDSchema = ArchiveMetaSchema.extend({
-  updatedAt: z.string(),
-  videos: z.array(YouTubeVideoMetadataSchema),
+	isPublic: z.boolean().default(true),
+	isPublicUpdatedAt: z.string().optional(),
+	updatedAt: z.string(),
+	videos: z.array(YouTubeVideoMetadataSchema),
 });
 
 export type ZArchiveMeta = z.infer<typeof ArchiveMetaSchema>;
@@ -22,47 +24,50 @@ export type ZArchiveMeta = z.infer<typeof ArchiveMetaSchema>;
 export type ZArchiveByID = z.infer<typeof ArchiveByIDSchema>;
 
 const UserArchiveDocumentSchema = z.object({
-  updatedAt: TimestampSchema,
-  videoIds: z.array(z.string()),
+	updatedAt: TimestampSchema,
+	videoIds: z.array(z.string()),
 });
 
 export type ZUserArchiveDocument = z.infer<typeof UserArchiveDocumentSchema>;
 
 const DocumentReferenceSchema = z.custom<
-  DocumentReference<ZUserArchiveDocument>
+	DocumentReference<ZUserArchiveDocument>
 >((value) => value instanceof DocumentReference);
 
 const ArchiveVideoSchema = YouTubeVideoMetadataSchema;
 
 export const ArchiveDocumentSchema = z.object({
-  data: z.object({
-    totalVideos: z.number().prefault(0),
-    updatedAt: TimestampSchema,
-    videos: z.optional(z.array(ArchiveVideoSchema)),
-  }),
-  description: z.string(),
-  title: z.string(),
-  videoRef: DocumentReferenceSchema,
+	data: z.object({
+		totalVideos: z.number().prefault(0),
+		updatedAt: TimestampSchema,
+		videos: z.optional(z.array(ArchiveVideoSchema)),
+	}),
+	description: z.string(),
+	isPublic: z.boolean().default(true),
+	isPublicUpdatedAt: TimestampSchema.optional(),
+	title: z.string(),
+	videoRef: DocumentReferenceSchema,
 });
 
 export type ZArchiveDocumentSchema = z.infer<typeof ArchiveDocumentSchema>;
 
 const ArchiveByUserSchema = ArchiveMetaSchema.extend({
-  id: z.string(),
-  updatedAt: z.string(),
+	id: z.string(),
+	updatedAt: z.string(),
 });
 
 export type ZArchiveByUser = z.infer<typeof ArchiveByUserSchema>;
 
 const ArchiveValidSchema = z.object({
-  description: z.string(),
-  id: z.string(),
-  pageviews: z.number().optional(),
-  thumbnails: z.array(z.string()),
-  title: z.string(),
-  totalPosts: z.number().optional(),
-  totalVideos: z.number(),
-  updatedAt: TimestampSchema,
+	description: z.string(),
+	id: z.string(),
+	isPublic: z.boolean().default(true),
+	pageviews: z.number().optional(),
+	thumbnails: z.array(z.string()),
+	title: z.string(),
+	totalPosts: z.number().optional(),
+	totalVideos: z.number(),
+	updatedAt: TimestampSchema,
 });
 
 export type ZArchiveValid = z.infer<typeof ArchiveValidSchema>;

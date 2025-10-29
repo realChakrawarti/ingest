@@ -8,54 +8,56 @@ import { refs } from "~/shared/lib/firebase/refs";
 import type { ZArchiveValid } from "../models";
 
 const getArchiveMetadata = async (archiveId: string) => {
-  const archiveRef = refs.archives.doc(archiveId);
-  const archiveSnap = await archiveRef.get();
-  const archiveData = archiveSnap.data();
-  return archiveData;
+	const archiveRef = refs.archives.doc(archiveId);
+	const archiveSnap = await archiveRef.get();
+	const archiveData = archiveSnap.data();
+	return archiveData;
 };
 
 const getVideoThumbnails = (archiveData: DocumentData) => {
-  const videos: ZYouTubeVideoMetadata[] = archiveData.videos;
-  const thumbnails = videos.map((video) => video.videoThumbnail);
-  return thumbnails;
+	const videos: ZYouTubeVideoMetadata[] = archiveData.videos;
+	const thumbnails = videos.map((video) => video.videoThumbnail);
+	return thumbnails;
 };
 
 export async function getValidArchiveIds() {
-  unstable_noStore();
-  const archiveListData: ZArchiveValid[] = [];
+	unstable_noStore();
+	const archiveListData: ZArchiveValid[] = [];
 
-  const validArchiveQuery = refs.archives
-    .where("data.videos", "!=", false)
-    .limit(25);
-  const validArchiveQuerySnapshot = await validArchiveQuery.get();
+	const validArchiveQuery = refs.archives
+		.where("data.videos", "!=", false)
+		.where("isPublic", "==", true)
+		.limit(25);
+	const validArchiveQuerySnapshot = await validArchiveQuery.get();
 
-  if (validArchiveQuerySnapshot.empty) {
-    return archiveListData;
-  }
+	if (validArchiveQuerySnapshot.empty) {
+		return archiveListData;
+	}
 
-  const archiveIds = validArchiveQuerySnapshot.docs.map(
-    (archive) => archive.id
-  );
+	const archiveIds = validArchiveQuerySnapshot.docs.map(
+		(archive) => archive.id
+	);
 
-  // Get the title and description of the page
-  // Awaiting using a Promise.all is done to wait for the map to execute before returning the response
-  await Promise.all(
-    archiveIds.map(async (archiveId) => {
-      const archiveData = await getArchiveMetadata(archiveId);
-      if (archiveData) {
-        const metaData: ZArchiveValid = {
-          description: archiveData?.description,
-          id: archiveId,
-          thumbnails: getVideoThumbnails(archiveData.data),
-          title: archiveData?.title,
-          totalVideos: archiveData?.data.totalVideos,
-          updatedAt: archiveData?.data.updatedAt,
-        };
+	// Get the title and description of the page
+	// Awaiting using a Promise.all is done to wait for the map to execute before returning the response
+	await Promise.all(
+		archiveIds.map(async (archiveId) => {
+			const archiveData = await getArchiveMetadata(archiveId);
+			if (archiveData && archiveData.isPublic !== false) {
+				const metaData: ZArchiveValid = {
+					description: archiveData?.description,
+					id: archiveId,
+					isPublic: archiveData?.isPublic ?? true,
+					thumbnails: getVideoThumbnails(archiveData.data),
+					title: archiveData?.title,
+					totalVideos: archiveData?.data.totalVideos,
+					updatedAt: archiveData?.data.updatedAt,
+				};
 
-        archiveListData.push(metaData);
-      }
-    })
-  );
+				archiveListData.push(metaData);
+			}
+		})
+	);
 
-  return archiveListData;
+	return archiveListData;
 }

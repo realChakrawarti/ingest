@@ -6,3 +6,4 @@ export { getArchiveByUser } from "./services/get-archives-by-user";
 export { getValidArchiveIds } from "./services/get-valid-archive-ids";
 export { removeArchiveVideo } from "./services/remove-archive-video";
 export { updateArchiveMeta } from "./services/update-archive-meta";
+export { updateArchiveVisibility } from "./services/update-archive-visibility";
