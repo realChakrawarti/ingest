@@ -75,7 +75,7 @@ function ThumbnailCarousel({
     slickGoTo: (index: number) => internalSliderRef.current?.slickGoTo?.(index),
     slickPause: () => internalSliderRef.current?.slickPause?.(),
     slickPlay: () => internalSliderRef.current?.slickPlay?.(),
-  }));
+  }), []);
 
   const settings: Settings = {
     arrows: false,
@@ -103,7 +103,10 @@ function ThumbnailCarousel({
 
   // When toggling playing, reinitialize slider to apply autoplay without resetting index
   useEffect(() => {
-    if (prefersReducedMotion) return;
+        if (prefersReducedMotion) {
+         internalSliderRef.current?.slickPause?.();
+          return;
+        }    
     const inst = internalSliderRef.current;
     if (!inst) return;
     if (playing) {
