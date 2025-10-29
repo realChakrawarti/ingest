@@ -1,12 +1,13 @@
 import { Edit, Loader2 } from "lucide-react";
 import type { FormEvent } from "react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { toast } from "sonner";
 import type { KeyedMutator } from "swr";
 
 import type { ZArchiveByID } from "~/entities/archives/models";
 
 import fetchApi from "~/shared/lib/api/fetch";
+import { useVisibilityToggle } from "~/shared/hooks/use-visibility-toggle";
 import type { ApiResponse } from "~/shared/lib/next/nx-response";
 import { Button } from "~/shared/ui/button";
 import {
@@ -46,46 +47,38 @@ export default function UpdateArchiveMeta({
 		}
 	);
 
-	const [isPublicState, setIsPublicState] = useState(isPublic);
-	const [isPublicLoading, setIsPublicLoading] = useState(false);
+	const {
+		isPublicState,
+		isLoading: isPublicLoading,
+		handleToggle,
+	} = useVisibilityToggle({
+		id: archiveId,
+		initialIsPublic: isPublic,
+		endpoint: "archives",
+		revalidate: revalidateArchive,
+	});
 
-	// Sync local state with prop changes (e.g., after refetch)
-	useEffect(() => {
-		setIsPublicState(isPublic);
-	}, [isPublic]);
+	const [isSubmitting, setIsSubmitting] = useState(false);
 
 	async function updateArchiveMeta(e: FormEvent<HTMLFormElement>) {
 		e.preventDefault();
-		const result = await fetchApi(`/archives/${archiveId}/update`, {
-			body: JSON.stringify({
-				description: meta.description,
-				title: meta.title,
-			}),
-			method: "PATCH",
-		});
 
-		if (!result.success) {
-			toast(result.message);
-		} else {
-			revalidateArchive();
-		}
-	}
-
-	async function handleVisibilityToggle(checked: boolean) {
-		// Guard: Prevent redundant API calls if state hasn't changed
-		if (checked === isPublicState) {
+		// Prevent double-submit
+		if (isSubmitting) {
 			return;
 		}
 
-		setIsPublicLoading(true);
+		setIsSubmitting(true);
 		try {
-			const result = await fetchApi(`/archives/${archiveId}/visibility`, {
-				body: JSON.stringify({ isPublic: checked }),
+			const result = await fetchApi(`/archives/${archiveId}/update`, {
+				body: JSON.stringify({
+					description: meta.description,
+					title: meta.title,
+				}),
 				method: "PATCH",
 			});
 
 			// If we reach here, fetchApi didn't throw (success case)
-			setIsPublicState(checked);
 			toast.success(result.message);
 			revalidateArchive();
 		} catch (err: any) {
@@ -97,14 +90,13 @@ export default function UpdateArchiveMeta({
 						errorResponse.error?.details || errorResponse.message;
 					toast.error(errorMessage);
 				} catch {
-					toast.error("Failed to update visibility status.");
+					toast.error("Failed to update archive metadata.");
 				}
 			} else {
-				// Unexpected runtime error (network failure, etc.)
-				toast.error("An unexpected error occurred. Please try again.");
+				toast.error("Failed to update archive metadata.");
 			}
 		} finally {
-			setIsPublicLoading(false);
+			setIsSubmitting(false);
 		}
 	}
 
@@ -170,7 +162,7 @@ export default function UpdateArchiveMeta({
 							<Switch
 								id="visibility"
 								checked={isPublicState}
-								onCheckedChange={handleVisibilityToggle}
+								onCheckedChange={handleToggle}
 								disabled={isPublicLoading}
 								className="data-[state=checked]:bg-[#A81434] data-[state=unchecked]:bg-input"
 							/>
@@ -180,9 +172,18 @@ export default function UpdateArchiveMeta({
 					<DialogFooter>
 						<DialogClose asChild>
 							<Button
-								disabled={Boolean(submitDisabled)}
+								disabled={
+									Boolean(submitDisabled) || isSubmitting
+								}
 								type="submit">
-								Update
+								{isSubmitting ? (
+									<>
+										<Loader2 className="mr-2 h-4 w-4 animate-spin" />
+										Updating…
+									</>
+								) : (
+									"Update"
+								)}
 							</Button>
 						</DialogClose>
 					</DialogFooter>
