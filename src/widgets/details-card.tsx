@@ -9,7 +9,7 @@ import type { ZCatalogValid } from "~/entities/catalogs/models";
 
 import { cn } from "~/shared/utils/tailwind-merge";
 
-import ThumbnailCarousel from "./carousel-thumbnails";
+import ThumbnailCarousel, { type SliderType } from "./carousel-thumbnails";
 import OverlayTip from "./overlay-tip";
 
 interface DetailsCardProps {
@@ -18,19 +18,21 @@ interface DetailsCardProps {
 }
 
 export default function DetailsCard({ validData, path }: DetailsCardProps) {
-  const sliderRef = useRef<any>(null);
+  const sliderRef = useRef<SliderType | null>(null);
   const [slidesPlaying, setSlidesPlaying] = useState<boolean>(false);
 
   const playSlides = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     e.stopPropagation();
     setSlidesPlaying(true);
+    sliderRef.current?.slickPlay?.();
   };
 
   const pauseSlides = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     e.stopPropagation();
     setSlidesPlaying(false);
+    sliderRef.current?.slickPause?.();
   };
 
   return (

@@ -13,7 +13,7 @@ const Slider = dynamic(() => import("react-slick").then((m) => m.default), {
 }) as any;
 
 // Type for the Slider component instance methods
-type SliderType = {
+export type SliderType = {
   slickNext: () => void;
   slickPrev: () => void;
   slickGoTo: (slide: number) => void;
@@ -38,6 +38,11 @@ function ThumbnailCarousel({
   const internalSliderRef = useRef<any>(null);
   const currentIndexRef = useRef<number>(0);
 
+  // Respect user preference to reduce motion (SSR-safe default)
+  const prefersReducedMotion =
+    typeof window !== "undefined" &&
+    Boolean(window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches);
+
   // Expose a stable imperative API regardless of dynamic() ref forwarding
   useImperativeHandle(sliderRef, () => ({
     slickNext: () => internalSliderRef.current?.slickNext?.(),
@@ -49,13 +54,13 @@ function ThumbnailCarousel({
 
   const settings: Settings = {
     arrows: false,
-    autoplay: playing,
+    autoplay: playing && !prefersReducedMotion,
     autoplaySpeed: 3000,
     pauseOnHover: false,
     pauseOnDotsHover: false,
     cssEase: "ease-in",
     dots: false,
-    fade: true,
+    fade: !prefersReducedMotion,
     adaptiveHeight: false,
     // Refer: https://github.com/akiran/react-slick/issues/1171
     infinite: thumbnails.length > 1,
@@ -71,19 +76,9 @@ function ThumbnailCarousel({
     },
   };
 
-  // React to external play/pause control once the slider instance exists
-  useEffect(() => {
-    const inst = internalSliderRef.current;
-    if (!inst) return;
-    if (playing) {
-      inst.slickPlay?.();
-    } else {
-      inst.slickPause?.();
-    }
-  }, [playing]);
-
   // When toggling playing, reinitialize slider to apply autoplay without resetting index
   useEffect(() => {
+    if (prefersReducedMotion) return;
     const inst = internalSliderRef.current;
     if (!inst) return;
     if (playing) {
@@ -103,6 +98,8 @@ function ThumbnailCarousel({
         key={playing ? `on-${currentIndexRef.current}` : `off-${currentIndexRef.current}`}
         ref={internalSliderRef}
         className="h-full"
+        autoplay={playing && !prefersReducedMotion}
+        fade={!prefersReducedMotion}
         {...settings}
       >
         {thumbnails?.map((thumb) => {
