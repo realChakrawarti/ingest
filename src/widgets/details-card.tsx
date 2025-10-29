@@ -3,7 +3,6 @@
 import { EyeIcon, File, Pause, Play, VideoIcon } from "lucide-react";
 import Link from "next/link";
 import { type MouseEvent, useRef, useState } from "react";
-import type Slider from "react-slick";
 
 import type { ZArchiveValid } from "~/entities/archives/models";
 import type { ZCatalogValid } from "~/entities/catalogs/models";
@@ -19,19 +18,19 @@ interface DetailsCardProps {
 }
 
 export default function DetailsCard({ validData, path }: DetailsCardProps) {
-  const sliderRef = useRef<Slider | null>(null);
+  const sliderRef = useRef<any>(null);
   const [slidesPlaying, setSlidesPlaying] = useState<boolean>(false);
 
   const playSlides = (e: MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
     e.stopPropagation();
     setSlidesPlaying(true);
-    sliderRef.current?.slickPlay();
   };
 
   const pauseSlides = (e: MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
     e.stopPropagation();
     setSlidesPlaying(false);
-    sliderRef.current?.slickPause();
   };
 
   return (
@@ -49,6 +48,7 @@ export default function DetailsCard({ validData, path }: DetailsCardProps) {
           sliderRef={sliderRef}
           thumbnails={validData.thumbnails}
           title={validData.title}
+          playing={slidesPlaying}
         />
 
         <div className="absolute right-0 bottom-3">
@@ -57,24 +57,28 @@ export default function DetailsCard({ validData, path }: DetailsCardProps) {
               id="slider-play"
               className="grid size-8 rounded-l-md z-20 cursor-pointer"
             >
-              <span
+              <button
+                type="button"
+                aria-label="Pause thumbnails"
                 className="grid place-items-center size-full"
-                onMouseDown={pauseSlides}
+                onClick={pauseSlides}
               >
                 <Pause className="size-5" />
-              </span>
+              </button>
             </OverlayTip>
           ) : (
             <OverlayTip
               id="slider-pause"
               className="size-8 rounded-l-md z-20 cursor-pointer"
             >
-              <span
+              <button
+                type="button"
+                aria-label="Play thumbnails"
                 className="grid place-items-center size-full"
-                onMouseDown={playSlides}
+                onClick={playSlides}
               >
                 <Play className="size-5" />
-              </span>
+              </button>
             </OverlayTip>
           )}
         </div>

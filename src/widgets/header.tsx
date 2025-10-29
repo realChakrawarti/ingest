@@ -1,6 +1,6 @@
 "use client";
 
-import SmartImage from "~/widgets/SmartImage";
+import SmartImage from "~/widgets/smart-image";
 import Link from "next/link";
 
 import appConfig from "~/shared/app-config";

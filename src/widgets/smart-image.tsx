@@ -1,14 +1,15 @@
 "use client";
 
-import Image, { ImageProps as NextImageProps } from "next/image";
-import React, { useEffect, useMemo, useState } from "react";
+import Image, { type ImageProps as NextImageProps } from "next/image";
+import type React from "react";
+import { useEffect, useMemo, useState } from "react";
+import { Skeleton } from "../shared/ui/skeleton";
 
 type SmartImageProps = Omit<NextImageProps, "onLoadingComplete"> & {
   forceSkeleton?: boolean;
   fallbackSrc?: string;
   /** Use containerClassName to style the wrapper div */
   containerClassName?: string;
-  /** @deprecated Use className to style the image element (Next/Image parity) */
   imageClassName?: string;
   skeletonClassName?: string;
   aspectRatio?: number | string;
@@ -17,11 +18,6 @@ type SmartImageProps = Omit<NextImageProps, "onLoadingComplete"> & {
   /** Enable automatic fill behavior when no explicit width/height provided */
   autoFill?: boolean;
 };
-
-// Skeleton styling constants for better maintainability
-const SKELETON_BASE_CLASSES = "absolute inset-0 z-10 pointer-events-none";
-const SKELETON_COLOR_CLASSES = "bg-gray-200 dark:bg-gray-800";
-const SKELETON_ANIMATION_CLASSES = "motion-safe:animate-pulse motion-reduce:bg-gradient-to-r motion-reduce:from-gray-200 motion-reduce:via-gray-300 motion-reduce:to-gray-200 dark:motion-reduce:from-gray-800 dark:motion-reduce:via-gray-700 dark:motion-reduce:to-gray-800";
 
 
 export default function SmartImage(props: SmartImageProps) {
@@ -197,14 +193,10 @@ export default function SmartImage(props: SmartImageProps) {
       style={ratioStyle}
     >
       {showSkeleton && (
-        <div
+        <Skeleton
           aria-hidden
-          className={`${SKELETON_BASE_CLASSES} ${SKELETON_COLOR_CLASSES} ${SKELETON_ANIMATION_CLASSES} ${
-            skeletonClassName ?? ""
-          }`.trim()}
-          style={{ 
-            willChange: "opacity"
-          }}
+          className={`absolute inset-0 z-10 pointer-events-none ${skeletonClassName ?? ""}`.trim()}
+          style={{ willChange: "opacity" }}
         />
       )}
 
