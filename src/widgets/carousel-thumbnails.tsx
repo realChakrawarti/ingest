@@ -103,12 +103,16 @@ function ThumbnailCarousel({
 
   // When toggling playing, reinitialize slider to apply autoplay without resetting index
   useEffect(() => {
-        if (prefersReducedMotion) {
-         internalSliderRef.current?.slickPause?.();
-          return;
-        }    
     const inst = internalSliderRef.current;
     if (!inst) return;
+
+    if (prefersReducedMotion) {
+      const current = currentIndexRef.current ?? 0;
+      inst.slickPause?.();
+      inst.slickGoTo?.(current, true);
+      return;
+    }
+
     if (playing) {
       inst.slickPlay?.();
     } else {
