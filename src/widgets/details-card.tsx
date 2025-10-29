@@ -62,7 +62,7 @@ export default function DetailsCard({ validData, path }: DetailsCardProps) {
               <button
                 type="button"
                 aria-label="Pause thumbnails"
-                className="grid place-items-center size-full"
+                className="grid place-items-center size-full focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-primary"
                 onClick={pauseSlides}
               >
                 <Pause className="size-5" />
@@ -76,7 +76,7 @@ export default function DetailsCard({ validData, path }: DetailsCardProps) {
               <button
                 type="button"
                 aria-label="Play thumbnails"
-                className="grid place-items-center size-full"
+                className="grid place-items-center size-full focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-primary"
                 onClick={playSlides}
               >
                 <Play className="size-5" />

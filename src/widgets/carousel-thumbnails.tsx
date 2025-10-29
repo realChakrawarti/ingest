@@ -2,15 +2,19 @@
 
 import Link from "next/link";
 import dynamic from "next/dynamic";
-import { useEffect, useImperativeHandle, useRef } from "react";
-import type { MutableRefObject } from "react";
+import { useEffect, useImperativeHandle, useRef, useState } from "react";
+import type { ComponentRef, MutableRefObject } from "react";
 import type { Settings } from "react-slick";
+import type Slider from "react-slick";
 import SmartImage from "~/widgets/smart-image";
 
+// Type for the Slider component instance
+type SlickSlider = ComponentRef<typeof Slider>;
+
 // Load react-slick on client only to avoid SSR bundling/runtime issues
-const Slider = dynamic(() => import("react-slick").then((m) => m.default), {
+const SliderDynamic = dynamic(() => import("react-slick").then((m) => m.default), {
   ssr: false,
-}) as any;
+}) as typeof Slider;
 
 // Type for the Slider component instance methods
 export type SliderType = {
@@ -35,13 +39,34 @@ function ThumbnailCarousel({
   title?: string;
   playing?: boolean;
 }) {
-  const internalSliderRef = useRef<any>(null);
+  const internalSliderRef = useRef<SlickSlider | null>(null);
   const currentIndexRef = useRef<number>(0);
 
-  // Respect user preference to reduce motion (SSR-safe default)
-  const prefersReducedMotion =
-    typeof window !== "undefined" &&
-    Boolean(window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches);
+  // Respect user preference to reduce motion (reactive with SSR-safe initialization)
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(() => {
+    if (typeof window === "undefined") return false;
+    return Boolean(window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches);
+  });
+
+  // Listen for changes to reduced motion preference
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const handleChange = (e: MediaQueryListEvent | MediaQueryList) => {
+      setPrefersReducedMotion(e.matches);
+    };
+    // Set initial value
+    setPrefersReducedMotion(mediaQuery.matches);
+    // Listen for changes
+    if (mediaQuery.addEventListener) {
+      mediaQuery.addEventListener("change", handleChange);
+      return () => mediaQuery.removeEventListener("change", handleChange);
+    } else {
+      // Fallback for older browsers
+      mediaQuery.addListener(handleChange);
+      return () => mediaQuery.removeListener(handleChange);
+    }
+  }, []);
 
   // Expose a stable imperative API regardless of dynamic() ref forwarding
   useImperativeHandle(sliderRef, () => ({
@@ -85,21 +110,18 @@ function ThumbnailCarousel({
       inst.slickPlay?.();
     } else {
       // Pause and pin to current index
-      const current = inst.innerSlider?.state?.currentSlide ?? currentIndexRef.current ?? 0;
-      currentIndexRef.current = current;
+      const current = currentIndexRef.current ?? 0;
       inst.slickPause?.();
       inst.slickGoTo?.(current, true);
     }
-  }, [playing]);
+  }, [playing, prefersReducedMotion]);
 
   return (
     <div className="h-full w-full overflow-hidden">
-      <Slider
+      <SliderDynamic
         key={playing ? `on-${currentIndexRef.current}` : `off-${currentIndexRef.current}`}
         ref={internalSliderRef}
         className="h-full"
-        autoplay={playing && !prefersReducedMotion}
-        fade={!prefersReducedMotion}
         {...settings}
       >
         {thumbnails?.map((thumb) => {
@@ -127,7 +149,7 @@ function ThumbnailCarousel({
             </div>
           );
         })}
-      </Slider>
+      </SliderDynamic>
     </div>
   );
 }

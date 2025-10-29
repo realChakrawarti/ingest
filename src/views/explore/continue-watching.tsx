@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 
+import appConfig from "~/shared/app-config";
 import { useLocalUserSettings } from "~/shared/hooks/use-local-user-settings";
 import { indexedDB } from "~/shared/lib/api/dexie";
 import type { History } from "~/shared/types-schema/types";
@@ -27,14 +28,17 @@ export default function ContinueWatching() {
           .reverse()
           .sortBy("updatedAt")) ?? [];
 
+      const watchedPercentage =
+        localUserSettings?.watchedPercentage ?? appConfig.watchedPercentage;
+
       const filteredIndexedHistory = indexedHistory.filter(
-        (item) => item.completed < localUserSettings.watchedPercentage
+        (item) => item.completed < watchedPercentage
       );
       setHistory(filteredIndexedHistory);
     };
 
     getWatchHistory();
-  }, []);
+  }, [localUserSettings]);
 
   if (history.length) {
     return (
