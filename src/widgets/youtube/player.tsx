@@ -1,8 +1,7 @@
 "use client";
 
 import { YouTubeEmbed } from "@next/third-parties/google";
-import { useCallback, useEffect, useRef, useState } from "react";
-import { createPortal } from "react-dom";
+import { useCallback, useEffect, useRef } from "react";
 
 import type { ZVideoMetadataCompatible } from "~/entities/catalogs/models";
 
@@ -13,6 +12,7 @@ import { cn } from "~/shared/utils/tailwind-merge";
 import Log from "~/shared/utils/terminal-logger";
 
 import { useVideoTracking } from "./use-video-tracking";
+import { FocusModal, useFocusMode } from "./focus-modal";
 
 function getPlayingState(
   playerState: Record<string, number>,
@@ -64,78 +64,6 @@ function getPlayerParams(
   return iframeParams;
 }
 
-// Focus Mode Modal Component
-function FocusModal({
-  isOpen,
-  onClose,
-  children,
-}: {
-  isOpen: boolean;
-  onClose: () => void;
-  children: React.ReactNode;
-}) {
-  useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = "hidden";
-      
-      const handleEscape = (e: KeyboardEvent) => {
-        if (e.key === "Escape") {
-          onClose();
-        }
-      };
-      
-      document.addEventListener("keydown", handleEscape);
-      
-      return () => {
-        document.body.style.overflow = "";
-        document.removeEventListener("keydown", handleEscape);
-      };
-    }
-  }, [isOpen, onClose]);
-
-  if (!isOpen) return null;
-
-  return createPortal(
-    <div
-      className="fixed inset-0 z-[9999] flex items-center justify-center"
-      onClick={onClose}
-    >
-      {/* Dark backdrop */}
-      <div className="absolute inset-0 bg-black/90 backdrop-blur-sm" />
-      
-      {/* Modal content - SIZE CONTROLLED HERE */}
-      <div
-        className="relative z-10 w-[80vw] h-[87vh] flex flex-col mx-auto"
-        onClick={(e) => e.stopPropagation()}
-      >
-        {/* Close button */}
-        <button
-          onClick={onClose}
-          className="absolute -top-12 right-0 text-white hover:text-gray-300 transition-colors z-20"
-          aria-label="Close focus mode"
-        >
-          <svg
-            className="w-8 h-8"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M6 18L18 6M6 6l12 12"
-            />
-          </svg>
-        </button>
-        
-        {/* Player container - REMOVED THIS WRAPPER */}
-        {children}
-      </div>
-    </div>,
-    document.body
-  );
-}
 
 // TODO: picture-in-picture - https://codepen.io/jh3y/pen/wBBOdNv
 
@@ -149,7 +77,7 @@ export default function YoutubePlayer(
   const thisPlayerRef = useRef<YT.Player | null>(null);
   const loaded = useRef<boolean>(false);
   const isPlaying = useRef<boolean>(false);
-  const [isFocusMode, setIsFocusMode] = useState(false);
+  const { isFocusMode, openFocusMode, closeFocusMode } = useFocusMode(false);
 
   const { stopTracking, startTracking } = useVideoTracking({
     thisPlayerRef,
@@ -202,10 +130,12 @@ export default function YoutubePlayer(
           );
           playerIframe.setAttribute("playing", "true");
 
-          // Stop other players
-          // TODO: This triggers the onStateChange, UNSTARTED & CUED for stopped players. Maybe somehow check & skip?
+          // Stop other players that are actually playing (avoid unnecessary onStateChange noise)
           filterPlayers.forEach((item) => {
-            playerControl(item, "stopVideo");
+            const isOtherPlaying = (item as HTMLIFrameElement).getAttribute("playing") === "true";
+            if (isOtherPlaying) {
+              playerControl(item as HTMLIFrameElement, "stopVideo");
+            }
           });
           startTracking();
           isPlaying.current = true;
@@ -295,7 +225,7 @@ export default function YoutubePlayer(
         <button
           onClick={(e) => {
             e.stopPropagation();
-            setIsFocusMode(true);
+            openFocusMode();
           }}
           className="absolute top-3 right-3 z-10 bg-black/60 hover:bg-black/80 text-white p-2 rounded-lg opacity-0 group-hover/video:opacity-100 transition-opacity duration-200"
           aria-label="Enter focus mode"
@@ -357,7 +287,7 @@ export default function YoutubePlayer(
         PlayerContent
       ) : null}
       
-      <FocusModal isOpen={isFocusMode} onClose={() => setIsFocusMode(false)}>
+      <FocusModal isOpen={isFocusMode} onClose={closeFocusMode}>
         {PlayerContent}
       </FocusModal>
     </>
