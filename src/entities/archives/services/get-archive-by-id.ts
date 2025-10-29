@@ -14,29 +14,30 @@ import { ArchiveDocumentSchema, type ZArchiveByID } from "../models";
 // TODO: How would I handle the data? VideoId as an array in userArchive and data
 // retrived from API stored as an object in the main archive?
 export async function getArchiveById(archiveId: string) {
-  const archiveRef = refs.archives.doc(archiveId);
+	const archiveRef = refs.archives.doc(archiveId);
 
-  try {
-    // Get title and description
-    const archiveSnap = await archiveRef.get();
-    const archiveData = archiveSnap.data();
+	try {
+		// Get title and description
+		const archiveSnap = await archiveRef.get();
+		const archiveData = archiveSnap.data();
 
-    const { success, error, data } =
-      ArchiveDocumentSchema.safeParse(archiveData);
+		const { success, error, data } =
+			ArchiveDocumentSchema.safeParse(archiveData);
 
-    if (success && data.data.videos) {
-      const archiveResponseData: ZArchiveByID = {
-        description: data.description,
-        title: data.title,
-        updatedAt: timestampUTC(data.data.updatedAt),
-        videos: data.data.videos,
-      };
+		if (success && data.data.videos) {
+			const archiveResponseData: ZArchiveByID = {
+				description: data.description,
+				isPublic: data.isPublic,
+				title: data.title,
+				updatedAt: timestampUTC(data.data.updatedAt),
+				videos: data.data.videos,
+			};
 
-      return archiveResponseData;
-    } else {
-      throw Error(error?.message ?? "Unable to parse archive by ID.");
-    }
-  } catch (err) {
-    Log.fatal("Unable to retrieve archive by id.", err);
-  }
+			return archiveResponseData;
+		} else {
+			throw Error(error?.message ?? "Unable to parse archive by ID.");
+		}
+	} catch (err) {
+		Log.fatal("Unable to retrieve archive by id.", err);
+	}
 }

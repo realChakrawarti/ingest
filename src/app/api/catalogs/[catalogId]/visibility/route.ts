@@ -20,6 +20,19 @@ export async function PATCH(request: NextRequest, ctx: ContextParams) {
 	const userId = getUserIdHeader();
 	const { catalogId } = ctx.params;
 
+	// Validate catalogId route parameter
+	if (!catalogId || catalogId.trim() === "") {
+		return NxResponse.fail(
+			"Missing or invalid catalogId",
+			{
+				code: "INVALID_CATALOG_ID",
+				details:
+					"catalogId route parameter is required and cannot be empty",
+			},
+			400
+		);
+	}
+
 	const payload = await request.json();
 	const parsed = VisibilityPayloadSchema.safeParse(payload);
 
@@ -52,7 +65,7 @@ export async function PATCH(request: NextRequest, ctx: ContextParams) {
 					? `Please wait ${result.remainingTime} seconds before updating visibility again`
 					: "Failed to update catalog visibility",
 			},
-			400
+			result.remainingTime ? 429 : 400
 		);
 	}
 

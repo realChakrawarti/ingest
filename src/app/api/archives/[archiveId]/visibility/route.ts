@@ -20,6 +20,19 @@ export async function PATCH(request: NextRequest, ctx: ContextParams) {
 	const userId = getUserIdHeader();
 	const { archiveId } = ctx.params;
 
+	// Validate archiveId route parameter
+	if (!archiveId || archiveId.trim() === "") {
+		return NxResponse.fail(
+			"Missing or invalid archiveId",
+			{
+				code: "INVALID_ARCHIVE_ID",
+				details:
+					"archiveId route parameter is required and cannot be empty",
+			},
+			400
+		);
+	}
+
 	const payload = await request.json();
 	const parsed = VisibilityPayloadSchema.safeParse(payload);
 
@@ -52,7 +65,7 @@ export async function PATCH(request: NextRequest, ctx: ContextParams) {
 					? `Please wait ${result.remainingTime} seconds before updating visibility again`
 					: "Failed to update archive visibility",
 			},
-			400
+			result.remainingTime ? 429 : 400
 		);
 	}
 

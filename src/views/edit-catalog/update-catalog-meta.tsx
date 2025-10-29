@@ -1,6 +1,6 @@
 import { Edit, Loader2 } from "lucide-react";
 import type { FormEvent } from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import type { KeyedMutator } from "swr";
 
@@ -49,6 +49,11 @@ export default function UpdateCatalogMeta({
 	const [isPublicState, setIsPublicState] = useState(isPublic);
 	const [isPublicLoading, setIsPublicLoading] = useState(false);
 
+	// Sync local state with prop changes (e.g., after refetch)
+	useEffect(() => {
+		setIsPublicState(isPublic);
+	}, [isPublic]);
+
 	async function updateCatalogMeta(e: FormEvent<HTMLFormElement>) {
 		e.preventDefault();
 		const result = await fetchApi(`/catalogs/${catalogId}/update`, {
@@ -74,19 +79,24 @@ export default function UpdateCatalogMeta({
 				method: "PATCH",
 			});
 
-			// Success case
+			// If we reach here, fetchApi didn't throw (success case)
 			setIsPublicState(checked);
 			toast.success(result.message);
 			revalidateCatalog();
 		} catch (err: any) {
-			// Error case - fetchApi throws on failure, but we can access the response
+			// fetchApi throws on !success, extract the actual response from err.cause
 			if (err.cause) {
-				const errorResponse = await err.cause;
-				const errorMessage =
-					errorResponse.error?.details || errorResponse.message;
-				toast.error(errorMessage);
+				try {
+					const errorResponse = await err.cause;
+					const errorMessage =
+						errorResponse.error?.details || errorResponse.message;
+					toast.error(errorMessage);
+				} catch {
+					toast.error("Failed to update visibility status.");
+				}
 			} else {
-				toast.error("Failed to update visibility status.");
+				// Unexpected runtime error (network failure, etc.)
+				toast.error("An unexpected error occurred. Please try again.");
 			}
 		} finally {
 			setIsPublicLoading(false);
