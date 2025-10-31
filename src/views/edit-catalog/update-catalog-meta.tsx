@@ -1,10 +1,12 @@
-import { Edit } from "lucide-react";
+import { Edit, Loader2 } from "lucide-react";
 import type { FormEvent } from "react";
+import { useState } from "react";
 import { toast } from "sonner";
 import type { KeyedMutator } from "swr";
 
 import type { ZCatalogByID } from "~/entities/catalogs/models";
 
+import { useVisibilityToggle } from "~/shared/hooks/use-visibility-toggle";
 import fetchApi from "~/shared/lib/api/fetch";
 import type { ApiResponse } from "~/shared/lib/next/nx-response";
 import { Button } from "~/shared/ui/button";
@@ -19,6 +21,7 @@ import {
 } from "~/shared/ui/dialog";
 import { Input } from "~/shared/ui/input";
 import { Label } from "~/shared/ui/label";
+import { Switch } from "~/shared/ui/switch";
 
 import { useMetaValidate } from "~/widgets/use-meta-validate";
 
@@ -27,6 +30,7 @@ interface UpdateCatalogMetaProps {
   catalogId: string;
   title: string;
   description: string;
+  isPublic?: boolean;
 }
 
 export default function UpdateCatalogMeta({
@@ -34,26 +38,65 @@ export default function UpdateCatalogMeta({
   catalogId,
   title,
   description,
+  isPublic = true,
 }: UpdateCatalogMetaProps) {
   const { meta, metaError, handleOnChange, submitDisabled } = useMetaValidate({
     description,
     title,
   });
 
+  const {
+    isPublicState,
+    isLoading: isPublicLoading,
+    handleToggle,
+  } = useVisibilityToggle({
+    endpoint: "catalogs",
+    id: catalogId,
+    initialIsPublic: isPublic,
+    revalidate: revalidateCatalog,
+  });
+
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   async function updateCatalogMeta(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    const result = await fetchApi(`/catalogs/${catalogId}/update`, {
-      body: JSON.stringify({
-        description: meta.description,
-        title: meta.title,
-      }),
-      method: "PATCH",
-    });
 
-    if (!result.success) {
-      toast(result.message);
-    } else {
-      revalidateCatalog();
+    if (isSubmitting) return; // Prevent double-submit
+
+    setIsSubmitting(true);
+    try {
+      const result = await fetchApi(`/catalogs/${catalogId}/update`, {
+        body: JSON.stringify({
+          description: meta.description,
+          title: meta.title,
+        }),
+        method: "PATCH",
+      });
+
+      if (result.success) {
+        toast.success(
+          result.message || "Catalog details updated successfully."
+        );
+        revalidateCatalog();
+      } else {
+        toast.error(result.message || "Unable to update catalog details.");
+      }
+    } catch (err: any) {
+      // fetchApi throws on failure
+      if (err.cause) {
+        try {
+          const errorResponse = await err.cause;
+          const errorMessage =
+            errorResponse.error?.details || errorResponse.message;
+          toast.error(errorMessage);
+        } catch {
+          toast.error("Failed to update catalog details.");
+        }
+      } else {
+        toast.error("An unexpected error occurred. Please try again.");
+      }
+    } finally {
+      setIsSubmitting(false);
     }
   }
 
@@ -99,10 +142,43 @@ export default function UpdateCatalogMeta({
             ) : null}
           </div>
 
+          <div className="flex items-center justify-between space-y-2 pt-2">
+            <div className="flex flex-col gap-1">
+              <Label htmlFor="visibility" className="text-sm font-medium">
+                Public Catalog
+              </Label>
+              <p className="text-xs text-muted-foreground">
+                Make this catalog visible to everyone
+              </p>
+            </div>
+            <div className="flex items-center gap-2">
+              {isPublicLoading && (
+                <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
+              )}
+              <Switch
+                id="visibility"
+                checked={isPublicState}
+                onCheckedChange={handleToggle}
+                disabled={isPublicLoading}
+                className="data-[state=checked]:bg-[#A81434] data-[state=unchecked]:bg-input"
+              />
+            </div>
+          </div>
+
           <DialogFooter>
             <DialogClose asChild>
-              <Button disabled={Boolean(submitDisabled)} type="submit">
-                Update
+              <Button
+                disabled={Boolean(submitDisabled) || isSubmitting}
+                type="submit"
+              >
+                {isSubmitting ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Updating…
+                  </>
+                ) : (
+                  "Update"
+                )}
               </Button>
             </DialogClose>
           </DialogFooter>

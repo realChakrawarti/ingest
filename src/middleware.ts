@@ -48,7 +48,10 @@ export async function middleware(request: NextRequest) {
     Log.fatal("Failed authorization on middleware", err);
     return NxResponse.fail(
       "Unable to verify credentials.",
-      { code: "VERIFICATION_FAILED", details: "Unable to verify credentials." },
+      {
+        code: "VERIFICATION_FAILED",
+        details: "Unable to verify credentials.",
+      },
       401
     );
   }
@@ -72,6 +75,7 @@ export const config = {
     "/api/archives/:archiveId/delete",
     "/api/archives/:archiveId/remove-video",
     "/api/archives/:archiveId/update",
+    "/api/catalogs/:catalogId/visibility",
     // Catalogs Routes
     "/api/catalogs",
     "/api/catalogs/:catalogId/",
@@ -80,6 +84,7 @@ export const config = {
     "/api/catalogs/:catalogId/playlist",
     "/api/catalogs/:catalogId/subreddit",
     "/api/catalogs/:catalogId/update",
+    "/api/archives/:archiveId/visibility",
     // YouTube Routes
     "/api/youtube/video",
     "/api/youtube/playlists",

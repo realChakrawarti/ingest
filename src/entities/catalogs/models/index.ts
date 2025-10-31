@@ -52,6 +52,8 @@ export const UserCatalogDocumentSchema = z.object({
 
 const CatalogByIDSchema = z.object({
   description: z.string(),
+  isPublic: z.boolean().default(true),
+  isPublicUpdatedAt: z.string().optional(),
   list: z.array(CatalogListSchema),
   title: z.string(),
 });
@@ -135,6 +137,8 @@ const CatalogDocumentSchema = CatalogMetaSchema.extend({
     updatedAt: TimestampSchema,
     videos: CatalogVideoListSchema,
   }),
+  isPublic: z.boolean().default(true),
+  isPublicUpdatedAt: TimestampSchema.optional(),
   pageviews: z.number().optional(),
   videoRef: DocumentReferenceSchema,
 });
@@ -142,6 +146,7 @@ const CatalogDocumentSchema = CatalogMetaSchema.extend({
 const CatalogValidSchema = z.object({
   description: z.string(),
   id: z.string(),
+  isPublic: z.boolean().default(true),
   pageviews: z.number().prefault(0),
   thumbnails: z.array(z.string()),
   title: z.string(),

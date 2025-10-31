@@ -31,6 +31,8 @@ export async function createCatalog(userId: string, meta: ZCatalogMeta) {
         videos: { day: [], month: [], week: [] },
       },
       description: meta.description,
+      isPublic: true,
+      isPublicUpdatedAt: Timestamp.now(),
       title: meta.title,
       videoRef: userCatalogRef,
     });

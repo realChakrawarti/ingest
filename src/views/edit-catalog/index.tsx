@@ -161,6 +161,7 @@ export default function EditCatalog({ catalogId }: { catalogId: string }) {
             revalidateCatalog={revalidateCatalog}
             title={catalogsData?.title ?? ""}
             description={catalogsData?.description ?? ""}
+            isPublic={catalogsData?.isPublic}
           />
           {savedChannels?.length ? (
             <Link href={`/c/${catalogId}`} target="_blank">

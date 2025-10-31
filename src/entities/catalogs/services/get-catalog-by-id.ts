@@ -5,6 +5,7 @@ import type { ZCatalogByID } from "../models";
 export async function getCatalogById(catalogId: string, userId: string) {
   let catalogResponseData: ZCatalogByID = {
     description: "",
+    isPublic: true,
     list: [],
     title: "",
   };
@@ -23,6 +24,7 @@ export async function getCatalogById(catalogId: string, userId: string) {
     if (catalogData && listData) {
       catalogResponseData = {
         description: catalogData?.description,
+        isPublic: catalogData?.isPublic ?? true,
         list: listData,
         title: catalogData?.title,
       };

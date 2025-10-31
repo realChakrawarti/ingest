@@ -27,6 +27,7 @@ export async function getArchiveById(archiveId: string) {
     if (success && data.data.videos) {
       const archiveResponseData: ZArchiveByID = {
         description: data.description,
+        isPublic: data.isPublic,
         title: data.title,
         updatedAt: timestampUTC(data.data.updatedAt),
         videos: data.data.videos,

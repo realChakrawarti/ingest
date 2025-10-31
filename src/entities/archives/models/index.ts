@@ -13,6 +13,8 @@ const ArchiveMetaSchema = z.object({
 });
 
 const ArchiveByIDSchema = ArchiveMetaSchema.extend({
+  isPublic: z.boolean().default(true),
+  isPublicUpdatedAt: z.string().optional(),
   updatedAt: z.string(),
   videos: z.array(YouTubeVideoMetadataSchema),
 });
@@ -41,6 +43,8 @@ export const ArchiveDocumentSchema = z.object({
     videos: z.optional(z.array(ArchiveVideoSchema)),
   }),
   description: z.string(),
+  isPublic: z.boolean().default(true),
+  isPublicUpdatedAt: TimestampSchema.optional(),
   title: z.string(),
   videoRef: DocumentReferenceSchema,
 });
@@ -57,6 +61,7 @@ export type ZArchiveByUser = z.infer<typeof ArchiveByUserSchema>;
 const ArchiveValidSchema = z.object({
   description: z.string(),
   id: z.string(),
+  isPublic: z.boolean().default(true),
   pageviews: z.number().optional(),
   thumbnails: z.array(z.string()),
   title: z.string(),

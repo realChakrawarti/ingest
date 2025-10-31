@@ -63,6 +63,7 @@ export default function EditArchive({ archiveId }: { archiveId: string }) {
             archiveId={archiveId}
             title={archiveData?.data?.title || ""}
             description={archiveData?.data?.description || ""}
+            isPublic={archiveData?.data?.isPublic}
           />
           <AddVideoDialog
             archiveId={archiveId}
