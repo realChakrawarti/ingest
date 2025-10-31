@@ -5,8 +5,8 @@ export { deletePlaylist } from "./services/delete-playlist";
 export { getCatalogById } from "./services/get-catalog-by-id";
 export { getCatalogByUser } from "./services/get-catalogs-by-user";
 export {
-	getCatalogMeta,
-	getContentsByCatalog,
+  getCatalogMeta,
+  getContentsByCatalog,
 } from "./services/get-contents-by-catalog";
 export { getNextUpdate } from "./services/get-next-update";
 export { getValidCatalogIds } from "./services/get-valid-catalogs-ids";

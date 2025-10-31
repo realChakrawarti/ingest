@@ -38,7 +38,7 @@ npm run verify:is-public
 
 The migration script:
 - **Dry run mode** - Preview changes before applying
-- **Batch processing** - Handles large collections safely  
+- **Batch processing** - Handles large collections safely
 - **Error handling** - Reports issues without stopping
 - **Idempotent** - Safe to run multiple times
 
