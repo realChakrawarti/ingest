@@ -481,7 +481,7 @@ function youtubeDurationToSeconds(duration: string) {
 
   // If the string contains hours parse it and remove it from the duration string
   if (durationParsed.indexOf("H") > -1) {
-    const hours_split = duration.split("H");
+    const hours_split = durationParsed.split("H");
     hours = Number.parseInt(hours_split[0]);
     durationParsed = hours_split[1];
   }

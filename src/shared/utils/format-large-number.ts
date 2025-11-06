@@ -12,5 +12,5 @@ export default function formatLargeNumber(num: number): string {
   if (num >= thousand) {
     return `${(num / thousand).toFixed(1)}K`;
   }
-  return num?.toString();
+  return num.toString();
 }
