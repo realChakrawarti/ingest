@@ -5,6 +5,7 @@ import { FlameIcon, MessageSquareText, TrendingUp } from "lucide-react";
 
 import type { ZVideoContentInfo } from "~/entities/catalogs/models";
 
+import appConfig from "~/shared/app-config";
 import { useLocalUserSettings } from "~/shared/hooks/use-local-user-settings";
 import { indexedDB } from "~/shared/lib/api/dexie";
 import { time } from "~/shared/utils/time";
@@ -126,10 +127,12 @@ export function VideoCategory({
     return null;
   }
 
+  const watchedPercentage =
+    localUserSettings?.watchedPercentage ?? appConfig.watchedPercentage;
+
   if (
     category === "Inconclusive" ||
-    (videoProgress &&
-      videoProgress.completed > localUserSettings.watchedPercentage)
+    (videoProgress && videoProgress.completed > watchedPercentage)
   ) {
     return null;
   }
