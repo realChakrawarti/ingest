@@ -44,7 +44,7 @@ function formatTimeDifferenceWithMonths(timeDiff: number) {
 export function getDifferenceString(
   deltaMinutes: number,
   suffix: "ago" | "later",
-  suffixEnabled: boolean = false
+  suffixEnabled = false
 ) {
   const { months, days, hours, minutes } =
     formatTimeDifferenceWithMonths(deltaMinutes);
@@ -87,8 +87,8 @@ export function getDifferenceString(
  */
 export function getTimeDifference(
   compareWithCurrent: string,
-  suffixEnabled: boolean = false,
-  limitMonth: boolean = true
+  suffixEnabled = false,
+  limitMonth = true
 ): [number, string] {
   const currentTime = Date.now();
   const serverTime = new Date(compareWithCurrent).getTime();

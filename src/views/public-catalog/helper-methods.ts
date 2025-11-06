@@ -69,7 +69,8 @@ function _filterDuration(
     );
 
     return { day: filteredToday, month: filteredMonth, week: filteredWeek };
-  } else if (duration === "medium") {
+  }
+  if (duration === "medium") {
     const filteredToday = today.filter(
       (video) =>
         video.videoDuration >= time.minutes(4) / 1000 &&
@@ -84,20 +85,19 @@ function _filterDuration(
       (video) =>
         video.videoDuration >= time.minutes(4) / 1000 &&
         video.videoDuration <= time.minutes(20) / 1000
-    );
-    return { day: filteredToday, month: filteredMonth, week: filteredWeek };
-  } else {
-    const filteredToday = today.filter(
-      (video) => video.videoDuration >= time.minutes(20) / 1000
-    );
-    const filteredWeek = week.filter(
-      (video) => video.videoDuration >= time.minutes(20) / 1000
-    );
-    const filteredMonth = month.filter(
-      (video) => video.videoDuration >= time.minutes(20) / 1000
     );
     return { day: filteredToday, month: filteredMonth, week: filteredWeek };
   }
+  const filteredToday = today.filter(
+    (video) => video.videoDuration >= time.minutes(20) / 1000
+  );
+  const filteredWeek = week.filter(
+    (video) => video.videoDuration >= time.minutes(20) / 1000
+  );
+  const filteredMonth = month.filter(
+    (video) => video.videoDuration >= time.minutes(20) / 1000
+  );
+  return { day: filteredToday, month: filteredMonth, week: filteredWeek };
 }
 
 export type ChannelTag = { title: string; id: string; logo: string };

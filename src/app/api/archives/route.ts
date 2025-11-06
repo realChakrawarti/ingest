@@ -18,16 +18,15 @@ export async function GET() {
         { code: "ARCHIVES_BY_USER_FAILED", details: err.message },
         400
       );
-    } else {
-      return NxResponse.fail(
-        "Unable to retrieve user archives.",
-        {
-          code: "ARCHIVES_BY_USER_FAILED",
-          details: "Unable to retrieve user archives.",
-        },
-        500
-      );
     }
+    return NxResponse.fail(
+      "Unable to retrieve user archives.",
+      {
+        code: "ARCHIVES_BY_USER_FAILED",
+        details: "Unable to retrieve user archives.",
+      },
+      500
+    );
   }
 }
 

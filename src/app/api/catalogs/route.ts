@@ -40,11 +40,10 @@ export async function POST(request: NextRequest) {
       { catalogId },
       201
     );
-  } else {
-    return NxResponse.fail(
-      "Invalid data provided.",
-      { code: "INVALID_DATA", details: error.message },
-      422
-    );
   }
+  return NxResponse.fail(
+    "Invalid data provided.",
+    { code: "INVALID_DATA", details: error.message },
+    422
+  );
 }

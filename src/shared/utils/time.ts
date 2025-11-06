@@ -35,7 +35,7 @@ type TimeUtils = {
 export const time: TimeUtils = {
   days: (days) => time.hours(days * 24),
   hours: (hours) => time.minutes(hours * 60),
-  infinity: Infinity,
+  infinity: Number.POSITIVE_INFINITY,
   minutes: (minutes) => time.seconds(minutes * 60),
   seconds: (seconds) => seconds * 1000,
   weeks: (weeks) => time.days(weeks * 7),

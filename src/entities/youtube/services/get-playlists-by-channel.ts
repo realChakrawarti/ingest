@@ -23,6 +23,8 @@ async function getAllPlaylists(channelId: string, data: any, playlists: any[]) {
       YOUTUBE_CHANNEL_PLAYLISTS(channelId, pageToken)
     );
     const result = await response.json();
+    // TODO: Make this compliant with the rule
+    // biome-ignore lint/style/noParameterAssign: Recurive calls, revisit it later
     playlists = [...playlists, ...result.items];
     return await getAllPlaylists(channelId, result, playlists);
   }
@@ -76,7 +78,6 @@ export async function getPlaylistsByChannel(channelId: string) {
     );
 
     return structuredResponse;
-  } else {
-    throw Error(firstPageData.error.message);
   }
+  throw Error(firstPageData.error.message);
 }

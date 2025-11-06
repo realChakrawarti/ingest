@@ -7,7 +7,7 @@ import {
 } from "~/features/auth/service-providers";
 
 import { Button } from "~/shared/ui/button";
-import { GithubIcon, GmailIcon, GoogleIcon } from "~/shared/ui/icons";
+import { GithubIcon, GoogleIcon } from "~/shared/ui/icons";
 
 import JustTip from "./just-the-tip";
 

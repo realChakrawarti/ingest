@@ -52,7 +52,7 @@ export default function MarkedWatched({
     const percentCompleted = localUserSettings.watchedPercentage + 1;
     const markedCompletionDuration = video?.videoDuration
       ? video.videoDuration -
-        parseInt(
+        Number.parseInt(
           ((video.videoDuration * (100 - percentCompleted)) / 100).toFixed(2),
           10
         )

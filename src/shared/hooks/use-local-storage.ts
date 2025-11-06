@@ -13,10 +13,12 @@ const useLocalStorageSubscribe = (callback: () => void) => {
   return () => window.removeEventListener("storage", callback);
 };
 
+// biome-ignore lint/suspicious/noExplicitAny: Utility code
 function dispatchStorageEvent(key: string, newValue: any) {
   window.dispatchEvent(new StorageEvent("storage", { key, newValue }));
 }
 
+// biome-ignore lint/suspicious/noExplicitAny: Utility code
 const setLocalStorageItem = (key: string, value: any) => {
   const stringifiedValue = JSON.stringify(value);
   window.localStorage.setItem(key, stringifiedValue);
@@ -44,6 +46,7 @@ export function useLocalStorage<T>(key: string, initialValue: T | null) {
   ) as string;
 
   const setState = useCallback(
+    // biome-ignore lint/suspicious/noExplicitAny: Utility code
     (v: any) => {
       try {
         const nextState = typeof v === "function" ? v(JSON.parse(store)) : v;
@@ -71,5 +74,6 @@ export function useLocalStorage<T>(key: string, initialValue: T | null) {
 
   const state = store ? (JSON.parse(store) as T) : initialValue;
 
+  // biome-ignore lint/suspicious/noExplicitAny: Utility code
   return [state, setState] as [T, (v: any) => void];
 }

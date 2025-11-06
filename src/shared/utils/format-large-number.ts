@@ -5,11 +5,12 @@ export default function formatLargeNumber(num: number): string {
 
   if (num >= billion) {
     return `${(num / billion).toFixed(1)}B`;
-  } else if (num >= million) {
-    return `${(num / million).toFixed(1)}M`;
-  } else if (num >= thousand) {
-    return `${(num / thousand).toFixed(1)}K`;
-  } else {
-    return num?.toString();
   }
+  if (num >= million) {
+    return `${(num / million).toFixed(1)}M`;
+  }
+  if (num >= thousand) {
+    return `${(num / thousand).toFixed(1)}K`;
+  }
+  return num.toString();
 }
