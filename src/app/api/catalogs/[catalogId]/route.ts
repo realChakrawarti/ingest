@@ -7,9 +7,9 @@ import { NxResponse } from "~/shared/lib/next/nx-response";
 import Log from "~/shared/utils/terminal-logger";
 
 type ContextParams = {
-  params: {
+  params: Promise<{
     catalogId: string;
-  };
+  }>;
 };
 
 export async function GET(_request: NextRequest, ctx: ContextParams) {

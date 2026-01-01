@@ -10,14 +10,14 @@ import { NxResponse } from "~/shared/lib/next/nx-response";
 import Log from "~/shared/utils/terminal-logger";
 
 type ContextParams = {
-  params: {
+  params: Promise<{
     catalogId: string;
-  };
+  }>;
 };
 
 export async function PATCH(request: NextRequest, ctx: ContextParams) {
   const userId = await getUserIdHeader();
-  const { catalogId } = ctx.params;
+  const { catalogId } = await ctx.params;
 
   if (!catalogId) {
     return NxResponse.fail(
@@ -68,7 +68,7 @@ export async function PATCH(request: NextRequest, ctx: ContextParams) {
 
 export async function DELETE(request: NextRequest, ctx: ContextParams) {
   const userId = await getUserIdHeader();
-  const { catalogId } = ctx.params;
+  const { catalogId } = await ctx.params;
 
   const body = await request.json();
 

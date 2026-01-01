@@ -11,14 +11,14 @@ const VisibilityPayloadSchema = z.object({
 });
 
 type ContextParams = {
-  params: {
+  params: Promise<{
     archiveId: string;
-  };
+  }>;
 };
 
 export async function PATCH(request: NextRequest, ctx: ContextParams) {
   const userId = await getUserIdHeader();
-  const { archiveId } = ctx.params;
+  const { archiveId } = await ctx.params;
 
   // Validate archiveId route parameter
   if (!archiveId || archiveId.trim() === "") {
