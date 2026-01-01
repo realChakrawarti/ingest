@@ -14,7 +14,7 @@ type ContextParams = {
 };
 
 export async function DELETE(request: NextRequest, ctx: ContextParams) {
-  const userId = getUserIdHeader();
+  const userId = await getUserIdHeader();
   const { catalogId } = ctx.params;
 
   const body = await request.json();
@@ -34,7 +34,7 @@ export async function DELETE(request: NextRequest, ctx: ContextParams) {
 }
 
 export async function PATCH(request: NextRequest, ctx: ContextParams) {
-  const userId = getUserIdHeader();
+  const userId = await getUserIdHeader();
   const { catalogId } = ctx.params;
 
   if (!catalogId) {

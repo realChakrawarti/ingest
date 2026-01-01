@@ -14,7 +14,7 @@ type ContextParams = {
 };
 
 export async function PATCH(request: NextRequest, ctx: ContextParams) {
-  const userId = getUserIdHeader();
+  const userId = await getUserIdHeader();
   const { archiveId } = ctx.params;
 
   const body = await request.json();

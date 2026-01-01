@@ -11,7 +11,7 @@ type ContextParams = {
 };
 
 export async function GET(_request: NextRequest, ctx: ContextParams) {
-  const { archiveId } = ctx.params;
+  const { archiveId } = await ctx.params;
 
   const data = await getArchiveById(archiveId);
   return NxResponse.success(
