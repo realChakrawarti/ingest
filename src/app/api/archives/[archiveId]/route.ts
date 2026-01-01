@@ -7,9 +7,9 @@ import AppErrorCodes from "~/shared/utils/app-error-codes";
 import { Status } from "~/shared/utils/http-status";
 
 type ContextParams = {
-  params: {
+  params: Promise<{
     archiveId: string;
-  };
+  }>;
 };
 
 export async function GET(_request: NextRequest, ctx: ContextParams) {

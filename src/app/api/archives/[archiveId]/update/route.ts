@@ -8,13 +8,13 @@ import AppErrorCodes from "~/shared/utils/app-error-codes";
 import { Status } from "~/shared/utils/http-status";
 
 type ContextParams = {
-  params: {
+  params: Promise<{
     archiveId: string;
-  };
+  }>;
 };
 
 export async function PATCH(request: NextRequest, ctx: ContextParams) {
-  const { archiveId } = ctx.params;
+  const { archiveId } = await ctx.params;
 
   const body = await request.json();
 
