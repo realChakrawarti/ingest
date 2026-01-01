@@ -12,7 +12,7 @@ type ContextParams = {
 };
 
 export async function DELETE(_request: NextRequest, ctx: ContextParams) {
-  const userId = getUserIdHeader();
+  const userId = await getUserIdHeader();
   const { catalogId } = ctx.params;
 
   const result = await deleteCatalog(userId, catalogId);

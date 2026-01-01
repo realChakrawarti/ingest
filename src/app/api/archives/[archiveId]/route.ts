@@ -13,7 +13,7 @@ type ContextParams = {
 };
 
 export async function GET(_request: NextRequest, ctx: ContextParams) {
-  const { archiveId } = ctx.params;
+  const { archiveId } = await ctx.params;
 
   const result = await getArchiveById(archiveId);
 

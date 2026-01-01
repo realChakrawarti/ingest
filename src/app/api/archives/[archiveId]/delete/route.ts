@@ -14,7 +14,7 @@ type ContextParams = {
 };
 
 export async function DELETE(_request: NextRequest, ctx: ContextParams) {
-  const userId = getUserIdHeader();
+  const userId = await getUserIdHeader();
   const { archiveId } = ctx.params;
 
   try {
