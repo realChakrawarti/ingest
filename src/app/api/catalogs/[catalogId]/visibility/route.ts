@@ -11,14 +11,14 @@ const VisibilityPayloadSchema = z.object({
 });
 
 type ContextParams = {
-  params: {
+  params: Promise<{
     catalogId: string;
-  };
+  }>;
 };
 
 export async function PATCH(request: NextRequest, ctx: ContextParams) {
-  const userId = getUserIdHeader();
-  const { catalogId } = ctx.params;
+  const userId = await getUserIdHeader();
+  const { catalogId } = await ctx.params;
 
   // Validate catalogId route parameter
   if (!catalogId || catalogId.trim() === "") {

@@ -7,7 +7,7 @@ import { NxResponse } from "~/shared/lib/next/nx-response";
 import Log from "~/shared/utils/terminal-logger";
 
 export async function DELETE(request: NextRequest) {
-  const userId = getUserIdHeader();
+  const userId = await getUserIdHeader();
   const body = await request.json();
 
   const syncId = body?.syncId;
@@ -37,7 +37,7 @@ export async function DELETE(request: NextRequest) {
 }
 
 export async function GET() {
-  const userId = getUserIdHeader();
+  const userId = await getUserIdHeader();
 
   const syncId = await getSyncId(userId);
 
@@ -54,7 +54,7 @@ export async function GET() {
 
 // https://developers.cloudflare.com/api/node/resources/kv/
 export async function POST() {
-  const userId = getUserIdHeader();
+  const userId = await getUserIdHeader();
   try {
     await createSyncId(userId);
     return NxResponse.success("Created a session.", {}, 200);

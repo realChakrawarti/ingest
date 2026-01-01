@@ -8,17 +8,17 @@ import fetchApi from "~/shared/lib/api/fetch";
 import PubliCatalog from "~/views/public-catalog";
 
 type PublicCatalogParams = {
-  params: { catalogId: string };
-  searchParams?: {
+  params: Promise<{ catalogId: string }>;
+  searchParams?: Promise<{
     channelId?: string;
     duration?: "short" | "medium" | "long";
-  };
+  }>;
 };
 
 export async function generateMetadata({
   params,
 }: PublicCatalogParams): Promise<Metadata> {
-  const { catalogId } = params;
+  const { catalogId } = await params;
 
   const result = await fetchApi<ZCatalogMeta>(
     `/catalogs/${catalogId}/contents?meta=true`
@@ -37,16 +37,17 @@ export async function generateMetadata({
   };
 }
 
-export const revalidate = 60 * 10; // Cache the page for 10 minutes, unless revalidated on updates
+export const revalidate = 600; // Cache the page for 10 minutes, unless revalidated on updates
 
 export default async function PublicCatalogPage({
   params,
   searchParams,
 }: PublicCatalogParams) {
-  const channelId = searchParams?.channelId;
-  const duration = searchParams?.duration;
+  const resolvedSearchParams = await (searchParams || Promise.resolve({} as { channelId?: string; duration?: "short" | "medium" | "long" }));
+  const channelId = resolvedSearchParams?.channelId;
+  const duration = resolvedSearchParams?.duration;
 
-  const { catalogId } = params;
+  const { catalogId } = await params;
 
   return (
     <PubliCatalog

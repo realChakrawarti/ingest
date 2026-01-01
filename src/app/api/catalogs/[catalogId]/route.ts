@@ -7,16 +7,16 @@ import { NxResponse } from "~/shared/lib/next/nx-response";
 import Log from "~/shared/utils/terminal-logger";
 
 type ContextParams = {
-  params: {
+  params: Promise<{
     catalogId: string;
-  };
+  }>;
 };
 
 export async function GET(_request: NextRequest, ctx: ContextParams) {
-  const { catalogId } = ctx.params;
+  const { catalogId } = await ctx.params;
 
   try {
-    const userId = getUserIdHeader();
+    const userId = await getUserIdHeader();
     const data = await getCatalogById(catalogId, userId);
 
     return NxResponse.success(

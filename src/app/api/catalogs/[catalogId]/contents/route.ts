@@ -6,13 +6,13 @@ import { NxResponse } from "~/shared/lib/next/nx-response";
 import Log from "~/shared/utils/terminal-logger";
 
 type ContextParams = {
-  params: {
+  params: Promise<{
     catalogId: string;
-  };
+  }>;
 };
 
 export async function GET(request: NextRequest, ctx: ContextParams) {
-  const { catalogId } = ctx.params;
+  const { catalogId } = await ctx.params;
   const onlyMeta = request.nextUrl.searchParams.get("meta") === "true";
 
   if (catalogId) {

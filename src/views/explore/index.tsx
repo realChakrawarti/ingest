@@ -18,7 +18,7 @@ import {
 import ContinueWatching from "./continue-watching";
 
 export const dynamic = "force-dynamic";
-export const revalidate = 60 * 5; // Cache the page for 5 minutes, unless revalidated on updates
+export const revalidate = 300; // Cache the page for 5 minutes, unless revalidated on updates
 
 export default async function Explore() {
   const catalogs = await fetchApi<ZCatalogValid[]>("/catalogs/valid");

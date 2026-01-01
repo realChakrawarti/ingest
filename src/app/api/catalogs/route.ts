@@ -7,7 +7,7 @@ import { getUserIdHeader } from "~/shared/lib/next/get-user-id-header";
 import { NxResponse } from "~/shared/lib/next/nx-response";
 
 export async function GET() {
-  const userId = getUserIdHeader();
+  const userId = await getUserIdHeader();
   try {
     const data = await getCatalogByUser(userId);
     return NxResponse.success("Catalogs data fetched successfully.", data, 200);
@@ -27,7 +27,7 @@ export async function GET() {
 }
 
 export async function POST(request: NextRequest) {
-  const userId = getUserIdHeader();
+  const userId = await getUserIdHeader();
 
   const body = await request.json();
 
