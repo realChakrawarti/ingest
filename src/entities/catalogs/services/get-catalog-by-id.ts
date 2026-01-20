@@ -1,4 +1,6 @@
+import { timestampUTC } from "~/shared/lib/firebase/admin";
 import { refs } from "~/shared/lib/firebase/refs";
+import { jsonResult } from "~/shared/utils/json-return";
 
 import type { ZCatalogByID } from "../models";
 
@@ -6,6 +8,7 @@ export async function getCatalogById(catalogId: string, userId: string) {
   let catalogResponseData: ZCatalogByID = {
     description: "",
     isPublic: true,
+    lastUpdatedAt: "",
     list: [],
     title: "",
   };
@@ -25,16 +28,19 @@ export async function getCatalogById(catalogId: string, userId: string) {
       catalogResponseData = {
         description: catalogData?.description,
         isPublic: catalogData?.isPublic ?? true,
+        lastUpdatedAt: timestampUTC(catalogData?.lastUpdatedAt),
         list: listData,
         title: catalogData?.title,
       };
     }
   } catch (err) {
     if (err instanceof Error) {
-      return err.message;
+      return jsonResult.error(err.message).return();
     }
-    return "Unable to retrieve catalog by id.";
+    return jsonResult
+      .error("Unable to retrieve catalog by identifier.")
+      .return();
   }
 
-  return catalogResponseData;
+  return jsonResult.success(catalogResponseData).return();
 }

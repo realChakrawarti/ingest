@@ -1,6 +1,6 @@
 # Migration Scripts
 
-Scripts to add the `isPublic` field to existing catalogs and archives documents.
+Scripts to add the ` ` field to existing catalogs and archives documents.
 
 ## Quick Start
 

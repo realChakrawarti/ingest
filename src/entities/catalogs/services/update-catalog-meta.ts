@@ -1,25 +1,42 @@
 import { refs } from "~/shared/lib/firebase/refs";
+import { allowMetadataUpdate } from "~/shared/utils/allow-metadata-update";
+import { jsonResult } from "~/shared/utils/json-return";
 
 import type { ZCatalogMeta } from "../models";
 
 export async function updateCatalogMeta(
   catalogId: string,
-  payload: ZCatalogMeta
+  payload: Partial<ZCatalogMeta>
 ) {
-  const { title, description } = payload;
+  const { title, description, isPublic } = payload;
   const catalogRef = refs.catalogs.doc(catalogId);
+  const catalogData = (await catalogRef.get()).data();
 
-  try {
-    await catalogRef.update({
-      description: description,
-      title: title,
-    });
+  const metaUpdate = allowMetadataUpdate(catalogData?.lastUpdatedAt);
 
-    return "Catalog details updated successfully.";
-  } catch (err) {
-    if (err instanceof Error) {
-      return err.message;
+  if (catalogData) {
+    if (metaUpdate.allow) {
+      try {
+        await catalogRef.update({
+          description: description,
+          isPublic: isPublic,
+          lastUpdatedAt: new Date(),
+          title: title,
+        });
+
+        return jsonResult
+          .success("Catalog details updated successfully.")
+          .return();
+      } catch (err) {
+        if (err instanceof Error) {
+          return jsonResult.error(err.message).return();
+        }
+        return jsonResult.error("Unable to update catalog details.").return();
+      }
+    } else {
+      return jsonResult.error(metaUpdate.message).return();
     }
-    return "Unable to update catalog details.";
   }
+
+  return jsonResult.error("Catalog not found.").return();
 }

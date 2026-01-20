@@ -4,9 +4,11 @@ import { admin } from "~/shared/lib/firebase/admin";
 import { refs } from "~/shared/lib/firebase/refs";
 import { createNanoidToken } from "~/shared/utils/nanoid-token";
 
+import type { ZArchiveMeta } from "../models";
+
 export async function createArchive(
   userId: string,
-  archiveMeta: { title: string; description: string }
+  archiveMeta: Omit<ZArchiveMeta, "lastUpdatedAt">
 ) {
   const nanoidToken = createNanoidToken(9);
 
@@ -31,8 +33,8 @@ export async function createArchive(
         updatedAt: Timestamp.fromDate(new Date(0)),
       },
       description: archiveMeta.description,
-      isPublic: true,
-      isPublicUpdatedAt: Timestamp.now(),
+      isPublic: archiveMeta.isPublic,
+      lastUpdatedAt: Timestamp.now(),
       title: archiveMeta.title,
       videoRef: userArchiveRef,
     });

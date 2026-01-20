@@ -1,7 +1,5 @@
 export const SESSION_COOKIE_NAME = "__session";
 
-export const RATE_LIMIT_SECONDS = 120;
-
 export const Routes = {
   DASHBOARD: "/dashboard",
   ROOT: "/",

@@ -141,7 +141,7 @@ export default function AddSubredditDialog({
         <Button>
           <span className="flex items-center gap-1">
             <SiReddit className="size-8" />
-            Subreddit
+            <p className="hidden md:inline-block">Subreddit</p>
           </span>
         </Button>
       </DialogTrigger>

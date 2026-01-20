@@ -5,23 +5,29 @@ import { CatalogMetaSchema } from "~/entities/catalogs/models";
 
 import { getUserIdHeader } from "~/shared/lib/next/get-user-id-header";
 import { NxResponse } from "~/shared/lib/next/nx-response";
+import AppErrorCodes from "~/shared/utils/app-error-codes";
+import { Status } from "~/shared/utils/http-status";
 
 export async function GET() {
   const userId = getUserIdHeader();
   try {
     const data = await getCatalogByUser(userId);
-    return NxResponse.success("Catalogs data fetched successfully.", data, 200);
+    return NxResponse.success(
+      "Catalogs data fetched successfully.",
+      data,
+      Status.Ok
+    );
   } catch (err) {
     return NxResponse.fail(
       "Unable to retrieve user catalogs.",
       {
-        code: "GET_USER_CATALOG_FAILED",
+        code: AppErrorCodes.GET_USER_CATALOG_FAILED,
         details:
           err instanceof Error
             ? err.message
             : "Unable to retrieve user catalogs.",
       },
-      500
+      Status.InternalServerError
     );
   }
 }
@@ -31,19 +37,21 @@ export async function POST(request: NextRequest) {
 
   const body = await request.json();
 
-  const { success, error, data } = CatalogMetaSchema.safeParse(body);
+  const { success, error, data } = CatalogMetaSchema.omit({
+    lastUpdatedAt: true,
+  }).safeParse(body);
 
   if (success) {
     const catalogId = await createCatalog(userId, data);
     return NxResponse.success<{ catalogId: string }>(
       "Catalog created successfully.",
       { catalogId },
-      201
+      Status.Created
     );
   }
   return NxResponse.fail(
     "Invalid data provided.",
-    { code: "INVALID_DATA", details: error.message },
-    422
+    { code: AppErrorCodes.INVALID_DATA_PROVIDED, details: error.message },
+    Status.UnprocessableEntity
   );
 }

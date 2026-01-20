@@ -60,6 +60,7 @@ export const admin = {
   db: adminDb,
 };
 
-export function timestampUTC(dateTime: Timestamp) {
+export function timestampUTC(dateTime: Timestamp | undefined) {
+  if (!dateTime) return "";
   return dateTime.toDate().toUTCString();
 }

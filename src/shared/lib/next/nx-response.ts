@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
 
+import { Status } from "~/shared/utils/http-status";
+
 export type ApiError = {
   code: string;
   details: string | null;
@@ -16,7 +18,7 @@ export type ApiResponse<T = unknown> = {
   error: ApiError | null;
   // The meta object includes useful information like status codes and timestamps.
   meta: {
-    statusCode: number;
+    statusCode: Status;
     timestamp: string;
   };
 };
@@ -27,7 +29,7 @@ class NxResponseBuilder {
     message: string,
     data: T | null,
     error: ApiError | null,
-    statusCode: number
+    statusCode: Status
   ): NextResponse<ApiResponse<T>> {
     const response: ApiResponse<T> = {
       data,
@@ -46,7 +48,7 @@ class NxResponseBuilder {
   success<T>(
     message: string,
     data: T,
-    statusCode = 200
+    statusCode: Status = Status.Ok
   ): NextResponse<ApiResponse<T>> {
     return this.createResponse(true, message, data, null, statusCode);
   }
@@ -61,7 +63,7 @@ class NxResponseBuilder {
   fail(
     message: string,
     error: ApiError,
-    statusCode = 400
+    statusCode: Status = Status.InternalServerError
   ): NextResponse<ApiResponse<null>> {
     return this.createResponse(false, message, null, error, statusCode);
   }

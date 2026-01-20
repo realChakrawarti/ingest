@@ -1,9 +1,10 @@
-import { Check, Clock, Copy, Trash2 } from "lucide-react";
+import { Check, Clock, Copy, Globe, GlobeLock, Trash2 } from "lucide-react";
 import Link from "next/link";
 import { type ReactNode, useState } from "react";
 import { toast } from "sonner";
 
 import appConfig from "~/shared/app-config";
+import { Badge } from "~/shared/ui/badge";
 import { Button } from "~/shared/ui/button";
 import {
   Card,
@@ -76,6 +77,7 @@ type ItemCardProps = {
   description: string;
   lastUpdated: number | string;
   onDelete: (_id: string) => Promise<void>;
+  isPublic?: boolean;
 };
 
 export default function ItemCard({
@@ -85,12 +87,13 @@ export default function ItemCard({
   description,
   lastUpdated,
   onDelete,
+  isPublic = true,
 }: ItemCardProps) {
   const editLink =
     type === "archive" ? `/archives/${id}/edit` : `/catalogs/${id}/edit`;
 
   return (
-    <div className="group/card-item rounded-md">
+    <div className="group/card-item rounded-md relative">
       <Card className={cardContainerStyles}>
         <Link className={cardContentStyles} href={editLink} prefetch>
           <CardHeader className="space-y-1 pb-2">
@@ -131,6 +134,24 @@ export default function ItemCard({
           </div>
         </CardFooter>
       </Card>
+      <div className="flex items-center justify-center absolute top-0 right-0">
+        <Badge
+          className="text-[13px] flex gap-1 items-center bg-primary/30 group-hover/card-item:bg-primary/50"
+          variant="default"
+        >
+          {isPublic ? (
+            <>
+              <Globe className="size-5" />
+              <p>Public</p>
+            </>
+          ) : (
+            <>
+              <GlobeLock className="size-5" />
+              <p>Private</p>
+            </>
+          )}
+        </Badge>
+      </div>
     </div>
   );
 }

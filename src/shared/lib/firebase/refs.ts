@@ -1,7 +1,7 @@
 import type { CollectionReference } from "firebase-admin/firestore";
 
 import type {
-  ZArchiveDocumentSchema,
+  ZArchiveDocument,
   ZUserArchiveDocument,
 } from "~/entities/archives/models";
 import type {
@@ -20,7 +20,7 @@ const COLLECTION = {
 export const refs = {
   archives: admin.db.collection(
     COLLECTION.archives
-  ) as CollectionReference<ZArchiveDocumentSchema>,
+  ) as CollectionReference<ZArchiveDocument>,
   catalogs: admin.db.collection(
     COLLECTION.catalogs
   ) as CollectionReference<ZCatalogDocument>,

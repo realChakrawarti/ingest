@@ -1,6 +1,5 @@
 "use client";
 
-import { Info } from "lucide-react";
 import Link from "next/link";
 import { useEffect } from "react";
 import { toast } from "sonner";
@@ -13,6 +12,7 @@ import { Badge } from "~/shared/ui/badge";
 import { Button } from "~/shared/ui/button";
 import { LinkIcon } from "~/shared/ui/icons";
 import { Separator } from "~/shared/ui/separator";
+import { Skeleton } from "~/shared/ui/skeleton";
 
 import BackLink from "~/widgets/back-link";
 import JustTip from "~/widgets/just-the-tip";
@@ -145,25 +145,48 @@ export default function EditCatalog({ catalogId }: { catalogId: string }) {
 
   return (
     <div>
-      <div className="flex flex-col md:flex-row gap-2 md:items-center justify-between p-3">
+      <div className="flex gap-2 items-center justify-between p-3">
         <div className="flex items-center gap-4">
           <BackLink className="size-6" href="/dashboard" />
+          {isLoading ? (
+            <Skeleton className="w-16 h-6" />
+          ) : (
+            <Badge className="text-sm">
+              {catalogsData?.isPublic ? "Public" : "Private"}
+            </Badge>
+          )}
           <div className="flex items-center gap-2">
-            <h1 className="text-lg lg:text-xl">{catalogsData?.title ?? ""}</h1>
-            <JustTip label={catalogsData?.description ?? ""}>
-              <Info className="size-4" />
-            </JustTip>
+            {isLoading ? (
+              <div className="space-y-1">
+                <Skeleton className="w-32 h-7" />
+                <Skeleton className="w-32 h-4 lg:h-5" />
+              </div>
+            ) : (
+              <div className="space-y-1">
+                <h1 className="text-lg lg:text-xl">{catalogsData?.title}</h1>
+                <h2 className="text-xs lg:text-sm">
+                  {catalogsData?.description ?? ""}
+                </h2>
+              </div>
+            )}
           </div>
         </div>
         <div className="flex items-center gap-3">
-          <UpdateCatalogMeta
-            catalogId={catalogId}
-            revalidateCatalog={revalidateCatalog}
-            title={catalogsData?.title ?? ""}
-            description={catalogsData?.description ?? ""}
-            isPublic={catalogsData?.isPublic}
-          />
-          {savedChannels?.length ? (
+          {isLoading ? (
+            <Skeleton className="size-7" />
+          ) : (
+            <UpdateCatalogMeta
+              catalogId={catalogId}
+              revalidateCatalog={revalidateCatalog}
+              title={catalogsData?.title ?? ""}
+              description={catalogsData?.description ?? ""}
+              isPublic={catalogsData?.isPublic ?? true}
+              lastUpdatedAt={catalogsData?.lastUpdatedAt}
+            />
+          )}
+          {isLoading ? (
+            <Skeleton className="size-7" />
+          ) : savedChannels?.length ? (
             <Link href={`/c/${catalogId}`} target="_blank">
               <JustTip label="Visit Catalog">
                 <Button variant="ghost" size="icon">
