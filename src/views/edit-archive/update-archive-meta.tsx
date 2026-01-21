@@ -7,6 +7,7 @@ import useSWRMutation from "swr/mutation";
 
 import type { ZArchiveByID } from "~/entities/archives/models";
 
+import appConfig from "~/shared/app-config";
 import fetchApi from "~/shared/lib/api/fetch";
 import type { ApiResponse } from "~/shared/lib/next/nx-response";
 import { Button } from "~/shared/ui/button";
@@ -22,7 +23,7 @@ import {
 import { Input } from "~/shared/ui/input";
 import { Label } from "~/shared/ui/label";
 import { Switch } from "~/shared/ui/switch";
-import { getTimeDifference } from "~/shared/utils/time-diff";
+import { getTimeDifference, timeDelta } from "~/shared/utils/time-diff";
 
 import { useMetaValidate } from "~/widgets/use-meta-validate";
 
@@ -80,6 +81,14 @@ export default function UpdateArchiveMeta({
     e.preventDefault();
     updateArchiveMeta();
   }
+
+  const buttonDisabled =
+    Boolean(submitDisabled) ||
+    isSubmitting ||
+    // Check if metadata has been updated recently
+    (lastUpdatedAt
+      ? timeDelta(lastUpdatedAt) <= appConfig.metadataUpdateCooldown
+      : false);
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -157,10 +166,7 @@ export default function UpdateArchiveMeta({
           </div>
 
           <DialogFooter>
-            <Button
-              disabled={Boolean(submitDisabled) || isSubmitting}
-              type="submit"
-            >
+            <Button disabled={buttonDisabled} type="submit">
               {isSubmitting ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -170,6 +176,9 @@ export default function UpdateArchiveMeta({
                 "Update"
               )}
             </Button>
+            <p className="text-xs text-primary/60">
+              You could only update once every 4 hours
+            </p>
           </DialogFooter>
         </form>
       </DialogContent>

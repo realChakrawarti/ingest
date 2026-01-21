@@ -136,7 +136,7 @@ export default function ItemCard({
       </Card>
       <div className="flex items-center justify-center absolute top-0 right-0">
         <Badge
-          className="text-[13px] flex gap-1 items-center bg-primary/30 group-hover/card-item:bg-primary/50"
+          className="text-[13px] flex gap-1 items-center bg-primary/70 group-hover/card-item:bg-primary/90"
           variant="default"
         >
           {isPublic ? (
