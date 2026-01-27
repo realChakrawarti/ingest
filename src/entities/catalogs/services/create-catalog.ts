@@ -6,7 +6,10 @@ import { createNanoidToken } from "~/shared/utils/nanoid-token";
 
 import type { ZCatalogMeta } from "../models";
 
-export async function createCatalog(userId: string, meta: ZCatalogMeta) {
+export async function createCatalog(
+  userId: string,
+  meta: Omit<ZCatalogMeta, "lastUpdatedAt">
+) {
   const nanoidToken = createNanoidToken(6);
   const catalogRef = refs.catalogs.doc(nanoidToken);
 
@@ -31,8 +34,8 @@ export async function createCatalog(userId: string, meta: ZCatalogMeta) {
         videos: { day: [], month: [], week: [] },
       },
       description: meta.description,
-      isPublic: true,
-      isPublicUpdatedAt: Timestamp.now(),
+      isPublic: meta.isPublic,
+      lastUpdatedAt: Timestamp.now(),
       title: meta.title,
       videoRef: userCatalogRef,
     });

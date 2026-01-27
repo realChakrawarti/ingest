@@ -17,6 +17,11 @@ class AppConfig {
   private _version = packageInfo.version;
   private _watchedPercentage = 94;
   private _tracesSampleRate = 0.5;
+  private _metadataUpdateCooldown = time.hours(4);
+
+  get metadataUpdateCooldown(): number {
+    return this._metadataUpdateCooldown;
+  }
 
   get channelLogoUpdatePeriod(): number {
     return this._channelLogoUpdatePeriod;

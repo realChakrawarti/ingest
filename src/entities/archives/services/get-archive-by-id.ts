@@ -1,8 +1,8 @@
 import { timestampUTC } from "~/shared/lib/firebase/admin";
 import { refs } from "~/shared/lib/firebase/refs";
-import Log from "~/shared/utils/terminal-logger";
+import { jsonResult } from "~/shared/utils/json-return";
 
-import { ArchiveDocumentSchema, type ZArchiveByID } from "../models";
+import type { ZArchiveByID } from "../models";
 
 /**
  * This function sends the response of a specific catalog provided a valid catalogId
@@ -21,22 +21,19 @@ export async function getArchiveById(archiveId: string) {
     const archiveSnap = await archiveRef.get();
     const archiveData = archiveSnap.data();
 
-    const { success, error, data } =
-      ArchiveDocumentSchema.safeParse(archiveData);
+    const archiveResponseData: ZArchiveByID = {
+      description: archiveData?.description || "",
+      isPublic: archiveData?.isPublic ?? true,
+      lastUpdatedAt: timestampUTC(archiveData?.lastUpdatedAt),
+      title: archiveData?.title || "",
+      updatedAt: timestampUTC(archiveData?.data.updatedAt),
+      videos: archiveData?.data?.videos ?? [],
+    };
 
-    if (success && data.data.videos) {
-      const archiveResponseData: ZArchiveByID = {
-        description: data.description,
-        isPublic: data.isPublic,
-        title: data.title,
-        updatedAt: timestampUTC(data.data.updatedAt),
-        videos: data.data.videos,
-      };
-
-      return archiveResponseData;
-    }
-    throw Error(error?.message ?? "Unable to parse archive by ID.");
-  } catch (err) {
-    Log.fatal("Unable to retrieve archive by id.", err);
+    return jsonResult.success(archiveResponseData).return();
+  } catch (_err) {
+    return jsonResult
+      .error("Unable to retrieve archive by identifier.")
+      .return();
   }
 }

@@ -44,7 +44,7 @@ export default function AddChannelPlaylistDialog({
         <Button>
           <span className="flex items-center gap-1">
             <SiYoutube className="size-8" />
-            Channel Playlist
+            <p className="hidden md:inline-block">Channel Playlist</p>
           </span>
         </Button>
       </DialogTrigger>

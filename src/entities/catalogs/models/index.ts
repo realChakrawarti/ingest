@@ -1,8 +1,11 @@
-import { DocumentReference, Timestamp } from "firebase-admin/firestore";
+import { Timestamp } from "firebase/firestore";
+import { DocumentReference } from "firebase-admin/firestore";
 import { z } from "zod";
 
 export const CatalogMetaSchema = z.object({
   description: z.string(),
+  isPublic: z.boolean(),
+  lastUpdatedAt: z.string().optional(),
   title: z.string(),
 });
 
@@ -53,8 +56,9 @@ export const UserCatalogDocumentSchema = z.object({
 const CatalogByIDSchema = z.object({
   description: z.string(),
   isPublic: z.boolean().default(true),
-  isPublicUpdatedAt: z.string().optional(),
+  lastUpdatedAt: z.string(),
   list: z.array(CatalogListSchema),
+  pageviews: z.number(),
   title: z.string(),
 });
 
@@ -138,8 +142,8 @@ const CatalogDocumentSchema = CatalogMetaSchema.extend({
     videos: CatalogVideoListSchema,
   }),
   isPublic: z.boolean().default(true),
-  isPublicUpdatedAt: TimestampSchema.optional(),
-  pageviews: z.number().optional(),
+  lastUpdatedAt: TimestampSchema.optional(),
+  pageviews: z.number().default(0),
   videoRef: DocumentReferenceSchema,
 });
 

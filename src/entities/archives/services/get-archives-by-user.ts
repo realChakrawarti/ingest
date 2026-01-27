@@ -10,8 +10,8 @@ import type { ZArchiveByUser } from "../models";
  * @returns
  */
 export async function getArchiveByUser(userId: string) {
+  const userArchivesCollectionRef = refs.userArchives(userId);
   try {
-    const userArchivesCollectionRef = refs.userArchives(userId);
     const userArchivesDoc = await userArchivesCollectionRef.listDocuments();
     const archiveIds = userArchivesDoc.map((doc) => doc.id);
 
@@ -34,6 +34,7 @@ export async function getArchiveByUser(userId: string) {
           return {
             description: archiveData?.description,
             id: archiveId,
+            isPublic: archiveData?.isPublic,
             title: archiveData?.title,
             updatedAt: timestampUTC(archiveData.data.updatedAt),
           };

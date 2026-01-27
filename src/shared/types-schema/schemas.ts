@@ -9,6 +9,7 @@ export const TitleDescriptionSchema = z.object({
     .max(64, {
       error: "Description must be at most 64 characters long.",
     }),
+  isPublic: z.boolean(),
   title: z
     .string()
     .min(4, {
