@@ -146,7 +146,10 @@ export default function CreateArchiveDialog({
           </div>
 
           <DialogFooter>
-            <Button disabled={Boolean(submitDisabled)} type="submit">
+            <Button
+              disabled={Boolean(submitDisabled) || isSubmitting}
+              type="submit"
+            >
               {isSubmitting ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />

@@ -143,7 +143,7 @@ const CatalogDocumentSchema = CatalogMetaSchema.extend({
   }),
   isPublic: z.boolean().default(true),
   lastUpdatedAt: TimestampSchema.optional(),
-  pageviews: z.number().optional(),
+  pageviews: z.number().default(0),
   videoRef: DocumentReferenceSchema,
 });
 

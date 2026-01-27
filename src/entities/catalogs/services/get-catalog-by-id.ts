@@ -10,6 +10,7 @@ export async function getCatalogById(catalogId: string, userId: string) {
     isPublic: true,
     lastUpdatedAt: "",
     list: [],
+    pageviews: 0,
     title: "",
   };
 

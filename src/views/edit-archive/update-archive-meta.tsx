@@ -71,7 +71,7 @@ export default function UpdateArchiveMeta({
         },
         onSuccess(result) {
           revalidateArchive();
-          toast(result.message || "Catalog details updated successfully.");
+          toast(result.message || "Archive details updated successfully.");
           setOpen(false);
         },
       }

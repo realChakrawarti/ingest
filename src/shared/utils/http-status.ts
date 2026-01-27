@@ -332,7 +332,7 @@ const ClientErrorStatus = {
   /**
    * This is similar to `401` but authentication is needed to be done by a proxy.
    *
-   * [MDN Reference](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/40)
+   * [MDN Reference](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/407)
    */
   ProxyAuthenticationRequired: <const>407,
 
