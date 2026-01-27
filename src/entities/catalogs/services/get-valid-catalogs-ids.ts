@@ -27,11 +27,11 @@ export async function getValidCatalogIds() {
   await Promise.all(
     catalogIds.map(async (catalogId) => {
       const catalogData = await getCatalogMetadata(catalogId);
-      if (catalogData && catalogData.isPublic !== false) {
+      if (catalogData) {
         const metaData = {
           description: catalogData?.description,
           id: catalogId,
-          isPublic: catalogData?.isPublic ?? true,
+          isPublic: catalogData?.isPublic,
           pageviews: catalogData.pageviews ?? 0,
           thumbnails: getVideoThumbnails(catalogData),
           title: catalogData?.title,

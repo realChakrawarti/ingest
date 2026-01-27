@@ -58,6 +58,7 @@ const CatalogByIDSchema = z.object({
   isPublic: z.boolean().default(true),
   lastUpdatedAt: z.string(),
   list: z.array(CatalogListSchema),
+  pageviews: z.number(),
   title: z.string(),
 });
 

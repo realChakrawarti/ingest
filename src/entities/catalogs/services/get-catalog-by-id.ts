@@ -27,9 +27,10 @@ export async function getCatalogById(catalogId: string, userId: string) {
     if (catalogData && listData) {
       catalogResponseData = {
         description: catalogData?.description,
-        isPublic: catalogData?.isPublic ?? true,
+        isPublic: catalogData?.isPublic,
         lastUpdatedAt: timestampUTC(catalogData?.lastUpdatedAt),
         list: listData,
+        pageviews: catalogData?.pageviews,
         title: catalogData?.title,
       };
     }
