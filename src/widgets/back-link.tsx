@@ -10,9 +10,11 @@ export default function BackLink({
   href: string;
   className?: string;
 }) {
-  return <div className={cn("cursor-pointer", className)}>
-    <Link href={href} replace>
-      <ArrowLeftSquare className="size-full" />
-    </Link>
-  </div>;
+  return (
+    <div className={cn("cursor-pointer", className)}>
+      <Link href={href} replace>
+        <ArrowLeftSquare className="size-full" />
+      </Link>
+    </div>
+  );
 }

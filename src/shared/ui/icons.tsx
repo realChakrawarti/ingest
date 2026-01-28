@@ -1,5 +1,5 @@
 // TODO: Consider using icons from lucide or use the svg directly
-import { SiGithub, SiGmail , SiGoogle } from "@icons-pack/react-simple-icons";
+import { SiGithub, SiGmail, SiGoogle } from "@icons-pack/react-simple-icons";
 import {
   AlertTriangle,
   Archive,

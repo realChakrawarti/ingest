@@ -98,6 +98,9 @@ importers:
       sonner:
         specifier: ^2.0.6
         version: 2.0.6(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      standard-version:
+        specifier: ^9.5.0
+        version: 9.5.0
       swr:
         specifier: ^2.3.3
         version: 2.3.3(react@18.3.1)
@@ -159,9 +162,6 @@ importers:
       react-scan:
         specifier: ^0.3.3
         version: 0.3.4(@types/react@18.3.23)(next@14.2.30(@babel/core@7.26.10)(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react-router-dom@6.30.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-router@6.30.0(react@18.3.1))(react@18.3.1)(rollup@4.44.0)
-      standard-version:
-        specifier: ^9.5.0
-        version: 9.5.0
       tailwindcss:
         specifier: ^3.4.17
         version: 3.4.17
@@ -4910,6 +4910,7 @@ packages:
   next@14.2.30:
     resolution: {integrity: sha512-+COdu6HQrHHFQ1S/8BBsCag61jZacmvbuL2avHvQFbWa2Ox7bE+d8FyNgxRLjXQ5wtPyQwEmk85js/AuaG2Sbg==}
     engines: {node: '>=18.17.0'}
+    deprecated: This version has a security vulnerability. Please upgrade to a patched version. See https://nextjs.org/blog/security-update-2025-12-11 for more details.
     hasBin: true
     peerDependencies:
       '@opentelemetry/api': ^1.1.0
@@ -11939,7 +11940,7 @@ snapshots:
       make-fetch-happen: 13.0.1
       nopt: 7.2.1
       proc-log: 4.2.0
-      semver: 7.7.1
+      semver: 7.7.2
       tar: 6.2.1
       which: 4.0.0
     transitivePeerDependencies:
@@ -11964,7 +11965,7 @@ snapshots:
     dependencies:
       hosted-git-info: 4.1.0
       is-core-module: 2.16.1
-      semver: 7.7.1
+      semver: 7.7.2
       validate-npm-package-license: 3.0.4
 
   normalize-path@3.0.0: {}
@@ -12940,7 +12941,7 @@ snapshots:
       figures: 3.2.0
       find-up: 5.0.0
       git-semver-tags: 4.1.1
-      semver: 7.7.1
+      semver: 7.7.2
       stringify-package: 1.0.1
       yargs: 16.2.0
 

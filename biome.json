@@ -32,7 +32,13 @@
   },
   "files": {
     "ignoreUnknown": false,
-    "includes": ["src/**/*.ts", "src/**/*.tsx"]
+    "includes": [
+      "src/**/*.ts",
+      "src/**/*.tsx",
+      "package.json",
+      "tsconfig.json",
+      "biome.json"
+    ]
   },
   "formatter": {
     "attributePosition": "auto",

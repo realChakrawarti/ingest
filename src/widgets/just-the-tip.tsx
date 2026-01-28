@@ -14,7 +14,12 @@ type JustTipProps = PropsWithChildren & { label: string };
 export default function JustTip({ children, label }: JustTipProps) {
   const isMobile = useIsMobile();
 
-  if (isMobile) return <abbr className="no-underline" title={label}>{children}</abbr>;
+  if (isMobile)
+    return (
+      <abbr className="no-underline" title={label}>
+        {children}
+      </abbr>
+    );
 
   return (
     <TooltipProvider>
