@@ -36,6 +36,7 @@ export async function createCatalog(
       description: meta.description,
       isPublic: meta.isPublic,
       lastUpdatedAt: Timestamp.now(),
+      pageviews: 0,
       title: meta.title,
       videoRef: userCatalogRef,
     });

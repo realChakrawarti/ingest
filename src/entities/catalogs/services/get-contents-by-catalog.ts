@@ -261,6 +261,7 @@ export async function getContentsByCatalog(
 
   return {
     description: catalogSnapData?.description,
+    isPublic: catalogSnapData?.isPublic,
     nextUpdate: new Date(
       recentUpdate.getTime() + appConfig.catalogUpdatePeriod
     ).toUTCString(),

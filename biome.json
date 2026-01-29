@@ -37,7 +37,8 @@
       "src/**/*.tsx",
       "package.json",
       "tsconfig.json",
-      "biome.json"
+      "biome.json",
+      "next.config.mjs"
     ]
   },
   "formatter": {
