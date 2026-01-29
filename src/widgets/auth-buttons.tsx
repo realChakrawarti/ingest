@@ -7,7 +7,7 @@ import {
 } from "~/features/auth/service-providers";
 
 import { Button } from "~/shared/ui/button";
-import { GithubIcon, GmailIcon } from "~/shared/ui/icons";
+import { GithubIcon, GoogleIcon } from "~/shared/ui/icons";
 
 import JustTip from "./just-the-tip";
 
@@ -30,7 +30,7 @@ export default function AuthButton() {
           variant="outline"
           onClick={signInWithGoogle}
         >
-          <GmailIcon color="#EA4335" size={24} />
+          <GoogleIcon color="#EA4335" size={24} />
           <p className="tracking-wider">Google</p>
         </Button>
       </JustTip>

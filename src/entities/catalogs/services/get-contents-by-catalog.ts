@@ -96,7 +96,7 @@ export async function getContentsByCatalog(
   };
 
   let postResults: ZCatalogSubredditPost[] | undefined = [];
-  let totalVideos: number = 0;
+  let totalVideos = 0;
 
   const catalogRef = refs.catalogs.doc(catalogId);
   const catalogSnap = await catalogRef.get();
@@ -148,7 +148,7 @@ export async function getContentsByCatalog(
       updatedAt: Timestamp.fromDate(new Date()),
     });
   } else {
-    Log.info(`Too early to revalidate channels logo.`);
+    Log.info("Too early to revalidate channels logo.");
   }
 
   // Get last updated, check if time has been 4 hours or not, if so make call to YouTube API and Reddit API
@@ -261,6 +261,7 @@ export async function getContentsByCatalog(
 
   return {
     description: catalogSnapData?.description,
+    isPublic: catalogSnapData?.isPublic,
     nextUpdate: new Date(
       recentUpdate.getTime() + appConfig.catalogUpdatePeriod
     ).toUTCString(),
@@ -336,7 +337,7 @@ async function getSubredditPosts(list: ZCatalogSubreddit[]) {
             postList.push(postContentInfo);
           }
         } else {
-          Log.warn(`The subreddits in the catalog contains no posts.`);
+          Log.warn("The subreddits in the catalog contains no posts.");
         }
       } else {
         Log.fail(result.reason);
@@ -454,10 +455,10 @@ async function addVideoMetaInformation(videoIds: string[]) {
       const videoContentInfo = {
         defaultVideoLanguage: item.snippet.defaultAudioLanguage ?? "",
         videoAvailability: item.snippet.liveBroadcastContent,
-        videoComments: parseInt(item.statistics.commentCount || "0"),
+        videoComments: Number.parseInt(item.statistics.commentCount || "0"),
         videoDuration: youtubeDurationToSeconds(item.contentDetails.duration),
-        videoLikes: parseInt(item.statistics.likeCount || "0"),
-        videoViews: parseInt(item.statistics.viewCount || "0"),
+        videoLikes: Number.parseInt(item.statistics.likeCount || "0"),
+        videoViews: Number.parseInt(item.statistics.viewCount || "0"),
       } satisfies ZVideoContentInfo;
       videoMetaInformation.set(item.id, videoContentInfo);
     });
@@ -465,6 +466,8 @@ async function addVideoMetaInformation(videoIds: string[]) {
   return videoMetaInformation;
 }
 
+// TODO: PT is replaced with empty string which is fine for video duration within a day (less than 24 hours),
+// but when its more than a day, the format is P#DT#H#M#S#, need to account for that too
 function youtubeDurationToSeconds(duration: string) {
   if (!duration) {
     return 0;
@@ -475,26 +478,26 @@ function youtubeDurationToSeconds(duration: string) {
   let seconds = 0;
 
   // Remove PT from string ref: https://developers.google.com/youtube/v3/docs/videos#contentDetails.duration
-  duration = duration.replace("PT", "");
+  let durationParsed = duration.replace("PT", "");
 
-  // If the string contains hours parse it and remove it from our duration string
-  if (duration.indexOf("H") > -1) {
-    const hours_split = duration.split("H");
-    hours = parseInt(hours_split[0]);
-    duration = hours_split[1];
+  // If the string contains hours parse it and remove it from the duration string
+  if (durationParsed.indexOf("H") > -1) {
+    const hours_split = durationParsed.split("H");
+    hours = Number.parseInt(hours_split[0]);
+    durationParsed = hours_split[1];
   }
 
-  // If the string contains minutes parse it and remove it from our duration string
-  if (duration.indexOf("M") > -1) {
-    const minutes_split = duration.split("M");
-    minutes = parseInt(minutes_split[0]);
-    duration = minutes_split[1];
+  // If the string contains minutes parse it and remove it from the duration string
+  if (durationParsed.indexOf("M") > -1) {
+    const minutes_split = durationParsed.split("M");
+    minutes = Number.parseInt(minutes_split[0]);
+    durationParsed = minutes_split[1];
   }
 
-  // If the string contains seconds parse it and remove it from our duration string
-  if (duration.indexOf("S") > -1) {
-    const seconds_split = duration.split("S");
-    seconds = parseInt(seconds_split[0]);
+  // If the string contains seconds parse it and remove it from the duration string
+  if (durationParsed.indexOf("S") > -1) {
+    const seconds_split = durationParsed.split("S");
+    seconds = Number.parseInt(seconds_split[0]);
   }
 
   // Math the values to return seconds

@@ -16,11 +16,10 @@ function formatSecondsToHMS(totalSeconds: number) {
   if (hours === 0) {
     // If hours are 0, return mm:ss
     return `${paddedMinutes}:${paddedSeconds}`;
-  } else {
-    // Otherwise, return HH:mm:ss
-    const paddedHours = String(hours).padStart(2, "0");
-    return `${paddedHours}:${paddedMinutes}:${paddedSeconds}`;
   }
+  // Otherwise, return HH:mm:ss
+  const paddedHours = String(hours).padStart(2, "0");
+  return `${paddedHours}:${paddedMinutes}:${paddedSeconds}`;
 }
 
 import type { ZVideoMetadata } from "~/entities/catalogs/models";

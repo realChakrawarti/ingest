@@ -46,3 +46,5 @@ ui-debug.log
 # api-testing
 /ingest-api-collection
 
+# Beads
+.beads

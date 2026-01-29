@@ -78,6 +78,7 @@ export default function CatalogView() {
                 );
                 return (
                   <CatalogCard
+                    isPublic={catalog.isPublic}
                     type="catalog"
                     key={catalog.id}
                     onDelete={handleCatalogDelete}

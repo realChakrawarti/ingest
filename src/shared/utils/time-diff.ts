@@ -6,6 +6,7 @@ function formatPluralUnit(
 }
 
 const MINUTES_PER_HOUR = 60;
+
 const MINUTES_PER_DAY = 24 * MINUTES_PER_HOUR;
 const MINUTES_PER_MONTH = MINUTES_PER_DAY * 30;
 
@@ -44,7 +45,7 @@ function formatTimeDifferenceWithMonths(timeDiff: number) {
 export function getDifferenceString(
   deltaMinutes: number,
   suffix: "ago" | "later",
-  suffixEnabled: boolean = false
+  suffixEnabled = false
 ) {
   const { months, days, hours, minutes } =
     formatTimeDifferenceWithMonths(deltaMinutes);
@@ -75,7 +76,19 @@ export function getDifferenceString(
       return timeDifferenceString + suffix;
     }
   }
-  return timeDifferenceString + suffix;
+  return timeDifferenceString;
+}
+
+/**
+ * @returns {number} - Returns the time difference in milliseconds
+ */
+export function timeDelta(compareWithCurrent: string): number {
+  const currentTime = Date.now();
+  const serverTime = new Date(compareWithCurrent).getTime();
+
+  const delta = currentTime - serverTime;
+
+  return delta;
 }
 
 /**
@@ -87,13 +100,10 @@ export function getDifferenceString(
  */
 export function getTimeDifference(
   compareWithCurrent: string,
-  suffixEnabled: boolean = false,
-  limitMonth: boolean = true
+  suffixEnabled = false,
+  limitMonth = true
 ): [number, string] {
-  const currentTime = Date.now();
-  const serverTime = new Date(compareWithCurrent).getTime();
-
-  const delta = currentTime - serverTime;
+  const delta = timeDelta(compareWithCurrent);
   const deltaMinutes = Math.abs(delta) / (60 * 1000); // In minutes
 
   if (deltaMinutes > MINUTES_PER_MONTH && limitMonth) {

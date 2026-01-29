@@ -33,7 +33,6 @@ export default function Dashboard() {
     data: userSyncID,
     isLoading,
     mutate: revalidateSyncId,
-    error: userSyncError,
   } = useSWR("/users/sync", (url) => fetchApi(url, { cache: "no-store" }), {
     errorRetryCount: 0,
     revalidateOnFocus: false,

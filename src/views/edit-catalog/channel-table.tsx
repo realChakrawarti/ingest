@@ -30,7 +30,7 @@ function ChannelTable({
           <TableHead className="max-w-[50px]">SL No</TableHead>
           <TableHead className="max-w-[150px]">Channel</TableHead>
           <TableHead>Channel ID</TableHead>
-          <TableHead></TableHead>
+          <TableHead />
         </TableRow>
       </TableHeader>
       <TableBody>

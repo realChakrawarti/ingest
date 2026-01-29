@@ -15,6 +15,9 @@ export default withSentryConfig(nextConfig, {
   project: process.env.SENTRY_PROJECT,
   silent: !process.env.SENTRY_CI,
   disableLogger: process.env.SENTRY_LOGGER,
+  sourcemaps: {
+    disable: !process.env.VERCEL,
+  },
   authToken: process.env.SENTRY_AUTH_TOKEN,
   widenClientFileUpload: true,
   tunnelRoute: "/sentry-report",

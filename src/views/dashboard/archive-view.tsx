@@ -68,6 +68,7 @@ export default function ArchiveView() {
                 );
                 return (
                   <ArchiveCard
+                    isPublic={archive?.isPublic}
                     type="archive"
                     key={archive.id}
                     onDelete={handleArchiveDelete}

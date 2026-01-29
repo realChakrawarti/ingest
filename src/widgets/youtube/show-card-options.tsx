@@ -59,8 +59,18 @@ export default function ShowCardOption({
   const [isOpen, setIsOpen] = useState(false);
 
   const { data: cobaltYTInstances } = useSWR(
-    "https://cobalt.directory/api_frontends.json",
-    (url) => fetch(url).then((res) => res.json() as Promise<CobaltInstances>),
+    "https://cobalt.directory/api/working?type=frontends",
+    async (url) => {
+      const res = await fetch(url);
+      if (!res.ok) {
+        throw new Error(`Failed to fetch Cobalt instances: ${res.status}`);
+      }
+      const json = await res.json();
+      if (!json?.data || typeof json.data !== "object") {
+        throw new Error("Invalid response structure from Cobalt API");
+      }
+      return json.data as CobaltInstances;
+    },
     {
       errorRetryCount: 0,
       refreshInterval: 5 * 60 * 1000, // 5 minutes

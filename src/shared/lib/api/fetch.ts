@@ -4,6 +4,7 @@ import Log from "~/shared/utils/terminal-logger";
 
 import type { ApiResponse } from "../next/nx-response";
 
+// biome-ignore lint/suspicious/noExplicitAny: Remove any with unknown and make sure to type all its usages
 async function fetchApi<T = any>(endpoint: string, options?: RequestInit) {
   if (!endpoint.startsWith("/")) {
     Log.fail("Please append a trailing '/' on the endpoint");

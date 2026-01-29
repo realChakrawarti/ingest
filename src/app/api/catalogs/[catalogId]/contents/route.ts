@@ -29,19 +29,18 @@ export async function GET(request: NextRequest, ctx: ContextParams) {
           data,
           200
         );
-      } else {
-        const data = await getContentsByCatalog(catalogId);
-
-        if (typeof data === "string") {
-          return NxResponse.fail(data, { code: "UNKNOWN", details: data }, 400);
-        }
-
-        return NxResponse.success(
-          `Catalog: ${catalogId} contents fetched successfully.`,
-          data,
-          200
-        );
       }
+      const data = await getContentsByCatalog(catalogId);
+
+      if (typeof data === "string") {
+        return NxResponse.fail(data, { code: "UNKNOWN", details: data }, 400);
+      }
+
+      return NxResponse.success(
+        `Catalog: ${catalogId} contents fetched successfully.`,
+        data,
+        200
+      );
     } catch (err) {
       Log.fail(err);
       return NxResponse.fail(

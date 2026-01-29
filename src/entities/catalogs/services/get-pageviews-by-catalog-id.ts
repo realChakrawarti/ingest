@@ -25,7 +25,7 @@ function transformAnalyticsData(
     if (row.dimensionValues && row.metricValues) {
       return {
         id: row?.dimensionValues[0]?.value,
-        pageviews: parseInt(row?.metricValues[0]?.value ?? "0", 10),
+        pageviews: Number.parseInt(row?.metricValues[0]?.value ?? "0", 10),
       };
     }
   });

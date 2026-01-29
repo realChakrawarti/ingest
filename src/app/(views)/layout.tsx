@@ -52,7 +52,7 @@ export default function RootLayout({
           strategy="lazyOnload"
         />
       </head>
-      <body className={`min-h-full overflow-y-auto font-outfit`}>
+      <body className="min-h-full overflow-y-auto font-outfit">
         <Providers>
           <AppSidebar />
           <div className="flex flex-col flex-1">

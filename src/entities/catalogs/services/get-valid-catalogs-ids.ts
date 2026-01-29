@@ -8,9 +8,10 @@ export async function getValidCatalogIds() {
   unstable_noStore();
   const catalogListData: ZCatalogValid[] = [];
 
-  // Filter the catalog, where totalVideos is greater than 0 and pageviews are sorted 'desc'
+  // Filter the catalog, where totalVideos is greater than 0, isPublic is true, and pageviews are sorted 'desc'
   const validCatalogQuery = refs.catalogs
     .where("data.totalVideos", ">", 0)
+    .where("isPublic", "==", true)
     .orderBy("pageviews", "desc")
     .limit(50);
 
@@ -30,6 +31,7 @@ export async function getValidCatalogIds() {
         const metaData = {
           description: catalogData?.description,
           id: catalogId,
+          isPublic: catalogData?.isPublic,
           pageviews: catalogData.pageviews ?? 0,
           thumbnails: getVideoThumbnails(catalogData),
           title: catalogData?.title,

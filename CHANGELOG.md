@@ -2,6 +2,28 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [26.0.1](https://github.com/realChakrawarti/ingest/compare/v26.0.0...v26.0.1) (2026-01-29)
+
+
+### Bug Fixes
+
+* build errors ([8bc04ea](https://github.com/realChakrawarti/ingest/commit/8bc04ea6d5e787d809c3aa781a403b79dfbf4585))
+
+## [26.0.0](https://github.com/realChakrawarti/ingest/compare/v1.11.1...v26.0.0) (2026-01-29)
+
+
+### Features
+
+* support switching of catalog and archive visibility to public [#300](https://github.com/realChakrawarti/ingest/issues/300) ([ab60cec](https://github.com/realChakrawarti/ingest/commit/ab60cec0cd5b6fc420ee1775dfb02c30034af5a5))
+
+
+### Bug Fixes
+
+* catalog & archive visibility ([#310](https://github.com/realChakrawarti/ingest/issues/310)) ([dfae29f](https://github.com/realChakrawarti/ingest/commit/dfae29f400673ef5c7d9b3be1e69cead6b21f243))
+* gmail logo to google logo ([#299](https://github.com/realChakrawarti/ingest/issues/299)) ([8c6e97c](https://github.com/realChakrawarti/ingest/commit/8c6e97ce52298ca5c9ca3c34de0c87564e65b322))
+* update cobalt endpoint and JSON parsing as per cobalt.directory API ([#295](https://github.com/realChakrawarti/ingest/issues/295)) ([85fd90a](https://github.com/realChakrawarti/ingest/commit/85fd90a3286dc3cdeb0a94c65f422ad4bb9bf51f))
+* upgrade to Biome v2.0.6 and fix issues post-upgrade ([#308](https://github.com/realChakrawarti/ingest/issues/308)) ([a4ee990](https://github.com/realChakrawarti/ingest/commit/a4ee99076e4f058f70288e93f54856e6e58070df))
+
 ### [1.11.1](https://github.com/realChakrawarti/ingest/compare/v1.11.0...v1.11.1) (2025-10-07)
 
 ## [1.11.0](https://github.com/realChakrawarti/ingest/compare/v1.10.5...v1.11.0) (2025-10-06)

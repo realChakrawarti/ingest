@@ -1,5 +1,5 @@
 {
-  "$schema": "https://biomejs.dev/schemas/2.0.0/schema.json",
+  "$schema": "https://biomejs.dev/schemas/2.0.6/schema.json",
   "assist": {
     "actions": {
       "source": {
@@ -32,7 +32,14 @@
   },
   "files": {
     "ignoreUnknown": false,
-    "includes": ["src/**/*.ts", "src/**/*.tsx"]
+    "includes": [
+      "src/**/*.ts",
+      "src/**/*.tsx",
+      "package.json",
+      "tsconfig.json",
+      "biome.json",
+      "next.config.mjs"
+    ]
   },
   "formatter": {
     "attributePosition": "auto",
@@ -76,7 +83,22 @@
         "noUnusedImports": "error",
         "useExhaustiveDependencies": "warn"
       },
+      "performance": {
+        "noImgElement": "off"
+      },
       "recommended": true,
+      "style": {
+        "noInferrableTypes": "error",
+        "noParameterAssign": "error",
+        "noUnusedTemplateLiteral": "error",
+        "noUselessElse": "error",
+        "useAsConstAssertion": "error",
+        "useDefaultParameterLast": "error",
+        "useEnumInitializers": "error",
+        "useNumberNamespace": "error",
+        "useSelfClosingElements": "error",
+        "useSingleVarDeclarator": "error"
+      },
       "suspicious": {
         "noExplicitAny": "info"
       }

@@ -29,11 +29,10 @@ export async function PATCH(request: NextRequest, ctx: ContextParams) {
     revalidatePath(`/a/${archiveId}`);
 
     return NxResponse.success(result, {}, 201);
-  } else {
-    return NxResponse.fail(
-      "Invalid data provided.",
-      { code: "INVALID_DATA", details: error.message },
-      422
-    );
   }
+  return NxResponse.fail(
+    "Invalid data provided.",
+    { code: "INVALID_DATA", details: error.message },
+    422
+  );
 }

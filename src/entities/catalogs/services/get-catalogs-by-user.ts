@@ -27,6 +27,7 @@ export async function getCatalogByUser(userId: string) {
           userCatalogsData.push({
             description: catalogData.description,
             id: catalogId,
+            isPublic: catalogData?.isPublic,
             title: catalogData?.title,
             updatedAt: timestampUTC(catalogData?.data?.updatedAt),
           });

@@ -130,7 +130,8 @@ export default function InputURLForm() {
       });
 
       return;
-    } else if (
+    }
+    if (
       mode === "channel" &&
       inputValue &&
       !Regex.YOUTUBE_USER_CHANNEL.test(inputValue)
@@ -140,11 +141,10 @@ export default function InputURLForm() {
       });
 
       return;
-    } else {
-      setVideoLink({
-        error: "",
-      });
     }
+    setVideoLink({
+      error: "",
+    });
   }
 
   const handleVideoLink = (e: ChangeEvent<HTMLInputElement>) => {

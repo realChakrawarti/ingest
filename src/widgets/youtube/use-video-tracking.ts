@@ -19,7 +19,7 @@ function getPercentCompleted(node: YT.Player, video: ZVideoMetadataCompatible) {
   const duration = node.getDuration() || 0;
   const currentTime = node.getCurrentTime() || 0;
   const percentCompleted = duration
-    ? parseInt(((currentTime / duration) * 100).toFixed(2), 10)
+    ? Number.parseInt(((currentTime / duration) * 100).toFixed(2), 10)
     : 0;
 
   const payload: History = {

@@ -1,7 +1,7 @@
-import { Separator as SeparatorPrimitive } from "radix-ui"
-import * as React from "react"
+import { Separator as SeparatorPrimitive } from "radix-ui";
+import * as React from "react";
 
-import { cn } from "~/shared/utils/tailwind-merge"
+import { cn } from "~/shared/utils/tailwind-merge";
 
 const Separator = React.forwardRef<
   React.ElementRef<typeof SeparatorPrimitive.Root>,
@@ -23,7 +23,7 @@ const Separator = React.forwardRef<
       {...props}
     />
   )
-)
-Separator.displayName = SeparatorPrimitive.Root.displayName
+);
+Separator.displayName = SeparatorPrimitive.Root.displayName;
 
-export { Separator }
+export { Separator };

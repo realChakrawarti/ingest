@@ -40,7 +40,8 @@ const faqs: FAQItem[] = [
     question: `Can I use ${appConfig.marketName} on my phone or tablet?`,
   },
   {
-    answer: `We take your privacy seriously. Your viewing history and personal data are encrypted and never shared with anyone. Your watching history is stored directly on your device, and you have full control over your data.`,
+    answer:
+      "We take your privacy seriously. Your viewing history and personal data are encrypted and never shared with anyone. Your watching history is stored directly on your device, and you have full control over your data.",
     question: `How secure is my data on ${appConfig.marketName}?`,
   },
   {

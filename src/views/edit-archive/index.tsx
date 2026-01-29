@@ -6,6 +6,7 @@ import useSWR from "swr";
 import type { ZArchiveByID } from "~/entities/archives/models";
 
 import fetchApi from "~/shared/lib/api/fetch";
+import { Badge } from "~/shared/ui/badge";
 import { Separator } from "~/shared/ui/separator";
 
 import BackLink from "~/widgets/back-link";
@@ -18,7 +19,7 @@ import VideoCard from "./video-card";
 
 export default function EditArchive({ archiveId }: { archiveId: string }) {
   const {
-    data: archiveData,
+    data: archive,
     isLoading,
     error,
     mutate: revalidateArchive,
@@ -28,10 +29,10 @@ export default function EditArchive({ archiveId }: { archiveId: string }) {
     { revalidateOnFocus: false }
   );
 
+  const archiveData = archive?.data;
+
   async function removeVideo(videoId: string) {
-    const video = archiveData?.data?.videos.find(
-      (item) => item.videoId === videoId
-    );
+    const video = archiveData?.videos.find((item) => item.videoId === videoId);
     const result = await fetchApi(`/archives/${archiveId}/remove-video`, {
       body: JSON.stringify(video),
       method: "PATCH",
@@ -48,12 +49,13 @@ export default function EditArchive({ archiveId }: { archiveId: string }) {
       <div className="flex flex-col md:flex-row md:items-center gap-2 justify-between p-3">
         <div className="flex gap-4 items-center">
           <BackLink className="size-6" href="/dashboard" />
+          <Badge className="text-sm">
+            {archiveData?.isPublic ? "Public" : "Private"}
+          </Badge>
           <div>
-            <h1 className="text-lg lg:text-xl">
-              {archiveData?.data?.title ?? ""}
-            </h1>
+            <h1 className="text-lg lg:text-xl">{archiveData?.title ?? ""}</h1>
             <h2 className="text-xs lg:text-sm">
-              {archiveData?.data?.description ?? ""}
+              {archiveData?.description ?? ""}
             </h2>
           </div>
         </div>
@@ -61,8 +63,10 @@ export default function EditArchive({ archiveId }: { archiveId: string }) {
           <UpdateArchiveMeta
             revalidateArchive={revalidateArchive}
             archiveId={archiveId}
-            title={archiveData?.data?.title || ""}
-            description={archiveData?.data?.description || ""}
+            title={archiveData?.title || ""}
+            description={archiveData?.description || ""}
+            isPublic={archiveData?.isPublic}
+            lastUpdatedAt={archiveData?.lastUpdatedAt}
           />
           <AddVideoDialog
             archiveId={archiveId}
@@ -75,9 +79,9 @@ export default function EditArchive({ archiveId }: { archiveId: string }) {
         {error ? <div>Something went wrong!</div> : null}
         {isLoading ? (
           <Spinner className="size-8" />
-        ) : archiveData?.data?.videos ? (
+        ) : archiveData?.videos ? (
           <GridContainer>
-            {archiveData?.data?.videos.map((item) => {
+            {archiveData?.videos.map((item) => {
               return (
                 <VideoCard
                   key={item.videoId}

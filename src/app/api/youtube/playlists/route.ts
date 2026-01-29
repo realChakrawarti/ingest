@@ -1,6 +1,7 @@
 import type { NextRequest } from "next/server";
 
 import { getPlaylistsByChannel } from "~/entities/youtube";
+
 import { NxResponse } from "~/shared/lib/next/nx-response";
 
 /**
@@ -42,12 +43,11 @@ export async function GET(request: NextRequest) {
         { code: "YOUTUBE_API", details: err.message },
         400
       );
-    } else {
-      return NxResponse.fail(
-        "Unable to fetch playlists.",
-        { code: "YOUTUBE_API", details: "Unable to fetch playlists." },
-        400
-      );
     }
+    return NxResponse.fail(
+      "Unable to fetch playlists.",
+      { code: "YOUTUBE_API", details: "Unable to fetch playlists." },
+      400
+    );
   }
 }

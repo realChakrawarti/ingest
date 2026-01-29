@@ -45,12 +45,11 @@ export default function AddVideoDialog({
       }));
 
       return;
-    } else {
-      setVideoLink((prev) => ({
-        ...prev,
-        error: "",
-      }));
     }
+    setVideoLink((prev) => ({
+      ...prev,
+      error: "",
+    }));
   };
 
   const addVideoLink = async () => {

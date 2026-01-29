@@ -138,10 +138,10 @@ export default function AddSubredditDialog({
   return (
     <Dialog open={isDialogOpen} onOpenChange={_handleDialogClose}>
       <DialogTrigger asChild>
-        <Button>
+        <Button aria-label="Add subreddit">
           <span className="flex items-center gap-1">
             <SiReddit className="size-8" />
-            Subreddit
+            <p className="hidden md:inline-block">Subreddit</p>
           </span>
         </Button>
       </DialogTrigger>

@@ -42,7 +42,7 @@ export function DeleteModal({
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
           <AlertDialogAction disabled={isDeleting} onClick={onDelete}>
-            {isDeleting ? <Spinner label="Deleting..."></Spinner> : "Continue"}
+            {isDeleting ? <Spinner label="Deleting..." /> : "Continue"}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

@@ -53,7 +53,7 @@ async function getSessionCookieJwks(): Promise<Record<string, string>> {
     if (cacheControl) {
       const maxAgeMatch = cacheControl.match(/max-age=(\d+)/);
       if (maxAgeMatch?.[1]) {
-        maxAge = parseInt(maxAgeMatch[1], 10);
+        maxAge = Number.parseInt(maxAgeMatch[1], 10);
       }
     }
     const expiresAt = Date.now() + maxAge * 1000; // Convert seconds to milliseconds

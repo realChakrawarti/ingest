@@ -1,42 +1,55 @@
 import { type ChangeEvent, useLayoutEffect, useState } from "react";
+import z from "zod";
 
 import { TitleDescriptionSchema } from "~/shared/types-schema/schemas";
 import type { TitleDescriptionType } from "~/shared/types-schema/types";
 
 const initialState: TitleDescriptionType = {
-  title: "",
   description: "",
+  isPublic: true,
+  title: "",
+};
+
+const initialErrorState: Omit<TitleDescriptionType, "isPublic"> & {
+  isPublic: string;
+} = {
+  description: "",
+  isPublic: "",
+  title: "",
 };
 
 export function useMetaValidate({
   title,
   description,
+  isPublic,
 }: {
   title?: string;
   description?: string;
+  isPublic: boolean;
 }) {
   useLayoutEffect(() => {
     if (!title || !description) {
       return;
     }
     setMeta({
-      title,
       description,
+      isPublic,
+      title,
     });
 
     return () => {
       setMeta(initialState);
-      setMetaError(initialState);
+      setMetaError(initialErrorState);
     };
   }, [title, description]);
 
   const [meta, setMeta] = useState(initialState);
 
-  const [metaError, setMetaError] = useState(initialState);
+  const [metaError, setMetaError] = useState(initialErrorState);
 
   function resetState() {
     setMeta(initialState);
-    setMetaError(initialState);
+    setMetaError(initialErrorState);
   }
 
   function handleOnChange(e: ChangeEvent<HTMLInputElement>) {
@@ -55,16 +68,22 @@ export function useMetaValidate({
     const parsedMeta = TitleDescriptionSchema.safeParse(parseMeta);
 
     if (!parsedMeta.success) {
-      const { title = { _errors: [""] }, description = { _errors: [""] } } =
-        parsedMeta.error.format();
+      const {
+        title = { _errors: [""] },
+        description = { _errors: [""] },
+        isPublic = { _errors: [""] },
+      } = z.formatError(parsedMeta.error);
+
       setMetaError({
-        title: title._errors[0],
         description: description._errors[0],
+        isPublic: isPublic?._errors[0],
+        title: title._errors[0],
       });
     } else {
       setMetaError({
-        title: "",
         description: "",
+        isPublic: "",
+        title: "",
       });
     }
   }

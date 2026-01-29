@@ -32,7 +32,7 @@ export default function SubredditTable({
           <TableHead className="max-w-[50px]">SL No</TableHead>
           <TableHead>Subreddit</TableHead>
           <TableHead>Subreddit ID</TableHead>
-          <TableHead></TableHead>
+          <TableHead />
         </TableRow>
       </TableHeader>
       <TableBody>
