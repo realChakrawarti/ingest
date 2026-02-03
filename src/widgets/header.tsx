@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import SmartImage from "~/widgets/smart-image";
 import Link from "next/link";
 
 import appConfig from "~/shared/app-config";
@@ -51,7 +51,7 @@ const Header = () => {
           </SidebarTrigger>
           <Link href="/">
             <h1 className="flex gap-1">
-              <Image
+              <SmartImage
                 src={AppIcon}
                 alt={`${appConfig.marketName} logo`}
                 className="size-7"
