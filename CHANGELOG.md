@@ -2,6 +2,8 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [26.0.2](https://github.com/realChakrawarti/ingest/compare/v26.0.1...v26.0.2) (2026-02-03)
+
 ### [26.0.1](https://github.com/realChakrawarti/ingest/compare/v26.0.0...v26.0.1) (2026-01-29)
 
 
