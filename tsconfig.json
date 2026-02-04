@@ -20,6 +20,7 @@
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "strict": true,
+    "target": "ES2017",
     "typeRoots": ["node_modules/@types"],
     "types": ["youtube"]
   },

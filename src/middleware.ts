@@ -22,7 +22,7 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  const authSessionToken = cookies().get(SESSION_COOKIE_NAME)?.value;
+  const authSessionToken = (await cookies()).get(SESSION_COOKIE_NAME)?.value;
 
   if (!authSessionToken) {
     if (request.nextUrl.pathname.startsWith("/api/")) {
@@ -77,7 +77,7 @@ export const config = {
     "/api/archives/:archiveId/update",
     // Catalogs Routes
     "/api/catalogs",
-    "/api/catalogs/:catalogId/",
+    "/api/catalogs/:catalogId",
     "/api/catalogs/:catalogId/channel",
     "/api/catalogs/:catalogId/delete",
     "/api/catalogs/:catalogId/playlist",

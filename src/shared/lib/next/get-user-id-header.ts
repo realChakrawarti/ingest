@@ -1,7 +1,7 @@
 import { headers } from "next/headers";
 
-export function getUserIdHeader(): string {
-  const headerStore = headers();
+export async function getUserIdHeader(): Promise<string> {
+  const headerStore = await headers();
   const userId = headerStore.get("userId");
 
   if (!userId) {

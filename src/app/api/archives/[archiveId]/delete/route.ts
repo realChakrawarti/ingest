@@ -8,14 +8,14 @@ import { NxResponse } from "~/shared/lib/next/nx-response";
 import Log from "~/shared/utils/terminal-logger";
 
 type ContextParams = {
-  params: {
+  params: Promise<{
     archiveId: string;
-  };
+  }>;
 };
 
 export async function DELETE(_request: NextRequest, ctx: ContextParams) {
-  const userId = getUserIdHeader();
-  const { archiveId } = ctx.params;
+  const userId = await getUserIdHeader();
+  const { archiveId } = await ctx.params;
 
   try {
     await deleteArchive(userId, archiveId);

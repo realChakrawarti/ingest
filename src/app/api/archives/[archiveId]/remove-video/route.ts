@@ -8,14 +8,14 @@ import { getUserIdHeader } from "~/shared/lib/next/get-user-id-header";
 import { NxResponse } from "~/shared/lib/next/nx-response";
 
 type ContextParams = {
-  params: {
+  params: Promise<{
     archiveId: string;
-  };
+  }>;
 };
 
 export async function PATCH(request: NextRequest, ctx: ContextParams) {
-  const userId = getUserIdHeader();
-  const { archiveId } = ctx.params;
+  const userId = await getUserIdHeader();
+  const { archiveId } = await ctx.params;
 
   const body = await request.json();
 

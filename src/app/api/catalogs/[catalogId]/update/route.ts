@@ -8,13 +8,13 @@ import AppErrorCodes from "~/shared/utils/app-error-codes";
 import { Status } from "~/shared/utils/http-status";
 
 type ContextParams = {
-  params: {
+  params: Promise<{
     catalogId: string;
-  };
+  }>;
 };
 
 export async function PATCH(request: NextRequest, ctx: ContextParams) {
-  const { catalogId } = ctx.params;
+  const { catalogId } = await ctx.params;
 
   // Validate catalogId route parameter
   if (!catalogId || catalogId.trim() === "") {

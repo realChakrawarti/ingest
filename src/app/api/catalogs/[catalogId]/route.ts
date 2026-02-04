@@ -8,15 +8,15 @@ import AppErrorCodes from "~/shared/utils/app-error-codes";
 import { Status } from "~/shared/utils/http-status";
 
 type ContextParams = {
-  params: {
+  params: Promise<{
     catalogId: string;
-  };
+  }>;
 };
 
 export async function GET(_request: NextRequest, ctx: ContextParams) {
-  const { catalogId } = ctx.params;
+  const { catalogId } = await ctx.params;
 
-  const userId = getUserIdHeader();
+  const userId = await getUserIdHeader();
   const result = await getCatalogById(catalogId, userId);
 
   if (result.success) {
