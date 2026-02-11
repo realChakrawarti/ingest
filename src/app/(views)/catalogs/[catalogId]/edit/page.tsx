@@ -1,6 +1,6 @@
 "use client";
 
-import { use } from "react";
+import { useParams } from "next/navigation";
 
 import withAuth from "~/features/auth/with-auth-hoc";
 
@@ -10,8 +10,8 @@ type EditCatalogPageParams = {
   catalogId: string;
 };
 
-function EditCatalogPage({ params }: { params: Promise<EditCatalogPageParams> }) {
-  const { catalogId } = use(params);
+function EditCatalogPage() {
+  const { catalogId } = useParams<EditCatalogPageParams>();
   return <EditCatalog catalogId={catalogId} />;
 }
 

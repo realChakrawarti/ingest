@@ -1,5 +1,5 @@
 import { Loader2 } from "lucide-react";
-import { type ChangeEvent, type FormEvent, useState } from "react";
+import { type ChangeEvent, type SubmitEvent, useState } from "react";
 import { toast } from "sonner";
 import type { KeyedMutator } from "swr";
 import useSWRMutation from "swr/mutation";
@@ -68,7 +68,7 @@ export default function CreateCatalogDialog({
       }
     );
 
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: SubmitEvent) => {
     e.preventDefault();
     createNewCatalog();
   };

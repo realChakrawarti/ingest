@@ -25,15 +25,13 @@ export default function Dashboard() {
     data,
     trigger: generateSyncId,
     isMutating: isGenerating,
-  } = useSWRMutation("/users/sync", (url) =>
-    fetchApi(url, { cache: "no-store", method: "POST" })
-  );
+  } = useSWRMutation("/users/sync", (url) => fetchApi(url, { method: "POST" }));
 
   const {
     data: userSyncID,
     isLoading,
     mutate: revalidateSyncId,
-  } = useSWR("/users/sync", (url) => fetchApi(url, { cache: "no-store" }), {
+  } = useSWR("/users/sync", (url) => fetchApi(url), {
     errorRetryCount: 0,
     revalidateOnFocus: false,
   });

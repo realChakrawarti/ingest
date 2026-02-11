@@ -4,6 +4,7 @@ import Link from "next/link";
 import type { ZArchiveValid } from "~/entities/archives/models";
 import type { ZCatalogValid } from "~/entities/catalogs/models";
 
+import appConfig from "~/shared/app-config";
 import fetchApi from "~/shared/lib/api/fetch";
 
 import DetailsCard from "~/widgets/details-card";
@@ -17,24 +18,21 @@ import {
 
 import ContinueWatching from "./continue-watching";
 
-export const dynamic = "force-dynamic";
-export const revalidate = 300; // Cache the page for 5 minutes, unless revalidated on updates
-
 export default async function Explore() {
-  const catalogs = await fetchApi<ZCatalogValid[]>("/catalogs/valid");
-  const archives = await fetchApi<ZArchiveValid[]>("/archives/valid");
+  const [catalogs, archives] = await Promise.all([
+    fetchApi<ZCatalogValid[]>("/catalogs/valid"),
+    fetchApi<ZArchiveValid[]>("/archives/valid"),
+  ]);
 
   const catalogsData = catalogs?.data;
   const archivesData = archives?.data;
-
-  const ENABLE_FEATURED = true;
 
   return (
     <PublicMainContainer className="space-y-4">
       {/* Continue Watching */}
       <ContinueWatching />
       {/* Featured Catalogs */}
-      {catalogsData?.length && ENABLE_FEATURED ? (
+      {catalogsData?.length && appConfig.exploreFeatured ? (
         <section>
           <Title label="Featured Catalogs" type="catalogs" />
           <PublicContentContainer>
@@ -52,7 +50,7 @@ export default async function Explore() {
       ) : null}
 
       {/* Featured Archives */}
-      {archivesData?.length && ENABLE_FEATURED ? (
+      {archivesData?.length && appConfig.exploreFeatured ? (
         <section>
           <Title label="Featured Archives" type="archives" />
           <PublicContentContainer>

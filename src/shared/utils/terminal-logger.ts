@@ -81,8 +81,8 @@ export default class Log {
    * Logs a message for time-consuming operations.
    * @param {string} message - The message related to the timed operation.
    */
-  static time(message: string): void {
-    console.log(`⏳ ${message}`);
+  static time(label: string, message: string): void {
+    console.log(`⏳ ${label}: ${message}`);
   }
 
   /**

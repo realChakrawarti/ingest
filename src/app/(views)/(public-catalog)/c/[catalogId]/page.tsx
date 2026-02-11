@@ -43,7 +43,10 @@ export default async function PublicCatalogPage({
   params,
   searchParams,
 }: PublicCatalogParams) {
-  const resolvedSearchParams = await (searchParams || Promise.resolve({} as { channelId?: string; duration?: "short" | "medium" | "long" }));
+  const resolvedSearchParams = await (searchParams ||
+    Promise.resolve(
+      {} as { channelId?: string; duration?: "short" | "medium" | "long" }
+    ));
   const channelId = resolvedSearchParams?.channelId;
   const duration = resolvedSearchParams?.duration;
 

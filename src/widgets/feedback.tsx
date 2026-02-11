@@ -7,7 +7,7 @@ import {
   MailQuestion,
   PlusCircle,
 } from "lucide-react";
-import { useState } from "react";
+import { type JSX, type SubmitEvent, useState } from "react";
 import { toast } from "sonner";
 
 import fetchApi from "~/shared/lib/api/fetch";
@@ -64,7 +64,7 @@ export default function Feedback() {
   const [feedbackData, setFeedbackData] =
     useState<FeedbackData>(initialFeedbackData);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: SubmitEvent) => {
     e.preventDefault();
 
     const { type, feedback, email = "", name = "" } = feedbackData;

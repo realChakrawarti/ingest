@@ -1,21 +1,3 @@
-@font-face {
-  font-family: hilmar;
-  src: url(../../../public/fonts/Hilmar-Light.otf);
-}
-
-@font-face {
-  font-family: outfit;
-  src: url(../../../public/fonts/Outfit.woff2);
-}
-
-.font-hilmar {
-  font-family: hilmar;
-}
-
-.font-outfit {
-  font-family: outfit;
-}
-
 @keyframes scroll {
   0% {
     transform: translateX(0);

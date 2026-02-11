@@ -18,6 +18,11 @@ class AppConfig {
   private _watchedPercentage = 94;
   private _tracesSampleRate = 0.5;
   private _metadataUpdateCooldown = time.hours(4);
+  private _exploreFeatured = true;
+
+  get exploreFeatured(): boolean {
+    return this._exploreFeatured;
+  }
 
   get metadataUpdateCooldown(): number {
     return this._metadataUpdateCooldown;

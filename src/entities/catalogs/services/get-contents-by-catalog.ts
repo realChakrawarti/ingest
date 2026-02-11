@@ -41,8 +41,7 @@ async function updateChannelLogos(
   if (channelList.length) {
     try {
       const result = await fetch(
-        YOUTUBE_CHANNEL_INFORMATION_BY_IDS(channelList, 50),
-        { cache: "no-store" }
+        YOUTUBE_CHANNEL_INFORMATION_BY_IDS(channelList, 50)
       );
       const data = await result.json();
 
@@ -285,7 +284,6 @@ async function getSubredditPosts(list: ZCatalogSubreddit[]) {
       headers.set("Authorization", `Bearer ${accessToken}`);
 
       return fetch(redditUrl, {
-        cache: "no-store",
         headers: headers,
       })
         .then((data) => {
@@ -371,8 +369,7 @@ async function getVideosFromCatalogItem(
   const playlistItemData: ZVideoMetadataWithoutContent[] = [];
   try {
     const result = await fetch(
-      YOUTUBE_CHANNEL_PLAYLIST_VIDEOS(playlistId, appConfig.catalogVideoLimit),
-      { cache: "no-store" }
+      YOUTUBE_CHANNEL_PLAYLIST_VIDEOS(playlistId, appConfig.catalogVideoLimit)
     ).then((data) => data.json());
 
     const currentTime = Date.now();

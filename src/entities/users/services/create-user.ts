@@ -7,8 +7,8 @@
 
 import { refs } from "~/shared/lib/firebase/refs";
 
-export const createUser = async (uid: string): Promise<string> => {
-  const userRef = refs.users.doc(uid);
+export const createUser = async (userId: string): Promise<string> => {
+  const userRef = refs.users.doc(userId);
   const userSnap = await userRef.get();
 
   // Check if the user document already exists

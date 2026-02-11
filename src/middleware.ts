@@ -22,7 +22,8 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  const authSessionToken = (await cookies()).get(SESSION_COOKIE_NAME)?.value;
+  const cookieStore = await cookies();
+  const authSessionToken = cookieStore.get(SESSION_COOKIE_NAME)?.value;
 
   if (!authSessionToken) {
     if (request.nextUrl.pathname.startsWith("/api/")) {

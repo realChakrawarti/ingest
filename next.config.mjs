@@ -1,5 +1,7 @@
 /** @type {import('next').NextConfig} */
+
 import { withSentryConfig } from "@sentry/nextjs";
+
 const nextConfig = {
   // Shows logs of API calls made during development
   logging: {
@@ -11,18 +13,23 @@ const nextConfig = {
 };
 
 export default withSentryConfig(nextConfig, {
+  authToken: process.env.SENTRY_AUTH_TOKEN,
   org: process.env.SENTRY_ORG,
+  outputFileTracingRoot: import.meta.dirname,
   project: process.env.SENTRY_PROJECT,
   silent: !process.env.SENTRY_CI,
-  disableLogger: process.env.SENTRY_LOGGER,
   sourcemaps: {
     disable: !process.env.VERCEL,
   },
-  authToken: process.env.SENTRY_AUTH_TOKEN,
-  widenClientFileUpload: true,
   tunnelRoute: "/sentry-report",
-  automaticVercelMonitors: true,
-  reactComponentAnnotation: {
-    enabled: true,
+  webpack: {
+    automaticVercelMonitors: true,
+    reactComponentAnnotation: {
+      enabled: true,
+    },
+    treeshake: {
+      removeDebugLogging: process.env.SENTRY_LOGGER,
+    },
   },
+  widenClientFileUpload: true,
 });

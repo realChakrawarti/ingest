@@ -38,7 +38,7 @@ export default function EditCatalog({ catalogId }: { catalogId: string }) {
     mutate: revalidateCatalog,
   } = useSWR(
     catalogId ? `/catalogs/${catalogId}` : null,
-    (url) => fetchApi<ZCatalogByID>(url, { cache: "no-store" }),
+    (url) => fetchApi<ZCatalogByID>(url),
     { revalidateOnFocus: false }
   );
 

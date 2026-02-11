@@ -1,16 +1,17 @@
 "use client";
 
-import { use } from "react";
+import { useParams } from "next/navigation";
 
 import withAuth from "~/features/auth/with-auth-hoc";
+
 import EditArchive from "~/views/edit-archive";
 
 type EditArchivePageParams = {
   archiveId: string;
 };
 
-function EditArchivePage({ params }: { params: Promise<EditArchivePageParams> }) {
-  const { archiveId } = use(params);
+function EditArchivePage() {
+  const { archiveId } = useParams<EditArchivePageParams>();
   return <EditArchive archiveId={archiveId} />;
 }
 

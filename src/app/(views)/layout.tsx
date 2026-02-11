@@ -1,6 +1,7 @@
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import "~/app/styles/globals.css";
+import "~/app/styles/custom.css";
 
 import { GoogleAnalytics } from "@next/third-parties/google";
 import * as Sentry from "@sentry/nextjs";
@@ -8,13 +9,12 @@ import type { Metadata } from "next";
 import Script from "next/script";
 
 import appConfig from "~/shared/app-config";
+import { fontHilmar, fontOutfit } from "~/shared/lib/fonts";
 import { Toaster } from "~/shared/ui/sonner";
-import isDevelopment from "~/shared/utils/is-development";
 
 import AppSidebar from "~/widgets/app-sidebar";
 import Footer from "~/widgets/footer";
 import Header from "~/widgets/header";
-import { ReactScan } from "~/widgets/react-scan";
 
 import Providers from "./context";
 export async function generateMetadata(): Promise<Metadata> {
@@ -44,8 +44,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html className="h-full" lang="en" suppressHydrationWarning>
-      {isDevelopment() ? <ReactScan /> : null}
+    <html
+      className={`h-full ${fontHilmar.variable} ${fontOutfit.variable}`}
+      lang="en"
+      suppressHydrationWarning
+    >
       <head>
         <Script
           src="https://www.youtube.com/iframe_api"
