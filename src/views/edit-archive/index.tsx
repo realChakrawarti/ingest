@@ -25,7 +25,7 @@ export default function EditArchive({ archiveId }: { archiveId: string }) {
     mutate: revalidateArchive,
   } = useSWR(
     archiveId ? `/archives/${archiveId}` : null,
-    (url) => fetchApi<ZArchiveByID>(url, { cache: "no-store" }),
+    (url) => fetchApi<ZArchiveByID>(url),
     { revalidateOnFocus: false }
   );
 

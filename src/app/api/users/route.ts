@@ -5,6 +5,8 @@ import { createUser } from "~/entities/users";
 import { SESSION_COOKIE_NAME } from "~/shared/lib/constants";
 import { admin } from "~/shared/lib/firebase/admin";
 import { NxResponse } from "~/shared/lib/next/nx-response";
+import AppErrorCodes from "~/shared/utils/app-error-codes";
+import { Status } from "~/shared/utils/http-status";
 import { time } from "~/shared/utils/time";
 
 export async function POST(request: NextRequest) {
@@ -18,6 +20,7 @@ export async function POST(request: NextRequest) {
   try {
     const userDetails = await admin.auth.verifyIdToken(token);
     const message = await createUser(userDetails.uid);
+
     const response = NxResponse.success(message, {}, 201);
 
     const session = await admin.auth.createSessionCookie(token, {
@@ -25,20 +28,22 @@ export async function POST(request: NextRequest) {
     });
 
     response.cookies.set(SESSION_COOKIE_NAME, session, sessionCookieOptions);
-
     return response;
   } catch (err) {
     if (err instanceof Error) {
       return NxResponse.fail(
         "Unable to verify credentials. Please login again.",
-        { code: "LOGIN_FAILED", details: err.message },
-        401
+        { code: AppErrorCodes.AUTHENTICATION_FAILED, details: err.message },
+        Status.Unauthorized
       );
     }
     return NxResponse.fail(
       "Unable to verify credentials. Please login again.",
-      { code: "LOGIN_FAILED", details: JSON.stringify(err) },
-      401
+      {
+        code: AppErrorCodes.AUTHENTICATION_FAILED,
+        details: JSON.stringify(err),
+      },
+      Status.Unauthorized
     );
   }
 }

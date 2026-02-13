@@ -9,7 +9,7 @@ import AppErrorCodes from "~/shared/utils/app-error-codes";
 import { Status } from "~/shared/utils/http-status";
 
 export async function GET() {
-  const userId = getUserIdHeader();
+  const userId = await getUserIdHeader();
   try {
     const data = await getCatalogByUser(userId);
     return NxResponse.success(
@@ -33,7 +33,7 @@ export async function GET() {
 }
 
 export async function POST(request: NextRequest) {
-  const userId = getUserIdHeader();
+  const userId = await getUserIdHeader();
 
   const body = await request.json();
 

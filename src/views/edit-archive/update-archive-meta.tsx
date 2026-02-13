@@ -1,5 +1,5 @@
 import { Edit, Loader2 } from "lucide-react";
-import type { ChangeEvent, FormEvent } from "react";
+import type { ChangeEvent, SubmitEvent } from "react";
 import { useState } from "react";
 import { toast } from "sonner";
 import type { KeyedMutator } from "swr";
@@ -77,7 +77,7 @@ export default function UpdateArchiveMeta({
       }
     );
 
-  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: SubmitEvent) {
     e.preventDefault();
     updateArchiveMeta();
   }

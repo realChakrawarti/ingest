@@ -13,9 +13,7 @@ export default async function PublicArchive({
 }: {
   archiveId: string;
 }) {
-  const result = await fetchApi<ZArchiveByID>(`/archives/${archiveId}`, {
-    cache: "no-store",
-  });
+  const result = await fetchApi<ZArchiveByID>(`/archives/${archiveId}`);
   const archiveData = result.data;
 
   if (!archiveData) {

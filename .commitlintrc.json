@@ -2,7 +2,7 @@
   "$schema": "https://json.schemastore.org/commitlintrc.json",
   "extends": ["@commitlint/config-conventional"],
   "rules": {
-    "type-enum": [2, "always", ["chore", "feat", "fix", "improve"]],
+    "type-enum": [2, "always", ["chore", "feat", "fix", "improve", "style"]],
     "subject-empty": [2, "never"],
     "subject-full-stop": [2, "never", "."],
     "type-case": [2, "always", "lower-case"],

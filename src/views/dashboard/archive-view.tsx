@@ -21,7 +21,7 @@ export default function ArchiveView() {
     isLoading: isArchiveLoading,
     error: isArchiveError,
     mutate,
-  } = useSWR("/archives", (url) => fetchApi(url, { cache: "no-store" }));
+  } = useSWR("/archives", (url) => fetchApi(url));
 
   const handleArchiveDelete = async (archiveId: string) => {
     if (archiveId) {

@@ -20,9 +20,9 @@ const config: Config = {
         "accordion-up": "accordion-up 0.2s ease-out",
       },
       backgroundImage: {
-        "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
         "gradient-conic":
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
+        "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -71,15 +71,19 @@ const config: Config = {
           foreground: "hsl(var(--secondary-foreground))",
         },
         sidebar: {
-          DEFAULT: "hsl(var(--sidebar-background))",
           accent: "hsl(var(--sidebar-accent))",
           "accent-foreground": "hsl(var(--sidebar-accent-foreground))",
           border: "hsl(var(--sidebar-border))",
+          DEFAULT: "hsl(var(--sidebar-background))",
           foreground: "hsl(var(--sidebar-foreground))",
           primary: "hsl(var(--sidebar-primary))",
           "primary-foreground": "hsl(var(--sidebar-primary-foreground))",
           ring: "hsl(var(--sidebar-ring))",
         },
+      },
+      fontFamily: {
+        hilmar: ["var(--font-hilmar)"],
+        outfit: ["var(--font-outfit)"],
       },
       keyframes: {
         "accordion-down": {

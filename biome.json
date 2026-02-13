@@ -30,15 +30,24 @@
     },
     "enabled": true
   },
+  "css": {
+    "formatter": {
+      "enabled": true,
+      "indentStyle": "space"
+    }
+  },
   "files": {
     "ignoreUnknown": false,
     "includes": [
       "src/**/*.ts",
       "src/**/*.tsx",
+      "src/**/*.css",
       "package.json",
       "tsconfig.json",
       "biome.json",
-      "next.config.mjs"
+      "next.config.mjs",
+      "tailwind.config.ts",
+      ".zed/settings.json"
     ]
   },
   "formatter": {

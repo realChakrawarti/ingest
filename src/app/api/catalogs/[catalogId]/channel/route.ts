@@ -8,14 +8,14 @@ import { getUserIdHeader } from "~/shared/lib/next/get-user-id-header";
 import { NxResponse } from "~/shared/lib/next/nx-response";
 
 type ContextParams = {
-  params: {
+  params: Promise<{
     catalogId: string;
-  };
+  }>;
 };
 
 export async function DELETE(request: NextRequest, ctx: ContextParams) {
-  const userId = getUserIdHeader();
-  const { catalogId } = ctx.params;
+  const userId = await getUserIdHeader();
+  const { catalogId } = await ctx.params;
 
   const body = await request.json();
 
@@ -34,8 +34,8 @@ export async function DELETE(request: NextRequest, ctx: ContextParams) {
 }
 
 export async function PATCH(request: NextRequest, ctx: ContextParams) {
-  const userId = getUserIdHeader();
-  const { catalogId } = ctx.params;
+  const userId = await getUserIdHeader();
+  const { catalogId } = await ctx.params;
 
   if (!catalogId) {
     return NxResponse.fail(
