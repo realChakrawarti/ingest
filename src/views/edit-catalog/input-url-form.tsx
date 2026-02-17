@@ -9,7 +9,7 @@ import { toast } from "sonner";
 
 import type { ChannelDetails } from "~/entities/youtube/models";
 
-import fetchApi from "~/shared/lib/api/fetch";
+import fetchApi, { type EndpointURL } from "~/shared/lib/api/fetch";
 import { Regex } from "~/shared/lib/constants";
 import { Button } from "~/shared/ui/button";
 import { Checkbox } from "~/shared/ui/checkbox";
@@ -84,7 +84,7 @@ export default function InputURLForm() {
         return;
       }
 
-      let endpoint: string;
+      let endpoint: EndpointURL;
       if (channel?.startsWith("@")) {
         endpoint = `/youtube/channel?channelHandle=${channel}`;
       } else {

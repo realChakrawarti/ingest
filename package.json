@@ -57,7 +57,7 @@
     "vitest": "^3.2.4"
   },
   "engines": {
-    "node": "22.16.0"
+    "node": "22.22.0"
   },
   "name": "ingest",
   "packageManager": "pnpm@10.9.0+sha512.0486e394640d3c1fb3c9d43d49cf92879ff74f8516959c235308f5a8f62e2e19528a65cdc2a3058f587cde71eba3d5b56327c8c33a97e4c4051ca48a10ca2d5f",
@@ -68,7 +68,8 @@
     }
   },
   "scripts": {
-    "build": "next build",
+    "build": "rmdir /s .next && next build",
+    "build:debug": "rmdir /s .next && next build --debug-prerender",
     "deps": "pnpx dependex",
     "dev": "concurrently \"pnpm run emulate-firebase\" \"next dev --turbopack\" --kill-others",
     "dev:seed": "concurrently \"pnpm run emulate-firebase:import-seed\" \"next dev\" --kill-others",
@@ -85,5 +86,5 @@
     "start": "next start",
     "ui:migrate": "pnpx shadcn@latest migrate radix"
   },
-  "version": "26.0.3"
+  "version": "26.0.4"
 }
