@@ -86,5 +86,5 @@
     "start": "next start",
     "ui:migrate": "pnpx shadcn@latest migrate radix"
   },
-  "version": "26.0.3"
+  "version": "26.0.4"
 }
