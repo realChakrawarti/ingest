@@ -68,23 +68,14 @@
     }
   },
   "scripts": {
-    "build": "rmdir /s .next && next build",
-    "build:debug": "rmdir /s .next && next build --debug-prerender",
-    "deps": "pnpx dependex",
-    "dev": "concurrently \"pnpm run emulate-firebase\" \"next dev --turbopack\" --kill-others",
-    "dev:seed": "concurrently \"pnpm run emulate-firebase:import-seed\" \"next dev\" --kill-others",
-    "emulate-firebase": "firebase emulators:start --project ingest-dev",
-    "emulate-firebase:export-seed": "firebase --project ingest-dev emulators:export seed",
-    "emulate-firebase:import-seed": "firebase emulators:start --project ingest-dev --import=seed",
+    "build": "next build",
+    "dev": "next dev",
     "lint": "pnpm exec biome lint --log-level=error --max-diagnostics=none --colors=off",
     "lint:fix": "pnpm exec biome format --write .",
     "prepare": "husky",
     "release": "standard-version",
-    "release:major": "standard-version --release-as major",
-    "release:minor": "standard-version --release-as minor",
-    "release:patch": "standard-version --release-as patch",
     "start": "next start",
     "ui:migrate": "pnpx shadcn@latest migrate radix"
   },
-  "version": "26.0.4"
+  "version": "26.0.5"
 }
