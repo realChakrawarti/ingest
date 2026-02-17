@@ -6,13 +6,13 @@ import fetchApi from "~/shared/lib/api/fetch";
 import PublicArchive from "~/views/public-archive";
 
 type PublicArchiveParams = {
-  params: { archiveId: string };
+  params: Promise<{ archiveId: string }>;
 };
 
 export async function generateMetadata({
   params,
 }: PublicArchiveParams): Promise<Metadata> {
-  const { archiveId } = params;
+  const { archiveId } = await params;
 
   const result = await fetchApi(`/archives/${archiveId}`);
   const archiveData = result.data;
@@ -29,8 +29,9 @@ export async function generateMetadata({
   };
 }
 
-export default function PublicArchivePage({
-  params: { archiveId },
+export default async function PublicArchivePage({
+  params,
 }: PublicArchiveParams) {
+  const { archiveId } = await params;
   return <PublicArchive archiveId={archiveId} />;
 }

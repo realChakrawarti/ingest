@@ -4,6 +4,10 @@ const Invalid = {
   INVALID_METADATA_UPDATE: "INVALID_METADATA_UPDATE",
 } as const;
 
+const Unauthorized = {
+  AUTHENTICATION_FAILED: "AUTHENTICATION_FAILED",
+} as const;
+
 const Get = {
   GET_ARCHIVE_BY_ID_FAILED: "GET_ARCHIVE_BY_ID_FAILED",
   GET_CATALOG_BY_ID_FAILED: "GET_CATALOG_BY_ID_FAILED",
@@ -16,6 +20,7 @@ const Get = {
 const AppErrorCodes = {
   ...Invalid,
   ...Get,
+  ...Unauthorized,
 };
 
 export default AppErrorCodes;

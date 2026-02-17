@@ -1,5 +1,5 @@
 import { Edit, Loader2 } from "lucide-react";
-import { type ChangeEvent, type FormEvent, useState } from "react";
+import { type ChangeEvent, type SubmitEvent, useState } from "react";
 import { toast } from "sonner";
 import type { KeyedMutator } from "swr";
 import useSWRMutation from "swr/mutation";
@@ -76,7 +76,7 @@ export default function UpdateCatalogMeta({
       }
     );
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: SubmitEvent) => {
     e.preventDefault();
     updateCatalogMeta();
   };

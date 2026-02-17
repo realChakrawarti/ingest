@@ -25,9 +25,7 @@ export default function CatalogView() {
     isLoading: isCatalogLoading,
     error: isCatalogError,
     mutate,
-  } = useSWR("/catalogs", (url) =>
-    fetchApi<ZCatalogByUser[]>(url, { cache: "no-store" })
-  );
+  } = useSWR("/catalogs", (url) => fetchApi<ZCatalogByUser[]>(url));
 
   const catalogsData = catalogs?.data;
 

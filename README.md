@@ -4,6 +4,8 @@
 
 ![Project Analytics](https://repobeats.axiom.co/api/embed/aa9709544fd4bfdfd08f689d869b2be6d75bdfd9.svg "Repobeats analytics image")
 
+![CodeRabbit Pull Request Reviews](https://img.shields.io/coderabbit/prs/github/realChakrawarti/ingest?utm_source=oss&utm_medium=github&utm_campaign=realChakrawarti%2Fingest&labelColor=171717&color=FF570A&link=https%3A%2F%2Fcoderabbit.ai&label=CodeRabbit+Reviews)
+
 <div style="display: flex; justify-content: center; gap: 10px; flex-wrap: wrap;">
 <img src="https://img.shields.io/github/stars/realChakrawarti/ingest" alt="GitHub Repo stars" />
 <img src="https://img.shields.io/github/license/realChakrawarti/ingest" alt="GitHub License" />
@@ -15,7 +17,6 @@
 ## Introduction
 
 ![ingest-homepage](./screen-capture.png)
-
 
 Do you ever find yourself lost in a YouTube wormhole, spending hours watching unrelated videos? Ingest is here to help!
 
