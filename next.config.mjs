@@ -21,6 +21,7 @@ export default withSentryConfig(nextConfig, {
   sourcemaps: {
     disable: !process.env.VERCEL,
   },
+  telemetry: process.env.VERCEL,
   tunnelRoute: "/sentry-report",
   webpack: {
     automaticVercelMonitors: true,

@@ -12,16 +12,16 @@ const envVariables = z.object({
   NEXT_PUBLIC_API_BASE_URL: z.string(),
   NEXT_PUBLIC_FIREBASE_API_KEY: z.string(),
   NEXT_PUBLIC_FIREBASE_PROJECT_ID: z.string(),
+  NEXT_PUBLIC_SENTRY_DSN: z.string(),
   OCTOKIT_API: z.string(),
   REDDIT_CLIENT_ID: z.string(),
   REDDIT_CLIENT_SECRET: z.string(),
-  YOUTUBE_API_KEY: z.string(),
-  SENTRY_LOGGER: z.boolean(),
-  SENTRY_CI: z.boolean(),
-  SENTRY_PROJECT: z.string(),
-  SENTRY_ORG: z.string(),
-  NEXT_PUBLIC_SENTRY_DSN: z.string(),
   SENTRY_AUTH_TOKEN: z.string(),
+  SENTRY_CI: z.boolean(),
+  SENTRY_LOGGER: z.boolean(),
+  SENTRY_ORG: z.string(),
+  SENTRY_PROJECT: z.string(),
+  YOUTUBE_API_KEY: z.string(),
 });
 
 envVariables.parse(process.env);
