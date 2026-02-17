@@ -7,7 +7,7 @@
 | @google-analytics/data | https://github.com/googleapis/google-cloud-node/tree/main/packages/google-analytics-data | https://github.com/googleapis/google-cloud-node.git | Data client for Node.js | ^4.12.0 | 5.2.1 | ✅ | 6.69MB |
 | @icons-pack/react-simple-icons | https://github.com/icons-pack/react-simple-icons#readme | https://github.com/icons-pack/react-simple-icons.git | This package provides the Simple Icons packaged as a set of React components. | ^10.2.0 | 13.11.2 | ✅ | 26.33MB |
 | @next/third-parties | https://github.com/vercel/next.js#readme | https://github.com/vercel/next.js.git | `@next/third-parties` is a collection of components and utilities that can be used to efficiently load third-party libraries into your Next.js application. | 15.5.12 | 16.1.6 | ✅ | 14.81KB |
-| @sentry/nextjs | https://github.com/getsentry/sentry-javascript/tree/master/packages/nextjs | N/A | Official Sentry SDK for Next.js | ^10.32.1 | 10.38.0 | ✅ | 1.88MB |
+| @sentry/nextjs | https://github.com/getsentry/sentry-javascript/tree/master/packages/nextjs | N/A | Official Sentry SDK for Next.js | ^10.32.1 | 10.39.0 | ✅ | 1.94MB |
 | canvas-confetti | https://github.com/catdad/canvas-confetti#readme | https://github.com/catdad/canvas-confetti.git | performant confetti animation in the browser | ^1.9.3 | 1.9.4 | ✅ | 92.37KB |
 | class-variance-authority | https://github.com/joe-bell/cva#readme | https://github.com/joe-bell/cva.git | Class Variance Authority 🧬 | ^0.7.1 | 0.7.1 | ❌ | 22.07KB |
 | cloudflare | N/A | N/A | The official TypeScript library for the Cloudflare API | ^5.0.0 | 5.2.0 | ✅ | 26.39MB |
@@ -21,7 +21,7 @@
 | jose | https://github.com/panva/jose | https://github.com/panva/jose.git | JWA, JWS, JWE, JWT, JWK, JWKS for Node.js, Browser, Cloudflare Workers, Deno, Bun, and other Web-interoperable runtimes | ^6.0.11 | 6.1.3 | ✅ | 257.51KB |
 | linkify-react | https://linkify.js.org | https://github.com/nfrasser/linkifyjs.git | React element interface for linkifyjs | ^4.2.0 | 4.3.2 | ✅ | 17.87KB |
 | linkifyjs | https://linkify.js.org | https://github.com/nfrasser/linkifyjs.git | Find URLs, email addresses, #hashtags and @mentions in plain-text strings, then convert them into HTML <a> links. | ^4.2.0 | 4.3.2 | ✅ | 259.63KB |
-| lucide-react | https://lucide.dev | https://github.com/lucide-icons/lucide.git | A Lucide icon library package for React applications. | ^0.439.0 | 0.563.0 | ✅ | 36.21MB |
+| lucide-react | https://lucide.dev | https://github.com/lucide-icons/lucide.git | A Lucide icon library package for React applications. | ^0.439.0 | 0.574.0 | ✅ | 36.50MB |
 | nanoid | https://github.com/ai/nanoid#readme | https://github.com/ai/nanoid.git | A tiny (118 bytes), secure URL-friendly unique string ID generator | ^5.1.0 | 5.1.6 | ✅ | 12.26KB |
 | next | https://nextjs.org | https://github.com/vercel/next.js.git | The React Framework | 15.5.12 | 16.1.6 | ✅ | 141.57MB |
 | next-themes | https://github.com/pacocoursey/next-themes#readme | https://github.com/pacocoursey/next-themes.git | An abstraction for themes in your React app. | ^0.4.6 | 0.4.6 | ❌ | 33.78KB |
@@ -35,7 +35,7 @@
 | sonner | https://sonner.emilkowal.ski/ | https://github.com/emilkowalski/sonner.git | An opinionated toast component for React. | ^2.0.6 | 2.0.7 | ✅ | 165.78KB |
 | standard-version | https://github.com/conventional-changelog/standard-version#readme | https://github.com/conventional-changelog/standard-version.git | replacement for `npm version` with automatic CHANGELOG generation | ^9.5.0 | 9.5.0 | ❌ | 136.39KB |
 | swr | https://swr.vercel.app | https://github.com/vercel/swr.git | React Hooks library for remote data fetching | ^2.3.3 | 2.4.0 | ✅ | 309.78KB |
-| tailwind-merge | https://github.com/dcastil/tailwind-merge | https://github.com/dcastil/tailwind-merge.git | Merge Tailwind CSS classes without style conflicts | ^2.6.0 | 3.4.0 | ✅ | 934.34KB |
+| tailwind-merge | https://github.com/dcastil/tailwind-merge | https://github.com/dcastil/tailwind-merge.git | Merge Tailwind CSS classes without style conflicts | ^2.6.0 | 3.4.1 | ✅ | 939.77KB |
 | tailwind-variants | https://github.com/heroui-inc/tailwind-variants#readme | https://github.com/heroui-inc/tailwind-variants.git | 🦄 Tailwindcss first-class variant API | ^0.2.1 | 3.2.2 | ✅ | 60.99KB |
 | tailwindcss-animate | N/A | N/A | A Tailwind CSS plugin for creating beautiful animations. | ^1.0.7 | 1.0.7 | ❌ | 18.12KB |
 | zod | https://zod.dev | https://github.com/colinhacks/zod.git | TypeScript-first schema declaration and validation library with static type inference | ^4.1.8 | 4.3.6 | ✅ | 4.34MB |
@@ -47,7 +47,7 @@
 
 | Package name | Homepage | GitHub | Description | Installed version | Latest version | Upgrade available | Size |
 | - | - | - | - | - | - | - | - |    
-| @biomejs/biome | https://biomejs.dev | https://github.com/biomejs/biome.git | Biome is a toolchain for the web: formatter, linter and more | 2.0.6 | 2.3.14 | ✅ | 628.47KB |
+| @biomejs/biome | https://biomejs.dev | https://github.com/biomejs/biome.git | Biome is a toolchain for the web: formatter, linter and more | 2.0.6 | 2.4.2 | ✅ | 651.70KB |
 | @commitlint/cli | https://commitlint.js.org/ | N/A | Lint your commit messages | ^19.7.1 | 20.4.1 | ✅ | 32.46KB |
 | @commitlint/config-conventional | https://commitlint.js.org/ | N/A | Shareable commitlint config enforcing conventional commits | ^19.7.1 | 20.4.1 | ✅ | 18.53KB |
 | @types/canvas-confetti | https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/canvas-confetti | N/A | TypeScript definitions for canvas-confetti | ^1.9.0 | 1.9.0 | ❌ | 10.78KB |
@@ -57,7 +57,7 @@
 | @types/react-slick | https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/react-slick | N/A | TypeScript definitions for react-slick | ^0.23.13 | 0.23.13 | ❌ | 6.11KB |
 | @types/youtube | https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/youtube | N/A | TypeScript definitions for youtube | ^0.1.2 | 0.1.2 | ❌ | 31.01KB |
 | concurrently | https://github.com/open-cli-tools/concurrently#readme | https://github.com/open-cli-tools/concurrently.git | Run commands concurrently | ^9.1.2 | 9.2.1 | ✅ | 421.54KB |
-| firebase-tools | https://github.com/firebase/firebase-tools | https://github.com/firebase/firebase-tools.git | Command-Line Interface for Firebase | ^13.31.1 | 15.5.1 | ✅ | 4.19MB |
+| firebase-tools | https://github.com/firebase/firebase-tools | https://github.com/firebase/firebase-tools.git | Command-Line Interface for Firebase | ^13.31.1 | 15.6.0 | ✅ | 4.21MB |
 | husky | https://github.com/typicode/husky#readme | https://github.com/typicode/husky.git | Modern native Git hooks | ^9.1.7 | 9.1.7 | ❌ | 4.04KB |
 | postcss | https://postcss.org/ | https://github.com/postcss/postcss.git | Tool for transforming styles with JS plugins | ^8.5.2 | 8.5.6 | ✅ | 204.34KB |
 | tailwindcss | https://tailwindcss.com | https://github.com/tailwindlabs/tailwindcss.git | A utility-first CSS framework for rapidly building custom user interfaces. | ^3.4.17 | 4.1.18 | ✅ | 748.83KB |
