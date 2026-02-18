@@ -1,6 +1,3 @@
-"use client";
-
-import dynamic from "next/dynamic";
 import type { ReactNode } from "react";
 
 import type { ZContentByCatalog } from "~/entities/catalogs/models";
@@ -30,12 +27,8 @@ import CatalogInformationPopover from "./catalog-information-popover";
 import FilterChannel, { CurrentActive } from "./filter-channel";
 import { filterVideos, getActiveChannelIds } from "./helper-methods";
 import NextUpdateToast from "./next-update-toast";
+import ShareCatalog from "./share-catalog";
 import SubredditPosts from "./subreddit-posts";
-
-// Refer: https://nextjs.org/docs/pages/building-your-application/optimizing/lazy-loading#with-no-ssr
-const DynamicShareCatalog = dynamic(() => import("./share-catalog"), {
-  ssr: false,
-});
 
 export default async function PubliCatalog({
   channelId = "",
@@ -116,14 +109,14 @@ export default async function PubliCatalog({
                     align="end"
                     className="border-none flex flex-col gap-2 w-44 rounded-lg"
                   >
-                    <DropdownMenuItem className="p-2 rounded-lg">
-                      <DynamicShareCatalog
+                    <DropdownMenuItem className="p-2 rounded-lg cursor-pointer">
+                      <ShareCatalog
                         catalogId={catalogId}
                         catalogTitle={catalogTitle}
                         catalogDescription={catalogDescription}
                       />
                     </DropdownMenuItem>
-                    <DropdownMenuItem className="p-2 rounded-lg">
+                    <DropdownMenuItem className="p-2 rounded-lg cursor-pointer">
                       <AddToFavorites
                         catalogId={catalogId}
                         catalogTitle={catalogTitle}

@@ -51,7 +51,7 @@ export default function Dashboard() {
   const { setLocalUserSettingsField } = useLocalUserSettings(null);
 
   useEffect(() => {
-    if (userSyncID?.data.syncId) {
+    if (userSyncID?.data?.syncId) {
       setLocalUserSettingsField("syncId", userSyncID.data.syncId);
     }
   }, [userSyncID, setLocalUserSettingsField]);
@@ -87,7 +87,7 @@ export default function Dashboard() {
       <div className="flex items-center justify-between">
         <h1 className="px-3 text-2xl tracking-wide">Dashboard</h1>
         {isLoading && <Skeleton className="w-40 h-7 mx-3" />}
-        {userSyncID?.data.syncId && !isLoading && (
+        {userSyncID?.data?.syncId && !isLoading && (
           <div className="mx-3 flex items-center gap-2 relative">
             <p>
               <span className="text-foreground-muted">
@@ -135,7 +135,7 @@ export default function Dashboard() {
             />
           </div>
         )}
-        {!userSyncID?.data.syncId && !isLoading && (
+        {!userSyncID?.data?.syncId && !isLoading && (
           <Button onClick={createSyncID} className="mx-3" variant="outline">
             {isGenerating ? (
               <span className="flex items-center gap-2">
