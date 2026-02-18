@@ -62,6 +62,7 @@ Before you begin contributing, make sure you have the necessary dependencies ins
 
 - Make sure you have [git](https://git-scm.com/downloads) installed.
 - Make sure you have [pnpm](https://pnpm.io/installation) installed.
+- Make sure you have [make](https://winget.run/pkg/GnuWin32/Make) installed.
 - Fork the [repository](https://github.com/realChakrawarti/ingest) by
   clicking on the **[Fork](https://github.com/realChakrawarti/ingest/fork)** button on the repository's page. This creates a copy of the code under your GitHub user account.
 
@@ -94,7 +95,7 @@ Before you begin contributing, make sure you have the necessary dependencies ins
 - Install all the project dependencies
 
   ```bash
-  pnpm install
+  make setup
   ```
 
 ### Environment Variables
@@ -117,13 +118,13 @@ The project includes various scripts for development tasks. You can run them usi
 #### Firebase emulation without seed data
 
 ```bash
-pnpm dev
+make dev
 ```
 
 #### Firebase emulation with seed data (Recommended for first-time setup)
 
 ```bash
-pnpm dev:seed
+make dev-seed
 ```
 
 ## Commit Messages

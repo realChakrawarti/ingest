@@ -33,7 +33,6 @@
 | react-slick | https://react-slick.neostack.com | https://github.com/akiran/react-slick.git |  React port of slick carousel | ^0.30.3 | 0.31.0 | ✅ | 774.91KB |
 | slick-carousel | https://github.com/kenwheeler/slick#readme | https://github.com/kenwheeler/slick.git | the last carousel you'll ever need | ^1.8.1 | 1.8.1 | ❌ | N/A |
 | sonner | https://sonner.emilkowal.ski/ | https://github.com/emilkowalski/sonner.git | An opinionated toast component for React. | ^2.0.6 | 2.0.7 | ✅ | 165.78KB |
-| standard-version | https://github.com/conventional-changelog/standard-version#readme | https://github.com/conventional-changelog/standard-version.git | replacement for `npm version` with automatic CHANGELOG generation | ^9.5.0 | 9.5.0 | ❌ | 136.39KB |
 | swr | https://swr.vercel.app | https://github.com/vercel/swr.git | React Hooks library for remote data fetching | ^2.3.3 | 2.4.0 | ✅ | 309.78KB |
 | tailwind-merge | https://github.com/dcastil/tailwind-merge | https://github.com/dcastil/tailwind-merge.git | Merge Tailwind CSS classes without style conflicts | ^2.6.0 | 3.4.1 | ✅ | 939.77KB |
 | tailwind-variants | https://github.com/heroui-inc/tailwind-variants#readme | https://github.com/heroui-inc/tailwind-variants.git | 🦄 Tailwindcss first-class variant API | ^0.2.1 | 3.2.2 | ✅ | 60.99KB |
@@ -60,6 +59,7 @@
 | firebase-tools | https://github.com/firebase/firebase-tools | https://github.com/firebase/firebase-tools.git | Command-Line Interface for Firebase | ^13.31.1 | 15.6.0 | ✅ | 4.21MB |
 | husky | https://github.com/typicode/husky#readme | https://github.com/typicode/husky.git | Modern native Git hooks | ^9.1.7 | 9.1.7 | ❌ | 4.04KB |
 | postcss | https://postcss.org/ | https://github.com/postcss/postcss.git | Tool for transforming styles with JS plugins | ^8.5.2 | 8.5.6 | ✅ | 204.34KB |
+| standard-version | https://github.com/conventional-changelog/standard-version#readme | https://github.com/conventional-changelog/standard-version.git | replacement for `npm version` with automatic CHANGELOG generation | ^9.5.0 | 9.5.0 | ❌ | 136.39KB |
 | tailwindcss | https://tailwindcss.com | https://github.com/tailwindlabs/tailwindcss.git | A utility-first CSS framework for rapidly building custom user interfaces. | ^3.4.17 | 4.1.18 | ✅ | 748.83KB |
 | typescript | https://www.typescriptlang.org/ | https://github.com/microsoft/TypeScript.git | TypeScript is a language for application scale JavaScript development | ^5.8.3 | 5.9.3 | ✅ | 23.63MB |
 | vitest | https://vitest.dev | https://github.com/vitest-dev/vitest.git | Next generation testing framework powered by Vite | ^3.2.4 | 4.0.18 | ✅ | 1.52MB |

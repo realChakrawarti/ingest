@@ -83,8 +83,7 @@
 }
 
 /* Hide spotlight element anchor tags */
-a[href^="https://stoplight.io/"]
-{
+a[href^="https://stoplight.io/"] {
   display: none !important;
 }
 
@@ -116,7 +115,7 @@ a[href^="https://stoplight.io/"]
 
 .btn-drop-shadow {
   transition-property: filter;
-  transition-duration: .3s;
+  transition-duration: 0.3s;
   will-change: filter;
 }
 

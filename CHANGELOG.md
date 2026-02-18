@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [26.0.6](https://github.com/realChakrawarti/ingest/compare/v26.0.5...v26.0.6) (2026-02-18)
+
+
+### Bug Fixes
+
+* runtime error on syncID and redesigned global-error file ([5dcf297](https://github.com/realChakrawarti/ingest/commit/5dcf29712f4174f7efdd5aee3c6d73f4b75e91eb))
+
 ### [26.0.5](https://github.com/realChakrawarti/ingest/compare/v26.0.4...v26.0.5) (2026-02-17)
 
 ### [26.0.4](https://github.com/realChakrawarti/ingest/compare/v26.0.3...v26.0.4) (2026-02-17)

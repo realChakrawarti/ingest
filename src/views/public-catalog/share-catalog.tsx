@@ -5,7 +5,6 @@ import { useMemo } from "react";
 import { toast } from "sonner";
 
 import appConfig from "~/shared/app-config";
-import { Button } from "~/shared/ui/button";
 
 type ShareCatalogProps = {
   catalogId: string;
@@ -52,24 +51,24 @@ export default function ShareCatalog({
     window.navigator.canShare(shareData)
   ) {
     return (
-      <Button
-        variant="ghost"
+      <button
+        type="button"
         className="flex items-center gap-2 text-xs"
         onClick={shareLink}
       >
         <ShareIcon className="size-4" />
         Share catalog
-      </Button>
+      </button>
     );
   }
   return (
-    <Button
-      variant="ghost"
+    <button
+      type="button"
       className="flex items-center gap-2 text-xs"
       onClick={copyLink}
     >
       <CopyIcon className="size-4" />
       Copy to Clipboard
-    </Button>
+    </button>
   );
 }
