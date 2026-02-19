@@ -46,41 +46,44 @@ export default function PostDetailSheet({
                 <ExternalLink className="size-4" />
                 <p className="text-md">Open on Reddit</p>
               </Badge>
-              <p>{post.postTitle}</p>
+              <p className="text-foreground">{post.postTitle}</p>
             </OutLink>
           </SheetTitle>
-          <SheetDescription>
-            <div className="flex items-center justify-between mt-2 text-sm text-muted-foreground">
-              <div className="flex items-center gap-2">
-                <ArrowUp className="size-4" />
-                <span>{formatLargeNumber(post.postVotes)} votes</span>
-                <span>•</span>
-                <MessageSquare className="size-4" />
-                <span>{post.postCommentsCount} comments</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <ArrowLeftCircle
-                  className="size-5 cursor-pointer "
-                  onClick={() => previousSlide()}
-                />
-                <ArrowRightCircle
-                  className="size-5 cursor-pointer"
-                  onClick={() => nextSlide()}
-                />
-              </div>
-            </div>
-            {post.postDomain !== `self.${post.subreddit}` &&
-              post.postDomain !== "i.redd.it" && (
-                <div className="mt-2 flex gap-2 items-center">
-                  <ExternalLink className="size-4" />
-                  <OutLink href={post.postUrl}>
-                    <span>{post.postDomain}</span>
-                  </OutLink>
+          <SheetDescription asChild>
+            <div>
+              <div className="flex items-center justify-between mt-2 text-sm text-muted-foreground">
+                <div className="flex items-center gap-2">
+                  <ArrowUp className="size-4" />
+                  <span>{formatLargeNumber(post.postVotes)} votes</span>
+                  <span>•</span>
+                  <MessageSquare className="size-4" />
+                  <span>{post.postCommentsCount} comments</span>
                 </div>
-              )}
+                <div className="flex items-center gap-2">
+                  <ArrowLeftCircle
+                    className="size-5 cursor-pointer "
+                    onClick={() => previousSlide()}
+                  />
+                  <ArrowRightCircle
+                    className="size-5 cursor-pointer"
+                    onClick={() => nextSlide()}
+                  />
+                </div>
+              </div>
+              {post.postDomain !== `self.${post.subreddit}` &&
+                post.postDomain !== "i.redd.it" && (
+                  <div className="mt-2 flex gap-2 items-center">
+                    <ExternalLink className="size-4" />
+                    <OutLink href={post.postUrl}>
+                      <span>{post.postDomain}</span>
+                    </OutLink>
+                  </div>
+                )}
+            </div>
           </SheetDescription>
         </SheetHeader>
         <div className="my-4">
+          {/*If there is video, show the video container*/}
           {post.postVideo ? (
             <video
               controls
@@ -91,7 +94,8 @@ export default function PostDetailSheet({
               Your browser does not support the video tag.
             </video>
           ) : null}
-          {post.postImage ? (
+          {/*Only show image when there is no video*/}
+          {!post.postVideo && post.postImage ? (
             <img
               src={post.postImage}
               alt={post.postTitle}
@@ -102,7 +106,7 @@ export default function PostDetailSheet({
             <>
               <Separator className="my-3" />
               <Linkify
-                className="text-sm whitespace-pre-wrap font-outfit"
+                className="text-sm whitespace-pre-wrap font-outfit text-foreground"
                 as="pre"
                 options={{
                   className:

@@ -1,4 +1,5 @@
 import { Skeleton } from "~/shared/ui/skeleton";
+
 import GridContainer from "~/widgets/grid-container";
 export default function CatalogLoadingSkeleton() {
   return (
@@ -6,16 +7,19 @@ export default function CatalogLoadingSkeleton() {
       <section className="px-2 md:px-3">
         <div className="space-y-0">
           <div className="flex justify-between items-center">
-            <div className="space-y-1">
+            <div className="flex gap-4">
+              <Skeleton className="size-6" />
               <Skeleton className="h-6 w-64" />
-              <Skeleton className="h-4 sm:w-96 w-64" />
+              <Skeleton className="size-6" />
             </div>
-            <div className="mt-4 sm:mt-0">
+            <div>
               <Skeleton className="size-6" />
             </div>
           </div>
         </div>
       </section>
+      <SubredditSection />
+      <FilterSection />
       <VideoSection>
         {Array.from(Array(4).keys()).map((index) => (
           <YouTubeSkeletonCard key={index} />
@@ -34,12 +38,37 @@ export default function CatalogLoadingSkeleton() {
     </div>
   );
 }
+
+function FilterSection() {
+  return (
+    <section className="px-0 md:px-3 space-y-4">
+      <div className="px-2 md:px-0 flex items-center gap-2">
+        {[1, 2, 3, 4, 5].map((i) => (
+          <Skeleton className="h-6 w-20" key={i} />
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function SubredditSection() {
+  return (
+    <section className="px-0 md:px-3 space-y-4">
+      <div className="px-2 md:px-0 flex items-center gap-2">
+        <Skeleton className="h-6 w-1 rounded-md" />
+        <Skeleton className="h-6 w-32" />
+        <Skeleton className="h-6 min-w-36" />
+      </div>
+      <Skeleton className="min-h-44 w-full" />
+    </section>
+  );
+}
 function VideoSection({ children }: any) {
   return (
     <section className="px-0 md:px-3 space-y-4">
       <div className="px-2 md:px-0 flex items-center gap-2">
+        <Skeleton className="h-6 w-1 rounded-md" />
         <Skeleton className="h-6 w-32" />
-        <Skeleton className="size-6" />
       </div>
       <GridContainer>{children}</GridContainer>
     </section>
