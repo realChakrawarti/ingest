@@ -49,35 +49,37 @@ export default function PostDetailSheet({
               <p className="text-foreground">{post.postTitle}</p>
             </OutLink>
           </SheetTitle>
-          <SheetDescription>
-            <div className="flex items-center justify-between mt-2 text-sm text-muted-foreground">
-              <div className="flex items-center gap-2">
-                <ArrowUp className="size-4" />
-                <span>{formatLargeNumber(post.postVotes)} votes</span>
-                <span>•</span>
-                <MessageSquare className="size-4" />
-                <span>{post.postCommentsCount} comments</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <ArrowLeftCircle
-                  className="size-5 cursor-pointer "
-                  onClick={() => previousSlide()}
-                />
-                <ArrowRightCircle
-                  className="size-5 cursor-pointer"
-                  onClick={() => nextSlide()}
-                />
-              </div>
-            </div>
-            {post.postDomain !== `self.${post.subreddit}` &&
-              post.postDomain !== "i.redd.it" && (
-                <div className="mt-2 flex gap-2 items-center">
-                  <ExternalLink className="size-4" />
-                  <OutLink href={post.postUrl}>
-                    <span>{post.postDomain}</span>
-                  </OutLink>
+          <SheetDescription asChild>
+            <div>
+              <div className="flex items-center justify-between mt-2 text-sm text-muted-foreground">
+                <div className="flex items-center gap-2">
+                  <ArrowUp className="size-4" />
+                  <span>{formatLargeNumber(post.postVotes)} votes</span>
+                  <span>•</span>
+                  <MessageSquare className="size-4" />
+                  <span>{post.postCommentsCount} comments</span>
                 </div>
-              )}
+                <div className="flex items-center gap-2">
+                  <ArrowLeftCircle
+                    className="size-5 cursor-pointer "
+                    onClick={() => previousSlide()}
+                  />
+                  <ArrowRightCircle
+                    className="size-5 cursor-pointer"
+                    onClick={() => nextSlide()}
+                  />
+                </div>
+              </div>
+              {post.postDomain !== `self.${post.subreddit}` &&
+                post.postDomain !== "i.redd.it" && (
+                  <div className="mt-2 flex gap-2 items-center">
+                    <ExternalLink className="size-4" />
+                    <OutLink href={post.postUrl}>
+                      <span>{post.postDomain}</span>
+                    </OutLink>
+                  </div>
+                )}
+            </div>
           </SheetDescription>
         </SheetHeader>
         <div className="my-4">
