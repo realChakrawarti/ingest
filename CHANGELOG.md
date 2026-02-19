@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [26.0.7](https://github.com/realChakrawarti/ingest/compare/v26.0.6...v26.0.7) (2026-02-19)
+
+
+### Bug Fixes
+
+* update subreddit post title color & show only video when available, not image ([83a97cc](https://github.com/realChakrawarti/ingest/commit/83a97cccdb48f54dbc6d4f0e33d1850b970b5d56))
+
+
+### Styling
+
+* catalog loading skeleton & accessibility in SheetDescription ([e1d3bbf](https://github.com/realChakrawarti/ingest/commit/e1d3bbfbf6db0b282bb5bc8f1cd3ad5528b1e52a))
+
 ### [26.0.6](https://github.com/realChakrawarti/ingest/compare/v26.0.5...v26.0.6) (2026-02-18)
 
 
