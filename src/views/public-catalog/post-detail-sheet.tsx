@@ -46,7 +46,7 @@ export default function PostDetailSheet({
                 <ExternalLink className="size-4" />
                 <p className="text-md">Open on Reddit</p>
               </Badge>
-              <p>{post.postTitle}</p>
+              <p className="text-foreground">{post.postTitle}</p>
             </OutLink>
           </SheetTitle>
           <SheetDescription>
@@ -81,6 +81,7 @@ export default function PostDetailSheet({
           </SheetDescription>
         </SheetHeader>
         <div className="my-4">
+          {/*If there is video, show the video container*/}
           {post.postVideo ? (
             <video
               controls
@@ -91,7 +92,8 @@ export default function PostDetailSheet({
               Your browser does not support the video tag.
             </video>
           ) : null}
-          {post.postImage ? (
+          {/*Only show image when there is no video*/}
+          {!post.postVideo && post.postImage ? (
             <img
               src={post.postImage}
               alt={post.postTitle}
@@ -102,7 +104,7 @@ export default function PostDetailSheet({
             <>
               <Separator className="my-3" />
               <Linkify
-                className="text-sm whitespace-pre-wrap font-outfit"
+                className="text-sm whitespace-pre-wrap font-outfit text-foreground"
                 as="pre"
                 options={{
                   className:
