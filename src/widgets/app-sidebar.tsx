@@ -107,7 +107,7 @@ function LocalGroup() {
           <CollapsibleTrigger
             className={cn(
               "flex items-center gap-2 dark:text-white text-[#18181B]",
-              "group-data-[state=open]/collapsible:bg-primary/20 group-data-[state=open]/collapsible:dark:text-white"
+              "group-data-[state=open]/collapsible:bg-primary/20 dark:group-data-[state=open]/collapsible:text-white"
             )}
           >
             <HeartListIcon className="mr-2 h-4 w-4" />
@@ -126,7 +126,7 @@ function LocalGroup() {
                         onClick={() => setOpenMobile(false)}
                         className={cn(
                           "px-0",
-                          "data-[active=true]:bg-primary/20 data-[active=true]:dark:text-white",
+                          "data-[active=true]:bg-primary/20 dark:data-[active=true]:text-white",
                           "data-[state=open]:hover:bg-transparent",
                           "hover:bg-transparent"
                         )}
@@ -197,7 +197,7 @@ function UserGroup() {
                 onClick={() => setOpenMobile(false)}
                 className={cn(
                   "px-0",
-                  "data-[active=true]:bg-primary/20 data-[active=true]:dark:text-white",
+                  "data-[active=true]:bg-primary/20 dark:data-[active=true]:text-white",
                   "data-[state=open]:hover:bg-transparent",
                   "hover:bg-transparent"
                 )}
@@ -274,7 +274,7 @@ function ExploreGroup() {
                   onClick={() => setOpenMobile(false)}
                   className={cn(
                     "px-0",
-                    "data-[active=true]:bg-primary/20 data-[active=true]:dark:text-white",
+                    "data-[active=true]:bg-primary/20 dark:data-[active=true]:text-white",
                     "data-[state=open]:hover:bg-transparent",
                     "hover:bg-transparent"
                   )}

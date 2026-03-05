@@ -27,7 +27,7 @@ export default function Providers({
           shallowRouting
         >
           <SidebarProvider>
-            <div className="flex flex-grow min-h-screen">
+            <div className="flex grow min-h-screen">
               <NuqsAdapter>{children}</NuqsAdapter>
             </div>
           </SidebarProvider>

@@ -162,12 +162,12 @@ export default function FeatureCarousel() {
         </div>
 
         {/* Gradient overlays for seamless scroll effect */}
-        <div className="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-background to-transparent pointer-events-none z-10" />
-        <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-background to-transparent pointer-events-none z-10" />
+        <div className="absolute left-0 top-0 bottom-0 w-8 bg-linear-to-r from-background to-transparent pointer-events-none z-10" />
+        <div className="absolute right-0 top-0 bottom-0 w-8 bg-linear-to-l from-background to-transparent pointer-events-none z-10" />
       </div>
 
       {/* Description box that appears below the carousel */}
-      <div className="mt-3 min-h-[120px] flex items-center justify-center">
+      <div className="mt-3 min-h-30 flex items-center justify-center">
         <div className="text-zinc-500 text-center animate-fade-in">
           {activeFeature === null ? (
             <p className="text-sm">Hover over a feature card to learn more</p>

@@ -52,7 +52,7 @@ function ChannelMeta({
       ) : null}
       <div
         className={`flex-1 space-y-1 ${
-          hideAvatar ? "max-w-[100%]" : "max-w-[calc(100%-32px)]"
+          hideAvatar ? "max-w-full" : "max-w-[calc(100%-32px)]"
         }`}
       >
         <h3
@@ -87,20 +87,20 @@ function DescriptionSheet({
   return (
     <Sheet>
       <SheetTrigger asChild>
-        <div className="absolute top-2 right-[2px] md:right-0 cursor-pointer md:hidden group-hover/player:block">
+        <div className="absolute top-2 right-0.5 md:right-0 cursor-pointer md:hidden group-hover/player:block">
           <OverlayTip
-            className="px-[5px] py-2 flex gap-1 place-items-center rounded-l-md group/description"
+            className="px-1.25 py-2 flex gap-1 place-items-center rounded-l-md group/description"
             id="description"
             aria-label="Show video information overlay"
           >
             <div className="hidden text-xs group-hover/description:block">
               Description
             </div>
-            <InfoIcon className="size-4 flex-grow" />
+            <InfoIcon className="size-4 grow" />
           </OverlayTip>
         </div>
       </SheetTrigger>
-      <SheetContent className="overflow-y-auto w-full md:max-w-[450px]">
+      <SheetContent className="overflow-y-auto w-full md:max-w-112.5">
         <SheetHeader className="text-left">
           <SheetTitle>{videoTitle}</SheetTitle>
           <SheetDescription className="sr-only">{videoTitle}</SheetDescription>

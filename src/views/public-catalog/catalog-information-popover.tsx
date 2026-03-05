@@ -62,7 +62,7 @@ export default function CatalogInformationPopover({
             </div>
           </div>
           <Separator
-            className="bg-slate-600 h-[1px] w-full"
+            className="bg-slate-600 h-px w-full"
             orientation="vertical"
           />
           <div className="text-sm px-3">

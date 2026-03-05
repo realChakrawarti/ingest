@@ -99,7 +99,7 @@ export default function FilterChannel({
           <Button
             variant="ghost"
             size="icon"
-            className="rounded-lg absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-background to-transparent backdrop-blur-sm z-10 flex items-center"
+            className="rounded-lg absolute left-0 top-0 bottom-0 w-8 bg-linear-to-r from-background to-transparent backdrop-blur-xs z-10 flex items-center"
             onClick={scrollLeft}
           >
             <ChevronLeft className="h-4 w-4" />
@@ -111,7 +111,7 @@ export default function FilterChannel({
           <Button
             variant="ghost"
             size="icon"
-            className="rounded-lg absolute right-0 top-0 bottom-0 bg-gradient-to-r from-background to-transparent backdrop-blur-sm z-10 flex items-center"
+            className="rounded-lg absolute right-0 top-0 bottom-0 bg-linear-to-r from-background to-transparent backdrop-blur-xs z-10 flex items-center"
             onClick={scrollRight}
           >
             <ChevronRight className="h-4 w-4" />

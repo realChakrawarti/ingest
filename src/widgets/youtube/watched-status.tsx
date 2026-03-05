@@ -25,7 +25,7 @@ export function WatchedStatus({ videoId }: { videoId: string }) {
           aria-label="Show video completion status"
         >
           <div className="hidden group-hover/status:block text-xs">Watched</div>
-          <Check className="size-4 flex-grow" />
+          <Check className="size-4 grow" />
         </OverlayTip>
       </div>
     );
