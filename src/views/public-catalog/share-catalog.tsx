@@ -5,6 +5,8 @@ import { useMemo } from "react";
 import { toast } from "sonner";
 
 import appConfig from "~/shared/app-config";
+import { useIsMobile } from "~/shared/hooks/use-mobile";
+import { cn } from "~/shared/utils/tailwind-merge";
 
 type ShareCatalogProps = {
   catalogId: string;
@@ -17,6 +19,8 @@ export default function ShareCatalog({
   catalogDescription,
   catalogTitle,
 }: ShareCatalogProps) {
+  const isMobile = useIsMobile();
+
   const shareData = useMemo(
     () => ({
       text: catalogDescription,
@@ -53,10 +57,13 @@ export default function ShareCatalog({
     return (
       <button
         type="button"
-        className="flex items-center gap-2 text-xs"
+        className={cn(
+          "flex items-center gap-2 w-full",
+          isMobile ? "text-base" : "text-sm"
+        )}
         onClick={shareLink}
       >
-        <ShareIcon className="size-4" />
+        <ShareIcon className={cn(isMobile ? "size-6" : "size-4")} />
         Share catalog
       </button>
     );
@@ -64,10 +71,13 @@ export default function ShareCatalog({
   return (
     <button
       type="button"
-      className="flex items-center gap-2 text-xs"
+      className={cn(
+        "flex items-center gap-2",
+        isMobile ? "text-base" : "text-sm"
+      )}
       onClick={copyLink}
     >
-      <CopyIcon className="size-4" />
+      <CopyIcon className={cn(isMobile ? "size-6" : "size-4")} />
       Copy to Clipboard
     </button>
   );

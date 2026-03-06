@@ -38,7 +38,7 @@ export default function PostDetailSheet({
 }) {
   return (
     <Sheet open={sheetOpen} onOpenChange={handleSheetOpen}>
-      <SheetContent className="overflow-y-auto w-full md:max-w-[450px]">
+      <SheetContent className="overflow-y-auto w-full md:max-w-112.5">
         <SheetHeader className="text-left">
           <SheetTitle>
             <OutLink href={`https://www.reddit.com${post.postPermalink}`}>

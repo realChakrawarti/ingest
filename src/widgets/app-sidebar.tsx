@@ -90,11 +90,7 @@ function LocalGroup() {
     useLiveQuery(() => indexedDB["favorites"].toArray(), []) ?? [];
 
   return (
-    <Collapsible
-      open={isOpen}
-      onOpenChange={setIsOpen}
-      className="group/collapsible"
-    >
+    <Collapsible defaultOpen={true} className="group/collapsible">
       <SidebarGroup>
         <SidebarGroupLabel
           asChild
@@ -118,37 +114,38 @@ function LocalGroup() {
         <CollapsibleContent>
           <SidebarGroupContent>
             <SidebarMenu>
-              {favoriteCatalogs.map((item) => (
-                <SidebarMenuItem key={item.id}>
-                  <SidebarMenuSub>
-                    <SidebarMenuSubItem>
-                      <SidebarMenuButton
-                        onClick={() => setOpenMobile(false)}
-                        className={cn(
-                          "px-0",
-                          "data-[active=true]:bg-primary/20 dark:data-[active=true]:text-white",
-                          "data-[state=open]:hover:bg-transparent",
-                          "hover:bg-transparent"
-                        )}
-                        asChild
-                      >
-                        <Link href={`/c/${item.id}`}>
-                          <Button
-                            onClick={() => setIsOpen(false)}
-                            variant="ghost"
-                            className={cn(
-                              "w-full justify-start px-2",
-                              "hover:bg-primary/5 hover:text-primary/80"
-                            )}
-                          >
-                            <p className="tracking-wide">{item.title}</p>
-                          </Button>
-                        </Link>
-                      </SidebarMenuButton>
-                    </SidebarMenuSubItem>
-                  </SidebarMenuSub>
-                </SidebarMenuItem>
-              ))}
+              <div className="max-h-50 min-h-auto overflow-y-auto">
+                {favoriteCatalogs.map((item) => (
+                  <SidebarMenuItem key={item.id}>
+                    <SidebarMenuSub>
+                      <SidebarMenuSubItem>
+                        <SidebarMenuButton
+                          onClick={() => setOpenMobile(false)}
+                          className={cn(
+                            "px-0",
+                            "data-[active=true]:bg-primary/20 dark:data-[active=true]:text-white",
+                            "data-[state=open]:hover:bg-transparent",
+                            "hover:bg-transparent"
+                          )}
+                          asChild
+                        >
+                          <Link href={`/c/${item.id}`}>
+                            <Button
+                              variant="ghost"
+                              className={cn(
+                                "w-full justify-start px-2",
+                                "hover:bg-primary/5 hover:text-primary/80"
+                              )}
+                            >
+                              <p className="tracking-wide">{item.title}</p>
+                            </Button>
+                          </Link>
+                        </SidebarMenuButton>
+                      </SidebarMenuSubItem>
+                    </SidebarMenuSub>
+                  </SidebarMenuItem>
+                ))}
+              </div>
             </SidebarMenu>
           </SidebarGroupContent>
         </CollapsibleContent>

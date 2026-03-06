@@ -1,3 +1,5 @@
+"use client";
+
 import { useLiveQuery } from "dexie-react-hooks";
 import Linkify from "linkify-react";
 import { Clock8, HardDriveDownloadIcon } from "lucide-react";
@@ -5,6 +7,7 @@ import { toast } from "sonner";
 
 import type { ZVideoMetadataCompatible } from "~/entities/catalogs/models";
 
+import { useIsMobile } from "~/shared/hooks/use-mobile";
 import { indexedDB } from "~/shared/lib/api/dexie";
 import type { YouTubeCardOptions } from "~/shared/types-schema/types";
 import { Avatar, AvatarFallback, AvatarImage } from "~/shared/ui/avatar";
@@ -125,6 +128,7 @@ function DescriptionSheet({
 }
 
 function CopyLink({ videoId }: Pick<ZVideoMetadataCompatible, "videoId">) {
+  const isMobile = useIsMobile();
   function copyLink(id: string) {
     navigator.clipboard
       .writeText(`https://www.youtube.com/watch?v=${id}`)
@@ -140,16 +144,20 @@ function CopyLink({ videoId }: Pick<ZVideoMetadataCompatible, "videoId">) {
   return (
     <Button
       variant="ghost"
-      className="flex gap-2 justify-start hover:bg-accent rounded-lg p-2 text-xs cursor-pointer w-full"
+      className={cn(
+        "flex gap-2 justify-start hover:bg-accent rounded-lg p-2 cursor-pointer w-full",
+        isMobile ? "text-base" : "text-sm"
+      )}
       onClick={() => copyLink(videoId)}
     >
-      <LinkIcon className="h-4 w-4 mr-2" />
+      <LinkIcon className={cn(isMobile ? "size-6" : "size-4")} />
       Copy link
     </Button>
   );
 }
 
 function WatchLater({ addWatchLater, videoData }: WatchLaterProps) {
+  const isMobile = useIsMobile();
   const existingVideos =
     useLiveQuery(() => indexedDB["watch-later"].toArray()) ?? [];
 
@@ -178,10 +186,13 @@ function WatchLater({ addWatchLater, videoData }: WatchLaterProps) {
     return (
       <Button
         variant="ghost"
-        className="flex gap-2 justify-start hover:bg-accent rounded-lg p-2 text-xs cursor-pointer w-full"
+        className={cn(
+          "flex gap-2 justify-start hover:bg-accent rounded-lg p-2 cursor-pointer w-full",
+          isMobile ? "text-base" : "text-sm"
+        )}
         onClick={addToWatchLater}
       >
-        <Clock8 className="h-4 w-4 mr-2" />
+        <Clock8 className={cn(isMobile ? "size-6" : "size-4")} />
         Add to watch later
       </Button>
     );
@@ -199,14 +210,18 @@ function RemoveWatchLater({
     toast("Video has been removed from watch later.");
   }
 
+  const isMobile = useIsMobile();
   if (removeWatchLater) {
     return (
       <Button
         variant="ghost"
-        className="flex gap-2 justify-start hover:bg-accent rounded-lg p-2 text-xs cursor-pointer w-full"
+        className={cn(
+          "flex gap-2 justify-start hover:bg-accent rounded-lg p-2 cursor-pointer w-full",
+          isMobile ? "text-base" : "text-sm"
+        )}
         onClick={() => removeFromWatchLater(videoId)}
       >
-        <DeleteIcon className="h-4 w-4 mr-2" />
+        <DeleteIcon className={cn(isMobile ? "size-6" : "size-4")} />
         Remove from watch later
       </Button>
     );
@@ -224,6 +239,7 @@ function DownloadVideo({
   videoId: string;
   cobaltYTInstances: string[];
 }) {
+  const isMobile = useIsMobile();
   const target = cobaltYTInstances[0];
   function handleDownload(id: string) {
     if (disabled || !target) {
@@ -255,12 +271,13 @@ function DownloadVideo({
       disabled={disabled || !target}
       variant="ghost"
       className={cn(
-        "flex gap-2 justify-start hover:bg-accent rounded-lg p-2 text-xs cursor-pointer w-full",
+        "flex gap-2 justify-start hover:bg-accent rounded-lg p-2 cursor-pointer w-full",
+        isMobile ? "text-base" : "text-sm",
         disabled && "cursor-not-allowed"
       )}
       onClick={() => handleDownload(videoId)}
     >
-      <HardDriveDownloadIcon className="h-4 w-4 mr-2" />
+      <HardDriveDownloadIcon className={cn(isMobile ? "size-6" : "size-4")} />
       Download via Cobalt
     </Button>
   );

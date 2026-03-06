@@ -1,7 +1,7 @@
 "use client";
 
 import { cva, type VariantProps } from "class-variance-authority";
-import { PanelLeft } from "lucide-react";
+import { PanelLeft, PanelLeftClose } from "lucide-react";
 import { Slot as SlotPrimitive } from "radix-ui";
 import * as React from "react";
 
@@ -22,7 +22,7 @@ import { cn } from "~/shared/utils/tailwind-merge";
 const SIDEBAR_COOKIE_NAME = "sidebar:state";
 const SIDEBAR_COOKIE_MAX_AGE = 60 * 60 * 24 * 7;
 const SIDEBAR_WIDTH = "16rem";
-const SIDEBAR_WIDTH_MOBILE = "18rem";
+const SIDEBAR_WIDTH_MOBILE = "28.125rem";
 const SIDEBAR_WIDTH_ICON = "3rem";
 const SIDEBAR_KEYBOARD_SHORTCUT = "b";
 
@@ -198,15 +198,29 @@ const Sidebar = React.forwardRef<
           <SheetContent
             data-sidebar="sidebar"
             data-mobile="true"
-            className="w-(--sidebar-width) p-0 text-sidebar-foreground [&>button]:hidden"
             style={
               {
                 "--sidebar-width": SIDEBAR_WIDTH_MOBILE,
               } as React.CSSProperties
             }
+            className="w-full md:max-w-(--sidebar-width) p-0 text-sidebar-foreground [&>button]:hidden"
             side={side}
           >
-            <div className="flex h-full w-full flex-col">{children}</div>
+            <div className="flex h-full w-full flex-col">
+              <div className="h-14 w-auto grid place-content-center absolute right-0 mr-2">
+                <Button
+                  data-sidebar="trigger"
+                  variant="ghost"
+                  size="icon"
+                  className={cn("h-8 w-8")}
+                  onClick={() => setOpenMobile(false)}
+                >
+                  <PanelLeftClose />
+                  <span className="sr-only">Toggle Sidebar</span>
+                </Button>
+              </div>
+              {children}
+            </div>
           </SheetContent>
         </Sheet>
       );

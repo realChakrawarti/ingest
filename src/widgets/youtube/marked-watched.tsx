@@ -1,12 +1,16 @@
+"use client";
+
 import { useLiveQuery } from "dexie-react-hooks";
 import { Check, Square } from "lucide-react";
 
 import type { ZVideoMetadataCompatible } from "~/entities/catalogs/models";
 
 import { useLocalUserSettings } from "~/shared/hooks/use-local-user-settings";
+import { useIsMobile } from "~/shared/hooks/use-mobile";
 import { indexedDB } from "~/shared/lib/api/dexie";
 import type { History } from "~/shared/types-schema/types";
 import { Button } from "~/shared/ui/button";
+import { cn } from "~/shared/utils/tailwind-merge";
 
 export default function MarkedWatched({
   video,
@@ -16,6 +20,8 @@ export default function MarkedWatched({
   const videoProgress = useLiveQuery(() =>
     indexedDB["history"].get(video.videoId)
   );
+
+  const isMobile = useIsMobile();
 
   const { localUserSettings } = useLocalUserSettings(null);
 
@@ -37,10 +43,13 @@ export default function MarkedWatched({
     return (
       <Button
         variant="ghost"
-        className="flex gap-2 justify-start hover:bg-accent rounded-lg p-2 text-xs cursor-pointer w-full"
+        className={cn(
+          "flex gap-2 justify-start hover:bg-accent rounded-lg p-2 cursor-pointer w-full",
+          isMobile ? "text-base" : "text-sm"
+        )}
         onClick={markUnwatched}
       >
-        <Square className="h-4 w-4 mr-2" />
+        <Square className={cn(isMobile ? "size-6" : "size-4")} />
         Marked unwatched
       </Button>
     );
@@ -70,10 +79,13 @@ export default function MarkedWatched({
   return (
     <Button
       variant="ghost"
-      className="flex gap-2 justify-start hover:bg-accent rounded-lg p-2 text-xs cursor-pointer w-full"
+      className={cn(
+        "flex gap-2 justify-start hover:bg-accent rounded-lg p-2 cursor-pointer w-full",
+        isMobile ? "text-base" : "text-sm"
+      )}
       onClick={markWatched}
     >
-      <Check className="h-4 w-4 mr-2" />
+      <Check className={cn(isMobile ? "size-6" : "size-4")} />
       Marked watched
     </Button>
   );

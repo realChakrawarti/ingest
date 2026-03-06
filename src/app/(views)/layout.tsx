@@ -65,8 +65,8 @@ export default function RootLayout({
             </main>
             <Footer />
           </div>
+          <Toaster closeButton visibleToasts={1} position="top-center" />
         </Providers>
-        <Toaster closeButton visibleToasts={1} position="top-right" />
       </body>
       {process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID && (
         <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID} />
