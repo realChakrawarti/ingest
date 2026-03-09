@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [26.0.8](https://github.com/realChakrawarti/ingest/compare/v26.0.7...v26.0.8) (2026-03-09)
+
+
+### Features
+
+* add completed and not-completed for filtering history videos ([0c473bb](https://github.com/realChakrawarti/ingest/commit/0c473bbcc8a63d62b1ef6b93f73ee54e99d8b58e))
+
+
+### Bug Fixes
+
+* sheet from bottom catalog & youtube card options, toaster, sidebar fav un-collapsible ([997f654](https://github.com/realChakrawarti/ingest/commit/997f654120e07e8be8570d6d1b17d25649148969))
+
 ### [26.0.7](https://github.com/realChakrawarti/ingest/compare/v26.0.6...v26.0.7) (2026-02-19)
 
 

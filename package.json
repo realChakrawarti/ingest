@@ -73,5 +73,5 @@
     "release": "standard-version",
     "start": "next start"
   },
-  "version": "26.0.7"
+  "version": "26.0.8"
 }
