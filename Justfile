@@ -42,7 +42,7 @@ debug: clean
 
 # export firestore data
 [group("Development")]
-firebase-export:
+export-seed:
     {{ NODE_PM }} {{ FIREBASE_EXPORT }}
 
 [private]
@@ -50,7 +50,7 @@ firebase-dev:
     {{ NODE_PM }} {{ FIREBASE_START }}
 
 [private]
-firebase-dev-seed:
+import-seed:
     {{ NODE_PM }} {{ FIREBASE_START }} --import=seed
 
 [private]
@@ -65,7 +65,7 @@ start: firebase-dev next-dev
 # starts the development server + firebase emulator with seed data
 [group("Development")]
 [parallel]
-start-seed: firebase-dev-seed next-dev
+start-seed: import-seed next-dev
 
 # update the CONTRIBUTING.md with all the project dependencies metadata
 [group("Chore")]
