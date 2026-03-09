@@ -95,7 +95,7 @@ export default function YoutubePlayer(
         (item) => item !== playerIframe
       );
 
-      const played = await indexedDB["history"].get(videoId);
+      const played = await indexedDB.history.get(videoId);
 
       // Debugging
       Log.debug(
@@ -163,7 +163,7 @@ export default function YoutubePlayer(
       return;
     }
 
-    const played = await indexedDB["history"].get(videoId);
+    const played = await indexedDB.history.get(videoId);
 
     if (!loaded.current) {
       thisPlayerRef.current = await (
@@ -206,9 +206,9 @@ export default function YoutubePlayer(
     <div
       tabIndex={0}
       className={cn(
-        "rounded-lg overflow-hidden mx-[2px] md:mx-0",
+        "rounded-lg overflow-hidden mx-0.5 md:mx-0",
         "group-hover/player:shadow-primary group-hover/player:shadow-[0_0_0_2px]",
-        "outline-none"
+        "outline-hidden"
       )}
       ref={containerRef}
       onClick={loadIFrameElement}

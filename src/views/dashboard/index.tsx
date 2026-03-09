@@ -105,7 +105,7 @@ export default function Dashboard() {
                 <PopoverContent
                   side="top"
                   align="end"
-                  className="w-[200px] border-none rounded-lg p-1"
+                  className="w-50 border-none rounded-lg p-1"
                 >
                   <Button
                     variant="ghost"

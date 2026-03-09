@@ -86,7 +86,7 @@ function Title({ label, type }: { label: string; type?: string }) {
             href={`/explore/${type}`}
           >
             <p className="text-sm">Explore {type}</p>
-            <ArrowRight className="size-4 stroke-[3]" />
+            <ArrowRight className="size-4 stroke-3" />
           </Link>
         ) : null}
       </h2>

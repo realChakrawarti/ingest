@@ -39,9 +39,10 @@ async function removeOldRecords(days: number) {
   const historyQuery = indexedDB["history"]
     .where("updatedAt")
     .below(deletePrior);
-  if (await historyQuery.count()) {
+  const removeCount = await historyQuery.count();
+  if (removeCount) {
     const deletedCount = await historyQuery.delete();
-    toast(`Removed ${deletedCount} old videos from history.`);
+    toast(`Removed ${deletedCount}, ${days} days old videos from the history.`);
   }
 }
 

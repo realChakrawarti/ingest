@@ -68,7 +68,7 @@ const cardContainerStyles = cn(
   "hover:bg-primary/10 bg-primary/5 transition-colors"
 );
 
-const cardContentStyles = cn("flex-grow outline-none ", "rounded-b-none");
+const cardContentStyles = cn("grow outline-hidden ", "rounded-b-none");
 
 type ItemCardProps = {
   type: "archive" | "catalog";
@@ -98,12 +98,12 @@ export default function ItemCard({
         <Link className={cardContentStyles} href={editLink} prefetch>
           <CardHeader className="space-y-1 pb-2">
             <CardTitle className="flex items-start justify-between">
-              <span className="text-lg line-clamp-2 flex-grow mr-2 group-hover/card-item:text-primary font-normal tracking-wide">
+              <span className="text-lg line-clamp-2 grow mr-2 group-hover/card-item:text-primary font-normal tracking-wide">
                 {title}
               </span>
             </CardTitle>
           </CardHeader>
-          <CardContent className="flex-grow overflow-hidden">
+          <CardContent className="grow overflow-hidden">
             <p className="text-sm text-muted-foreground line-clamp-3">
               {description}
             </p>
@@ -111,15 +111,15 @@ export default function ItemCard({
         </Link>
         <CardFooter
           className={cn(
-            "justify-between items-center py-4 h-[52px]",
+            "justify-between items-center py-4 h-13",
             "border border-x-0 border-y-0 border-t-2 border-t-primary/30"
           )}
         >
           <div className="flex items-center text-xs text-muted-foreground">
-            <Clock className="w-3 h-3 mr-1 flex-shrink-0" />
-            <span className="truncate max-w-[100px]">{lastUpdated}</span>
+            <Clock className="w-3 h-3 mr-1 shrink-0" />
+            <span className="truncate max-w-25">{lastUpdated}</span>
           </div>
-          <div className="flex gap-1 flex-shrink-0">
+          <div className="flex gap-1 shrink-0">
             <CopyButton id={id} type={type} />
             <DeleteModal handleDelete={() => onDelete(id)}>
               <Button

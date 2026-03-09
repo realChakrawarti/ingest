@@ -1,1 +1,1 @@
-make lint
+just lint

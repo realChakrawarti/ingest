@@ -4,6 +4,7 @@ const envVariables = z.object({
   CLOUDFLARE_ACCOUNT_ID: z.string(),
   CLOUDFLARE_API_TOKEN: z.string(),
   CLOUDFLARE_KV_NAMESPACE_ID: z.string(),
+  ENABLE_CATALOG_UPDATE: z.boolean(),
   FIREBASE_CLIENT_EMAIL: z.string(),
   FIREBASE_PRIVATE_KEY: z.string(),
   GOOGLE_ANALYTICS_PRIVATE_KEY: z.string(),

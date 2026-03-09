@@ -5,10 +5,12 @@ import useSWR from "swr";
 
 import type { ZVideoMetadataCompatible } from "~/entities/catalogs/models";
 
+import { useIsMobile } from "~/shared/hooks/use-mobile";
 import type { YouTubeCardOptions } from "~/shared/types-schema/types";
 import { Button } from "~/shared/ui/button";
 import { ThreeDotIcon } from "~/shared/ui/icons";
 import { Popover, PopoverContent, PopoverTrigger } from "~/shared/ui/popover";
+import { Sheet, SheetContent, SheetTrigger } from "~/shared/ui/sheet";
 
 import {
   CopyLink,
@@ -56,6 +58,7 @@ export default function ShowCardOption({
 > & {
   video: ZVideoMetadataCompatible;
 }) {
+  const isMobile = useIsMobile();
   const [isOpen, setIsOpen] = useState(false);
 
   const { data: cobaltYTInstances } = useSWR(
@@ -80,41 +83,79 @@ export default function ShowCardOption({
 
   return (
     <div className="relative">
-      <Popover open={isOpen} onOpenChange={setIsOpen}>
-        <PopoverTrigger asChild>
-          <Button
-            variant="ghost"
-            size="icon"
-            className="absolute top-3 right-0 h-6 w-6"
+      {isMobile ? (
+        <Sheet>
+          <SheetTrigger asChild>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="absolute top-3 right-0 size-6"
+            >
+              <ThreeDotIcon className="size-6" />
+              <span className="sr-only">Open menu</span>
+            </Button>
+          </SheetTrigger>
+          <SheetContent
+            side="bottom"
+            className="max-h-[50vh] min-h-20 rounded-t-2xl [&>button]:hidden p-3 pt-6"
           >
-            <ThreeDotIcon className="h-6 w-6" />
-            <span className="sr-only">Open menu</span>
-          </Button>
-        </PopoverTrigger>
-        <PopoverContent
-          onClick={() => setIsOpen(false)}
-          side="top"
-          align="end"
-          className="w-[200px] border-none rounded-lg p-1"
-        >
-          {markWatched && video?.videoAvailability === "none" ? (
-            <MarkedWatched video={video} />
-          ) : null}
-          <CopyLink videoId={video.videoId} />
-          <WatchLater addWatchLater={addWatchLater} videoData={video} />
-          <RemoveWatchLater
-            videoId={video.videoId}
-            removeWatchLater={removeWatchLater}
-          />
-          {video?.videoAvailability === "none" ? (
-            <DownloadVideo
-              disabled={!cobaltYTInstances?.youtube?.length}
-              cobaltYTInstances={cobaltYTInstances?.youtube ?? []}
+            <div className="flex flex-col gap-4">
+              {markWatched && video?.videoAvailability === "none" ? (
+                <MarkedWatched video={video} />
+              ) : null}
+              <CopyLink videoId={video.videoId} />
+              <WatchLater addWatchLater={addWatchLater} videoData={video} />
+              <RemoveWatchLater
+                videoId={video.videoId}
+                removeWatchLater={removeWatchLater}
+              />
+              {video?.videoAvailability === "none" ? (
+                <DownloadVideo
+                  disabled={!cobaltYTInstances?.youtube?.length}
+                  cobaltYTInstances={cobaltYTInstances?.youtube ?? []}
+                  videoId={video.videoId}
+                />
+              ) : null}
+            </div>
+          </SheetContent>
+        </Sheet>
+      ) : (
+        <Popover open={isOpen} onOpenChange={setIsOpen}>
+          <PopoverTrigger asChild>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="absolute top-3 right-0 size-6"
+            >
+              <ThreeDotIcon className="size-6" />
+              <span className="sr-only">Open menu</span>
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent
+            onClick={() => setIsOpen(false)}
+            side="top"
+            align="end"
+            className="w-50 border-none rounded-lg p-1"
+          >
+            {markWatched && video?.videoAvailability === "none" ? (
+              <MarkedWatched video={video} />
+            ) : null}
+            <CopyLink videoId={video.videoId} />
+            <WatchLater addWatchLater={addWatchLater} videoData={video} />
+            <RemoveWatchLater
               videoId={video.videoId}
+              removeWatchLater={removeWatchLater}
             />
-          ) : null}
-        </PopoverContent>
-      </Popover>
+            {video?.videoAvailability === "none" ? (
+              <DownloadVideo
+                disabled={!cobaltYTInstances?.youtube?.length}
+                cobaltYTInstances={cobaltYTInstances?.youtube ?? []}
+                videoId={video.videoId}
+              />
+            ) : null}
+          </PopoverContent>
+        </Popover>
+      )}
     </div>
   );
 }

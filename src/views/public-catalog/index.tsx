@@ -4,13 +4,6 @@ import type { ZContentByCatalog } from "~/entities/catalogs/models";
 
 import fetchApi from "~/shared/lib/api/fetch";
 import type { YouTubeCardOptions } from "~/shared/types-schema/types";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "~/shared/ui/dropdown-menu";
-import { ThreeDotIcon } from "~/shared/ui/icons";
 
 import BackLink from "~/widgets/back-link";
 import GridContainer from "~/widgets/grid-container";
@@ -22,12 +15,11 @@ import {
 import ScrollTop from "~/widgets/scroll-top";
 import YouTubeCard from "~/widgets/youtube/youtube-card";
 
-import { AddToFavorites } from "./add-to-fav";
+import { CatalogAction } from "./catalog-action";
 import CatalogInformationPopover from "./catalog-information-popover";
 import FilterChannel, { CurrentActive } from "./filter-channel";
 import { filterVideos, getActiveChannelIds } from "./helper-methods";
 import NextUpdateToast from "./next-update-toast";
-import ShareCatalog from "./share-catalog";
 import SubredditPosts from "./subreddit-posts";
 
 export default async function PubliCatalog({
@@ -100,31 +92,11 @@ export default async function PubliCatalog({
               </div>
 
               <div className="mr-2">
-                <DropdownMenu>
-                  <DropdownMenuTrigger>
-                    <ThreeDotIcon className="size-5" />
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent
-                    side="bottom"
-                    align="end"
-                    className="border-none flex flex-col gap-2 w-44 rounded-lg"
-                  >
-                    <DropdownMenuItem className="p-2 rounded-lg cursor-pointer">
-                      <ShareCatalog
-                        catalogId={catalogId}
-                        catalogTitle={catalogTitle}
-                        catalogDescription={catalogDescription}
-                      />
-                    </DropdownMenuItem>
-                    <DropdownMenuItem className="p-2 rounded-lg cursor-pointer">
-                      <AddToFavorites
-                        catalogId={catalogId}
-                        catalogTitle={catalogTitle}
-                        catalogDescription={catalogDescription}
-                      />
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
+                <CatalogAction
+                  catalogTitle={catalogTitle}
+                  catalogDescription={catalogDescription}
+                  catalogId={catalogId}
+                />
               </div>
             </div>
           </div>

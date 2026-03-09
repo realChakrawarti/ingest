@@ -19,7 +19,7 @@ const Header = () => {
   const headerStyles = cn(
     "flex justify-between items-center self-start",
     "h-14 w-full sticky z-50 top-0 border-b border-border/40 ",
-    "bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 dark:border-border",
+    "bg-background/95 backdrop-blur-sm supports-backdrop-filter:bg-background/60 dark:border-border",
     "transition-transform duration-300",
     isHidden ? "-translate-y-full" : "translate-y-0"
   );

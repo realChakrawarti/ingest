@@ -62,7 +62,7 @@ Before you begin contributing, make sure you have the necessary dependencies ins
 
 - Make sure you have [git](https://git-scm.com/downloads) installed.
 - Make sure you have [pnpm](https://pnpm.io/installation) installed.
-- Make sure you have [make](https://winget.run/pkg/GnuWin32/Make) installed.
+- Make sure you have [just](https://github.com/casey/just/releases) installed.
 - Fork the [repository](https://github.com/realChakrawarti/ingest) by
   clicking on the **[Fork](https://github.com/realChakrawarti/ingest/fork)** button on the repository's page. This creates a copy of the code under your GitHub user account.
 
@@ -95,7 +95,7 @@ Before you begin contributing, make sure you have the necessary dependencies ins
 - Install all the project dependencies
 
   ```bash
-  make setup
+  just setup
   ```
 
 ### Environment Variables
@@ -118,13 +118,13 @@ The project includes various scripts for development tasks. You can run them usi
 #### Firebase emulation without seed data
 
 ```bash
-make dev
+just start
 ```
 
 #### Firebase emulation with seed data (Recommended for first-time setup)
 
 ```bash
-make dev-seed
+just start-seed
 ```
 
 ## Commit Messages
@@ -192,4 +192,4 @@ If you've already opened a pull request, you'll need to force push with the `--f
 
 To create a pull request, go to your fork on GitHub. You’ll often find a “Compare & pull request” button visible on your fork’s main page if recent changes are detected. Click this button. You’ll be prompted to choose the branch in the original repository that you want to compare with your changes. Select `dev` and click on "Create pull request". If you don't find, "Compare & pull request" button, switch to your branch, and click on "Contribute".
 
-**We appreciate your contributions to YTCatalog**
+**We appreciate your contributions to Ingest**

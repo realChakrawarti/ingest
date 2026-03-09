@@ -14,7 +14,7 @@ import {
 export default async function Catalogs() {
   const catalogs = await fetchApi<ZCatalogValid[]>("/catalogs/valid");
 
-  const sortedByPageviews = catalogs.data?.sort(
+  const sortedByPageviews = catalogs?.data?.sort(
     (a, b) => (b.pageviews || 0) - (a.pageviews || 0)
   );
 
