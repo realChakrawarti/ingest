@@ -12,7 +12,6 @@ import { refs } from "~/shared/lib/firebase/refs";
 import getRedditAccessToken from "~/shared/lib/reddit/get-access-token";
 import { redditRequestHeaders } from "~/shared/lib/reddit/reddit-header";
 import formatRedditImageLink from "~/shared/utils/format-reddit-image-link";
-import isDevelopment from "~/shared/utils/is-development";
 import Log from "~/shared/utils/terminal-logger";
 import { time } from "~/shared/utils/time";
 
@@ -135,10 +134,12 @@ export async function getContentsByCatalog(
   const lastUpdatedCatalogList =
     userSnapData?.updatedAt.toDate().getTime() ?? currentTime;
 
+  const timeDiffLogo = currentTime - lastUpdatedCatalogList;
+
   // Update channel logos
   if (
-    currentTime - lastUpdatedCatalogList > appConfig.channelLogoUpdatePeriod &&
-    !isDevelopment()
+    timeDiffLogo > appConfig.channelLogoUpdatePeriod &&
+    appConfig.catalogUpdateEnabled
   ) {
     const updatedList = await updateChannelLogos(youtubeList);
     // Update the YouTube list channel logos and keep the Reddit list intact
@@ -157,10 +158,11 @@ export async function getContentsByCatalog(
 
   let recentUpdate = new Date(currentTime);
   let pageviews = 0;
+  const timeDiffContent = currentTime - lastUpdatedTime;
 
   if (
-    currentTime - lastUpdatedTime > appConfig.catalogUpdatePeriod &&
-    !isDevelopment()
+    timeDiffContent > appConfig.catalogUpdatePeriod &&
+    appConfig.catalogUpdateEnabled
   ) {
     try {
       pageviews = await getPageviewByCatalogId(catalogId);
