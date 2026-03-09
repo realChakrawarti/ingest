@@ -145,7 +145,7 @@ export default function AddSubredditDialog({
           </span>
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[600px] max-h-[80vh] overflow-hidden flex flex-col px-3 py-6">
+      <DialogContent className="sm:max-w-150 max-h-[80vh] overflow-hidden flex flex-col px-3 py-6">
         <DialogHeader className="px-3">
           <DialogTitle>Add Subreddit</DialogTitle>
         </DialogHeader>

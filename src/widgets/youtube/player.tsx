@@ -95,7 +95,7 @@ export default function YoutubePlayer(
         (item) => item !== playerIframe
       );
 
-      const played = await indexedDB["history"].get(videoId);
+      const played = await indexedDB.history.get(videoId);
 
       // Debugging
       Log.debug(
@@ -163,7 +163,7 @@ export default function YoutubePlayer(
       return;
     }
 
-    const played = await indexedDB["history"].get(videoId);
+    const played = await indexedDB.history.get(videoId);
 
     if (!loaded.current) {
       thisPlayerRef.current = await (
