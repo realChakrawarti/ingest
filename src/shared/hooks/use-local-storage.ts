@@ -2,8 +2,6 @@
 
 import { useCallback, useEffect, useSyncExternalStore } from "react";
 
-import Log from "../utils/terminal-logger";
-
 const getLocalStorageItem = (key: string) => {
   return window.localStorage.getItem(key);
 };
@@ -32,7 +30,6 @@ const removeLocalStorageItem = (key: string) => {
 
 export function useLocalStorage<T>(key: string, initialValue: T | null) {
   const getLocalStorageServerSnapshot = () => {
-    Log.warn("useLocalStorage is a client-only hook");
     if (initialValue !== null) return JSON.stringify(initialValue);
     return null;
   };

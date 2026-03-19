@@ -29,8 +29,8 @@ export default function PlaylistTable({
       <TableCaption>A list of playlists.</TableCaption>
       <TableHeader>
         <TableRow>
-          <TableHead className="max-w-[50px]">SL No</TableHead>
-          <TableHead className="max-w-[150px]">Playlist Title</TableHead>
+          <TableHead className="max-w-12.5">SL No</TableHead>
+          <TableHead className="max-w-37.5">Playlist Title</TableHead>
           <TableHead>Playlist ID</TableHead>
           <TableHead className="text-center">Channel</TableHead>
           <TableHead />

@@ -9,77 +9,38 @@
     ".beads",
     "LICENSE"
   ],
+  "language_servers": [
+    "!deno",
+    "!eslint",
+    "vtsls",
+    "tailwindcss-language-server",
+    "json-language-server",
+    "package-version-server"
+  ],
+  "formatter": {
+    "external": {
+      "command": "just",
+      "arguments": ["format-on-save", "{buffer_path}"]
+    }
+  },
   "languages": {
     "CSS": {
-      "code_actions_on_format": {
-        "source.action.useSortedKeys.biome": true,
-        "source.fixAll.biome": true,
-        "source.organizeImports.biome": true
-      },
-      "formatter": {
-        "language_server": {
-          "name": "biome"
-        }
-      }
+      "format_on_save": "on"
     },
     "JavaScript": {
-      "code_actions_on_format": {
-        "source.action.useSortedKeys.biome": true,
-        "source.fixAll.biome": true,
-        "source.organizeImports.biome": true
-      },
-      "formatter": {
-        "language_server": {
-          "name": "biome"
-        }
-      }
+      "format_on_save": "on"
     },
     "JSON": {
-      "code_actions_on_format": {
-        "source.action.useSortedKeys.biome": true,
-        "source.fixAll.biome": true,
-        "source.organizeImports.biome": true
-      },
-      "formatter": {
-        "language_server": {
-          "name": "biome"
-        }
-      }
+      "format_on_save": "on"
     },
     "JSONC": {
-      "code_actions_on_format": {
-        "source.action.useSortedKeys.biome": true,
-        "source.fixAll.biome": true,
-        "source.organizeImports.biome": true
-      },
-      "formatter": {
-        "language_server": {
-          "name": "biome"
-        }
-      }
+      "format_on_save": "on"
     },
     "TSX": {
-      "code_actions_on_format": {
-        "source.fixAll.biome": true,
-        "source.organizeImports.biome": true
-      },
-      "formatter": {
-        "language_server": {
-          "name": "biome"
-        }
-      }
+      "format_on_save": "on"
     },
     "TypeScript": {
-      "code_actions_on_format": {
-        "source.action.useSortedKeys.biome": true,
-        "source.fixAll.biome": true,
-        "source.organizeImports.biome": true
-      },
-      "formatter": {
-        "language_server": {
-          "name": "biome"
-        }
-      }
+      "format_on_save": "on"
     }
   }
 }
