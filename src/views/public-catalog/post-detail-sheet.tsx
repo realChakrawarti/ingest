@@ -1,4 +1,3 @@
-import Linkify from "linkify-react";
 import {
   ArrowLeftCircle,
   ArrowRightCircle,
@@ -19,10 +18,13 @@ import {
   SheetTitle,
 } from "~/shared/ui/sheet";
 import formatLargeNumber from "~/shared/utils/format-large-number";
+import { useHotkey } from "@tanstack/react-hotkeys";
 
 import { OutLink } from "~/widgets/out-link";
+import { useDrag } from "@use-gesture/react";
 
 import PostComments from "./post-comments";
+import MarkdownHTML from "~/widgets/markdown-html";
 export default function PostDetailSheet({
   post,
   nextSlide,
@@ -36,18 +38,55 @@ export default function PostDetailSheet({
   sheetOpen: boolean;
   handleSheetOpen: (isOpen: boolean) => void;
 }) {
+  useHotkey("ArrowRight", () => {
+    nextSlide();
+  });
+  useHotkey("ArrowLeft", () => {
+    previousSlide();
+  });
+
+  const bind = useDrag(
+    ({ swipe: [swipeX] }) => {
+      if (swipeX === 1) {
+        previousSlide();
+      } else if (swipeX === -1) {
+        nextSlide();
+      }
+    },
+    {
+      axis: "x",
+      threshold: 10,
+      swipe: { velocity: 0.5, distance: 20 },
+    }
+  );
+
   return (
     <Sheet open={sheetOpen} onOpenChange={handleSheetOpen}>
-      <SheetContent className="overflow-y-auto w-full md:max-w-112.5">
-        <SheetHeader className="text-left">
+      <SheetContent
+        {...bind()}
+        className="overflow-y-auto w-full md:max-w-112.5"
+      >
+        <SheetHeader className="text-left mb-5">
           <SheetTitle>
-            <OutLink href={`https://www.reddit.com${post.postPermalink}`}>
-              <Badge className="mb-2 space-x-2 cursor-pointer">
-                <ExternalLink className="size-4" />
-                <p className="text-md">Open on Reddit</p>
-              </Badge>
-              <p className="text-foreground">{post.postTitle}</p>
-            </OutLink>
+            <div className="flex justify-between items-center mt-4">
+              <OutLink href={`https://www.reddit.com${post.postPermalink}`}>
+                <Badge className="mb-2 space-x-2 cursor-pointer">
+                  <ExternalLink className="size-4" />
+                  <p className="text-md">Open on Reddit</p>
+                </Badge>
+              </OutLink>
+              <div className="flex items-center gap-2">
+                <ArrowLeftCircle
+                  className="size-5 cursor-pointer "
+                  onClick={() => previousSlide()}
+                />
+                <ArrowRightCircle
+                  className="size-5 cursor-pointer"
+                  onClick={() => nextSlide()}
+                />
+              </div>
+            </div>
+            <p className="text-foreground mt-2">{post.postTitle}</p>
           </SheetTitle>
           <SheetDescription asChild>
             <div>
@@ -58,16 +97,6 @@ export default function PostDetailSheet({
                   <span>•</span>
                   <MessageSquare className="size-4" />
                   <span>{post.postCommentsCount} comments</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <ArrowLeftCircle
-                    className="size-5 cursor-pointer "
-                    onClick={() => previousSlide()}
-                  />
-                  <ArrowRightCircle
-                    className="size-5 cursor-pointer"
-                    onClick={() => nextSlide()}
-                  />
                 </div>
               </div>
               {post.postDomain !== `self.${post.subreddit}` &&
@@ -105,18 +134,7 @@ export default function PostDetailSheet({
           {post?.postSelftext ? (
             <>
               <Separator className="my-3" />
-              <Linkify
-                className="text-sm whitespace-pre-wrap font-outfit text-foreground"
-                as="pre"
-                options={{
-                  className:
-                    "cursor-pointer text-[hsl(var(--primary))] hover:text-[hsl(var(--primary))]/70",
-                  rel: "noopener noreferrer external",
-                  target: "_blank",
-                }}
-              >
-                {post.postSelftext}
-              </Linkify>
+              <MarkdownHTML content={post.postSelftext} />
             </>
           ) : null}
           <Separator className="my-3" />

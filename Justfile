@@ -19,6 +19,11 @@ lint:
 format: lint
     {{ NODE_PM }} biome format --write .
 
+# format and fix all linter errors in the codebase
+[group("Chore")]
+format-on-save path:
+    {{ NODE_PM }} biome format --write --stdin-file-path={{ path }}
+
 # install all the project dependencies
 [group("Chore")]
 setup:

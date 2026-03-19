@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [26.0.9](https://github.com/realChakrawarti/ingest/compare/v26.0.8...v26.0.9) (2026-03-19)
+
+
+### Features
+
+* reddit post keyboard navigation and gestures ([bd1b1a1](https://github.com/realChakrawarti/ingest/commit/bd1b1a1865beaf5d13456ab229aff7500de7e384))
+
 ### [26.0.8](https://github.com/realChakrawarti/ingest/compare/v26.0.7...v26.0.8) (2026-03-09)
 
 

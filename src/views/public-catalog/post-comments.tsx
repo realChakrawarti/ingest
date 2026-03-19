@@ -1,6 +1,5 @@
 "use client";
 
-import Linkify from "linkify-react";
 import { ArrowBigRightDashIcon, Loader2, MessageSquare } from "lucide-react";
 import useSWRMutation from "swr/mutation";
 
@@ -15,6 +14,7 @@ import {
 } from "~/shared/ui/collapsible";
 import formatLargeNumber from "~/shared/utils/format-large-number";
 import { getDifferenceString } from "~/shared/utils/time-diff";
+import MarkdownHTML from "~/widgets/markdown-html";
 
 import { OutLink } from "~/widgets/out-link";
 
@@ -67,7 +67,7 @@ export default function PostComments({
         >
           {commentsLoading ? (
             <span className="flex items-center gap-2">
-              <Loader2 className="size-4  animate-spin" />
+              <Loader2 className="size-4 animate-spin" />
               Loading comments...
             </span>
           ) : (
@@ -110,18 +110,7 @@ export default function PostComments({
                   <span>•</span>
                   <span>{commentCreatedAt}</span>
                 </div>
-                <Linkify
-                  className="text-sm whitespace-pre-wrap font-outfit"
-                  as="pre"
-                  options={{
-                    className:
-                      "cursor-pointer text-[hsl(var(--primary))] hover:text-[hsl(var(--primary))]/70",
-                    rel: "noopener noreferrer external",
-                    target: "_blank",
-                  }}
-                >
-                  {comment.body}
-                </Linkify>
+                <MarkdownHTML content={comment.body} />
               </div>
             );
           })}

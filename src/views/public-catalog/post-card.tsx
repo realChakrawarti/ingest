@@ -26,6 +26,7 @@ import { OutLink } from "~/widgets/out-link";
 import OverlayTip from "~/widgets/overlay-tip";
 
 import PostDetailSheet from "./post-detail-sheet";
+import MarkdownHTML from "~/widgets/markdown-html";
 
 export default function PostCard({
   posts,
@@ -200,9 +201,9 @@ export default function PostCard({
                   </div>
 
                   {post.postSelftext && (
-                    <p className="w-[90%] text-sm text-muted-foreground mt-2 line-clamp-2">
-                      {post.postSelftext}
-                    </p>
+                    <span className="w-[90%] text-sm text-muted-foreground mt-2 line-clamp-2">
+                      <MarkdownHTML content={post.postSelftext} />
+                    </span>
                   )}
                 </div>
               </div>

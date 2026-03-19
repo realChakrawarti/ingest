@@ -5,6 +5,8 @@
     "@icons-pack/react-simple-icons": "^10.2.0",
     "@next/third-parties": "15.5.12",
     "@sentry/nextjs": "^10.32.1",
+    "@tanstack/react-hotkeys": "^0.4.2",
+    "@use-gesture/react": "^10.3.1",
     "canvas-confetti": "^1.9.3",
     "class-variance-authority": "^0.7.1",
     "cloudflare": "^5.0.0",
@@ -27,7 +29,11 @@
     "radix-ui": "latest",
     "react": "19.2.4",
     "react-dom": "19.2.4",
+    "react-markdown": "^10.1.0",
     "react-slick": "^0.30.3",
+    "rehype-raw": "^7.0.0",
+    "rehype-sanitize": "^6.0.0",
+    "remark-gfm": "^4.0.1",
     "slick-carousel": "^1.8.1",
     "sonner": "^2.0.6",
     "swr": "^2.3.3",
@@ -73,5 +79,5 @@
     "release": "standard-version",
     "start": "next start"
   },
-  "version": "26.0.8"
+  "version": "26.0.9"
 }

@@ -3,6 +3,7 @@
   "assist": {
     "actions": {
       "source": {
+        "useSortedAttributes": "on",
         "organizeImports": {
           "level": "on",
           "options": {
@@ -56,7 +57,7 @@
     "bracketSpacing": true,
     "enabled": true,
     "expand": "auto",
-    "formatWithErrors": false,
+    "formatWithErrors": true,
     "indentStyle": "space",
     "indentWidth": 2,
     "lineEnding": "crlf",
@@ -67,9 +68,6 @@
   "javascript": {
     "formatter": {
       "arrowParentheses": "always",
-      "attributePosition": "auto",
-      "bracketSameLine": false,
-      "bracketSpacing": true,
       "jsxQuoteStyle": "double",
       "quoteProperties": "asNeeded",
       "quoteStyle": "double",
