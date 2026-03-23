@@ -202,7 +202,10 @@ export default function PostCard({
 
                   {post.postSelftext && (
                     <span className="w-[90%] text-sm text-muted-foreground mt-2 line-clamp-2">
-                      <MarkdownHTML content={post.postSelftext} />
+                      <MarkdownHTML
+                        showImage={false}
+                        content={post.postSelftext}
+                      />
                     </span>
                   )}
                 </div>

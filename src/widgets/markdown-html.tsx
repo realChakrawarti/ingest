@@ -10,14 +10,20 @@ import { HTMLProps } from "react";
 
 interface MarkdownViewerProps {
   content: string;
+  showImage?: boolean;
 }
 
-function CustomLink({ href, children, ...rest }: HTMLProps<HTMLAnchorElement>) {
+function CustomLink({
+  href,
+  children,
+  showImage,
+  ...rest
+}: HTMLProps<HTMLAnchorElement> & { showImage: boolean }) {
   const isImage = /\.(jpg|jpeg|png|gif|webp|svg|bmp)(\?[^)]*)?$/i.test(
     href || ""
   );
 
-  if (isImage) {
+  if (isImage && showImage) {
     return (
       <img
         alt="-comment-image"
@@ -43,7 +49,10 @@ function CustomLink({ href, children, ...rest }: HTMLProps<HTMLAnchorElement>) {
   );
 }
 
-export default function MarkdownHTML({ content }: MarkdownViewerProps) {
+export default function MarkdownHTML({
+  content,
+  showImage = true,
+}: MarkdownViewerProps) {
   return (
     <ReactMarkdown
       components={{
@@ -51,7 +60,11 @@ export default function MarkdownHTML({ content }: MarkdownViewerProps) {
         h2: "h3",
         a(props) {
           const { href, children } = props;
-          return <CustomLink href={href}>{children}</CustomLink>;
+          return (
+            <CustomLink href={href} showImage={showImage}>
+              {children}
+            </CustomLink>
+          );
         },
       }}
       remarkPlugins={[remarkGfm]}
