@@ -1,18 +1,18 @@
 import { createStore } from "zustand/vanilla";
 
 type State = {
-  playerRef: YT.Player | null;
+  player: YT.Player | null;
 };
 
 type Actions = {
-  setPlayerRef: (playerRef: YT.Player | null) => void;
-  getPlayerRef: () => YT.Player | null;
+  setPlayer: (playerRef: YT.Player | null) => void;
+  getPlayer: () => YT.Player | null;
 };
 
 const currentlyPlayingStore = createStore<State & Actions>((set, get) => ({
-  playerRef: null,
-  setPlayerRef: (playerRef) => set({ playerRef: playerRef }),
-  getPlayerRef: () => get().playerRef,
+  player: null,
+  setPlayer: (player) => set({ player: player }),
+  getPlayer: () => get().player,
 }));
 
 export default currentlyPlayingStore;

@@ -4,7 +4,7 @@ import currentlyPlayingStore from "./currently-playing-store";
 function useActivePlayerRef() {
   return useSyncExternalStore(
     currentlyPlayingStore.subscribe,
-    currentlyPlayingStore.getState().getPlayerRef,
+    currentlyPlayingStore.getState().getPlayer,
     () => null
   );
 }
