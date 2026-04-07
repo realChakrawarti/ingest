@@ -11,7 +11,7 @@ import { time } from "~/shared/utils/time";
 import currentlyPlayingStore from "./currently-playing-store";
 
 interface UseVideoTrackingProps {
-  thisPlayerRef: React.MutableRefObject<YT.Player | null>;
+  thisPlayerRef: React.RefObject<YT.Player | null>;
   video: ZVideoMetadataCompatible;
 }
 

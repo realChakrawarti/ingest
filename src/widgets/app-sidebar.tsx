@@ -12,7 +12,6 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
 
 import { useAuth } from "~/features/auth/context-provider";
 
@@ -47,6 +46,7 @@ import { cn } from "~/shared/utils/tailwind-merge";
 import AuthButton from "./auth-buttons";
 import Feedback from "./feedback";
 import { UserSettings } from "./user-settings";
+import useActivePlayerRef from "./youtube/use-active-player";
 
 export default function AppSidebar() {
   const { user, logout } = useAuth();
@@ -58,6 +58,7 @@ export default function AppSidebar() {
         <ExploreGroup />
         <Separator />
         <LocalGroup />
+        <PlayerStatus />
       </SidebarContent>
       <SidebarFooter className="px-0">
         <div className="px-2">
@@ -82,10 +83,20 @@ export default function AppSidebar() {
   );
 }
 
+function PlayerStatus() {
+  const playerRef = useActivePlayerRef();
+
+  return (
+    <SidebarGroup>
+      <SidebarGroupContent>
+        <div>Currently playing: {playerRef?.getVideoData().title}</div>;
+      </SidebarGroupContent>
+    </SidebarGroup>
+  );
+}
+
 function LocalGroup() {
   const { setOpenMobile } = useSidebar();
-  const [isOpen, setIsOpen] = useState(false);
-
   const favoriteCatalogs =
     useLiveQuery(() => indexedDB["favorites"].toArray(), []) ?? [];
 
@@ -94,20 +105,17 @@ function LocalGroup() {
       <SidebarGroup>
         <SidebarGroupLabel
           asChild
-          className={cn(
-            "group/label text-sm",
-            "w-full justify-start px-2",
-            "hover:bg-primary/5 hover:text-primary/80"
-          )}
+          className={cn("group/label text-sm", "w-full justify-start px-2")}
         >
           <CollapsibleTrigger
             className={cn(
-              "flex items-center gap-2 dark:text-white text-[#18181B]",
               "group-data-[state=open]/collapsible:bg-primary/20 dark:group-data-[state=open]/collapsible:text-white"
             )}
           >
-            <HeartListIcon className="mr-2 h-4 w-4" />
-            <p className="tracking-wide">Favorite Catalogs</p>
+            <div className="flex items-center gap-2 text-[#18181B] dark:text-white">
+              <HeartListIcon className="mr-2 h-4 w-4" />
+              <p className="tracking-wide">Favorite Catalogs</p>
+            </div>
             <ChevronRight className="ml-auto transition-transform group-data-[state=open]/collapsible:rotate-90" />
           </CollapsibleTrigger>
         </SidebarGroupLabel>

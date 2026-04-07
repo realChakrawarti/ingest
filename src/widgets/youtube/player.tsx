@@ -8,7 +8,6 @@ import type { ZVideoMetadataCompatible } from "~/entities/catalogs/models";
 import appConfig from "~/shared/app-config";
 import { useLocalUserSettings } from "~/shared/hooks/use-local-user-settings";
 import { indexedDB } from "~/shared/lib/api/dexie";
-import { cn } from "~/shared/utils/tailwind-merge";
 import Log from "~/shared/utils/terminal-logger";
 
 import { useVideoTracking } from "./use-video-tracking";
@@ -66,7 +65,9 @@ function getPlayerParams(
 // TODO: picture-in-picture - https://codepen.io/jh3y/pen/wBBOdNv
 
 export default function YoutubePlayer(
-  props: ZVideoMetadataCompatible & { enableJsApi: boolean }
+  props: ZVideoMetadataCompatible & {
+    enableJsApi: boolean;
+  }
 ) {
   const { enableJsApi, ...video } = props;
 
@@ -204,12 +205,9 @@ export default function YoutubePlayer(
 
   return (
     <div
+      id="player-card"
+      className="overflow-hidden relative"
       tabIndex={0}
-      className={cn(
-        "rounded-lg overflow-hidden mx-0.5 md:mx-0",
-        "group-hover/player:shadow-primary group-hover/player:shadow-[0_0_0_2px]",
-        "outline-hidden"
-      )}
       ref={containerRef}
       onClick={loadIFrameElement}
     >

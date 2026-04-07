@@ -6,11 +6,13 @@ type State = {
 
 type Actions = {
   setPlayerRef: (playerRef: YT.Player | null) => void;
+  getPlayerRef: () => YT.Player | null;
 };
 
-const currentlyPlayingStore = createStore<State & Actions>((set) => ({
+const currentlyPlayingStore = createStore<State & Actions>((set, get) => ({
   playerRef: null,
   setPlayerRef: (playerRef) => set({ playerRef: playerRef }),
+  getPlayerRef: () => get().playerRef,
 }));
 
 export default currentlyPlayingStore;

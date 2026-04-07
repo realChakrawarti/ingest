@@ -56,7 +56,7 @@ export default function VideoCard({ video, removeVideo }: VideoCardProps) {
           <PopoverContent
             side="top"
             align="end"
-            className="w-[200px] border-none rounded-lg p-1"
+            className="w-50 border-none rounded-lg p-1"
           >
             <RemoveVideo videoId={videoId} removeVideo={removeVideo} />
           </PopoverContent>

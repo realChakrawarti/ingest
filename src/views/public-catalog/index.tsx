@@ -52,6 +52,7 @@ export default async function PubliCatalog({
     showDuration: true,
     showVideoCategory: true,
     showVideoStats: true,
+    focusMode: true,
   };
 
   if (!videos) {

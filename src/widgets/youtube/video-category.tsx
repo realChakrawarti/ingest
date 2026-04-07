@@ -136,9 +136,9 @@ export function VideoCategory({
   const IconComponent = Icons[category];
 
   return (
-    <div className="absolute top-2 left-[2px] md:left-0 cursor-default">
+    <div className="absolute top-2 left-0.5 md:left-0 cursor-default">
       <OverlayTip
-        className="px-[5px] py-2 flex gap-1 place-items-center rounded-r-md"
+        className="px-1.25 py-2 flex gap-1 place-items-center rounded-r-md"
         id="video-category"
         aria-label="Video category"
       >

@@ -1,3 +1,11 @@
+html:has(#focus-player[open]) {
+  overflow: hidden;
+}
+
+html {
+  scrollbar-gutter: stable;
+}
+
 @keyframes scroll {
   0% {
     transform: translateX(0);
@@ -80,11 +88,6 @@
   width: 20px;
   cursor: pointer;
   transition: background-color 0.35s ease;
-}
-
-/* Hide spotlight element anchor tags */
-a[href^="https://stoplight.io/"] {
-  display: none !important;
 }
 
 #player-card lite-youtube {

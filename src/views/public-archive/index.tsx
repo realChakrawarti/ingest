@@ -48,7 +48,7 @@ export default async function PublicArchive({
                 <YouTubeCard
                   key={video.videoId}
                   video={video}
-                  options={{ hideAvatar: true }}
+                  options={{ hideAvatar: true, focusMode: true }}
                 />
               );
             })}

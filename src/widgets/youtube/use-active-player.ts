@@ -1,29 +1,12 @@
-import { useEffect, useState } from "react";
-
+import { useSyncExternalStore } from "react";
 import currentlyPlayingStore from "./currently-playing-store";
 
 function useActivePlayerRef() {
-  const [activePlayerRef, setActivePlayerRef] = useState<YT.Player | null>(
-    null
+  return useSyncExternalStore(
+    currentlyPlayingStore.subscribe,
+    currentlyPlayingStore.getState().getPlayerRef,
+    () => null
   );
-
-  useEffect(() => {
-    const getActivePlayer: Parameters<
-      typeof currentlyPlayingStore.subscribe
-    >[0] = (state) => {
-      if (state.playerRef) {
-        setActivePlayerRef(state.playerRef);
-      }
-    };
-
-    const unsubscribe = currentlyPlayingStore.subscribe(getActivePlayer);
-
-    return () => {
-      unsubscribe();
-    };
-  }, []);
-
-  return activePlayerRef;
 }
 
 export default useActivePlayerRef;
