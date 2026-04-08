@@ -1,10 +1,11 @@
-import { Loader2 } from "lucide-react";
 import {
   type ChangeEvent,
   type KeyboardEvent,
   useEffect,
   useState,
 } from "react";
+import { Loader2 } from "lucide-react";
+
 import { toast } from "sonner";
 
 import type { ChannelDetails } from "~/entities/youtube/models";
@@ -161,7 +162,6 @@ export default function InputURLForm() {
     setInputMode(mode);
   };
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: Only when input mode is changed, validate the link
   useEffect(() => {
     validateLink(videoLink.link);
   }, [inputMode]);
@@ -180,7 +180,7 @@ export default function InputURLForm() {
                 />
                 <Label
                   htmlFor="video-url-checkbox"
-                  className={`text-sm cursor-pointer ${
+                  className={`cursor-pointer text-sm ${
                     inputMode === "video"
                       ? "font-medium"
                       : "text-muted-foreground"
@@ -198,7 +198,7 @@ export default function InputURLForm() {
                 />
                 <Label
                   htmlFor="channel-url-checkbox"
-                  className={`text-sm cursor-pointer ${
+                  className={`cursor-pointer text-sm ${
                     inputMode === "channel"
                       ? "font-medium"
                       : "text-muted-foreground"
@@ -234,7 +234,7 @@ export default function InputURLForm() {
             e.key === "Enter" && handleSubmit()
           }
         />
-        <p className="text-sm text-muted-foreground">
+        <p className="text-muted-foreground text-sm">
           {videoLink.error ? (
             <p className="text-sm text-[hsl(var(--primary))]">
               {videoLink.error}
@@ -254,7 +254,7 @@ export default function InputURLForm() {
       >
         {isLoading ? (
           <>
-            <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
             Fetching Channel...
           </>
         ) : (

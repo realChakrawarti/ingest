@@ -55,7 +55,7 @@ export default function SubredditTable({
               <TableRow key={subredditId}>
                 <TableCell>{idx + 1}</TableCell>
                 <TableCell>
-                  <div className="flex gap-2 items-center">
+                  <div className="flex items-center gap-2">
                     {subredditIcon ? (
                       <img
                         src={subredditIcon}
@@ -90,7 +90,7 @@ export default function SubredditTable({
                     <Button variant="outline">
                       <DeleteIcon
                         size={24}
-                        className="text-red-700 hover:text-red-500 cursor-pointer"
+                        className="cursor-pointer text-red-700 hover:text-red-500"
                       />
                     </Button>
                   </DeleteModal>

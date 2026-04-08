@@ -1,3 +1,5 @@
+// oxlint-disable no-console
+
 /**
  * @fileoverview A robust console logging utility for various log levels.
  */

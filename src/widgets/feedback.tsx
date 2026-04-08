@@ -1,5 +1,6 @@
 "use client";
 
+import { type JSX, type SubmitEvent, useState } from "react";
 import {
   Bug,
   HelpCircle,
@@ -7,7 +8,7 @@ import {
   MailQuestion,
   PlusCircle,
 } from "lucide-react";
-import { type JSX, type SubmitEvent, useState } from "react";
+
 import { toast } from "sonner";
 
 import fetchApi from "~/shared/lib/api/fetch";

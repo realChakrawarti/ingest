@@ -48,7 +48,7 @@ function ChannelTable({
               <TableRow key={channelId}>
                 <TableCell>{idx + 1}</TableCell>
                 <TableCell>
-                  <div className="flex gap-2 items-center">
+                  <div className="flex items-center gap-2">
                     {channelLogo ? (
                       <img
                         src={channelLogo}
@@ -84,7 +84,7 @@ function ChannelTable({
                     <Button variant="outline">
                       <DeleteIcon
                         size={24}
-                        className="text-red-700 hover:text-red-500 cursor-pointer"
+                        className="cursor-pointer text-red-700 hover:text-red-500"
                       />
                     </Button>
                   </DeleteModal>

@@ -1,10 +1,10 @@
+import type { ZArchiveMeta } from "../models";
+
 import { Timestamp } from "firebase-admin/firestore";
 
 import { admin } from "~/shared/lib/firebase/admin";
 import { refs } from "~/shared/lib/firebase/refs";
 import { createNanoidToken } from "~/shared/utils/nanoid-token";
-
-import type { ZArchiveMeta } from "../models";
 
 export async function createArchive(
   userId: string,

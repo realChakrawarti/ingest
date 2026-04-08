@@ -1,9 +1,12 @@
 "use client";
 
-import { ChevronLeft, ChevronRight, SlidersHorizontal } from "lucide-react";
-import { useSearchParams } from "next/navigation";
-import { parseAsString, useQueryState } from "nuqs";
+import type { ChannelTag } from "./helper-methods";
+
 import { useEffect, useMemo, useRef, useState } from "react";
+import { useSearchParams } from "next/navigation";
+import { ChevronLeft, ChevronRight, SlidersHorizontal } from "lucide-react";
+
+import { parseAsString, useQueryState } from "nuqs";
 
 import useScreenWidth from "~/shared/hooks/use-screen-width";
 import { Avatar, AvatarFallback, AvatarImage } from "~/shared/ui/avatar";
@@ -21,8 +24,6 @@ import {
 import { Label } from "~/shared/ui/label";
 import { ToggleGroup, ToggleGroupItem } from "~/shared/ui/toggle-group";
 import { cn } from "~/shared/utils/tailwind-merge";
-
-import type { ChannelTag } from "./helper-methods";
 export default function FilterChannel({
   activeChannels,
 }: {
@@ -89,17 +90,17 @@ export default function FilterChannel({
 
   return (
     <div
-      className="px-2 md:px-3 flex gap-2 items-center container"
+      className="container flex items-center gap-2 px-2 md:px-3"
       style={{ width: `${containerWidth}px` }}
     >
       <FilterVideosModal />
 
-      <div className="overflow-hidden relative flex items-center grow">
+      <div className="relative flex grow items-center overflow-hidden">
         {showLeftScroll && (
           <Button
             variant="ghost"
             size="icon"
-            className="rounded-lg absolute left-0 top-0 bottom-0 w-8 bg-linear-to-r from-background to-transparent backdrop-blur-xs z-10 flex items-center"
+            className="from-background absolute top-0 bottom-0 left-0 z-10 flex w-8 items-center rounded-lg bg-linear-to-r to-transparent backdrop-blur-xs"
             onClick={scrollLeft}
           >
             <ChevronLeft className="h-4 w-4" />
@@ -111,7 +112,7 @@ export default function FilterChannel({
           <Button
             variant="ghost"
             size="icon"
-            className="rounded-lg absolute right-0 top-0 bottom-0 bg-linear-to-r from-background to-transparent backdrop-blur-xs z-10 flex items-center"
+            className="from-background absolute top-0 right-0 bottom-0 z-10 flex items-center rounded-lg bg-linear-to-r to-transparent backdrop-blur-xs"
             onClick={scrollRight}
           >
             <ChevronRight className="h-4 w-4" />
@@ -126,7 +127,7 @@ export default function FilterChannel({
         >
           <Badge
             onClick={handleOnClear}
-            className="cursor-pointer tracking-normal font-normal text-sm h-8 p-0 px-3 text-nowrap select-none"
+            className="h-8 cursor-pointer p-0 px-3 text-sm font-normal tracking-normal text-nowrap select-none"
             variant={!channelId ? "default" : "outline"}
           >
             All
@@ -136,7 +137,7 @@ export default function FilterChannel({
               key={channel.id}
               variant={channel.id === channelId ? "default" : "outline"}
               onClick={() => handleSelectionChange(channel.id)}
-              className="cursor-pointer tracking-normal font-normal text-sm h-8 p-0 px-3 text-nowrap select-none"
+              className="h-8 cursor-pointer p-0 px-3 text-sm font-normal tracking-normal text-nowrap select-none"
             >
               {channel.title}
             </Badge>
@@ -177,7 +178,7 @@ export function CurrentActive({
 
   if (activeFilteredChannel) {
     return (
-      <div className="flex gap-2 items-start px-2 md:px-3">
+      <div className="flex items-start gap-2 px-2 md:px-3">
         <Avatar className="h-8 w-8 rounded-lg">
           <AvatarImage
             src={activeFilteredChannel.logo}
@@ -185,14 +186,14 @@ export function CurrentActive({
           />
           <AvatarFallback>{activeFilteredChannel.title}</AvatarFallback>
         </Avatar>
-        <h4 className="text-lg md:text-2xl leading-none tracking-wide">
+        <h4 className="text-lg leading-none tracking-wide md:text-2xl">
           {activeFilteredChannel.title}
         </h4>
       </div>
     );
   }
 
-  return <></>;
+  return null;
 }
 
 function FilterVideosModal() {
@@ -217,7 +218,7 @@ function FilterVideosModal() {
       <DialogTrigger asChild>
         <Button
           variant="outline"
-          className="flex items-center gap-1 rounded-lg cursor-pointer text-sm h-8 p-0 px-3"
+          className="flex h-8 cursor-pointer items-center gap-1 rounded-lg p-0 px-3 text-sm"
         >
           <SlidersHorizontal className="size-6" />
           <span>Filters</span>
@@ -228,9 +229,9 @@ function FilterVideosModal() {
           <DialogTitle>Filter videos</DialogTitle>
           <DialogDescription>Fine-tune your feed</DialogDescription>
         </DialogHeader>
-        <div className="flex flex-col gap-3 items-start">
+        <div className="flex flex-col items-start gap-3">
           <div className="flex items-center gap-3">
-            <Label htmlFor="video-duration" className="text-base text-primary">
+            <Label htmlFor="video-duration" className="text-primary text-base">
               Duration
             </Label>
             <ToggleGroup

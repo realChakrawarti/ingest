@@ -1,6 +1,15 @@
 "use client";
 
 import {
+  createContext,
+  type PropsWithChildren,
+  useContext,
+  useLayoutEffect,
+  useState,
+} from "react";
+import { useRouter } from "next/navigation";
+
+import {
   type GithubAuthProvider,
   type GoogleAuthProvider,
   onAuthStateChanged,
@@ -8,14 +17,6 @@ import {
   signOut,
   type User,
 } from "firebase/auth";
-import { useRouter } from "next/navigation";
-import {
-  createContext,
-  type PropsWithChildren,
-  useContext,
-  useLayoutEffect,
-  useState,
-} from "react";
 import { toast } from "sonner";
 
 import fetchApi from "~/shared/lib/api/fetch";

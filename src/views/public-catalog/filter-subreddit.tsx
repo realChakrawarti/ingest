@@ -1,8 +1,9 @@
 "use client";
 
-import { Check, ChevronsUpDown } from "lucide-react";
-import { parseAsString, useQueryState } from "nuqs";
 import * as React from "react";
+import { Check, ChevronsUpDown } from "lucide-react";
+
+import { parseAsString, useQueryState } from "nuqs";
 
 import { Button } from "~/shared/ui/button";
 import {

@@ -16,10 +16,10 @@ function RemoveVideo({
     return (
       <Button
         variant="ghost"
-        className="flex gap-2 justify-start hover:bg-accent rounded-lg p-2 text-xs cursor-pointer w-full"
+        className="hover:bg-accent flex w-full cursor-pointer justify-start gap-2 rounded-lg p-2 text-xs"
         onClick={() => removeVideo(videoId)}
       >
-        <DeleteIcon className="h-4 w-4 mr-2" />
+        <DeleteIcon className="mr-2 h-4 w-4" />
         Remove video
       </Button>
     );
@@ -56,7 +56,7 @@ export default function VideoCard({ video, removeVideo }: VideoCardProps) {
           <PopoverContent
             side="top"
             align="end"
-            className="w-50 border-none rounded-lg p-1"
+            className="w-50 rounded-lg border-none p-1"
           >
             <RemoveVideo videoId={videoId} removeVideo={removeVideo} />
           </PopoverContent>

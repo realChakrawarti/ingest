@@ -1,17 +1,19 @@
 "use client";
 
 import dynamic from "next/dynamic";
+
 import type { ZVideoMetadataCompatible } from "~/entities/catalogs/models";
+
 import type { YouTubeCardOptions } from "~/shared/types-schema/types";
+import { cn } from "~/shared/utils/tailwind-merge";
 
 import { ChannelMeta, DescriptionSheet } from "./components";
+import FocusDialog from "./focus-dialog";
 import ShowCardOption from "./show-card-options";
 import { VideoCategory } from "./video-category";
 import { VideoDuration } from "./video-duration";
 import VideoStats from "./video-stats";
 import { WatchedStatus } from "./watched-status";
-import FocusDialog from "./focus-dialog";
-import { cn } from "~/shared/utils/tailwind-merge";
 
 const ClientYouTubePlayer = dynamic(() => import("./player"), {
   ssr: false,
@@ -39,7 +41,7 @@ export default function YouTubeCard(props: YouTubeCardProps) {
   } = options ?? {};
 
   return (
-    <div key={videoId} className="grid grid-rows-[1fr_1fr_80px] group/player">
+    <div key={videoId} className="group/player grid grid-rows-[1fr_1fr_80px]">
       <div
         className={cn(
           "row-span-2 flex flex-col shrink",

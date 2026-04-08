@@ -1,5 +1,5 @@
-import { Timestamp } from "firebase/firestore";
 import { DocumentReference } from "firebase-admin/firestore";
+import { Timestamp } from "firebase/firestore";
 import { z } from "zod";
 
 export const CatalogMetaSchema = z.object({

@@ -1,7 +1,8 @@
 "use client";
 
-import { CopyIcon, ShareIcon } from "lucide-react";
 import { useMemo } from "react";
+import { CopyIcon, ShareIcon } from "lucide-react";
+
 import { toast } from "sonner";
 
 import appConfig from "~/shared/app-config";

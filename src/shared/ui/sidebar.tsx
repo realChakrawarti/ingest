@@ -1,9 +1,10 @@
 "use client";
 
-import { cva, type VariantProps } from "class-variance-authority";
-import { PanelLeft, PanelLeftClose } from "lucide-react";
-import { Slot as SlotPrimitive } from "radix-ui";
 import * as React from "react";
+import { PanelLeft, PanelLeftClose } from "lucide-react";
+
+import { cva, type VariantProps } from "class-variance-authority";
+import { Slot as SlotPrimitive } from "radix-ui";
 
 import { useIsMobile } from "~/shared/hooks/use-mobile";
 import { Button } from "~/shared/ui/button";
@@ -83,7 +84,6 @@ const SidebarProvider = React.forwardRef<
           _setOpen(openState);
         }
 
-        // biome-ignore lint/suspicious/noDocumentCookie: Shadcn - This sets the cookie to keep the sidebar state.
         document.cookie = `${SIDEBAR_COOKIE_NAME}=${openState}; path=/; max-age=${SIDEBAR_COOKIE_MAX_AGE}`;
       },
       [setOpenProp, open]
@@ -203,11 +203,11 @@ const Sidebar = React.forwardRef<
                 "--sidebar-width": SIDEBAR_WIDTH_MOBILE,
               } as React.CSSProperties
             }
-            className="w-full md:max-w-(--sidebar-width) p-0 text-sidebar-foreground [&>button]:hidden"
+            className="text-sidebar-foreground w-full p-0 md:max-w-(--sidebar-width) [&>button]:hidden"
             side={side}
           >
             <div className="flex h-full w-full flex-col">
-              <div className="h-14 w-auto grid place-content-center absolute right-0 mr-2">
+              <div className="absolute right-0 mr-2 grid h-14 w-auto place-content-center">
                 <Button
                   data-sidebar="trigger"
                   variant="ghost"
@@ -229,7 +229,7 @@ const Sidebar = React.forwardRef<
     return (
       <div
         ref={ref}
-        className="group peer hidden md:block text-sidebar-foreground"
+        className="group peer text-sidebar-foreground hidden md:block"
         data-state={state}
         data-collapsible={state === "collapsed" ? collapsible : ""}
         data-variant={variant}
@@ -262,7 +262,7 @@ const Sidebar = React.forwardRef<
         >
           <div
             data-sidebar="sidebar"
-            className="flex h-full w-full flex-col group-data-[variant=floating]:rounded-lg group-data-[variant=floating]:border group-data-[variant=floating]:border-sidebar-border group-data-[variant=floating]:shadow-sm"
+            className="group-data-[variant=floating]:border-sidebar-border flex h-full w-full flex-col group-data-[variant=floating]:rounded-lg group-data-[variant=floating]:border group-data-[variant=floating]:shadow-sm"
           >
             {children}
           </div>
@@ -683,7 +683,7 @@ const SidebarMenuSkeleton = React.forwardRef<
         />
       )}
       <Skeleton
-        className="h-4 flex-1 max-w-(--skeleton-width)"
+        className="h-4 max-w-(--skeleton-width) flex-1"
         data-sidebar="menu-skeleton-text"
         style={
           {

@@ -26,9 +26,9 @@ const Header = () => {
 
   return (
     <header className={headerStyles}>
-      <div className="flex-1 flex justify-between items-center px-2 container mx-auto">
-        <div className="flex gap-2 items-center">
-          <SidebarTrigger className="h-8 w-8 mr-2">
+      <div className="container mx-auto flex flex-1 items-center justify-between px-2">
+        <div className="flex items-center gap-2">
+          <SidebarTrigger className="mr-2 h-8 w-8">
             <Button variant="ghost" size="icon">
               <svg
                 role="img"
@@ -57,7 +57,7 @@ const Header = () => {
                 className="size-7"
               />
               <p
-                className="self-end text-lg tracking-wide dark:text-white/80 dark:hover:text-white text-primary/80 hover:text-primary"
+                className="text-primary/80 hover:text-primary self-end text-lg tracking-wide dark:text-white/80 dark:hover:text-white"
                 aria-hidden="true"
               >
                 {appConfig.marketName}
@@ -65,7 +65,7 @@ const Header = () => {
             </h1>
           </Link>
         </div>
-        <div className="flex gap-3 items-center">
+        <div className="flex items-center gap-3">
           <GitHubStargazer owner="realChakrawarti" repo="ingest" />
           <ThemeToggle />
         </div>

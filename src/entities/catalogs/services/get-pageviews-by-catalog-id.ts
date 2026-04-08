@@ -7,8 +7,9 @@ const analyticsDataClient = new BetaAnalyticsDataClient({
   credentials: {
     client_email: process.env.GOOGLE_CLIENT_EMAIL,
     // TODO: Consider storing private key as encoded base64, then decode and use
-    private_key:
-      process.env.GOOGLE_ANALYTICS_PRIVATE_KEY.split(String.raw`\n`).join("\n"),
+    private_key: process.env.GOOGLE_ANALYTICS_PRIVATE_KEY.split(
+      String.raw`\n`
+    ).join("\n"),
   },
 });
 

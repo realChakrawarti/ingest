@@ -44,12 +44,12 @@ export default function CatalogView() {
   };
 
   return (
-    <div className="px-3 space-y-4">
-      <div className="flex justify-between items-center">
-        <h1 className="text-lg lg:text-xl flex items-center gap-3">
+    <div className="space-y-4 px-3">
+      <div className="flex items-center justify-between">
+        <h1 className="flex items-center gap-3 text-lg lg:text-xl">
           <BookOpenIcon />
           <p>Catalogs</p>
-          <Badge className="text-lg lg:text-xl text-primary" variant="outline">
+          <Badge className="text-primary text-lg lg:text-xl" variant="outline">
             {catalogsData?.length ?? 0}/{appConfig.limitCatalogs}
           </Badge>
         </h1>

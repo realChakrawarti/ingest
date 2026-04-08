@@ -1,7 +1,8 @@
-import { SiReddit } from "@icons-pack/react-simple-icons";
-import { Check, Loader2, Search } from "lucide-react";
-import { useParams } from "next/navigation";
 import { type ChangeEvent, useState } from "react";
+import { useParams } from "next/navigation";
+import { Check, Loader2, Search } from "lucide-react";
+
+import { SiReddit } from "@icons-pack/react-simple-icons";
 import { toast } from "sonner";
 import useSWR, { type KeyedMutator } from "swr";
 
@@ -145,15 +146,15 @@ export default function AddSubredditDialog({
           </span>
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-150 max-h-[80vh] overflow-hidden flex flex-col px-3 py-6">
+      <DialogContent className="flex max-h-[80vh] flex-col overflow-hidden px-3 py-6 sm:max-w-150">
         <DialogHeader className="px-3">
           <DialogTitle>Add Subreddit</DialogTitle>
         </DialogHeader>
-        <div className="px-3 space-y-4">
+        <div className="space-y-4 px-3">
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+            <Search className="text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 transform" />
             <Input
-              className="pl-10 input-search-icon"
+              className="input-search-icon pl-10"
               type="search"
               id="subreddit-search"
               placeholder="Search subreddits..."
@@ -170,13 +171,13 @@ export default function AddSubredditDialog({
                   <Badge
                     key={subreddit.subredditId}
                     variant="secondary"
-                    className="gap-1 bg-primary/60 hover:bg-primary/40 font-normal"
+                    className="bg-primary/60 hover:bg-primary/40 gap-1 font-normal"
                   >
                     r/{subreddit.subredditName}
                     <button
                       type="button"
                       onClick={() => toggleSubredditSelection(subreddit)}
-                      className="ml-1 hover:bg-muted-foreground/20 rounded-full p-0.5"
+                      className="hover:bg-muted-foreground/20 ml-1 rounded-full p-0.5"
                     >
                       ×
                     </button>
@@ -195,7 +196,7 @@ export default function AddSubredditDialog({
               toggleSubredditSelection={toggleSubredditSelection}
             />
           ) : (
-            <div className="text-center py-8 text-muted-foreground">
+            <div className="text-muted-foreground py-8 text-center">
               <p className="mb-2">Search for subreddits to get started</p>
               <p className="text-sm">
                 Try searching for topics like "technology", "gaming", or "news"
@@ -212,7 +213,7 @@ export default function AddSubredditDialog({
               <div className="flex items-center gap-2">
                 {isLoadingUpdate ? (
                   <>
-                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                     <p>
                       Adding {selectedSubreddits.length} Subreddit
                       {selectedSubreddits.length !== 1 ? "s..." : "..."}
@@ -220,7 +221,7 @@ export default function AddSubredditDialog({
                   </>
                 ) : (
                   <>
-                    <Check className="w-4 h-4 mr-2" />
+                    <Check className="mr-2 h-4 w-4" />
                     <p>
                       Add {selectedSubreddits.length} Subreddit
                       {selectedSubreddits.length !== 1 ? "s" : ""}
@@ -252,9 +253,9 @@ function SearchDropdown({
   }
 
   return (
-    <div className="mt-1 bg-card border border-border rounded-md max-h-96 overflow-y-auto z-50">
+    <div className="bg-card border-border z-50 mt-1 max-h-96 overflow-y-auto rounded-md border">
       {isLoading ? (
-        <div className="p-4 text-center text-muted-foreground">
+        <div className="text-muted-foreground p-4 text-center">
           Searching...
         </div>
       ) : subreddits?.length > 0 ? (
@@ -262,7 +263,7 @@ function SearchDropdown({
           return (
             <div
               key={subreddit.id}
-              className="p-3 hover:bg-accent cursor-pointer flex items-start justify-between gap-2 transition-colors border-b border-border last:border-b-0"
+              className="hover:bg-accent border-border flex cursor-pointer items-start justify-between gap-2 border-b p-3 transition-colors last:border-b-0"
               onClick={() => toggleSubredditSelection(subreddit)}
             >
               <div className="flex items-center gap-3">
@@ -274,23 +275,23 @@ function SearchDropdown({
                     }
                     alt={`r/${subreddit.display_name} icon`}
                   />
-                  <AvatarFallback className="bg-primary/80 text-white text-sm">
+                  <AvatarFallback className="bg-primary/80 text-sm text-white">
                     r/
                   </AvatarFallback>
                 </Avatar>
-                <div className="flex-1 min-w-0">
+                <div className="min-w-0 flex-1">
                   <div className="flex items-center gap-2">
-                    <span className="text-primary/80 dark:text-white text-sm">
+                    <span className="text-primary/80 text-sm dark:text-white">
                       r/{subreddit.display_name}
                     </span>
                     <Badge
                       variant="secondary"
-                      className="text-xs text-primary/80 dark:text-white"
+                      className="text-primary/80 text-xs dark:text-white"
                     >
                       {formatLargeNumber(subreddit.subscribers)} members
                     </Badge>
                   </div>
-                  <p className="text-xs text-muted-foreground line-clamp-2">
+                  <p className="text-muted-foreground line-clamp-2 text-xs">
                     {subreddit.public_description || subreddit.title}
                   </p>
                 </div>

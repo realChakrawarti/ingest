@@ -1,7 +1,8 @@
 "use client";
 
-import { Trash2 } from "lucide-react";
 import { useEffect, useState } from "react";
+import { Trash2 } from "lucide-react";
+
 import { toast } from "sonner";
 import useSWR from "swr";
 import useSWRMutation from "swr/mutation";
@@ -83,12 +84,12 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="flex first:pt-3 last:pb-3 flex-col gap-3">
+    <div className="flex flex-col gap-3 first:pt-3 last:pb-3">
       <div className="flex items-center justify-between">
         <h1 className="px-3 text-2xl tracking-wide">Dashboard</h1>
-        {isLoading && <Skeleton className="w-40 h-7 mx-3" />}
+        {isLoading && <Skeleton className="mx-3 h-7 w-40" />}
         {userSyncID?.data?.syncId && !isLoading && (
-          <div className="mx-3 flex items-center gap-2 relative">
+          <div className="relative mx-3 flex items-center gap-2">
             <p>
               <span className="text-foreground-muted">
                 {userSyncID.data.syncId}
@@ -105,14 +106,14 @@ export default function Dashboard() {
                 <PopoverContent
                   side="top"
                   align="end"
-                  className="w-50 border-none rounded-lg p-1"
+                  className="w-50 rounded-lg border-none p-1"
                 >
                   <Button
                     variant="ghost"
                     onClick={handleDeleteClick}
-                    className="flex gap-2 justify-start hover:bg-accent rounded-lg p-2 text-sm cursor-pointer w-full"
+                    className="hover:bg-accent flex w-full cursor-pointer justify-start gap-2 rounded-lg p-2 text-sm"
                   >
-                    <Trash2 className="h-4 w-4 mr-2 text-red-700 hover:text-red-500" />
+                    <Trash2 className="mr-2 h-4 w-4 text-red-700 hover:text-red-500" />
                     Delete SyncID
                   </Button>
                 </PopoverContent>

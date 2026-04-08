@@ -1,6 +1,7 @@
 "use client";
 
-import { useLiveQuery } from "dexie-react-hooks";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import {
   Archive,
   BookOpen,
@@ -10,8 +11,8 @@ import {
   History,
   LayoutDashboard,
 } from "lucide-react";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+
+import { useLiveQuery } from "dexie-react-hooks";
 
 import { useAuth } from "~/features/auth/context-provider";
 
@@ -101,7 +102,7 @@ function LocalGroup() {
     useLiveQuery(() => indexedDB["favorites"].toArray(), []) ?? [];
 
   return (
-    <Collapsible defaultOpen={true} className="group/collapsible">
+    <Collapsible defaultOpen className="group/collapsible">
       <SidebarGroup>
         <SidebarGroupLabel
           asChild
@@ -172,15 +173,15 @@ function UserGroup() {
 
   if (!user) {
     return (
-      <SidebarHeader className="border-b px-4 h-14 justify-center">
+      <SidebarHeader className="h-14 justify-center border-b px-4">
         <AuthButton />
       </SidebarHeader>
     );
   }
   return (
     <>
-      <SidebarHeader className="border-b px-4 h-14 justify-center">
-        <div className="flex gap-2 items-center">
+      <SidebarHeader className="h-14 justify-center border-b px-4">
+        <div className="flex items-center gap-2">
           <Avatar className="size-8 rounded-lg">
             <AvatarImage
               src={

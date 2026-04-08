@@ -1,7 +1,8 @@
 "use client";
 
-import { parseAsString, useQueryState } from "nuqs";
 import { useEffect, useState } from "react";
+
+import { parseAsString, useQueryState } from "nuqs";
 
 import appConfig from "~/shared/app-config";
 import { indexedDB } from "~/shared/lib/api/dexie";
@@ -63,7 +64,7 @@ export default function WatchHistory() {
       <PublicHeaderTitle>
         <div className="flex items-center gap-2">
           <BackLink href="/explore" />
-          <h1 className="text-lg lg:text-xl tracking-wide">Watch history</h1>
+          <h1 className="text-lg tracking-wide lg:text-xl">Watch history</h1>
         </div>
       </PublicHeaderTitle>
       <FilterWatched status={status} setStatus={setStatus} />
@@ -73,7 +74,13 @@ export default function WatchHistory() {
             history.map((item) => (
               <YouTubeCard
                 key={item.videoId}
-                options={{ enableJsApi: true, markWatched: true }}
+                options={{
+                  enableJsApi: true,
+                  markWatched: true,
+                  focusMode: true,
+                  showDuration: true,
+                  showVideoStats: true,
+                }}
                 video={item}
               />
             ))
@@ -96,10 +103,10 @@ function FilterWatched({ status, setStatus }: FilterWatchedProps) {
     setStatus(id);
   }
   return (
-    <div className="flex items-center gap-3 mt-4 px-2 md:px-3">
+    <div className="mt-4 flex items-center gap-3 px-2 md:px-3">
       <Badge
         onClick={() => handleChange(null)}
-        className="cursor-pointer tracking-normal font-normal text-sm h-8 p-0 px-3 text-nowrap select-none"
+        className="h-8 cursor-pointer p-0 px-3 text-sm font-normal tracking-normal text-nowrap select-none"
         variant={!status ? "default" : "outline"}
       >
         All
@@ -109,7 +116,7 @@ function FilterWatched({ status, setStatus }: FilterWatchedProps) {
           key={option.id}
           variant={option.id === status ? "default" : "outline"}
           onClick={() => handleChange(option.id)}
-          className="cursor-pointer tracking-normal font-normal text-sm h-8 p-0 px-3 text-nowrap select-none"
+          className="h-8 cursor-pointer p-0 px-3 text-sm font-normal tracking-normal text-nowrap select-none"
         >
           {option.label}
         </Badge>

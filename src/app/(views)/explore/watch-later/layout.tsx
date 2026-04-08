@@ -11,5 +11,5 @@ export default function WatchLaterLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return <>{children}</>;
+  return { children };
 }

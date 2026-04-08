@@ -11,5 +11,5 @@ export default function ExploreLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return <>{children}</>;
+  return { children };
 }

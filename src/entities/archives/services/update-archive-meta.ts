@@ -1,8 +1,8 @@
+import type { ZArchiveMeta } from "../models";
+
 import { refs } from "~/shared/lib/firebase/refs";
 import { allowMetadataUpdate } from "~/shared/utils/allow-metadata-update";
 import { jsonResult } from "~/shared/utils/json-return";
-
-import type { ZArchiveMeta } from "../models";
 
 export async function updateArchiveMeta(
   archiveId: string,

@@ -1,7 +1,8 @@
 "use client";
 
-import { YouTubeEmbed } from "@next/third-parties/google";
 import { useCallback, useEffect, useRef } from "react";
+
+import { YouTubeEmbed } from "@next/third-parties/google";
 
 import type { ZVideoMetadataCompatible } from "~/entities/catalogs/models";
 
@@ -63,7 +64,6 @@ function getPlayerParams(
 }
 
 // TODO: picture-in-picture - https://codepen.io/jh3y/pen/wBBOdNv
-
 export default function YoutubePlayer(
   props: ZVideoMetadataCompatible & {
     enableJsApi: boolean;
@@ -98,7 +98,6 @@ export default function YoutubePlayer(
 
       const played = await indexedDB.history.get(videoId);
 
-      // Debugging
       Log.debug(
         `${getPlayingState(playerState as any, playingState)}:
         ${videoTitle}`
@@ -206,7 +205,7 @@ export default function YoutubePlayer(
   return (
     <div
       id="player-card"
-      className="overflow-hidden relative"
+      className="relative overflow-hidden"
       tabIndex={0}
       ref={containerRef}
       onClick={loadIFrameElement}

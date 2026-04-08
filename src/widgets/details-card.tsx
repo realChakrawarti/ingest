@@ -1,9 +1,10 @@
 "use client";
 
-import { EyeIcon, File, Pause, Play, VideoIcon } from "lucide-react";
-import Link from "next/link";
-import { type MouseEvent, useRef, useState } from "react";
 import type Slider from "react-slick";
+
+import { type MouseEvent, useRef, useState } from "react";
+import Link from "next/link";
+import { EyeIcon, File, Pause, Play, VideoIcon } from "lucide-react";
 
 import type { ZArchiveValid } from "~/entities/archives/models";
 import type { ZCatalogValid } from "~/entities/catalogs/models";
@@ -54,10 +55,10 @@ export default function DetailsCard({ validData, path }: DetailsCardProps) {
           {slidesPlaying ? (
             <OverlayTip
               id="slider-play"
-              className="grid size-8 rounded-l-md z-20 cursor-pointer"
+              className="z-20 grid size-8 cursor-pointer rounded-l-md"
             >
               <span
-                className="grid place-items-center size-full"
+                className="grid size-full place-items-center"
                 onMouseDown={pauseSlides}
               >
                 <Pause className="size-5" />
@@ -66,10 +67,10 @@ export default function DetailsCard({ validData, path }: DetailsCardProps) {
           ) : (
             <OverlayTip
               id="slider-pause"
-              className="size-8 rounded-l-md z-20 cursor-pointer"
+              className="z-20 size-8 cursor-pointer rounded-l-md"
             >
               <span
-                className="grid place-items-center size-full"
+                className="grid size-full place-items-center"
                 onMouseDown={playSlides}
               >
                 <Play className="size-5" />
@@ -92,7 +93,7 @@ export default function DetailsCard({ validData, path }: DetailsCardProps) {
             >
               {validData?.title}
             </h2>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-muted-foreground text-sm">
               {validData?.description}
             </p>
           </div>
@@ -102,7 +103,7 @@ export default function DetailsCard({ validData, path }: DetailsCardProps) {
       {validData?.pageviews ? (
         <Pageview pageviews={validData.pageviews} />
       ) : null}
-      <div className="flex flex-col gap-2 absolute top-2 left-0 z-20">
+      <div className="absolute top-2 left-0 z-20 flex flex-col gap-2">
         {validData?.totalVideos ? (
           <TotalVideos totalVideos={validData.totalVideos} />
         ) : null}
@@ -118,7 +119,7 @@ function TotalVideos({ totalVideos }: { totalVideos: number }) {
   return (
     <OverlayTip
       id="total-videos"
-      className="flex gap-1  items-center px-[5px] py-2 rounded-r-md"
+      className="flex items-center gap-1 rounded-r-md px-[5px] py-2"
     >
       <p className="text-xs">{totalVideos}</p>
       <VideoIcon className="size-3" />
@@ -130,7 +131,7 @@ function TotalPosts({ totalPosts }: { totalPosts: number }) {
   return (
     <OverlayTip
       id="total-posts"
-      className="flex gap-1 items-center px-[5px] py-2 rounded-r-md"
+      className="flex items-center gap-1 rounded-r-md px-[5px] py-2"
     >
       <p className="text-xs">{totalPosts}</p>
       <File className="size-3" />
@@ -143,7 +144,7 @@ function Pageview({ pageviews }: { pageviews: number }) {
     return (
       <OverlayTip
         id="pageviews"
-        className="flex gap-1 px-[5px] py-2 absolute top-2 right-0 items-center rounded-l-md z-20"
+        className="absolute top-2 right-0 z-20 flex items-center gap-1 rounded-l-md px-[5px] py-2"
       >
         <p className="text-xs">{pageviews}</p>
         <EyeIcon className="size-3" />

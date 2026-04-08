@@ -11,5 +11,5 @@ export default function CatalogsLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return <>{children}</>;
+  return { children };
 }

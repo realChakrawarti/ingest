@@ -1,11 +1,14 @@
-import { Button } from "~/shared/ui/button";
-import OverlayTip from "../overlay-tip";
-import { ExternalLink, MaximizeIcon, XIcon } from "lucide-react";
 import { useRef } from "react";
 import dynamic from "next/dynamic";
-import { ZVideoMetadataCompatible } from "~/entities/catalogs/models";
-import { OutLink } from "../out-link";
+import { ExternalLink, MaximizeIcon, XIcon } from "lucide-react";
+
+import type { ZVideoMetadataCompatible } from "~/entities/catalogs/models";
+
 import { Badge } from "~/shared/ui/badge";
+import { Button } from "~/shared/ui/button";
+
+import { OutLink } from "../out-link";
+import OverlayTip from "../overlay-tip";
 
 const ClientYouTubePlayer = dynamic(() => import("./player"), {
   ssr: false,
@@ -21,20 +24,20 @@ export default function FocusDialog({
   const dialogRef = useRef<HTMLDialogElement | null>(null);
 
   return (
-    <div className="absolute bottom-2 left-0.5 md:left-0 group/focus-mode cursor-default">
+    <div className="group/focus-mode absolute bottom-2 left-0.5 cursor-default md:left-0">
       <OverlayTip
-        className="rounded-r-md overflow-hidden"
+        className="overflow-hidden rounded-r-md"
         id="focus"
         aria-label="Focus mode"
       >
         <Button
-          className="flex gap-1 place-items-center px-1.25 py-2 rounded-none"
+          className="flex place-items-center gap-1 rounded-none px-1.25 py-2"
           onClick={() => {
             dialogRef.current?.showModal();
           }}
           variant="ghost"
         >
-          <div className="hidden group-hover/focus-mode:block text-xs">
+          <div className="hidden text-xs group-hover/focus-mode:block">
             Focus
           </div>
           <MaximizeIcon className="size-4 grow" />
@@ -43,22 +46,22 @@ export default function FocusDialog({
 
       <dialog
         id="focus-player"
-        className="m-auto backdrop:bg-black/95 backdrop:backdrop-blur-xs bg-transparent"
+        className="m-auto bg-transparent backdrop:bg-black/95 backdrop:backdrop-blur-xs"
         ref={dialogRef}
       >
-        <div className="h-full w-180 max-w-full overflow-x-hidden flex flex-col gap-3">
-          <div className="flex items-center gap-3 justify-between">
+        <div className="flex h-full w-180 max-w-full flex-col gap-3 overflow-x-hidden">
+          <div className="flex items-center justify-between gap-3">
             <div className="flex items-center gap-3">
-              <Badge className="py-2 space-x-2 cursor-pointer">
+              <Badge className="cursor-pointer space-x-2 py-2">
                 <ExternalLink className="size-4" />
                 <OutLink
-                  className="text-white hover:text-white text-nowrap"
+                  className="text-nowrap text-white hover:text-white"
                   href={`https://www.youtube.com/watch?v=${video.videoId}`}
                 >
                   Watch on YouTube
                 </OutLink>
               </Badge>
-              <p className="text-center text-sm text-white/80 text-wrap line-clamp-2">
+              <p className="line-clamp-2 text-center text-sm text-wrap text-white/80">
                 {video.videoTitle}
               </p>
             </div>
@@ -72,7 +75,7 @@ export default function FocusDialog({
               <XIcon className="size-4" />
             </Button>
           </div>
-          <div className="rounded-md overflow-clip">
+          <div className="overflow-clip rounded-md">
             <ClientYouTubePlayer enableJsApi={enableJsApi} {...video} />
           </div>
         </div>

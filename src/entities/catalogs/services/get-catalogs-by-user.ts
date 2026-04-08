@@ -1,8 +1,8 @@
+import type { ZCatalogByUser } from "../models";
+
 import { timestampUTC } from "~/shared/lib/firebase/admin";
 import { refs } from "~/shared/lib/firebase/refs";
 import Log from "~/shared/utils/terminal-logger";
-
-import type { ZCatalogByUser } from "../models";
 
 export async function getCatalogByUser(userId: string) {
   const userCatalogsData: ZCatalogByUser[] = [];

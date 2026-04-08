@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+
 import useSWR from "swr";
 
 import type { ZVideoMetadataCompatible } from "~/entities/catalogs/models";
@@ -97,7 +98,7 @@ export default function ShowCardOption({
           </SheetTrigger>
           <SheetContent
             side="bottom"
-            className="max-h-[50vh] min-h-20 rounded-t-2xl [&>button]:hidden p-3 pt-6"
+            className="max-h-[50vh] min-h-20 rounded-t-2xl p-3 pt-6 [&>button]:hidden"
           >
             <div className="flex flex-col gap-4">
               {markWatched && video?.videoAvailability === "none" ? (
@@ -135,7 +136,7 @@ export default function ShowCardOption({
             onClick={() => setIsOpen(false)}
             side="top"
             align="end"
-            className="w-50 border-none rounded-lg p-1"
+            className="w-50 rounded-lg border-none p-1"
           >
             {markWatched && video?.videoAvailability === "none" ? (
               <MarkedWatched video={video} />

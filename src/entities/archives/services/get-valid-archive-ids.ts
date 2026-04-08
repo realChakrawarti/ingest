@@ -1,11 +1,11 @@
+import type { ZArchiveValid } from "../models";
 import type { DocumentData } from "firebase-admin/firestore";
+
 import { unstable_noStore } from "next/cache";
 
 import type { ZYouTubeVideoMetadata } from "~/entities/youtube/models";
 
 import { refs } from "~/shared/lib/firebase/refs";
-
-import type { ZArchiveValid } from "../models";
 
 const getArchiveMetadata = async (archiveId: string) => {
   const archiveRef = refs.archives.doc(archiveId);

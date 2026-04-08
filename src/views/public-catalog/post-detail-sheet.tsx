@@ -6,6 +6,9 @@ import {
   MessageSquare,
 } from "lucide-react";
 
+import { useHotkey } from "@tanstack/react-hotkeys";
+import { useDrag } from "@use-gesture/react";
+
 import type { ZCatalogSubredditPost } from "~/entities/catalogs/models";
 
 import { Badge } from "~/shared/ui/badge";
@@ -18,13 +21,11 @@ import {
   SheetTitle,
 } from "~/shared/ui/sheet";
 import formatLargeNumber from "~/shared/utils/format-large-number";
-import { useHotkey } from "@tanstack/react-hotkeys";
 
+import MarkdownHTML from "~/widgets/markdown-html";
 import { OutLink } from "~/widgets/out-link";
-import { useDrag } from "@use-gesture/react";
 
 import PostComments from "./post-comments";
-import MarkdownHTML from "~/widgets/markdown-html";
 export default function PostDetailSheet({
   post,
   nextSlide,
@@ -64,20 +65,20 @@ export default function PostDetailSheet({
     <Sheet open={sheetOpen} onOpenChange={handleSheetOpen}>
       <SheetContent
         {...bind()}
-        className="overflow-y-auto w-full md:max-w-112.5"
+        className="w-full overflow-y-auto md:max-w-112.5"
       >
-        <SheetHeader className="text-left mb-5">
+        <SheetHeader className="mb-5 text-left">
           <SheetTitle>
-            <div className="flex justify-between items-center mt-4">
+            <div className="mt-4 flex items-center justify-between">
               <OutLink href={`https://www.reddit.com${post.postPermalink}`}>
-                <Badge className="mb-2 space-x-2 cursor-pointer">
+                <Badge className="mb-2 cursor-pointer space-x-2">
                   <ExternalLink className="size-4" />
                   <p className="text-md">Open on Reddit</p>
                 </Badge>
               </OutLink>
               <div className="flex items-center gap-2">
                 <ArrowLeftCircle
-                  className="size-5 cursor-pointer "
+                  className="size-5 cursor-pointer"
                   onClick={() => previousSlide()}
                 />
                 <ArrowRightCircle
@@ -90,7 +91,7 @@ export default function PostDetailSheet({
           </SheetTitle>
           <SheetDescription asChild>
             <div>
-              <div className="flex items-center justify-between mt-2 text-sm text-muted-foreground">
+              <div className="text-muted-foreground mt-2 flex items-center justify-between text-sm">
                 <div className="flex items-center gap-2">
                   <ArrowUp className="size-4" />
                   <span>{formatLargeNumber(post.postVotes)} votes</span>
@@ -101,7 +102,7 @@ export default function PostDetailSheet({
               </div>
               {post.postDomain !== `self.${post.subreddit}` &&
                 post.postDomain !== "i.redd.it" && (
-                  <div className="mt-2 flex gap-2 items-center">
+                  <div className="mt-2 flex items-center gap-2">
                     <ExternalLink className="size-4" />
                     <OutLink href={post.postUrl}>
                       <span>{post.postDomain}</span>
@@ -117,7 +118,7 @@ export default function PostDetailSheet({
             <video
               controls
               muted
-              className="w-full h-auto max-h-96 object-contain"
+              className="h-auto max-h-96 w-full object-contain"
             >
               <source src={post.postVideo} type="video/mp4" />
               Your browser does not support the video tag.
@@ -128,7 +129,7 @@ export default function PostDetailSheet({
             <img
               src={post.postImage}
               alt={post.postTitle}
-              className="w-full h-auto max-h-96 object-contain"
+              className="h-auto max-h-96 w-full object-contain"
             />
           ) : null}
           {post?.postSelftext ? (

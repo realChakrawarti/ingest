@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useRef, useState } from "react";
 import {
   Ban,
   Book,
@@ -10,7 +11,6 @@ import {
   Shield,
   Smartphone,
 } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
 
 import { cn } from "~/shared/utils/tailwind-merge";
 
@@ -122,7 +122,7 @@ export default function FeatureCarousel() {
       <div className="relative overflow-hidden">
         <div
           ref={carouselRef}
-          className="flex overflow-x-auto scrollbar-hide gap-6 py-4"
+          className="scrollbar-hide flex gap-6 overflow-x-auto py-4"
           style={{ msOverflowStyle: "none", scrollbarWidth: "none" }}
         >
           {duplicatedFeatures.map((feature, idx) => (
@@ -162,13 +162,13 @@ export default function FeatureCarousel() {
         </div>
 
         {/* Gradient overlays for seamless scroll effect */}
-        <div className="absolute left-0 top-0 bottom-0 w-8 bg-linear-to-r from-background to-transparent pointer-events-none z-10" />
-        <div className="absolute right-0 top-0 bottom-0 w-8 bg-linear-to-l from-background to-transparent pointer-events-none z-10" />
+        <div className="from-background pointer-events-none absolute top-0 bottom-0 left-0 z-10 w-8 bg-linear-to-r to-transparent" />
+        <div className="from-background pointer-events-none absolute top-0 right-0 bottom-0 z-10 w-8 bg-linear-to-l to-transparent" />
       </div>
 
       {/* Description box that appears below the carousel */}
-      <div className="mt-3 min-h-30 flex items-center justify-center">
-        <div className="text-zinc-500 text-center animate-fade-in">
+      <div className="mt-3 flex min-h-30 items-center justify-center">
+        <div className="animate-fade-in text-center text-zinc-500">
           {activeFeature === null ? (
             <p className="text-sm">Hover over a feature card to learn more</p>
           ) : (

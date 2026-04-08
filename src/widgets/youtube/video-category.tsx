@@ -1,7 +1,8 @@
 "use client";
 
-import { useLiveQuery } from "dexie-react-hooks";
 import { FlameIcon, MessageSquareText, TrendingUp } from "lucide-react";
+
+import { useLiveQuery } from "dexie-react-hooks";
 
 import type { ZVideoContentInfo } from "~/entities/catalogs/models";
 
@@ -136,15 +137,15 @@ export function VideoCategory({
   const IconComponent = Icons[category];
 
   return (
-    <div className="absolute top-2 left-0.5 md:left-0 cursor-default">
+    <div className="absolute top-2 left-0.5 cursor-default md:left-0">
       <OverlayTip
-        className="px-1.25 py-2 flex gap-1 place-items-center rounded-r-md"
+        className="flex place-items-center gap-1 rounded-r-md px-1.25 py-2"
         id="video-category"
         aria-label="Video category"
       >
-        <div className="text-xs flex gap-1 items-center">
+        <div className="flex items-center gap-1 text-xs">
           <IconComponent className="size-4" />
-          <p className="hidden group-hover/player:flex gap-1 items-center">
+          <p className="hidden items-center gap-1 group-hover/player:flex">
             <span>{category}</span>
           </p>
         </div>

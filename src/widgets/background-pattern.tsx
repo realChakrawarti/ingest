@@ -1,7 +1,7 @@
 export default function BackgroundPattern() {
   return (
     <div
-      className="-z-10 inset-0 fixed"
+      className="fixed inset-0 -z-10"
       style={{
         backgroundImage: "url(background-noise.png)",
         backgroundRepeat: "repeat",

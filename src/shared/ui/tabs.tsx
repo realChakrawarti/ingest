@@ -1,7 +1,8 @@
 "use client";
 
-import { Tabs as TabsPrimitive } from "radix-ui";
 import * as React from "react";
+
+import { Tabs as TabsPrimitive } from "radix-ui";
 
 import { cn } from "~/shared/utils/tailwind-merge";
 

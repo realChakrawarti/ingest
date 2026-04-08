@@ -11,5 +11,5 @@ export default function ArchivesLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return <>{children}</>;
+  return { children };
 }

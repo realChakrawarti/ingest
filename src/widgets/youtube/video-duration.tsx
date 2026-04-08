@@ -35,8 +35,7 @@ function checkVideoAvailability(
 export function VideoDuration({
   videoAvailability,
   videoDuration,
-  videoId,
-}: Pick<ZVideoMetadata, "videoId" | "videoDuration" | "videoAvailability">) {
+}: Pick<ZVideoMetadata, "videoDuration" | "videoAvailability">) {
   const availability = checkVideoAvailability(videoAvailability);
 
   return (

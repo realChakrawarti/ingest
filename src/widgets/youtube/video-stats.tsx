@@ -1,14 +1,15 @@
 "use client";
 
-import type { ZVideoContentInfo } from "~/entities/catalogs/models";
 import { EyeIcon, MessageSquare, ThumbsUp } from "lucide-react";
+
+import type { ZVideoContentInfo } from "~/entities/catalogs/models";
+
 import formatLargeNumber from "~/shared/utils/format-large-number";
 
 export default function VideoStats({
   videoViews,
   videoLikes,
   videoComments,
-  videoId,
 }: Omit<
   ZVideoContentInfo,
   "videoDuration" | "videoAvailability" | "defaultVideoLanguage"
@@ -17,8 +18,8 @@ export default function VideoStats({
 }) {
   return (
     <div className="cursor-default">
-      <div className="flex gap-1 items-center">
-        <div className="flex gap-1 items-center">
+      <div className="flex items-center gap-1">
+        <div className="flex items-center gap-1">
           <span className="flex items-center gap-1">
             <EyeIcon className="size-4" />
             {formatLargeNumber(videoViews)}

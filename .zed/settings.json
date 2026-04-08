@@ -12,6 +12,8 @@
   "language_servers": [
     "!deno",
     "!eslint",
+    "just-lsp",
+    "oxlint",
     "vtsls",
     "tailwindcss-language-server",
     "json-language-server",
