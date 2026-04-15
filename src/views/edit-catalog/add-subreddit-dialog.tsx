@@ -1,4 +1,7 @@
-import { type ChangeEvent, useState } from "react";
+// oxlint-disable typescript/no-explicit-any
+
+import type { ChangeEvent } from "react";
+import { useState } from "react";
 import { useParams } from "next/navigation";
 import { Check, Loader2, Search } from "lucide-react";
 

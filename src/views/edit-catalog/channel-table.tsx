@@ -27,8 +27,8 @@ function ChannelTable({
       <TableCaption>A list of channels.</TableCaption>
       <TableHeader>
         <TableRow>
-          <TableHead className="max-w-[50px]">SL No</TableHead>
-          <TableHead className="max-w-[150px]">Channel</TableHead>
+          <TableHead className="max-w-12.5">SL No</TableHead>
+          <TableHead className="max-w-37.5">Channel</TableHead>
           <TableHead>Channel ID</TableHead>
           <TableHead />
         </TableRow>

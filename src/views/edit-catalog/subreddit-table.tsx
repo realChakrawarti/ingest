@@ -29,7 +29,7 @@ export default function SubredditTable({
       <TableCaption>A list of subreddits.</TableCaption>
       <TableHeader>
         <TableRow>
-          <TableHead className="max-w-[50px]">SL No</TableHead>
+          <TableHead className="max-w-12.5">SL No</TableHead>
           <TableHead>Subreddit</TableHead>
           <TableHead>Subreddit ID</TableHead>
           <TableHead />

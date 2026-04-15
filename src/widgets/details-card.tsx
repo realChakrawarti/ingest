@@ -119,7 +119,7 @@ function TotalVideos({ totalVideos }: { totalVideos: number }) {
   return (
     <OverlayTip
       id="total-videos"
-      className="flex items-center gap-1 rounded-r-md px-[5px] py-2"
+      className="flex items-center gap-1 rounded-r-md px-1.25 py-2"
     >
       <p className="text-xs">{totalVideos}</p>
       <VideoIcon className="size-3" />
@@ -131,7 +131,7 @@ function TotalPosts({ totalPosts }: { totalPosts: number }) {
   return (
     <OverlayTip
       id="total-posts"
-      className="flex items-center gap-1 rounded-r-md px-[5px] py-2"
+      className="flex items-center gap-1 rounded-r-md px-1.25 py-2"
     >
       <p className="text-xs">{totalPosts}</p>
       <File className="size-3" />
@@ -144,7 +144,7 @@ function Pageview({ pageviews }: { pageviews: number }) {
     return (
       <OverlayTip
         id="pageviews"
-        className="absolute top-2 right-0 z-20 flex items-center gap-1 rounded-l-md px-[5px] py-2"
+        className="absolute top-2 right-0 z-20 flex items-center gap-1 rounded-l-md px-1.25 py-2"
       >
         <p className="text-xs">{pageviews}</p>
         <EyeIcon className="size-3" />

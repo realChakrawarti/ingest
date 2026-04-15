@@ -69,7 +69,7 @@ export default function YouTubeCard(props: YouTubeCardProps) {
         </div>
         <div
           className={cn(
-            "flex justify-between items-end isolate -z-50",
+            "flex justify-between items-end",
             "h-11 px-2 py-3 backdrop-blur-xs rounded-b-md",
             "bg-primary/60 text-white/90 text-sm"
           )}
@@ -86,7 +86,6 @@ export default function YouTubeCard(props: YouTubeCardProps) {
             <VideoDuration
               videoAvailability={video.videoAvailability}
               videoDuration={video?.videoDuration ?? 0}
-              videoId={video.videoId}
             />
           ) : null}
         </div>

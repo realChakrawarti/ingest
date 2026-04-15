@@ -74,7 +74,7 @@ export default async function PubliCatalog({
         <PublicHeaderTitle>
           <div className="space-y-0">
             <div className="flex items-start justify-between">
-              <div className="flex items-start gap-4">
+              <div className="flex items-center gap-4">
                 <BackLink href="/explore/catalogs" />
                 <div className="space-y-1">
                   <span className="flex items-center gap-4">

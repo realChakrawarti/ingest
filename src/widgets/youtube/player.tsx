@@ -9,21 +9,9 @@ import type { ZVideoMetadataCompatible } from "~/entities/catalogs/models";
 import appConfig from "~/shared/app-config";
 import { useLocalUserSettings } from "~/shared/hooks/use-local-user-settings";
 import { indexedDB } from "~/shared/lib/api/dexie";
-import Log from "~/shared/utils/terminal-logger";
+import { PlayerState } from "~/shared/lib/constants";
 
 import { useVideoTracking } from "./use-video-tracking";
-
-function getPlayingState(
-  playerState: Record<string, number>,
-  playingState: number
-) {
-  for (const key in playerState) {
-    if (Object.hasOwn(playerState, key) && playerState[key] === playingState) {
-      return key;
-    }
-  }
-  return null;
-}
 
 function getActivePlayers() {
   return document.querySelectorAll("iframe");
@@ -86,41 +74,34 @@ export default function YoutubePlayer(
 
   const _onStateChange = useCallback(
     async (event: YT.OnStateChangeEvent) => {
-      const { target, data: playingState } = event;
+      const { target, data: state } = event;
       const playerIframe = target.getIframe();
-      const playerState = window.YT.PlayerState;
 
       const allPlayers = getActivePlayers();
+      const played = await indexedDB.history.get(videoId);
 
       const filterPlayers = Array.from(allPlayers).filter(
         (item) => item !== playerIframe
       );
 
-      const played = await indexedDB.history.get(videoId);
-
-      Log.debug(
-        `${getPlayingState(playerState as any, playingState)}:
-        ${videoTitle}`
-      );
-
-      switch (playingState) {
-        case playerState.CUED: {
+      switch (state) {
+        case PlayerState.CUED: {
           stopTracking();
           playerIframe.style.opacity = "0";
           playerIframe.setAttribute("playing", "false");
           isPlaying.current = false;
           break;
         }
-        case playerState.PAUSED: {
+        case PlayerState.PAUSED: {
           stopTracking();
           break;
         }
-        case playerState.ENDED: {
+        case PlayerState.ENDED: {
           stopTracking();
           isPlaying.current = false;
           break;
         }
-        case playerState.PLAYING: {
+        case PlayerState.PLAYING: {
           playerIframe.style.opacity = "1";
           thisPlayerRef.current?.setPlaybackRate(
             localUserSettings?.playbackRate ?? 1
@@ -136,7 +117,7 @@ export default function YoutubePlayer(
           isPlaying.current = true;
           break;
         }
-        case playerState.BUFFERING: {
+        case PlayerState.BUFFERING: {
           if (
             loaded.current &&
             !isPlaying.current &&

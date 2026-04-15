@@ -32,6 +32,9 @@ export default function WatchLater() {
               <YouTubeCard
                 key={item.videoId}
                 options={{
+                  showVideoStats: true,
+                  showDuration: true,
+                  focusMode: true,
                   enableJsApi: true,
                   hideAvatar: true,
                   removeWatchLater: true,

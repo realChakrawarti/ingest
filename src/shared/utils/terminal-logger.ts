@@ -1,4 +1,4 @@
-// oxlint-disable no-console
+// oxlint-disable no-console typescript-eslint/no-explicit-any
 
 /**
  * @fileoverview A robust console logging utility for various log levels.

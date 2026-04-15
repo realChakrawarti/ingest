@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
@@ -10,13 +11,18 @@ import {
   Compass,
   History,
   LayoutDashboard,
+  PauseIcon,
+  PlayIcon,
+  XIcon,
 } from "lucide-react";
 
 import { useLiveQuery } from "dexie-react-hooks";
 
 import { useAuth } from "~/features/auth/context-provider";
 
+import useInterval from "~/shared/hooks/use-interval";
 import { indexedDB } from "~/shared/lib/api/dexie";
+import { PlayerState } from "~/shared/lib/constants";
 import { Avatar, AvatarFallback, AvatarImage } from "~/shared/ui/avatar";
 import { Button } from "~/shared/ui/button";
 import {
@@ -24,7 +30,7 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "~/shared/ui/collapsible";
-import { HeartListIcon, LogoutIcon } from "~/shared/ui/icons";
+import { HeartListIcon, LogoutIcon, RefreshIcon } from "~/shared/ui/icons";
 import { Separator } from "~/shared/ui/separator";
 import {
   Sidebar,
@@ -42,6 +48,7 @@ import {
   SidebarMenuSubItem,
   useSidebar,
 } from "~/shared/ui/sidebar";
+import { Skeleton } from "~/shared/ui/skeleton";
 import { cn } from "~/shared/utils/tailwind-merge";
 
 import AuthButton from "./auth-buttons";
@@ -85,12 +92,85 @@ export default function AppSidebar() {
 }
 
 function PlayerStatus() {
+  const [playingStatus, setPlayingStatus] = useState<YT.PlayerState>();
+  const [showMiniPlayer, setShowMiniPlayer] = useState(false);
   const playerRef = useActivePlayerRef();
+  const title = playerRef?.getVideoData().title;
+
+  function renderControls(status: YT.PlayerState | undefined) {
+    switch (status) {
+      case PlayerState.PLAYING:
+        return (
+          <Button
+            className="flex items-center gap-2"
+            onClick={() => playerRef?.pauseVideo()}
+          >
+            <PauseIcon size={24} />
+            Pause
+          </Button>
+        );
+
+      case PlayerState.PAUSED:
+        return (
+          <Button
+            className="flex items-center gap-2"
+            onClick={() => playerRef?.playVideo()}
+          >
+            <PlayIcon size={24} />
+            Resume
+          </Button>
+        );
+
+      case PlayerState.ENDED:
+        return (
+          <Button
+            className="flex items-center gap-2"
+            onClick={() => playerRef?.playVideo()}
+          >
+            <RefreshIcon size={24} />
+            Start Over
+          </Button>
+        );
+
+      default:
+        return <Skeleton className="h-9 w-12" />;
+    }
+  }
+
+  useEffect(() => {
+    if (playerRef) {
+      const status = playerRef?.getPlayerState();
+      setPlayingStatus(status);
+      setShowMiniPlayer(true);
+    }
+  }, [playerRef]);
+
+  useInterval(() => {
+    const status = playerRef?.getPlayerState();
+    setPlayingStatus(status);
+  }, 1_000);
+
+  if (!showMiniPlayer) {
+    return null;
+  }
 
   return (
     <SidebarGroup>
-      <SidebarGroupContent>
-        <div>Currently playing: {playerRef?.getVideoData().title}</div>;
+      <SidebarGroupContent className="relative">
+        <Button
+          className="absolute top-0.5 right-0.5 hover:bg-transparent"
+          onClick={() => setShowMiniPlayer(false)}
+          size="icon"
+          variant="ghost"
+        >
+          <XIcon />
+        </Button>
+        <div className="bg-primary/40 flex h-max flex-col gap-3 rounded-md p-2">
+          <div className="flex grow justify-start">
+            {renderControls(playingStatus)}
+          </div>
+          <p className="line-clamp-2">{title}</p>
+        </div>
       </SidebarGroupContent>
     </SidebarGroup>
   );

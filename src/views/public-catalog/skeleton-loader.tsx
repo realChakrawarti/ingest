@@ -1,3 +1,5 @@
+import type { ReactNode } from "react";
+
 import { Skeleton } from "~/shared/ui/skeleton";
 
 import GridContainer from "~/widgets/grid-container";
@@ -63,7 +65,7 @@ function SubredditSection() {
     </section>
   );
 }
-function VideoSection({ children }: any) {
+function VideoSection({ children }: { children: ReactNode[] }) {
   return (
     <section className="space-y-4 px-0 md:px-3">
       <div className="flex items-center gap-2 px-2 md:px-0">

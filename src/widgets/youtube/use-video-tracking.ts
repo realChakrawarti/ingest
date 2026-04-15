@@ -75,8 +75,6 @@ export function useVideoTracking({
   };
 
   const stopTracking = () => {
-    setPlayer(null);
-
     if (trackingRef.current) {
       clearInterval(trackingRef.current);
       trackingRef.current = null;
