@@ -1,4 +1,13 @@
 {
+  "name": "ingest",
+  "version": "26.0.10",
+  "scripts": {
+    "build": "next build",
+    "dev": "next dev",
+    "prepare": "husky",
+    "release": "standard-version",
+    "start": "next start"
+  },
   "dependencies": {
     "@bprogress/next": "^3.2.12",
     "@google-analytics/data": "^4.12.0",
@@ -44,9 +53,9 @@
     "zustand": "^5.0.3"
   },
   "devDependencies": {
-    "@biomejs/biome": "2.0.6",
     "@commitlint/cli": "^19.7.1",
     "@commitlint/config-conventional": "^19.7.1",
+    "@e18e/eslint-plugin": "^0.3.0",
     "@tailwindcss/postcss": "^4.2.1",
     "@types/canvas-confetti": "^1.9.0",
     "@types/node": "^20.17.19",
@@ -56,6 +65,8 @@
     "@types/youtube": "^0.1.2",
     "firebase-tools": "^13.31.1",
     "husky": "^9.1.7",
+    "oxfmt": "^0.44.0",
+    "oxlint": "^1.59.0",
     "postcss": "^8.5.2",
     "standard-version": "^9.5.0",
     "tailwindcss": "^4.2.1",
@@ -64,20 +75,11 @@
   "engines": {
     "node": "22.22.0"
   },
-  "name": "ingest",
   "packageManager": "pnpm@10.9.0+sha512.0486e394640d3c1fb3c9d43d49cf92879ff74f8516959c235308f5a8f62e2e19528a65cdc2a3058f587cde71eba3d5b56327c8c33a97e4c4051ca48a10ca2d5f",
   "pnpm": {
     "overrides": {
       "@types/react": "19.2.11",
       "@types/react-dom": "19.2.3"
     }
-  },
-  "scripts": {
-    "build": "next build",
-    "dev": "next dev",
-    "prepare": "husky",
-    "release": "standard-version",
-    "start": "next start"
-  },
-  "version": "26.0.10"
+  }
 }

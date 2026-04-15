@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useRef, useState } from "react";
 import {
   ArrowDownCircle,
   ArrowUp,
@@ -11,8 +12,8 @@ import {
   Pause,
   Play,
 } from "lucide-react";
+
 import { useQueryState } from "nuqs";
-import { useEffect, useRef, useState } from "react";
 import Slider, { type Settings } from "react-slick";
 
 import type { ZCatalogSubredditPost } from "~/entities/catalogs/models";
@@ -22,11 +23,11 @@ import { Badge } from "~/shared/ui/badge";
 import formatLargeNumber from "~/shared/utils/format-large-number";
 import { getDifferenceString } from "~/shared/utils/time-diff";
 
+import MarkdownHTML from "~/widgets/markdown-html";
 import { OutLink } from "~/widgets/out-link";
 import OverlayTip from "~/widgets/overlay-tip";
 
 import PostDetailSheet from "./post-detail-sheet";
-import MarkdownHTML from "~/widgets/markdown-html";
 
 export default function PostCard({
   posts,
@@ -67,7 +68,6 @@ export default function PostCard({
     ? posts.filter((post) => post.subreddit === subreddit)
     : posts;
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: Run this effect when subreddit changes
   useEffect(() => {
     sliderRef.current?.slickGoTo(0);
   }, [subreddit]);
@@ -85,14 +85,14 @@ export default function PostCard({
 
   return (
     <div
-      className="px-0 md:px-3 min-w-full container"
+      className="container min-w-full px-0 md:px-3"
       style={{ width: `${screenWidth}px` }}
       id="posts-container"
     >
-      <div className="relative border rounded-md border-spacing-x-2 border-spacing-y-2 h-full min-h-44">
+      <div className="relative h-full min-h-44 border-spacing-x-2 border-spacing-y-2 rounded-md border">
         <div className="absolute right-0 bottom-3 z-50">
           {/* Next & Previous slides */}
-          <div className="absolute right-0 bottom-1 z-50 flex flex-col gap-1.5 px-1 *:cursor-pointer text-muted-foreground">
+          <div className="text-muted-foreground absolute right-0 bottom-1 z-50 flex flex-col gap-1.5 px-1 *:cursor-pointer">
             <ArrowUpCircle
               onClick={() => {
                 pauseSlides();
@@ -130,16 +130,16 @@ export default function PostCard({
             );
 
             return (
-              <div key={post.postId} className="flex gap-3 min-h-8 min-w-full">
+              <div key={post.postId} className="flex min-h-8 min-w-full gap-3">
                 <OverlayTip
                   id="post-count"
-                  className="absolute text-foreground top-0 right-0 rounded-l-md p-1 text-xs bg-primary/10 z-50"
+                  className="text-foreground bg-primary/10 absolute top-0 right-0 z-50 rounded-l-md p-1 text-xs"
                 >
                   {(idx + 1).toString().padStart(2, "0")}/
                   {totalPosts.toString().padStart(2, "0")}
                 </OverlayTip>
                 <div className="container px-3">
-                  <div className="flex mb-2 gap-1 text-xs text-muted-foreground">
+                  <div className="text-muted-foreground mb-2 flex gap-1 text-xs">
                     <span>
                       On{" "}
                       <OutLink
@@ -161,25 +161,22 @@ export default function PostCard({
                     <CalendarClock className="size-3" />
                     <span suppressHydrationWarning>{createdAt}</span>
                   </div>
-                  <div className="w-[90%] flex items-center gap-2">
-                    <div className="flex-1 flex items-center gap-2">
+                  <div className="flex w-[90%] items-center gap-2">
+                    <div className="flex flex-1 items-center gap-2">
                       <Badge
                         onClick={() => setSheetOpen(true)}
-                        className="cursor-pointer flex items-center gap-1"
+                        className="flex cursor-pointer items-center gap-1"
                       >
                         <PanelRight className="size-3" />
                         Expand
                       </Badge>
-                      <p
-                        className="tracking-wide hover:text-primary/80 text-foreground
-        line-clamp-2 text-sm"
-                      >
+                      <p className="hover:text-primary/80 text-foreground line-clamp-2 text-sm tracking-wide">
                         {post.postTitle}
                       </p>
                     </div>
                   </div>
 
-                  <div className="flex items-center gap-2 mt-2 text-xs text-muted-foreground">
+                  <div className="text-muted-foreground mt-2 flex items-center gap-2 text-xs">
                     <ArrowUp className="size-3" />
                     <span>{formatLargeNumber(post.postVotes)} votes</span>
                     <span>•</span>
@@ -191,7 +188,7 @@ export default function PostCard({
                           <span>•</span>
                           <OutLink
                             href={post.postUrl}
-                            className="flex gap-1 items-center"
+                            className="flex items-center gap-1"
                           >
                             <ExternalLink className="size-3" />
                             <span>{post.postDomain}</span>
@@ -201,7 +198,7 @@ export default function PostCard({
                   </div>
 
                   {post.postSelftext && (
-                    <span className="w-[90%] text-sm text-muted-foreground mt-2 line-clamp-2">
+                    <span className="text-muted-foreground mt-2 line-clamp-2 w-[90%] text-sm">
                       <MarkdownHTML
                         showImage={false}
                         content={post.postSelftext}

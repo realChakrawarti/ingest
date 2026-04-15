@@ -1,5 +1,3 @@
-// TODO: Consider using icons from lucide or use the svg directly
-import { SiGithub, SiGmail, SiGoogle } from "@icons-pack/react-simple-icons";
 import {
   AlertTriangle,
   Archive,
@@ -36,6 +34,9 @@ import {
   Trash2,
   X,
 } from "lucide-react";
+
+// TODO: Consider using icons from lucide or use the svg directly
+import { SiGithub, SiGmail, SiGoogle } from "@icons-pack/react-simple-icons";
 
 export {
   Archive as ArchiveIcon,

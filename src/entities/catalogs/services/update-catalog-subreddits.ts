@@ -1,8 +1,8 @@
+import type { ZCatalogSubreddit } from "../models";
+
 import { FieldValue } from "firebase-admin/firestore";
 
 import { refs } from "~/shared/lib/firebase/refs";
-
-import type { ZCatalogSubreddit } from "../models";
 
 export async function updateCatalogSubreddits(
   userId: string,

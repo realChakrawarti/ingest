@@ -35,17 +35,17 @@ export function CatalogAction({
         </SheetTrigger>
         <SheetContent
           side="bottom"
-          className="max-h-[50vh] min-h-20 rounded-t-2xl [&>button]:hidden p-3 pt-6"
+          className="max-h-[50vh] min-h-20 rounded-t-2xl p-3 pt-6 [&>button]:hidden"
         >
           <div className="flex flex-col gap-4">
-            <Button variant="ghost" className="p-2 rounded-lg justify-start">
+            <Button variant="ghost" className="justify-start rounded-lg p-2">
               <ShareCatalog
                 catalogId={catalogId}
                 catalogTitle={catalogTitle}
                 catalogDescription={catalogDescription}
               />
             </Button>
-            <Button variant="ghost" className="p-2 rounded-lg justify-start">
+            <Button variant="ghost" className="justify-start rounded-lg p-2">
               <AddToFavorites
                 catalogId={catalogId}
                 catalogTitle={catalogTitle}
@@ -65,16 +65,16 @@ export function CatalogAction({
       <DropdownMenuContent
         side="bottom"
         align="end"
-        className="border-none flex flex-col gap-2 w-auto rounded-lg"
+        className="flex w-auto flex-col gap-2 rounded-lg border-none"
       >
-        <DropdownMenuItem className="p-2 rounded-lg">
+        <DropdownMenuItem className="rounded-lg p-2">
           <ShareCatalog
             catalogId={catalogId}
             catalogTitle={catalogTitle}
             catalogDescription={catalogDescription}
           />
         </DropdownMenuItem>
-        <DropdownMenuItem className="p-2 rounded-lg text-nowrap">
+        <DropdownMenuItem className="rounded-lg p-2 text-nowrap">
           <AddToFavorites
             catalogId={catalogId}
             catalogTitle={catalogTitle}

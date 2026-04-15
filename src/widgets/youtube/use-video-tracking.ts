@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+
 import { toast } from "sonner";
 
 import type { ZVideoMetadataCompatible } from "~/entities/catalogs/models";
@@ -11,7 +12,7 @@ import { time } from "~/shared/utils/time";
 import currentlyPlayingStore from "./currently-playing-store";
 
 interface UseVideoTrackingProps {
-  thisPlayerRef: React.MutableRefObject<YT.Player | null>;
+  thisPlayerRef: React.RefObject<YT.Player | null>;
   video: ZVideoMetadataCompatible;
 }
 
@@ -51,7 +52,7 @@ export function useVideoTracking({
   thisPlayerRef,
 }: UseVideoTrackingProps) {
   const trackingRef = useRef<NodeJS.Timeout | null>(null);
-  const setPlayerRef = currentlyPlayingStore.getState().setPlayerRef;
+  const setPlayer = currentlyPlayingStore.getState().setPlayer;
 
   const updateProgress = async (player: YT.Player) => {
     await indexedDB["history"].put(getPercentCompleted(player, video));
@@ -63,7 +64,7 @@ export function useVideoTracking({
     if (trackingRef.current) return;
 
     if (thisPlayerRef.current) {
-      setPlayerRef(thisPlayerRef.current);
+      setPlayer(thisPlayerRef.current);
     }
 
     trackingRef.current = setInterval(async () => {
@@ -74,8 +75,6 @@ export function useVideoTracking({
   };
 
   const stopTracking = () => {
-    setPlayerRef(null);
-
     if (trackingRef.current) {
       clearInterval(trackingRef.current);
       trackingRef.current = null;

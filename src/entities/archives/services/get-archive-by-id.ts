@@ -1,8 +1,8 @@
+import type { ZArchiveByID } from "../models";
+
 import { timestampUTC } from "~/shared/lib/firebase/admin";
 import { refs } from "~/shared/lib/firebase/refs";
 import { jsonResult } from "~/shared/utils/json-return";
-
-import type { ZArchiveByID } from "../models";
 
 /**
  * This function sends the response of a specific catalog provided a valid catalogId
@@ -31,7 +31,7 @@ export async function getArchiveById(archiveId: string) {
     };
 
     return jsonResult.success(archiveResponseData).return();
-  } catch (_err) {
+  } catch {
     return jsonResult
       .error("Unable to retrieve archive by identifier.")
       .return();

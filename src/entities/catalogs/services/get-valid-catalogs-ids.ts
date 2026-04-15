@@ -1,8 +1,8 @@
+import type { ZCatalogDocument, ZCatalogValid } from "../models";
+
 import { unstable_noStore } from "next/cache";
 
 import { refs } from "~/shared/lib/firebase/refs";
-
-import type { ZCatalogDocument, ZCatalogValid } from "../models";
 
 export async function getValidCatalogIds() {
   unstable_noStore();

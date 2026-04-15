@@ -1,7 +1,8 @@
 "use client";
 
-import Link from "next/link";
 import type { MutableRefObject } from "react";
+import Link from "next/link";
+
 import Slider, { type Settings } from "react-slick";
 
 function ThumbnailCarousel({
@@ -35,7 +36,7 @@ function ThumbnailCarousel({
             <div key={thumb}>
               <Link prefetch={false} scroll={false} href={`${path}#${videoId}`}>
                 <img
-                  className="object-contain size-full"
+                  className="size-full object-contain"
                   src={thumb}
                   alt="thumbnail"
                 />

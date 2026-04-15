@@ -1,7 +1,7 @@
 "use client";
 
-import { ChevronDown, EyeIcon, File, VideoIcon } from "lucide-react";
 import { useState } from "react";
+import { ChevronDown, EyeIcon, File, VideoIcon } from "lucide-react";
 
 import { Popover, PopoverContent, PopoverTrigger } from "~/shared/ui/popover";
 import { Separator } from "~/shared/ui/separator";
@@ -43,29 +43,29 @@ export default function CatalogInformationPopover({
           className="size-4 cursor-pointer"
         />
       </PopoverTrigger>
-      <PopoverContent className="min-w-96 py-3 px-0 border border-slate-600">
+      <PopoverContent className="min-w-96 border border-slate-600 px-0 py-3">
         <div className="flex flex-col gap-3">
           <p className="text-md px-3">{description}</p>
-          <div className="grid grid-cols-2 gap-2 text-sm px-3">
-            <div className="flex gap-1 items-center">
+          <div className="grid grid-cols-2 gap-2 px-3 text-sm">
+            <div className="flex items-center gap-1">
               <EyeIcon className="size-4" />
               Unique views: <span className="text-primary/80">{pageviews}</span>
             </div>
-            <div className="flex gap-1 items-center">
+            <div className="flex items-center gap-1">
               <VideoIcon className="size-4" />
               Total Videos:{" "}
               <span className="text-primary/80">{totalVideos}</span>
             </div>
-            <div className="flex gap-1 items-center">
+            <div className="flex items-center gap-1">
               <File className="size-4" />
               Total Posts: <span className="text-primary/80">{totalPosts}</span>
             </div>
           </div>
           <Separator
-            className="bg-slate-600 h-px w-full"
+            className="h-px w-full bg-slate-600"
             orientation="vertical"
           />
-          <div className="text-sm px-3">
+          <div className="px-3 text-sm">
             {when > 0 ? (
               <p>Next update: {diffUpdate}</p>
             ) : (

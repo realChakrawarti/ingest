@@ -1,5 +1,6 @@
-import confetti from "canvas-confetti";
 import { useCallback } from "react";
+
+import confetti from "canvas-confetti";
 
 const count = 200;
 const defaults = {

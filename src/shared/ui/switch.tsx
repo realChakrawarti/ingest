@@ -1,7 +1,8 @@
 "use client";
 
-import { Switch as SwitchPrimitives } from "radix-ui";
 import * as React from "react";
+
+import { Switch as SwitchPrimitives } from "radix-ui";
 
 import { cn } from "~/shared/utils/tailwind-merge";
 

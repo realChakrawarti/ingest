@@ -1,8 +1,9 @@
 "use client";
 
-import { useLiveQuery } from "dexie-react-hooks";
-import { StarIcon } from "lucide-react";
 import { useEffect, useState } from "react";
+import { StarIcon } from "lucide-react";
+
+import { useLiveQuery } from "dexie-react-hooks";
 import { toast } from "sonner";
 
 import { useIsMobile } from "~/shared/hooks/use-mobile";

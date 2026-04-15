@@ -66,7 +66,7 @@ export default function FAQSection() {
       <SheetTrigger className="absolute top-2 right-2 z-50" asChild>
         <Button variant="outline">FAQ</Button>
       </SheetTrigger>
-      <SheetContent className="overflow-y-auto w-full md:max-w-[450px] space-y-2">
+      <SheetContent className="w-full space-y-2 overflow-y-auto md:max-w-[450px]">
         <SheetHeader className="text-left">
           <SheetTitle>Frequently Asked Questions</SheetTitle>
           <SheetDescription>

@@ -11,6 +11,7 @@ import {
   PublicContentContainer,
   PublicHeaderTitle,
   PublicMainContainer,
+  PublicMarker,
 } from "~/widgets/public-layout";
 import YouTubeCard from "~/widgets/youtube/youtube-card";
 
@@ -40,7 +41,10 @@ export default function ContinueWatching() {
     return (
       <PublicMainContainer>
         <PublicHeaderTitle>
-          <h1 className="text-2xl tracking-wide">Continue Watching</h1>
+          <div className="flex h-7 gap-2 text-lg tracking-wide md:text-2xl">
+            <PublicMarker />
+            <h1>Continue Watching</h1>
+          </div>
         </PublicHeaderTitle>
         <PublicContentContainer>
           <GridContainer>
@@ -48,7 +52,11 @@ export default function ContinueWatching() {
               // TODO: Track video progression
               <YouTubeCard
                 key={item.videoId}
-                options={{ enableJsApi: true }}
+                options={{
+                  enableJsApi: true,
+                  showVideoStats: true,
+                  showDuration: true,
+                }}
                 video={item}
               />
             ))}

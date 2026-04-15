@@ -1,5 +1,6 @@
 import { revalidatePath } from "next/cache";
 import type { NextRequest } from "next/server";
+
 import { z } from "zod";
 
 import { CatalogSubredditSchema } from "~/entities/catalogs/models";

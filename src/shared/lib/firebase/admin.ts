@@ -24,8 +24,9 @@ if (isDevelopment()) {
   appOptions = {
     credential: cert({
       clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
-      privateKey:
-        process.env.FIREBASE_PRIVATE_KEY.split(String.raw`\n`).join("\n"),
+      privateKey: process.env.FIREBASE_PRIVATE_KEY.split(String.raw`\n`).join(
+        "\n"
+      ),
       projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
     }),
   };

@@ -25,12 +25,12 @@ export default async function PublicArchive({
   const archiveUpdatedAt = archiveData.updatedAt;
 
   return (
-    <div className="space-y-4 pb-6 pt-7">
+    <div className="space-y-4 pt-7 pb-6">
       <section className="px-2 md:px-3">
         <div className="flex items-center gap-4">
           <BackLink href="/explore/archives" />
-          <div className="flex gap-1 items-center">
-            <h1 className="text-lg lg:text-xl tracking-wide">{archiveTitle}</h1>
+          <div className="flex items-center gap-1">
+            <h1 className="text-lg tracking-wide lg:text-xl">{archiveTitle}</h1>
             <ArchiveInformationPopover
               description={archiveDescription}
               totalVideos={archiveData?.videos.length ?? 0}
@@ -48,7 +48,7 @@ export default async function PublicArchive({
                 <YouTubeCard
                   key={video.videoId}
                   video={video}
-                  options={{ hideAvatar: true }}
+                  options={{ hideAvatar: true, focusMode: true }}
                 />
               );
             })}

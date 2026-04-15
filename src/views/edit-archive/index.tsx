@@ -46,8 +46,8 @@ export default function EditArchive({ archiveId }: { archiveId: string }) {
 
   return (
     <div>
-      <div className="flex flex-col md:flex-row md:items-center gap-2 justify-between p-3">
-        <div className="flex gap-4 items-center">
+      <div className="flex flex-col justify-between gap-2 p-3 md:flex-row md:items-center">
+        <div className="flex items-center gap-4">
           <BackLink className="size-6" href="/dashboard" />
           <Badge className="text-sm">
             {archiveData?.isPublic ? "Public" : "Private"}

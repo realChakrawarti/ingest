@@ -1,7 +1,7 @@
 "use client";
 
-import { ArrowUpIcon } from "lucide-react";
 import { useEffect, useState } from "react";
+import { ArrowUpIcon } from "lucide-react";
 
 import { Button } from "~/shared/ui/button";
 import { cn } from "~/shared/utils/tailwind-merge";
@@ -31,7 +31,7 @@ export default function ScrollTop() {
       size="icon"
       onClick={scrollToTop}
     >
-      <ArrowUpIcon className="w-5 h-5" />
+      <ArrowUpIcon className="h-5 w-5" />
       <span className="sr-only">Scroll to top</span>
     </Button>
   );

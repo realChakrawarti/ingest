@@ -15,7 +15,7 @@ export default function SubredditPosts({
   if (posts?.length) {
     return (
       <section className="space-y-4">
-        <div className="h-6 px-2 md:px-3 flex items-center gap-2 text-primary">
+        <div className="text-primary flex h-6 items-center gap-2 px-2 md:px-3">
           <PublicMarker />
           <h2 id={"subreddit-posts"} className="text-lg">
             <a href={"#subreddit-posts"}>Subreddit Posts</a>

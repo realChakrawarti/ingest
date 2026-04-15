@@ -1,8 +1,8 @@
 // TODO: Limit no of recurive calls that could be made, probably limit result to 500, i.e; 10
 
-import { YOUTUBE_CHANNEL_PLAYLISTS } from "~/shared/lib/api/youtube-endpoints";
-
 import type { ChannelPlaylist } from "../models";
+
+import { YOUTUBE_CHANNEL_PLAYLISTS } from "~/shared/lib/api/youtube-endpoints";
 
 /**
  * Recursively retrieves all playlists for a given YouTube channel using pagination.
@@ -24,7 +24,6 @@ async function getAllPlaylists(channelId: string, data: any, playlists: any[]) {
     );
     const result = await response.json();
     // TODO: Make this compliant with the rule
-    // biome-ignore lint/style/noParameterAssign: Recurive calls, revisit it later
     playlists = [...playlists, ...result.items];
     return await getAllPlaylists(channelId, result, playlists);
   }

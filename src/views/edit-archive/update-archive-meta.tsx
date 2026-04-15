@@ -1,8 +1,10 @@
-import { Edit, Loader2 } from "lucide-react";
+import type { KeyedMutator } from "swr";
+
 import type { ChangeEvent, SubmitEvent } from "react";
 import { useState } from "react";
+import { Edit, Loader2 } from "lucide-react";
+
 import { toast } from "sonner";
-import type { KeyedMutator } from "swr";
 import useSWRMutation from "swr/mutation";
 
 import type { ZArchiveByID } from "~/entities/archives/models";
@@ -142,7 +144,7 @@ export default function UpdateArchiveMeta({
               <Label htmlFor="visibility" className="text-sm font-medium">
                 Public Archive
               </Label>
-              <p className="text-xs text-muted-foreground">
+              <p className="text-muted-foreground text-xs">
                 Make this archive visible to everyone
               </p>
             </div>
@@ -160,7 +162,7 @@ export default function UpdateArchiveMeta({
 
                   return handleOnChange(fakeEvent);
                 }}
-                className="data-[state=checked]:bg-[#A81434] data-[state=unchecked]:bg-input"
+                className="data-[state=unchecked]:bg-input data-[state=checked]:bg-[#A81434]"
               />
             </div>
           </div>
@@ -176,7 +178,7 @@ export default function UpdateArchiveMeta({
                 "Update"
               )}
             </Button>
-            <p className="text-xs text-primary/60">
+            <p className="text-primary/60 text-xs">
               You could only update once every 4 hours
             </p>
           </DialogFooter>

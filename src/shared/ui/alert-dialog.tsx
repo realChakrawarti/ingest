@@ -1,7 +1,8 @@
 "use client";
 
-import { AlertDialog as AlertDialogPrimitive } from "radix-ui";
 import * as React from "react";
+
+import { AlertDialog as AlertDialogPrimitive } from "radix-ui";
 
 import { buttonVariants } from "~/shared/ui/button";
 import { cn } from "~/shared/utils/tailwind-merge";

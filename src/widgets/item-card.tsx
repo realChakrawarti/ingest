@@ -1,6 +1,7 @@
-import { Check, Clock, Copy, Globe, GlobeLock, Trash2 } from "lucide-react";
-import Link from "next/link";
 import { type ReactNode, useState } from "react";
+import Link from "next/link";
+import { Check, Clock, Copy, Globe, GlobeLock, Trash2 } from "lucide-react";
+
 import { toast } from "sonner";
 
 import appConfig from "~/shared/app-config";
@@ -48,13 +49,13 @@ function CopyButton({ id, type }: { id: string; type: "catalog" | "archive" }) {
       <Button
         variant="ghost"
         size="icon"
-        className="h-8 w-8 relative hover:bg-primary/5 text-primary/80 hover:text-primary"
+        className="hover:bg-primary/5 text-primary/80 hover:text-primary relative h-8 w-8"
         onClick={copyToClipboard}
       >
         {copied ? (
-          <Check className="w-4 h-4 text-green-500" />
+          <Check className="h-4 w-4 text-green-500" />
         ) : (
-          <Copy className="w-4 h-4" />
+          <Copy className="h-4 w-4" />
         )}
         <span className="sr-only">{`Copy ${type} link`}</span>
       </Button>
@@ -93,18 +94,18 @@ export default function ItemCard({
     type === "archive" ? `/archives/${id}/edit` : `/catalogs/${id}/edit`;
 
   return (
-    <div className="group/card-item rounded-md relative">
+    <div className="group/card-item relative rounded-md">
       <Card className={cardContainerStyles}>
         <Link className={cardContentStyles} href={editLink} prefetch>
           <CardHeader className="space-y-1 pb-2">
             <CardTitle className="flex items-start justify-between">
-              <span className="text-lg line-clamp-2 grow mr-2 group-hover/card-item:text-primary font-normal tracking-wide">
+              <span className="group-hover/card-item:text-primary mr-2 line-clamp-2 grow text-lg font-normal tracking-wide">
                 {title}
               </span>
             </CardTitle>
           </CardHeader>
           <CardContent className="grow overflow-hidden">
-            <p className="text-sm text-muted-foreground line-clamp-3">
+            <p className="text-muted-foreground line-clamp-3 text-sm">
               {description}
             </p>
           </CardContent>
@@ -115,28 +116,28 @@ export default function ItemCard({
             "border border-x-0 border-y-0 border-t-2 border-t-primary/30"
           )}
         >
-          <div className="flex items-center text-xs text-muted-foreground">
-            <Clock className="w-3 h-3 mr-1 shrink-0" />
-            <span className="truncate max-w-25">{lastUpdated}</span>
+          <div className="text-muted-foreground flex items-center text-xs">
+            <Clock className="mr-1 h-3 w-3 shrink-0" />
+            <span className="max-w-25 truncate">{lastUpdated}</span>
           </div>
-          <div className="flex gap-1 shrink-0">
+          <div className="flex shrink-0 gap-1">
             <CopyButton id={id} type={type} />
             <DeleteModal handleDelete={() => onDelete(id)}>
               <Button
                 variant="ghost"
                 size="icon"
-                className="h-8 w-8 hover:bg-primary/5 text-primary/80 hover:text-primary"
+                className="hover:bg-primary/5 text-primary/80 hover:text-primary h-8 w-8"
               >
-                <Trash2 className="w-4 h-4 bg-primary/5" />
+                <Trash2 className="bg-primary/5 h-4 w-4" />
                 <span className="sr-only">Delete catalog</span>
               </Button>
             </DeleteModal>
           </div>
         </CardFooter>
       </Card>
-      <div className="flex items-center justify-center absolute top-0 right-0">
+      <div className="absolute top-0 right-0 flex items-center justify-center">
         <Badge
-          className="text-[13px] flex gap-1 items-center bg-primary/70 group-hover/card-item:bg-primary/90"
+          className="bg-primary/70 group-hover/card-item:bg-primary/90 flex items-center gap-1 text-[13px]"
           variant="default"
         >
           {isPublic ? (
@@ -167,8 +168,8 @@ function DeleteModal({ children, handleDelete }: DeleteModalProps) {
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle className="flex items-center gap-2 justify-center md:justify-start">
-            <WarningIcon className="h-5 w-5 text-primary" />
+          <DialogTitle className="flex items-center justify-center gap-2 md:justify-start">
+            <WarningIcon className="text-primary h-5 w-5" />
             Confirm Deletion
           </DialogTitle>
           <DialogDescription className="text-primary/70">
@@ -176,7 +177,7 @@ function DeleteModal({ children, handleDelete }: DeleteModalProps) {
             deleted.
           </DialogDescription>
         </DialogHeader>
-        <DialogFooter className="sm:justify-start gap-3">
+        <DialogFooter className="gap-3 sm:justify-start">
           <Button type="button" onClick={handleDelete}>
             Delete
           </Button>

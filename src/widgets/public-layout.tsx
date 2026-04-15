@@ -21,5 +21,5 @@ export function PublicContentContainer({ className, children }: ContainerType) {
 }
 
 export function PublicMarker() {
-  return <span className="w-1 bg-primary h-full rounded-md" />;
+  return <span className="bg-primary h-full w-1 rounded-md" />;
 }

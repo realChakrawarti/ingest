@@ -1,7 +1,8 @@
 "use client";
 
-import Link from "next/link";
 import { useEffect } from "react";
+import Link from "next/link";
+
 import { toast } from "sonner";
 import useSWR from "swr";
 
@@ -145,11 +146,11 @@ export default function EditCatalog({ catalogId }: { catalogId: string }) {
 
   return (
     <div>
-      <div className="flex gap-2 items-center justify-between p-3">
+      <div className="flex items-center justify-between gap-2 p-3">
         <div className="flex items-center gap-4">
           <BackLink className="size-6" href="/dashboard" />
           {isLoading ? (
-            <Skeleton className="w-16 h-6" />
+            <Skeleton className="h-6 w-16" />
           ) : (
             <Badge className="text-sm">
               {catalogsData?.isPublic ? "Public" : "Private"}
@@ -158,8 +159,8 @@ export default function EditCatalog({ catalogId }: { catalogId: string }) {
           <div className="flex items-center gap-2">
             {isLoading ? (
               <div className="space-y-1">
-                <Skeleton className="w-32 h-7" />
-                <Skeleton className="w-32 h-4 lg:h-5" />
+                <Skeleton className="h-7 w-32" />
+                <Skeleton className="h-4 w-32 lg:h-5" />
               </div>
             ) : (
               <div className="space-y-1">
@@ -202,7 +203,7 @@ export default function EditCatalog({ catalogId }: { catalogId: string }) {
       <Separator className="my-3" />
       {error && <p>Something went wrong!</p>}
       {isLoading && (
-        <div className="size-full grid items-center">
+        <div className="grid size-full items-center">
           <Spinner className="size-8" />
         </div>
       )}

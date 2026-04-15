@@ -1,5 +1,6 @@
-import { cva, type VariantProps } from "class-variance-authority";
 import type { ComponentProps } from "react";
+
+import { cva, type VariantProps } from "class-variance-authority";
 
 import { cn } from "~/shared/utils/tailwind-merge";
 
@@ -16,8 +17,7 @@ const outLinkVariants = cva("cursor-pointer", {
   },
 });
 interface OutLinkProps
-  extends ComponentProps<"a">,
-    VariantProps<typeof outLinkVariants> {
+  extends ComponentProps<"a">, VariantProps<typeof outLinkVariants> {
   href: `https://${string}` | string;
   title?: string;
 }

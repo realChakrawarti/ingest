@@ -1,5 +1,18 @@
-import { Timestamp } from "firebase-admin/firestore";
+import type {
+  ZCatalogChannel,
+  ZCatalogList,
+  ZCatalogPlaylist,
+  ZCatalogSubreddit,
+  ZCatalogSubredditPost,
+  ZCatalogVideoListSchema,
+  ZContentByCatalog,
+  ZVideoContentInfo,
+  ZVideoMetadataWithoutContent,
+} from "../models";
+
 import { revalidatePath } from "next/cache";
+
+import { Timestamp } from "firebase-admin/firestore";
 
 import appConfig from "~/shared/app-config";
 import {
@@ -15,17 +28,6 @@ import formatRedditImageLink from "~/shared/utils/format-reddit-image-link";
 import Log from "~/shared/utils/terminal-logger";
 import { time } from "~/shared/utils/time";
 
-import type {
-  ZCatalogChannel,
-  ZCatalogList,
-  ZCatalogPlaylist,
-  ZCatalogSubreddit,
-  ZCatalogSubredditPost,
-  ZCatalogVideoListSchema,
-  ZContentByCatalog,
-  ZVideoContentInfo,
-  ZVideoMetadataWithoutContent,
-} from "../models";
 import { getPageviewByCatalogId } from "./get-pageviews-by-catalog-id";
 
 async function updateChannelLogos(
@@ -44,13 +46,14 @@ async function updateChannelLogos(
       );
       const data = await result.json();
 
-      data.items.length &&
+      if (data.items.length) {
         data.items.forEach((channel: any) => {
           const id = channel.id;
           const logo = channel.snippet.thumbnails.medium.url;
 
           channelLogos.set(id, logo);
         });
+      }
     } catch (err) {
       Log.fail(`Unable to fetch channel details ${err}`);
     }
