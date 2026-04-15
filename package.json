@@ -1,6 +1,6 @@
 {
   "name": "ingest",
-  "version": "26.0.10",
+  "version": "26.1.0",
   "scripts": {
     "build": "next build",
     "dev": "next dev",

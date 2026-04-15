@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [26.1.0](https://github.com/realChakrawarti/ingest/compare/v26.0.10...v26.1.0) (2026-04-15)
+
+
+### Features
+
+* add focus mode and mini player on the sidebar ([104aa1b](https://github.com/realChakrawarti/ingest/commit/104aa1bb8d690ddb1d8495e09b5afe32bc810683))
+* add sidebar mini-player ([b9fec12](https://github.com/realChakrawarti/ingest/commit/b9fec12ed071beb7fca6cb24f489cdcaf62fd82e))
+* implement focus mode with playback resumability ([5869a10](https://github.com/realChakrawarti/ingest/commit/5869a10915f78a109438a76a3436e06da583d1d5))
+
+
+### Bug Fixes
+
+* remove `ref` suffix naming from current player ([8470ae1](https://github.com/realChakrawarti/ingest/commit/8470ae19a8ae1721473495ba17c9540051604cfc))
+
 ### [26.0.10](https://github.com/realChakrawarti/ingest/compare/v26.0.9...v26.0.10) (2026-03-23)
 
 ### Bug Fixes
