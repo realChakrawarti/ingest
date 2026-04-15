@@ -1,5 +1,6 @@
 "use client";
 
+import { useRef, useState } from "react";
 import {
   Ban,
   Book,
@@ -10,7 +11,6 @@ import {
   Shield,
   Smartphone,
 } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
 
 import { cn } from "~/shared/utils/tailwind-merge";
 
@@ -67,48 +67,13 @@ const features = [
 
 export default function FeatureCarousel() {
   const [activeFeature, setActiveFeature] = useState<number | null>(null);
-  const [isPaused, setIsPaused] = useState(false);
-  const carouselRef = useRef<HTMLDivElement>(null);
-  const scrollIntervalRef = useRef<NodeJS.Timeout | null>(null);
-
-  // Duplicate features for seamless loop
-  const duplicatedFeatures = [...features, ...features];
-
-  // Auto-scroll functionality
-  useEffect(() => {
-    if (!carouselRef.current || isPaused) return;
-
-    const startScrolling = () => {
-      scrollIntervalRef.current = setInterval(() => {
-        if (carouselRef.current && !isPaused) {
-          const scrollAmount = 1;
-          carouselRef.current.scrollLeft += scrollAmount;
-
-          // Reset to beginning when we've scrolled past the first set
-          const maxScroll = carouselRef.current.scrollWidth / 2;
-          if (carouselRef.current.scrollLeft >= maxScroll) {
-            carouselRef.current.scrollLeft = 0;
-          }
-        }
-      }, 20);
-    };
-
-    startScrolling();
-
-    return () => {
-      if (scrollIntervalRef.current) {
-        clearInterval(scrollIntervalRef.current);
-      }
-    };
-  }, [isPaused]);
+  const marqueeRef = useRef<HTMLDivElement>(null);
 
   const handleMouseEnter = (index: number) => {
-    setIsPaused(true);
     setActiveFeature(index);
   };
 
   const handleMouseLeave = () => {
-    setIsPaused(false);
     setActiveFeature(null);
   };
 
@@ -116,16 +81,17 @@ export default function FeatureCarousel() {
     <div
       className={cn(
         "w-full mx-auto px-1 mt-10 md:mt-3 relative z-10",
-        "max-w-sm sm:max-w-xl md:max-w-2xl lg:max-w-3xl xl:max-w-4xl"
+        "max-w-sm sm:max-w-xl md:max-w-2xl lg:max-w-3xl xl:max-w-4xl",
+        "relative overflow-hidden"
       )}
     >
-      <div className="relative overflow-hidden">
+      <div className="group inline-flex gap-4">
         <div
-          ref={carouselRef}
-          className="flex overflow-x-auto scrollbar-hide gap-6 py-4"
+          ref={marqueeRef}
+          className="scrollbar-hide animate-marquee group-hover:animate-pause flex gap-4 overflow-x-auto py-4"
           style={{ msOverflowStyle: "none", scrollbarWidth: "none" }}
         >
-          {duplicatedFeatures.map((feature, idx) => (
+          {[...features, ...features].map((feature, idx) => (
             <button
               type="button"
               key={`${feature.title}-${idx}`}
@@ -144,7 +110,7 @@ export default function FeatureCarousel() {
               }}
             >
               {/* Icon and Title inline */}
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-4">
                 <div
                   className={cn(
                     "rounded-md p-1 transition-all duration-300",
@@ -160,15 +126,15 @@ export default function FeatureCarousel() {
             </button>
           ))}
         </div>
-
-        {/* Gradient overlays for seamless scroll effect */}
-        <div className="absolute left-0 top-0 bottom-0 w-8 bg-linear-to-r from-background to-transparent pointer-events-none z-10" />
-        <div className="absolute right-0 top-0 bottom-0 w-8 bg-linear-to-l from-background to-transparent pointer-events-none z-10" />
       </div>
 
-      {/* Description box that appears below the carousel */}
-      <div className="mt-3 min-h-30 flex items-center justify-center">
-        <div className="text-zinc-500 text-center animate-fade-in">
+      {/* Gradient overlays for seamless scroll effect */}
+      <div className="from-background pointer-events-none absolute top-0 bottom-0 left-0 z-10 w-8 bg-linear-to-r to-transparent" />
+      <div className="from-background pointer-events-none absolute top-0 right-0 bottom-0 z-10 w-8 bg-linear-to-l to-transparent" />
+
+      {/* Description box that appears below the marquee */}
+      <div className="mt-3 flex min-h-30 items-center justify-center">
+        <div className="animate-fade-in text-center text-zinc-500">
           {activeFeature === null ? (
             <p className="text-sm">Hover over a feature card to learn more</p>
           ) : (

@@ -1,9 +1,11 @@
 "use client";
 
-import { SiYoutube } from "@icons-pack/react-simple-icons";
-import { ChevronLeft } from "lucide-react";
-import { useState } from "react";
 import type { KeyedMutator } from "swr";
+
+import { useState } from "react";
+import { ChevronLeft } from "lucide-react";
+
+import { SiYoutube } from "@icons-pack/react-simple-icons";
 
 import type { ZCatalogByID } from "~/entities/catalogs/models";
 
@@ -48,7 +50,7 @@ export default function AddChannelPlaylistDialog({
           </span>
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-150 max-h-[80vh] overflow-hidden flex flex-col px-3 py-6">
+      <DialogContent className="flex max-h-[80vh] flex-col overflow-hidden px-3 py-6 sm:max-w-150">
         <DialogHeader className="px-3">
           <div className="flex items-center gap-2">
             {formStep !== "url" && (
@@ -59,9 +61,9 @@ export default function AddChannelPlaylistDialog({
                   if (formStep === "channel") setFormStep("url");
                   if (formStep === "playlists") setFormStep("channel");
                 }}
-                className="p-1 h-8 w-8"
+                className="h-8 w-8 p-1"
               >
-                <ChevronLeft className="w-4 h-4" />
+                <ChevronLeft className="h-4 w-4" />
               </Button>
             )}
             <DialogTitle>

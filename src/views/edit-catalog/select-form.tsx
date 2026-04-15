@@ -1,8 +1,10 @@
-import { Loader2 } from "lucide-react";
-import { useParams } from "next/navigation";
-import { useState } from "react";
-import { toast } from "sonner";
 import type { KeyedMutator } from "swr";
+
+import { useState } from "react";
+import { useParams } from "next/navigation";
+import { Loader2 } from "lucide-react";
+
+import { toast } from "sonner";
 
 import type { ZCatalogByID, ZCatalogChannel } from "~/entities/catalogs/models";
 
@@ -163,17 +165,17 @@ export default function SelectForm({
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center gap-3 p-4 border rounded-lg">
+      <div className="flex items-center gap-3 rounded-lg border p-4">
         <img
           className="size-12 rounded-md"
           src={channelInfo?.channelLogo}
           alt={channelInfo?.channelTitle}
         />
-        <div className="flex-1 min-w-0">
+        <div className="min-w-0 flex-1">
           <h3 className="text-lg tracking-normal">
             {channelInfo.channelTitle}
           </h3>
-          <p className="text-sm text-muted-foreground">
+          <p className="text-muted-foreground text-sm">
             Subscribers: {formatSubscribers(channelInfo.channelSubscriberCount)}
           </p>
         </div>
@@ -185,7 +187,7 @@ export default function SelectForm({
         <div className="grid gap-3">
           <Button
             variant={selectionType === "channel" ? "default" : "outline"}
-            className="justify-start h-auto p-4"
+            className="h-auto justify-start p-4"
             onClick={() => {
               setSelectionType("channel");
               handleAddChannel();
@@ -193,7 +195,7 @@ export default function SelectForm({
             disabled={selectionType === "playlists" || isLoading}
           >
             {isLoading && selectionType === "channel" ? (
-              <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
             ) : null}
             <div className="text-left">
               <div className="font-medium">Entire Channel</div>
@@ -205,12 +207,12 @@ export default function SelectForm({
 
           <Button
             variant={selectionType === "playlists" ? "default" : "outline"}
-            className="justify-start h-auto p-4"
+            className="h-auto justify-start p-4"
             onClick={handleBrowsePlaylists}
             disabled={selectionType === "channel" || isLoading}
           >
             {isLoading && selectionType === "playlists" ? (
-              <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
             ) : null}
             <div className="text-left">
               <div className="font-medium">Specific Playlists</div>
@@ -221,7 +223,7 @@ export default function SelectForm({
           </Button>
         </div>
 
-        <div className="text-xs text-muted-foreground p-3 bg-muted rounded-lg">
+        <div className="text-muted-foreground bg-muted rounded-lg p-3 text-xs">
           <strong>Note:</strong> You can either add the entire channel OR
           specific playlists, but not both.
         </div>

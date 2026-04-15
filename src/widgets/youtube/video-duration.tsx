@@ -1,5 +1,7 @@
 "use client";
 
+import type { ZVideoMetadata } from "~/entities/catalogs/models";
+
 function formatSecondsToHMS(totalSeconds: number) {
   if (typeof totalSeconds !== "number" || totalSeconds < 0) {
     return "Invalid Input";
@@ -22,11 +24,6 @@ function formatSecondsToHMS(totalSeconds: number) {
   return `${paddedHours}:${paddedMinutes}:${paddedSeconds}`;
 }
 
-import type { ZVideoMetadata } from "~/entities/catalogs/models";
-
-import OverlayTip from "../overlay-tip";
-import useActivePlayerRef from "./use-active-player";
-
 function checkVideoAvailability(
   availability: "live" | "none" | "upcoming" | undefined
 ) {
@@ -38,27 +35,12 @@ function checkVideoAvailability(
 export function VideoDuration({
   videoAvailability,
   videoDuration,
-  videoId,
-}: Pick<ZVideoMetadata, "videoId" | "videoDuration" | "videoAvailability">) {
-  const activePlayerRef = useActivePlayerRef();
-
-  if (activePlayerRef?.getVideoData()?.video_id === videoId) {
-    return null;
-  }
-
+}: Pick<ZVideoMetadata, "videoDuration" | "videoAvailability">) {
   const availability = checkVideoAvailability(videoAvailability);
 
   return (
-    <div className="absolute bottom-2 right-[2px] md:right-0 cursor-default">
-      <OverlayTip
-        className="px-[5px] py-2 flex gap-1 place-items-center rounded-l-md"
-        id="video-duration"
-        aria-label="Video duration"
-      >
-        <div className="text-xs">
-          {availability || formatSecondsToHMS(videoDuration)}
-        </div>
-      </OverlayTip>
+    <div className="cursor-default">
+      {availability || formatSecondsToHMS(videoDuration)}
     </div>
   );
 }

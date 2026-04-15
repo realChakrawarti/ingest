@@ -1,3 +1,4 @@
+import { Fragment } from "react";
 import type { Metadata } from "next";
 
 import appConfig from "~/shared/app-config";
@@ -11,5 +12,5 @@ export default function CatalogsLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return <>{children}</>;
+  return <Fragment>{children}</Fragment>;
 }

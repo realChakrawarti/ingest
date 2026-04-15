@@ -1,7 +1,8 @@
 "use client";
 
-import * as Sentry from "@sentry/nextjs";
 import { useEffect } from "react";
+
+import * as Sentry from "@sentry/nextjs";
 
 import { fontHilmar, fontOutfit } from "~/shared/lib/fonts";
 import { Button } from "~/shared/ui/button";
@@ -29,15 +30,15 @@ export default function GlobalError({
       lang="en"
     >
       <title>Something went wrong | Ingest</title>
-      <body className="min-h-full overflow-y-auto font-outfit">
+      <body className="font-outfit min-h-full overflow-y-auto">
         <Providers>
           <AppSidebar />
-          <div className="flex flex-col flex-1">
+          <div className="flex flex-1 flex-col">
             <Header />
-            <main className="flex-1 overflow-y-auto container mx-auto">
-              <div className="p-6 flex flex-col gap-3 items-center text-center">
+            <main className="container mx-auto flex-1 overflow-y-auto">
+              <div className="flex flex-col items-center gap-3 p-6 text-center">
                 <h2 className="text-lg font-semibold">Something went wrong</h2>
-                <p className="text-sm text-muted-foreground">{error?.digest}</p>
+                <p className="text-muted-foreground text-sm">{error?.digest}</p>
                 <div className="flex gap-2">
                   <Button type="button" onClick={() => reset()}>
                     Try again

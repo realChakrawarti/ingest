@@ -1,8 +1,8 @@
+import type { ZCatalogMeta } from "../models";
+
 import { refs } from "~/shared/lib/firebase/refs";
 import { allowMetadataUpdate } from "~/shared/utils/allow-metadata-update";
 import { jsonResult } from "~/shared/utils/json-return";
-
-import type { ZCatalogMeta } from "../models";
 
 export async function updateCatalogMeta(
   catalogId: string,

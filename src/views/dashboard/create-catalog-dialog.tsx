@@ -1,7 +1,9 @@
-import { Loader2 } from "lucide-react";
-import { type ChangeEvent, type SubmitEvent, useState } from "react";
-import { toast } from "sonner";
 import type { KeyedMutator } from "swr";
+
+import { type ChangeEvent, type SubmitEvent, useState } from "react";
+import { Loader2 } from "lucide-react";
+
+import { toast } from "sonner";
 import useSWRMutation from "swr/mutation";
 
 import type { ZCatalogByUser } from "~/entities/catalogs/models";
@@ -123,7 +125,7 @@ export default function CreateCatalogDialog({
               <Label htmlFor="visibility" className="text-sm font-medium">
                 Public Catalog
               </Label>
-              <p className="text-xs text-muted-foreground">
+              <p className="text-muted-foreground text-xs">
                 Make this catalog visible to everyone
               </p>
             </div>
@@ -141,7 +143,7 @@ export default function CreateCatalogDialog({
 
                   return handleOnChange(fakeEvent);
                 }}
-                className="data-[state=checked]:bg-[#A81434] data-[state=unchecked]:bg-input"
+                className="data-[state=unchecked]:bg-input data-[state=checked]:bg-[#A81434]"
               />
             </div>
           </div>

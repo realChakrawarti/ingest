@@ -1,8 +1,9 @@
 "use client";
 
-import { Check } from "lucide-react";
-import { Checkbox as CheckboxPrimitive } from "radix-ui";
 import * as React from "react";
+import { Check } from "lucide-react";
+
+import { Checkbox as CheckboxPrimitive } from "radix-ui";
 
 import { cn } from "~/shared/utils/tailwind-merge";
 

@@ -1,8 +1,7 @@
+import type { TitleDescriptionSchema } from "./schemas";
 import type { z } from "zod";
 
 import type { ZVideoMetadataCompatible } from "~/entities/catalogs/models";
-
-import type { TitleDescriptionSchema } from "./schemas";
 
 export type YouTubeCardOptions = {
   removeVideo?: (_videoId: string) => void;
@@ -14,6 +13,7 @@ export type YouTubeCardOptions = {
   showVideoStats: boolean;
   showDuration: boolean;
   showVideoCategory: boolean;
+  focusMode: boolean;
 };
 
 export interface History extends ZVideoMetadataCompatible {

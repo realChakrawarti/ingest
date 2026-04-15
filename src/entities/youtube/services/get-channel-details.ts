@@ -1,10 +1,10 @@
+import type { ChannelDetails } from "../models";
+
 import {
   YOUTUBE_CHANNEL_INFORMATION_BY_HANDLE,
   YOUTUBE_CHANNEL_INFORMATION_BY_IDS,
   YOUTUBE_VIDEO_DATA,
 } from "~/shared/lib/api/youtube-endpoints";
-
-import type { ChannelDetails } from "../models";
 
 function generateChannelDetails(item: any) {
   const channelData = item.snippet;

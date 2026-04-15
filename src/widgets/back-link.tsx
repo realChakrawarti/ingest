@@ -1,5 +1,5 @@
-import { ArrowLeftSquare } from "lucide-react";
 import Link from "next/link";
+import { ArrowLeftSquare } from "lucide-react";
 
 import { cn } from "~/shared/utils/tailwind-merge";
 

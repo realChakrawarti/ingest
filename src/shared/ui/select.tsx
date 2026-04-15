@@ -1,8 +1,9 @@
 "use client";
 
-import { Check, ChevronDown, ChevronUp } from "lucide-react";
-import { Select as SelectPrimitive } from "radix-ui";
 import * as React from "react";
+import { Check, ChevronDown, ChevronUp } from "lucide-react";
+
+import { Select as SelectPrimitive } from "radix-ui";
 
 import { cn } from "~/shared/utils/tailwind-merge";
 

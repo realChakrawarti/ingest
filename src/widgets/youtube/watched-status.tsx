@@ -1,7 +1,8 @@
 "use client";
 
-import { useLiveQuery } from "dexie-react-hooks";
 import { Check } from "lucide-react";
+
+import { useLiveQuery } from "dexie-react-hooks";
 
 import { useLocalUserSettings } from "~/shared/hooks/use-local-user-settings";
 import { indexedDB } from "~/shared/lib/api/dexie";
@@ -18,13 +19,13 @@ export function WatchedStatus({ videoId }: { videoId: string }) {
     videoProgress.completed > localUserSettings.watchedPercentage
   ) {
     return (
-      <div className="absolute top-2 left-[2px] md:left-0 group/status cursor-default">
+      <div className="group/status absolute top-2 left-0.5 cursor-default md:left-0">
         <OverlayTip
-          className="px-[5px] py-2 flex gap-1 place-items-center rounded-r-md"
+          className="flex place-items-center gap-1 rounded-r-md px-1.25 py-2"
           id="status"
           aria-label="Show video completion status"
         >
-          <div className="hidden group-hover/status:block text-xs">Watched</div>
+          <div className="hidden text-xs group-hover/status:block">Watched</div>
           <Check className="size-4 grow" />
         </OverlayTip>
       </div>

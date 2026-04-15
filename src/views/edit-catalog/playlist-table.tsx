@@ -58,7 +58,7 @@ export default function PlaylistTable({
                 <TableCell>{playlistTitle}</TableCell>
                 <TableCell>{playlistId}</TableCell>
                 <TableCell>
-                  <div className="flex gap-2 items-center">
+                  <div className="flex items-center gap-2">
                     {channelLogo ? (
                       <img
                         src={channelLogo}
@@ -92,7 +92,7 @@ export default function PlaylistTable({
                     <Button variant="outline">
                       <DeleteIcon
                         size={24}
-                        className="text-red-700 hover:text-red-500 cursor-pointer"
+                        className="cursor-pointer text-red-700 hover:text-red-500"
                       />
                     </Button>
                   </DeleteModal>

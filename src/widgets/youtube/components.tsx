@@ -1,8 +1,9 @@
 "use client";
 
+import { Clock8, HardDriveDownloadIcon } from "lucide-react";
+
 import { useLiveQuery } from "dexie-react-hooks";
 import Linkify from "linkify-react";
-import { Clock8, HardDriveDownloadIcon } from "lucide-react";
 import { toast } from "sonner";
 
 import type { ZVideoMetadataCompatible } from "~/entities/catalogs/models";
@@ -60,13 +61,13 @@ function ChannelMeta({
       >
         <h3
           id={videoId}
-          className="leading-normal text-sm line-clamp-2 pr-6 text-wrap group-hover/player:text-primary"
+          className="group-hover/player:text-primary line-clamp-2 pr-6 text-sm leading-normal text-wrap"
         >
-          <abbr className="no-underline cursor-help" title={videoTitle}>
+          <abbr className="cursor-help no-underline" title={videoTitle}>
             {videoTitle}
           </abbr>
         </h3>
-        <div className="flex items-center gap-2 text-xs text-muted-foreground">
+        <div className="text-muted-foreground flex items-center gap-2 text-xs">
           <OutLink
             variant="reset"
             href={`https://youtube.com/channel/${channelId}`}
@@ -90,9 +91,9 @@ function DescriptionSheet({
   return (
     <Sheet>
       <SheetTrigger asChild>
-        <div className="absolute top-2 right-0.5 md:right-0 cursor-pointer md:hidden group-hover/player:block">
+        <div className="absolute top-2 right-0.5 cursor-pointer group-hover/player:block md:right-0 md:hidden">
           <OverlayTip
-            className="px-1.25 py-2 flex gap-1 place-items-center rounded-l-md group/description"
+            className="group/description flex place-items-center gap-1 rounded-l-md px-1.25 py-2"
             id="description"
             aria-label="Show video information overlay"
           >
@@ -103,14 +104,14 @@ function DescriptionSheet({
           </OverlayTip>
         </div>
       </SheetTrigger>
-      <SheetContent className="overflow-y-auto w-full md:max-w-112.5">
+      <SheetContent className="w-full overflow-y-auto md:max-w-112.5">
         <SheetHeader className="text-left">
           <SheetTitle>{videoTitle}</SheetTitle>
           <SheetDescription className="sr-only">{videoTitle}</SheetDescription>
         </SheetHeader>
         <div className="mt-4">
           <Linkify
-            className="text-sm whitespace-pre-wrap font-outfit"
+            className="font-outfit text-sm whitespace-pre-wrap"
             as="pre"
             options={{
               className:

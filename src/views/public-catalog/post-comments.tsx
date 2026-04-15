@@ -1,6 +1,7 @@
 "use client";
 
 import { ArrowBigRightDashIcon, Loader2, MessageSquare } from "lucide-react";
+
 import useSWRMutation from "swr/mutation";
 
 import type { ZCatalogSubredditPost } from "~/entities/catalogs/models";
@@ -14,8 +15,8 @@ import {
 } from "~/shared/ui/collapsible";
 import formatLargeNumber from "~/shared/utils/format-large-number";
 import { getDifferenceString } from "~/shared/utils/time-diff";
-import MarkdownHTML from "~/widgets/markdown-html";
 
+import MarkdownHTML from "~/widgets/markdown-html";
 import { OutLink } from "~/widgets/out-link";
 
 async function getPostComments(subreddit: string, postId: string) {
@@ -51,7 +52,7 @@ export default function PostComments({
 
   if (comments?.length === 0 && !commentsLoading) {
     return (
-      <div className="text-center py-4 text-muted-foreground">
+      <div className="text-muted-foreground py-4 text-center">
         No comments found
       </div>
     );
@@ -99,9 +100,9 @@ export default function PostComments({
             return (
               <div
                 key={comment.id}
-                className="border-l-2 border-primary/70 pl-4"
+                className="border-primary/70 border-l-2 pl-4"
               >
-                <div className="flex items-center gap-2 mb-2 text-xs text-muted-foreground">
+                <div className="text-muted-foreground mb-2 flex items-center gap-2 text-xs">
                   <OutLink href={`https://www.reddit.com/u/${comment.author}`}>
                     u/{comment.author}
                   </OutLink>

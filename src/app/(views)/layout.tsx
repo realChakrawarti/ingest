@@ -2,11 +2,11 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import "~/app/styles/globals.css";
 import "~/app/styles/custom.css";
+import type { Metadata } from "next";
+import Script from "next/script";
 
 import { GoogleAnalytics } from "@next/third-parties/google";
 import * as Sentry from "@sentry/nextjs";
-import type { Metadata } from "next";
-import Script from "next/script";
 
 import appConfig from "~/shared/app-config";
 import { fontHilmar, fontOutfit } from "~/shared/lib/fonts";
@@ -55,12 +55,12 @@ export default function RootLayout({
           strategy="lazyOnload"
         />
       </head>
-      <body className="min-h-full overflow-y-auto font-outfit">
+      <body className="font-outfit min-h-full overflow-y-auto">
         <Providers>
           <AppSidebar />
-          <div className="flex flex-col flex-1">
+          <div className="flex flex-1 flex-col">
             <Header />
-            <main className="flex-1 overflow-y-auto container mx-auto">
+            <main className="container mx-auto flex-1 overflow-y-auto">
               {children}
             </main>
             <Footer />

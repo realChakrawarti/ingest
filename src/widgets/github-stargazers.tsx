@@ -1,6 +1,7 @@
 "use client";
 
 import { StarIcon } from "lucide-react";
+
 import useSWR from "swr";
 
 import { Skeleton } from "~/shared/ui/skeleton";
@@ -30,7 +31,7 @@ export function GitHubStargazer({
   );
 
   return (
-    <div className="flex gap-2 items-center">
+    <div className="flex items-center gap-2">
       {isLoading ? (
         <Skeleton className="w-7" />
       ) : (
@@ -46,11 +47,11 @@ export function GitHubStargazer({
         >
           <StarIcon
             tabIndex={-1}
-            className="w-4 h-4 text-yellow-400 group-hover/star:fill-yellow-400"
+            className="h-4 w-4 text-yellow-400 group-hover/star:fill-yellow-400"
             aria-hidden="true"
           />
           {data?.stargazers_count ? (
-            <span className="tracking-wide text-foreground">
+            <span className="text-foreground tracking-wide">
               {data?.stargazers_count}
             </span>
           ) : null}

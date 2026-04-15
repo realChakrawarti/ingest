@@ -1,5 +1,5 @@
-import { ArrowRight } from "lucide-react";
 import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 
 import type { ZArchiveValid } from "~/entities/archives/models";
 import type { ZCatalogValid } from "~/entities/catalogs/models";
@@ -73,8 +73,8 @@ export default async function Explore() {
 function Title({ label, type }: { label: string; type?: string }) {
   return (
     <PublicHeaderTitle>
-      <h2 className=" flex items-end gap-2 justify-between" aria-label={label}>
-        <div className="h-7 text-lg md:text-2xl tracking-wide flex gap-2">
+      <h2 className="flex items-end justify-between gap-2" aria-label={label}>
+        <div className="flex h-7 gap-2 text-lg tracking-wide md:text-2xl">
           <PublicMarker />
           <div>
             <p>{label}</p>
@@ -82,7 +82,7 @@ function Title({ label, type }: { label: string; type?: string }) {
         </div>
         {type ? (
           <Link
-            className="cursor-pointer hover:text-primary/80 flex gap-2 items-center"
+            className="hover:text-primary/80 flex cursor-pointer items-center gap-2"
             href={`/explore/${type}`}
           >
             <p className="text-sm">Explore {type}</p>

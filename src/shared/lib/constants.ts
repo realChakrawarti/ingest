@@ -5,6 +5,15 @@ export const Routes = {
   ROOT: "/",
 } as const;
 
+export enum PlayerState {
+  UNSTARTED = -1,
+  ENDED = 0,
+  PLAYING = 1,
+  PAUSED = 2,
+  BUFFERING = 3,
+  CUED = 5,
+}
+
 export const Regex = {
   YOUTUBE_USER_CHANNEL:
     /https?:\/\/(?:www\.)?youtube\.com\/(?:(@[a-zA-Z0-9_-]+)(?:\/.*)?|channel\/([a-zA-Z0-9_-]+)(?:\/.*)?)/,

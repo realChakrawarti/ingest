@@ -1,8 +1,8 @@
+import type { ZArchiveByUser } from "../models";
+
 import { timestampUTC } from "~/shared/lib/firebase/admin";
 import { refs } from "~/shared/lib/firebase/refs";
 import Log from "~/shared/utils/terminal-logger";
-
-import type { ZArchiveByUser } from "../models";
 
 /**
  * This function returns all archive of a user

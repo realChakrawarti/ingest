@@ -1,7 +1,8 @@
-import * as Sentry from "@sentry/nextjs";
 import type { NextPage } from "next";
 import type { ErrorProps } from "next/error";
 import NextError from "next/error";
+
+import * as Sentry from "@sentry/nextjs";
 
 const CustomErrorComponent: NextPage<ErrorProps> = (props) => {
   return <NextError statusCode={props.statusCode} />;

@@ -5,10 +5,10 @@ type Properties = {
 
 export default function Spinner(properties: Properties) {
   return (
-    <div className={"flex flex-col items-center mb-0.5 space-y-3 text-primary"}>
+    <div className={"text-primary mb-0.5 flex flex-col items-center space-y-3"}>
       {properties.label ? <p>{properties.label}</p> : null}
       <div className={properties?.className}>
-        <div className="animate-spin rounded-full w-full h-full border-2 border-primary border-t-transparent" />
+        <div className="border-primary h-full w-full animate-spin rounded-full border-2 border-t-transparent" />
         <span className="sr-only">Loading...</span>
       </div>
     </div>

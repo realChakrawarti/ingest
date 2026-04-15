@@ -1,8 +1,8 @@
+import type { ZCatalogPlaylist } from "../models";
+
 import { FieldValue } from "firebase-admin/firestore";
 
 import { refs } from "~/shared/lib/firebase/refs";
-
-import type { ZCatalogPlaylist } from "../models";
 
 export async function deletePlaylist(
   userId: string,

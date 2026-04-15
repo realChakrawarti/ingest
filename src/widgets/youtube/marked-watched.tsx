@@ -1,7 +1,8 @@
 "use client";
 
-import { useLiveQuery } from "dexie-react-hooks";
 import { Check, Square } from "lucide-react";
+
+import { useLiveQuery } from "dexie-react-hooks";
 
 import type { ZVideoMetadataCompatible } from "~/entities/catalogs/models";
 

@@ -11,18 +11,18 @@ list:
 
 # check for any linter errors in the codebase
 [group("Chore")]
-lint:
-    {{ NODE_PM }} biome lint --log-level=error --max-diagnostics=none --colors=off
+lint level="":
+    {{ NODE_PM }} oxlint {{ if level == "error" { "--quiet" } else { "" } }}
 
 # format and fix all linter errors in the codebase
 [group("Chore")]
-format: lint
-    {{ NODE_PM }} biome format --write .
+format mode="":
+    {{ NODE_PM }} oxfmt --{{ mode }}
 
-# format and fix all linter errors in the codebase
+# fix all formatting errors in the codebase
 [group("Chore")]
 format-on-save path:
-    {{ NODE_PM }} biome format --write --stdin-file-path={{ path }}
+    {{ NODE_PM }} oxfmt --stdin-filepath={{ path }}
 
 # install all the project dependencies
 [group("Chore")]

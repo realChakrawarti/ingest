@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+
 import { toast } from "sonner";
 
 import { getTimeDifference } from "~/shared/utils/time-diff";
@@ -36,5 +37,5 @@ export default function NextUpdateToast({
       }
     }
   }, [nextUpdate]);
-  return <></>;
+  return null;
 }

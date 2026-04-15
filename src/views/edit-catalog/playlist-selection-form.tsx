@@ -1,9 +1,11 @@
-import Fuse from "fuse.js";
-import { Check, Loader2, Search } from "lucide-react";
-import { useParams } from "next/navigation";
-import { type ChangeEvent, useEffect, useState } from "react";
-import { toast } from "sonner";
 import type { KeyedMutator } from "swr";
+
+import { type ChangeEvent, useEffect, useState } from "react";
+import { useParams } from "next/navigation";
+import { Check, Loader2, Search } from "lucide-react";
+
+import Fuse from "fuse.js";
+import { toast } from "sonner";
 
 import type {
   ZCatalogByID,
@@ -130,9 +132,9 @@ export default function PlaylistSelectionForm({
     <div className="space-y-4">
       <div className="space-y-2">
         <div className="relative">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+          <Search className="text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 transform" />
           <Input
-            className="pl-10 input-search-icon"
+            className="input-search-icon pl-10"
             type="search"
             id="playlist-search"
             placeholder="Search playlists..."
@@ -141,7 +143,7 @@ export default function PlaylistSelectionForm({
           />
         </div>
         {searchPlaylists.length === 0 && playlistInput && (
-          <p className="text-sm text-center">
+          <p className="text-center text-sm">
             No matching playlists found -{" "}
             <span className="text-primary">{playlistInput}</span>!
           </p>
@@ -155,13 +157,13 @@ export default function PlaylistSelectionForm({
               <Badge
                 key={playlist.playlistId}
                 variant="secondary"
-                className="gap-1 bg-primary/60 hover:bg-primary/40 font-normal"
+                className="bg-primary/60 hover:bg-primary/40 gap-1 font-normal"
               >
                 {playlist.playlistTitle}
                 <button
                   type="button"
                   onClick={() => togglePlaylistSelection(playlist)}
-                  className="ml-1 hover:bg-muted-foreground/20 rounded-full p-0.5"
+                  className="hover:bg-muted-foreground/20 ml-1 rounded-full p-0.5"
                 >
                   ×
                 </button>
@@ -173,7 +175,7 @@ export default function PlaylistSelectionForm({
 
       <Separator />
 
-      <div className="space-y-2 max-h-60 overflow-auto">
+      <div className="max-h-60 space-y-2 overflow-auto">
         {searchPlaylists.length
           ? searchPlaylists.map((playlist) => (
               <PlaylistItemCheckbox
@@ -207,7 +209,7 @@ export default function PlaylistSelectionForm({
           <div className="flex items-center gap-2">
             {isLoading ? (
               <>
-                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                 <p>
                   Adding {selectedPlaylists.length} Playlist
                   {selectedPlaylists.length !== 1 ? "s..." : "..."}
@@ -215,7 +217,7 @@ export default function PlaylistSelectionForm({
               </>
             ) : (
               <>
-                <Check className="w-4 h-4 mr-2" />
+                <Check className="mr-2 h-4 w-4" />
                 <p>
                   Add {selectedPlaylists.length} Playlist
                   {selectedPlaylists.length !== 1 ? "s" : ""}
@@ -243,13 +245,13 @@ function PlaylistItemCheckbox({
 
   return (
     <div
-      className="flex items-center space-x-3 p-3 border rounded-lg hover:bg-muted/50 cursor-pointer"
+      className="hover:bg-muted/50 flex cursor-pointer items-center space-x-3 rounded-lg border p-3"
       onClick={() => togglePlaylistSelection(playlist)}
     >
       <Checkbox checked={playlistAlreadySelected(playlist.playlistId)} />
-      <div className="flex-1 min-w-0">
+      <div className="min-w-0 flex-1">
         <div className="font-medium">{playlist.playlistTitle}</div>
-        <div className="text-sm text-muted-foreground">
+        <div className="text-muted-foreground text-sm">
           {playlist.videoCount} videos
         </div>
       </div>

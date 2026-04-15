@@ -1,3 +1,5 @@
+// oxlint-disable typescript-eslint/no-explicit-any
+
 type Metadata = {
   timestamp: string;
   [key: string]: any;

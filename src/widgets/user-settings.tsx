@@ -1,7 +1,8 @@
 "use client";
 
-import { Check, ChevronsUpDown, Settings } from "lucide-react";
 import { type PropsWithChildren, useState } from "react";
+import { Check, ChevronsUpDown, Settings } from "lucide-react";
+
 import { toast } from "sonner";
 import useSWRMutation from "swr/mutation";
 
@@ -59,7 +60,7 @@ const historyPeriods = [0, 15, 30, 60, 90];
 
 function FormElementContainer({ children }: PropsWithChildren) {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-[140px_1fr] items-center gap-2 justify-items-start">
+    <div className="grid grid-cols-1 items-center justify-items-start gap-2 md:grid-cols-[140px_1fr]">
       {children}
     </div>
   );
@@ -203,12 +204,12 @@ export function UserSettings() {
             className="flex flex-col gap-3"
           >
             <FormElementContainer>
-              <Label className=" text-primary" htmlFor="sync-id">
+              <Label className="text-primary" htmlFor="sync-id">
                 Sync ID
               </Label>
-              <div className="space-y-1 text-sm w-full">
+              <div className="w-full space-y-1 text-sm">
                 {localUserSettings.syncId ? (
-                  <div className="flex gap-1 items-center justify-between">
+                  <div className="flex items-center justify-between gap-1">
                     <p>{localUserSettings.syncId}</p>
                     <Button
                       className="flex items-center gap-2"
@@ -230,7 +231,7 @@ export function UserSettings() {
                   <p>Login to create and setup SyncID</p>
                 )}
                 {remoteUserSettings?.data && (
-                  <p className="text-xs ">
+                  <p className="text-xs">
                     Updated{" "}
                     {getTimeDifference(
                       remoteUserSettings?.data?.updatedAt,
@@ -242,7 +243,7 @@ export function UserSettings() {
             </FormElementContainer>
             <Separator orientation="horizontal" />
             <FormElementContainer>
-              <Label htmlFor="playback-rate" className=" text-primary">
+              <Label htmlFor="playback-rate" className="text-primary">
                 Playback Rate
               </Label>
               <ToggleGroup
@@ -253,12 +254,12 @@ export function UserSettings() {
                   value &&
                   handleLocalChange("playbackRate", Number.parseFloat(value))
                 }
-                className="flex gap-1 items-center"
+                className="flex items-center gap-1"
               >
                 {playbackRates.map((rate) => (
                   <ToggleGroupItem
                     key={rate}
-                    className="p-1 h-6"
+                    className="h-6 p-1"
                     value={rate.toString()}
                   >
                     {rate}x
@@ -267,7 +268,7 @@ export function UserSettings() {
               </ToggleGroup>
             </FormElementContainer>
             <FormElementContainer>
-              <Label className=" text-primary" htmlFor="audio-language">
+              <Label className="text-primary" htmlFor="audio-language">
                 Audio Language
               </Label>
               <VideoLanguagesCombo
@@ -277,7 +278,7 @@ export function UserSettings() {
             </FormElementContainer>
 
             <FormElementContainer>
-              <Label className=" text-primary" htmlFor="history-days">
+              <Label className="text-primary" htmlFor="history-days">
                 Keep History
               </Label>
               <Select
@@ -299,7 +300,7 @@ export function UserSettings() {
               </Select>
             </FormElementContainer>
             <FormElementContainer>
-              <Label className=" text-primary" htmlFor="watched-percentage">
+              <Label className="text-primary" htmlFor="watched-percentage">
                 Mark as Watched ({userSettings.watchedPercentage}%)
               </Label>
               <Slider
@@ -341,7 +342,7 @@ export function UserSettings() {
               </Button>
             </FormElementContainer>
             <Separator orientation="horizontal" />
-            <div className="grid grid-cols-[1fr_1fr] items-center gap-2 justify-start">
+            <div className="grid grid-cols-[1fr_1fr] items-center justify-start gap-2">
               <Button onClick={resetSettings}>Reset</Button>
               <Button disabled={isMutating} onClick={applySettings}>
                 {isMutating ? (
@@ -379,7 +380,6 @@ export function VideoLanguagesCombo({
     <div className="w-full">
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
-          {/** biome-ignore lint/a11y/useSemanticElements: ShadCN semantics */}
           <Button
             variant="outline"
             role="combobox"

@@ -52,11 +52,12 @@ export default async function PubliCatalog({
     showDuration: true,
     showVideoCategory: true,
     showVideoStats: true,
+    focusMode: true,
   };
 
   if (!videos) {
     return (
-      <div className="h-full w-full grid place-items-center">
+      <div className="grid h-full w-full place-items-center">
         No data available. Please update the channel list
       </div>
     );
@@ -72,12 +73,12 @@ export default async function PubliCatalog({
       <PublicMainContainer className="space-y-4">
         <PublicHeaderTitle>
           <div className="space-y-0">
-            <div className="flex justify-between items-start">
-              <div className="flex items-start gap-4">
+            <div className="flex items-start justify-between">
+              <div className="flex items-center gap-4">
                 <BackLink href="/explore/catalogs" />
                 <div className="space-y-1">
                   <span className="flex items-center gap-4">
-                    <h1 className="text-lg lg:text-xl tracking-wide">
+                    <h1 className="text-lg tracking-wide lg:text-xl">
                       {catalogTitle}
                     </h1>
                     <CatalogInformationPopover
@@ -158,8 +159,8 @@ type VideoSectionProps = {
 function VideoSection({ label, children }: VideoSectionProps) {
   const id = label.replaceAll(" ", "-").toLowerCase();
   return (
-    <section className="px-0 md:px-3 space-y-4">
-      <div className="h-6 px-2 md:px-0 flex items-center gap-2 text-primary">
+    <section className="space-y-4 px-0 md:px-3">
+      <div className="text-primary flex h-6 items-center gap-2 px-2 md:px-0">
         <PublicMarker />
         <h2 id={id} className="text-lg">
           <a href={`#${id}`}>{label}</a>

@@ -13,7 +13,6 @@ export type EndpointURL = `/${EndpointPrefixes}${string}`;
 
 import type { ApiResponse } from "../next/nx-response";
 
-// biome-ignore lint/suspicious/noExplicitAny: Remove any with unknown and make sure to type all its usages
 async function fetchApi<T = any>(endpoint: EndpointURL, options?: RequestInit) {
   const URL = `${process.env.NEXT_PUBLIC_API_BASE_URL}${endpoint}`;
 

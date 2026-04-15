@@ -4,11 +4,11 @@ import GridContainer from "~/widgets/grid-container";
 
 export function ArchiveLoadingSkeleton() {
   return (
-    <div className="space-y-4 pb-6 pt-7">
+    <div className="space-y-4 pt-7 pb-6">
       <section className="px-2 md:px-3">
         <div className="space-y-1">
           <Skeleton className="h-6 w-64" />
-          <Skeleton className="h-4 sm:w-96 w-64" />
+          <Skeleton className="h-4 w-64 sm:w-96" />
         </div>
       </section>
       <section className="px-0 md:px-3">

@@ -18,21 +18,21 @@ export default function Providers({
       enableSystem
       disableTransitionOnChange
     >
-      <AuthContextProvider>
-        <ProgressProvider
-          startPosition={0.3}
-          height="4px"
-          color="#e11d48"
-          options={{ showSpinner: false }}
-          shallowRouting
-        >
-          <SidebarProvider>
-            <div className="flex grow min-h-screen">
-              <NuqsAdapter>{children}</NuqsAdapter>
-            </div>
-          </SidebarProvider>
-        </ProgressProvider>
-      </AuthContextProvider>
+      <NuqsAdapter>
+        <AuthContextProvider>
+          <ProgressProvider
+            startPosition={0.3}
+            height="4px"
+            color="#e11d48"
+            options={{ showSpinner: false }}
+            shallowRouting
+          >
+            <SidebarProvider>
+              <div className="flex min-h-screen grow">{children}</div>
+            </SidebarProvider>
+          </ProgressProvider>
+        </AuthContextProvider>
+      </NuqsAdapter>
     </NextThemesProvider>
   );
 }
