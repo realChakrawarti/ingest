@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [26.1.1](https://github.com/realChakrawarti/ingest/compare/v26.1.0...v26.1.1) (2026-04-22)
+
+
+### Bug Fixes
+
+* player layout issues on larger viewports ([da91090](https://github.com/realChakrawarti/ingest/commit/da91090f6d6274a5e1d433ba90f09a8e32831bda))
+
 ## [26.1.0](https://github.com/realChakrawarti/ingest/compare/v26.0.10...v26.1.0) (2026-04-15)
 
 
