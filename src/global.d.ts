@@ -27,8 +27,17 @@ const envVariables = z.object({
 
 envVariables.parse(process.env);
 
+declare module "lite-youtube-embed" {
+  declare class LiteYTEmbed extends HTMLElement {
+    async getYTPlayer(): Promise<YT.Player>;
+  }
+}
+
 declare global {
   namespace NodeJS {
     interface ProcessEnv extends z.infer<typeof envVariables> {}
+  }
+  interface HTMLElementTagNameMap {
+    "lite-youtube": LiteYTEmbed;
   }
 }

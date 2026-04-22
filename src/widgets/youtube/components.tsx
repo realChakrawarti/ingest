@@ -61,7 +61,7 @@ function ChannelMeta({
       >
         <h3
           id={videoId}
-          className="group-hover/player:text-primary line-clamp-2 pr-6 text-sm leading-normal text-wrap"
+          className="text-primary line-clamp-2 pr-6 text-sm leading-normal text-wrap dark:text-white"
         >
           <abbr className="cursor-help no-underline" title={videoTitle}>
             {videoTitle}

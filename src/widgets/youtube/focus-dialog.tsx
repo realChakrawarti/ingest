@@ -31,7 +31,7 @@ export default function FocusDialog({
         aria-label="Focus mode"
       >
         <Button
-          className="flex place-items-center gap-1 rounded-none px-1.25 py-2 hover:bg-transparent hover:text-white"
+          className="flex place-items-center gap-1 rounded-none border-none px-1.25 py-2 hover:bg-transparent hover:text-white"
           onClick={() => {
             dialogRef.current?.showModal();
           }}
