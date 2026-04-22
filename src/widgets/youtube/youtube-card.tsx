@@ -24,6 +24,18 @@ interface YouTubeCardProps {
   options?: Partial<YouTubeCardOptions>;
 }
 
+function HoverOverlay() {
+  return (
+    <div
+      className={cn(
+        "bg-primary/20 rounded-md",
+        "absolute inset-0 -z-30 -m-2",
+        "size-0 opacity-0 transition-opacity duration-500 group-hover/player:size-auto group-hover/player:opacity-100"
+      )}
+    />
+  );
+}
+
 export default function YouTubeCard(props: YouTubeCardProps) {
   const { video, options } = props;
   const { videoId, videoTitle, videoDescription } = video;
@@ -41,66 +53,60 @@ export default function YouTubeCard(props: YouTubeCardProps) {
   } = options ?? {};
 
   return (
-    <div key={videoId} className="group/player grid grid-rows-[1fr_1fr_80px]">
+    <div
+      key={videoId}
+      id="player-card"
+      className="group/player relative flex flex-col"
+    >
+      <HoverOverlay />
+      <div className="relative aspect-video overflow-clip rounded-t-md">
+        <ClientYouTubePlayer enableJsApi={enableJsApi} {...video} />
+        <DescriptionSheet
+          videoTitle={videoTitle}
+          videoDescription={videoDescription}
+        />
+        <WatchedStatus videoId={video.videoId} />
+        {focusMode ? <FocusDialog enableJsApi video={video} /> : null}
+        {showVideoCategory ? (
+          <VideoCategory
+            publishedAt={video.publishedAt}
+            videoId={video.videoId}
+            videoComments={video.videoComments ?? 0}
+            videoLikes={video.videoLikes ?? 0}
+            videoViews={video.videoViews ?? 0}
+          />
+        ) : null}
+      </div>
       <div
         className={cn(
-          "row-span-2 flex flex-col shrink",
-          "rounded-md overflow-hidden",
-          "mx-0.5 md:mx-0 group-hover/player:shadow-primary group-hover/player:shadow-[0_0_0_2px]"
+          "flex justify-between items-end",
+          "h-11 px-2 py-3 backdrop-blur-xs rounded-b-md",
+          "bg-primary/60 text-white/90 text-sm"
         )}
       >
-        <div className="relative aspect-video">
-          <ClientYouTubePlayer enableJsApi={enableJsApi} {...video} />
-          {focusMode ? <FocusDialog enableJsApi video={video} /> : null}
-          <DescriptionSheet
-            videoTitle={videoTitle}
-            videoDescription={videoDescription}
+        {showVideoStats ? (
+          <VideoStats
+            videoId={video.videoId}
+            videoComments={video.videoComments ?? 0}
+            videoLikes={video.videoLikes ?? 0}
+            videoViews={video.videoViews ?? 0}
           />
-          <WatchedStatus videoId={video.videoId} />
-          {showVideoCategory ? (
-            <VideoCategory
-              publishedAt={video.publishedAt}
-              videoId={video.videoId}
-              videoComments={video.videoComments ?? 0}
-              videoLikes={video.videoLikes ?? 0}
-              videoViews={video.videoViews ?? 0}
-            />
-          ) : null}
-        </div>
-        <div
-          className={cn(
-            "flex justify-between items-end",
-            "h-11 px-2 py-3 backdrop-blur-xs rounded-b-md",
-            "bg-primary/60 text-white/90 text-sm"
-          )}
-        >
-          {showVideoStats ? (
-            <VideoStats
-              videoId={video.videoId}
-              videoComments={video.videoComments ?? 0}
-              videoLikes={video.videoLikes ?? 0}
-              videoViews={video.videoViews ?? 0}
-            />
-          ) : null}
-          {showDuration ? (
-            <VideoDuration
-              videoAvailability={video.videoAvailability}
-              videoDuration={video?.videoDuration ?? 0}
-            />
-          ) : null}
-        </div>
+        ) : null}
+        {showDuration ? (
+          <VideoDuration
+            videoAvailability={video.videoAvailability}
+            videoDuration={video?.videoDuration ?? 0}
+          />
+        ) : null}
       </div>
-      {/*Description*/}
-      <div>
-        <ShowCardOption
-          video={video}
-          addWatchLater={addWatchLater}
-          removeWatchLater={removeWatchLater}
-          markWatched={markWatched}
-        />
-        <div className="p-3">
-          <ChannelMeta hideAvatar={hideAvatar} video={video} />
-        </div>
+      <ShowCardOption
+        video={video}
+        addWatchLater={addWatchLater}
+        removeWatchLater={removeWatchLater}
+        markWatched={markWatched}
+      />
+      <div className="p-3">
+        <ChannelMeta hideAvatar={hideAvatar} video={video} />
       </div>
     </div>
   );

@@ -59,7 +59,7 @@ export default function YoutubePlayer(
 ) {
   const { enableJsApi, ...video } = props;
 
-  const { videoId, videoTitle } = video;
+  const { videoId } = video;
   const containerRef = useRef<HTMLDivElement | null>(null);
   const thisPlayerRef = useRef<YT.Player | null>(null);
   const loaded = useRef<boolean>(false);
@@ -130,13 +130,7 @@ export default function YoutubePlayer(
         }
       }
     },
-    [
-      videoTitle,
-      startTracking,
-      stopTracking,
-      videoId,
-      localUserSettings?.playbackRate,
-    ]
+    [startTracking, stopTracking, videoId, localUserSettings?.playbackRate]
   );
 
   async function loadIFrameElement() {
@@ -147,9 +141,9 @@ export default function YoutubePlayer(
     const played = await indexedDB.history.get(videoId);
 
     if (!loaded.current) {
-      thisPlayerRef.current = await (
-        containerRef.current?.querySelector("lite-youtube") as any
-      )?.getYTPlayer();
+      thisPlayerRef.current = await containerRef.current
+        ?.querySelector("lite-youtube")
+        ?.getYTPlayer();
 
       thisPlayerRef.current?.addEventListener("onStateChange", _onStateChange);
 
