@@ -30,7 +30,7 @@ function HoverOverlay() {
       className={cn(
         "bg-primary/20 rounded-md",
         "absolute inset-0 -z-30 -m-2",
-        "size-0 opacity-0 transition-opacity duration-500 group-hover/player:size-auto group-hover/player:opacity-100"
+        "size-0 opacity-0 transition-opacity duration-300 group-hover/player:size-auto group-hover/player:opacity-100"
       )}
     />
   );

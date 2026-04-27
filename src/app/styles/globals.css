@@ -93,6 +93,14 @@
       height: 0;
     }
   }
+
+  /* Micro-animations and transitions */
+  --duration-fast: 150ms;
+  --duration-medium: 250ms;
+  --duration-slow: 400ms;
+  --ease-out: cubic-bezier(0.2, 0, 0.38, 0.9);
+  --ease-in: cubic-bezier(0.45, 0, 1, 1);
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /*
@@ -172,6 +180,58 @@
       transform: translateY(-10px);
     }
   }
+
+  /* Enhanced button hover and active states with micro-animations */
+  .btn-hover-grow {
+    transition: transform var(--duration-fast) var(--ease-out);
+  }
+  .btn-hover-grow:hover {
+    transform: scale(1.03);
+  }
+  .btn-hover-grow:active {
+    transform: scale(0.97);
+  }
+
+  /* Enhanced card hover effects */
+  .card-hover-lift {
+    transition:
+      transform var(--duration-medium) var(--ease-out),
+      box-shadow var(--duration-medium) var(--ease-out);
+  }
+  .card-hover-lift:hover {
+    transform: translateY(-4px);
+  }
+
+  /* Enhanced focus states for accessibility */
+  .focus-ring {
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+  }
+  .focus-ring:focus {
+    outline-color: var(--color-ring);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+
+  /* Respect user motion preferences */
+  /*@media (prefers-reduced-motion: reduce) {
+    *,
+    ::after,
+    ::before,
+    ::backdrop,
+    ::file-selector-button {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+    }
+  }*/
 }
 
 @layer base {
