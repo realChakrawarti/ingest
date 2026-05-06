@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowLeftSquare } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 
 import { cn } from "~/shared/utils/tailwind-merge";
 
@@ -11,9 +11,9 @@ export default function BackLink({
   className?: string;
 }) {
   return (
-    <div className={cn("cursor-pointer", className)}>
+    <div className={cn("clickable", className)}>
       <Link href={href} replace>
-        <ArrowLeftSquare className="size-full" />
+        <ArrowLeft className="size-full" />
       </Link>
     </div>
   );

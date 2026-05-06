@@ -19,9 +19,10 @@ import BackLink from "~/widgets/back-link";
 import JustTip from "~/widgets/just-the-tip";
 import Spinner from "~/widgets/spinner";
 
+import useCatalogStore from "~/stores/catalog-store";
+
 import AddChannelPlaylistDialog from "./add-channel-playlist-dialog";
 import AddSubredditDialog from "./add-subreddit-dialog";
-import useCatalogStore from "./catalog-store";
 import ChannelTable from "./channel-table";
 import PlaylistTable from "./playlist-table";
 import SubredditTable from "./subreddit-table";

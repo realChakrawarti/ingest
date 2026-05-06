@@ -97,12 +97,13 @@ function PlayerStatus() {
   const playerRef = useActivePlayerRef();
   const title = playerRef?.getVideoData().title;
 
+  const pathname = usePathname();
   function renderControls(status: YT.PlayerState | undefined) {
     switch (status) {
       case PlayerState.PLAYING:
         return (
           <Button
-            className="flex items-center gap-2"
+            className="clickable flex items-center gap-2"
             onClick={() => playerRef?.pauseVideo()}
           >
             <PauseIcon size={24} />
@@ -145,6 +146,11 @@ function PlayerStatus() {
     }
   }, [playerRef]);
 
+  // If the pathname changes, hide the mini player
+  useEffect(() => {
+    setShowMiniPlayer(false);
+  }, [pathname]);
+
   useInterval(() => {
     const status = playerRef?.getPlayerState();
     setPlayingStatus(status);
@@ -158,7 +164,7 @@ function PlayerStatus() {
     <SidebarGroup>
       <SidebarGroupContent className="relative">
         <Button
-          className="absolute top-0.5 right-0.5 hover:bg-transparent"
+          className="clickable absolute top-0.5 right-0.5 hover:bg-transparent"
           onClick={() => setShowMiniPlayer(false)}
           size="icon"
           variant="ghost"
@@ -367,7 +373,7 @@ function ExploreGroup() {
                   asChild
                   isActive={isActive}
                 >
-                  <Link href={item.path}>
+                  <Link className="hover-shift" href={item.path}>
                     <Button
                       variant="ghost"
                       className={cn(

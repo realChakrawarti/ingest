@@ -28,6 +28,7 @@ function HoverOverlay() {
   return (
     <div
       className={cn(
+        "hidden md:block",
         "bg-primary/20 rounded-md",
         "absolute inset-0 -z-30 -m-2",
         "size-0 opacity-0 transition-opacity duration-300 group-hover/player:size-auto group-hover/player:opacity-100"
@@ -66,7 +67,6 @@ export default function YouTubeCard(props: YouTubeCardProps) {
           videoDescription={videoDescription}
         />
         <WatchedStatus videoId={video.videoId} />
-        {focusMode ? <FocusDialog enableJsApi video={video} /> : null}
         {showVideoCategory ? (
           <VideoCategory
             publishedAt={video.publishedAt}
@@ -79,7 +79,7 @@ export default function YouTubeCard(props: YouTubeCardProps) {
       </div>
       <div
         className={cn(
-          "flex justify-between items-end",
+          "flex justify-between items-center",
           "h-11 px-2 py-3 backdrop-blur-xs rounded-b-md",
           "bg-primary/60 text-white/90 text-sm"
         )}
@@ -92,12 +92,15 @@ export default function YouTubeCard(props: YouTubeCardProps) {
             videoViews={video.videoViews ?? 0}
           />
         ) : null}
-        {showDuration ? (
-          <VideoDuration
-            videoAvailability={video.videoAvailability}
-            videoDuration={video?.videoDuration ?? 0}
-          />
-        ) : null}
+        <div className="flex items-center gap-2">
+          {showDuration ? (
+            <VideoDuration
+              videoAvailability={video.videoAvailability}
+              videoDuration={video?.videoDuration ?? 0}
+            />
+          ) : null}
+          {focusMode ? <FocusDialog enableJsApi video={video} /> : null}
+        </div>
       </div>
       <ShowCardOption
         video={video}

@@ -1,32 +1,68 @@
+"use client";
+
+import { useState } from "react";
+
+import { useQueryState } from "nuqs";
+
 import type { ZCatalogSubredditPost } from "~/entities/catalogs/models";
 
-import { PublicMarker } from "~/widgets/public-layout";
+import { ItemSection } from "~/widgets/item-section";
 
-import { FilterSubreddit } from "./filter-subreddit";
-import PostCard from "./post-card";
+import { PostCard } from "./post-card";
+import PostDetailSheet from "./post-detail-sheet";
 
-export default function SubredditPosts({
-  posts,
-}: {
-  posts: ZCatalogSubredditPost[] | undefined;
-}) {
-  const subreddits = new Set(posts?.map((post) => post.subreddit));
+export function SubredditPost({ posts }: { posts: ZCatalogSubredditPost[] }) {
+  const handleSheetOpen = (isOpen: boolean) => {
+    setSheetOpen(isOpen);
+  };
 
-  if (posts?.length) {
-    return (
-      <section className="space-y-4">
-        <div className="text-primary flex h-6 items-center gap-2 px-2 md:px-3">
-          <PublicMarker />
-          <h2 id={"subreddit-posts"} className="text-lg">
-            <a href={"#subreddit-posts"}>Subreddit Posts</a>
-          </h2>
-          <FilterSubreddit subreddits={Array.from(subreddits)} />
-        </div>
+  const [sheetOpen, setSheetOpen] = useState(false);
+  const [currentIndex, setCurrentIndex] = useState(0);
 
-        <PostCard posts={posts} />
-      </section>
-    );
+  const [subreddit] = useQueryState("subreddit");
+
+  const sortedPosts = posts.toSorted(
+    (a, b) => b.postCreatedAt - a.postCreatedAt
+  );
+
+  const filterSubreddits = subreddit
+    ? sortedPosts.filter((post) => post.subreddit === subreddit)
+    : sortedPosts;
+
+  const currentPost = filterSubreddits[currentIndex];
+
+  function nextSlide() {
+    const updateIndex = (currentIndex + 1) % filterSubreddits.length;
+    setCurrentIndex(updateIndex);
   }
 
-  return null;
+  function previousSlide() {
+    const updateIndex =
+      (currentIndex - 1 + filterSubreddits.length) % filterSubreddits.length;
+    setCurrentIndex(updateIndex);
+  }
+
+  return (
+    <>
+      <ItemSection>
+        {filterSubreddits.map((post, index) => (
+          <PostCard
+            index={index}
+            handleSheetOpen={handleSheetOpen}
+            key={post.postId}
+            post={post}
+            setCurrentIndex={setCurrentIndex}
+          />
+        ))}
+      </ItemSection>
+
+      <PostDetailSheet
+        sheetOpen={sheetOpen}
+        handleSheetOpen={handleSheetOpen}
+        nextSlide={nextSlide}
+        previousSlide={previousSlide}
+        post={currentPost}
+      />
+    </>
+  );
 }

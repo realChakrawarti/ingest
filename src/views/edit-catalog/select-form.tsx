@@ -13,7 +13,7 @@ import type { ApiResponse } from "~/shared/lib/next/nx-response";
 import { Button } from "~/shared/ui/button";
 import Log from "~/shared/utils/terminal-logger";
 
-import useCatalogStore from "./catalog-store";
+import useCatalogStore from "~/stores/catalog-store";
 
 function formatSubscribers(subs: number) {
   const K = 1_000;

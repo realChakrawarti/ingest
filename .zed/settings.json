@@ -1,4 +1,9 @@
 {
+  "show_edit_predictions": true,
+  "edit_predictions": {
+    "provider": "zed",
+    "mode": "subtle"
+  },
   "file_scan_exclusions": [
     "firebase-debug.log",
     "firestore-debug.log",
@@ -27,6 +32,11 @@
     }
   },
   "lsp": {
+    "tailwindcss-language-server": {
+      "settings": {
+        "classFunctions": ["cva", "cn"]
+      }
+    },
     "oxlint": {
       "initialization_options": {
         "settings": {

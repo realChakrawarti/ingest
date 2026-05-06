@@ -1,86 +1,24 @@
 "use client";
 
-import * as React from "react";
-import { Check, ChevronsUpDown } from "lucide-react";
+import useScreenWidth from "~/shared/hooks/use-screen-width";
 
-import { parseAsString, useQueryState } from "nuqs";
-
-import { Button } from "~/shared/ui/button";
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-} from "~/shared/ui/command";
-import { Popover, PopoverContent, PopoverTrigger } from "~/shared/ui/popover";
-import { cn } from "~/shared/utils/tailwind-merge";
+import BadgeScroll from "~/widgets/badge-scroll";
 
 export function FilterSubreddit({ subreddits }: { subreddits: string[] }) {
-  const [open, setOpen] = React.useState(false);
-
-  const [value, setValue] = useQueryState(
-    "subreddit",
-    parseAsString.withDefault("")
-  );
-
-  if (subreddits.length < 2) {
-    return null;
-  }
+  const containerWidth = useScreenWidth();
 
   return (
-    <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger asChild>
-        <Button
-          variant="outline"
-          aria-expanded={open}
-          className="w-50 justify-between"
-        >
-          {value
-            ? `r/${subreddits.find((subreddit) => subreddit === value)}`
-            : "All"}
-          <ChevronsUpDown className="opacity-50" />
-        </Button>
-      </PopoverTrigger>
-      <PopoverContent className="w-50 p-0">
-        <Command>
-          <CommandInput placeholder="Search Subreddits..." className="h-9" />
-          <CommandList>
-            <CommandEmpty>No subreddits found.</CommandEmpty>
-            <CommandGroup>
-              <CommandItem
-                key={"all"}
-                value={"all"}
-                onSelect={() => {
-                  setValue("");
-                  setOpen(false);
-                }}
-              >
-                All
-              </CommandItem>
-              {subreddits.map((subreddit) => (
-                <CommandItem
-                  key={subreddit}
-                  value={subreddit}
-                  onSelect={(currentValue) => {
-                    setValue(currentValue === value ? "" : currentValue);
-                    setOpen(false);
-                  }}
-                >
-                  r/{subreddit}
-                  <Check
-                    className={cn(
-                      "ml-auto",
-                      value === subreddit ? "opacity-100" : "opacity-0"
-                    )}
-                  />
-                </CommandItem>
-              ))}
-            </CommandGroup>
-          </CommandList>
-        </Command>
-      </PopoverContent>
-    </Popover>
+    <div
+      className="container flex items-center gap-2 px-2 md:px-3"
+      style={{ width: `${containerWidth}px` }}
+    >
+      <BadgeScroll
+        queryParam="subreddit"
+        values={subreddits.map((subreddit) => ({
+          id: subreddit,
+          label: `r/${subreddit}`,
+        }))}
+      />
+    </div>
   );
 }

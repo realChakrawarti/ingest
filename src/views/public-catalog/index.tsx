@@ -1,16 +1,14 @@
-import type { ReactNode } from "react";
-
 import type { ZContentByCatalog } from "~/entities/catalogs/models";
 
 import fetchApi from "~/shared/lib/api/fetch";
 import type { YouTubeCardOptions } from "~/shared/types-schema/types";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/shared/ui/tabs";
 
 import BackLink from "~/widgets/back-link";
-import GridContainer from "~/widgets/grid-container";
+import { ItemSection } from "~/widgets/item-section";
 import {
   PublicHeaderTitle,
   PublicMainContainer,
-  PublicMarker,
 } from "~/widgets/public-layout";
 import ScrollTop from "~/widgets/scroll-top";
 import YouTubeCard from "~/widgets/youtube/youtube-card";
@@ -18,9 +16,10 @@ import YouTubeCard from "~/widgets/youtube/youtube-card";
 import { CatalogAction } from "./catalog-action";
 import CatalogInformationPopover from "./catalog-information-popover";
 import FilterChannel, { CurrentActive } from "./filter-channel";
+import { FilterSubreddit } from "./filter-subreddit";
 import { filterVideos, getActiveChannelIds } from "./helper-methods";
 import NextUpdateToast from "./next-update-toast";
-import SubredditPosts from "./subreddit-posts";
+import { SubredditPost } from "./subreddit-posts";
 
 export default async function PubliCatalog({
   channelId = "",
@@ -66,6 +65,7 @@ export default async function PubliCatalog({
   const [today, week, month] = filterVideos(videos, channelId, duration);
 
   const activeChannels = getActiveChannelIds(videos);
+  const subreddits = new Set(posts?.map((post) => post.subreddit));
 
   return (
     <>
@@ -103,70 +103,63 @@ export default async function PubliCatalog({
           </div>
         </PublicHeaderTitle>
 
-        <SubredditPosts posts={posts ?? []} />
+        <Tabs defaultValue={posts?.length ? "subreddit" : "youtube"}>
+          <TabsList className="mx-2 my-3 text-lg md:mx-3">
+            <TabsTrigger value="youtube">YouTube Videos</TabsTrigger>
+            <TabsTrigger value="subreddit">
+              Reddit Posts ({posts?.length})
+            </TabsTrigger>
+          </TabsList>
+          <TabsContent className="space-y-4" value="youtube">
+            <FilterChannel activeChannels={activeChannels} />
+            <CurrentActive activeChannels={activeChannels} />
 
-        <FilterChannel activeChannels={activeChannels} />
-
-        <CurrentActive activeChannels={activeChannels} />
-
-        {/* Today */}
-        {today?.length ? (
-          <VideoSection label="Today">
-            {today.map((video) => (
-              <YouTubeCard
-                key={video.videoId}
-                options={playerOptions}
-                video={video}
-              />
-            ))}
-          </VideoSection>
-        ) : null}
-        {/* This week */}
-        {week?.length ? (
-          <VideoSection label="This week">
-            {week.map((video) => (
-              <YouTubeCard
-                key={video.videoId}
-                options={playerOptions}
-                video={video}
-              />
-            ))}
-          </VideoSection>
-        ) : null}
-        {/* This month */}
-        {month?.length ? (
-          <VideoSection label="This month">
-            {month.map((video) => (
-              <YouTubeCard
-                key={video.videoId}
-                options={playerOptions}
-                video={video}
-              />
-            ))}
-          </VideoSection>
-        ) : null}
+            {/* Today */}
+            {today?.length ? (
+              <ItemSection label="Today">
+                {today.map((video) => (
+                  <YouTubeCard
+                    key={video.videoId}
+                    options={playerOptions}
+                    video={video}
+                  />
+                ))}
+              </ItemSection>
+            ) : null}
+            {/* This week */}
+            {week?.length ? (
+              <ItemSection label="This week">
+                {week.map((video) => (
+                  <YouTubeCard
+                    key={video.videoId}
+                    options={playerOptions}
+                    video={video}
+                  />
+                ))}
+              </ItemSection>
+            ) : null}
+            {/* This month */}
+            {month?.length ? (
+              <ItemSection label="This month">
+                {month.map((video) => (
+                  <YouTubeCard
+                    key={video.videoId}
+                    options={playerOptions}
+                    video={video}
+                  />
+                ))}
+              </ItemSection>
+            ) : null}
+          </TabsContent>
+          {posts?.length ? (
+            <TabsContent className="space-y-4" value="subreddit">
+              <FilterSubreddit subreddits={Array.from(subreddits)} />
+              <SubredditPost posts={posts} />
+            </TabsContent>
+          ) : null}
+        </Tabs>
         <ScrollTop />
       </PublicMainContainer>
     </>
-  );
-}
-
-type VideoSectionProps = {
-  label: string;
-  children: ReactNode;
-};
-
-function VideoSection({ label, children }: VideoSectionProps) {
-  const id = label.replaceAll(" ", "-").toLowerCase();
-  return (
-    <section className="space-y-4 px-0 md:px-3">
-      <div className="text-primary flex h-6 items-center gap-2 px-2 md:px-0">
-        <PublicMarker />
-        <h2 id={id} className="text-lg">
-          <a href={`#${id}`}>{label}</a>
-        </h2>
-      </div>
-      <GridContainer>{children}</GridContainer>
-    </section>
   );
 }

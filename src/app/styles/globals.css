@@ -182,24 +182,31 @@
   }
 
   /* Enhanced button hover and active states with micro-animations */
-  .btn-hover-grow {
+  .clickable {
     transition: transform var(--duration-fast) var(--ease-out);
   }
-  .btn-hover-grow:hover {
-    transform: scale(1.03);
+
+  .clickable:hover {
+    transform: none;
   }
-  .btn-hover-grow:active {
+
+  .clickable:active {
     transform: scale(0.97);
   }
 
-  /* Enhanced card hover effects */
-  .card-hover-lift {
-    transition:
-      transform var(--duration-medium) var(--ease-out),
-      box-shadow var(--duration-medium) var(--ease-out);
+  /* Enhanced hover effects */
+  .hover-lift {
+    transition: transform var(--duration-medium) var(--ease-out);
   }
-  .card-hover-lift:hover {
+  .hover-lift:hover {
     transform: translateY(-4px);
+  }
+
+  .hover-shift {
+    transition: transform var(--duration-medium) var(--ease-out);
+  }
+  .hover-shift:hover {
+    transform: translateX(-4px);
   }
 
   /* Enhanced focus states for accessibility */

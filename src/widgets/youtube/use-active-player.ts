@@ -1,6 +1,6 @@
 import { useSyncExternalStore } from "react";
 
-import currentlyPlayingStore from "./currently-playing-store";
+import currentlyPlayingStore from "~/stores/currently-playing-store";
 
 function useActivePlayerRef() {
   return useSyncExternalStore(

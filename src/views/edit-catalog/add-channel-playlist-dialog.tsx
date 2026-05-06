@@ -19,7 +19,8 @@ import {
   DialogTrigger,
 } from "~/shared/ui/dialog";
 
-import useCatalogStore from "./catalog-store";
+import useCatalogStore from "~/stores/catalog-store";
+
 import InputURLForm from "./input-url-form";
 import PlaylistSelectionForm from "./playlist-selection-form";
 import SelectForm from "./select-form";
