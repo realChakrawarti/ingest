@@ -8,7 +8,6 @@ import { Badge } from "~/shared/ui/badge";
 import { Button } from "~/shared/ui/button";
 
 import { OutLink } from "../out-link";
-import OverlayTip from "../overlay-tip";
 
 const ClientYouTubePlayer = dynamic(() => import("./player"), {
   ssr: false,
@@ -24,25 +23,16 @@ export default function FocusDialog({
   const dialogRef = useRef<HTMLDialogElement | null>(null);
 
   return (
-    <div className="group/focus-mode absolute bottom-2 left-0.5 cursor-default md:left-0">
-      <OverlayTip
-        className="overflow-hidden rounded-r-md"
-        id="focus"
-        aria-label="Focus mode"
+    <div className="clickable">
+      <Button
+        className="flex place-items-center gap-1 rounded-none border-none px-1.25 py-2 hover:bg-transparent hover:text-white"
+        onClick={() => {
+          dialogRef.current?.showModal();
+        }}
+        variant="ghost"
       >
-        <Button
-          className="flex place-items-center gap-1 rounded-none border-none px-1.25 py-2 hover:bg-transparent hover:text-white"
-          onClick={() => {
-            dialogRef.current?.showModal();
-          }}
-          variant="ghost"
-        >
-          <div className="hidden text-xs group-hover/focus-mode:block">
-            Focus
-          </div>
-          <MaximizeIcon className="size-4 grow" />
-        </Button>
-      </OverlayTip>
+        <MaximizeIcon className="size-4 grow" />
+      </Button>
 
       <dialog
         id="focus-player"

@@ -51,6 +51,10 @@ export default defineConfig({
         elementNamePattern: ["~/entities", "~/entities/**"],
       },
       {
+        groupName: "stores",
+        elementNamePattern: ["~/stores", "~/stores/**"],
+      },
+      {
         groupName: "features",
         elementNamePattern: ["~/features", "~/features/**"],
       },
@@ -83,6 +87,8 @@ export default defineConfig({
       "views",
       { newlinesBetween: true },
       "widgets",
+      { newlinesBetween: true },
+      "stores",
       { newlinesBetween: true },
       "alias-rest",
       { newlinesBetween: true },

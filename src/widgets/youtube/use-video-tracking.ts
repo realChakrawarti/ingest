@@ -1,15 +1,11 @@
 import { useEffect, useRef } from "react";
 
-import { toast } from "sonner";
-
 import type { ZVideoMetadataCompatible } from "~/entities/catalogs/models";
 
-import { useLocalUserSettings } from "~/shared/hooks/use-local-user-settings";
 import { indexedDB } from "~/shared/lib/api/dexie";
 import type { History } from "~/shared/types-schema/types";
-import { time } from "~/shared/utils/time";
 
-import currentlyPlayingStore from "./currently-playing-store";
+import currentlyPlayingStore from "~/stores/currently-playing-store";
 
 interface UseVideoTrackingProps {
   thisPlayerRef: React.RefObject<YT.Player | null>;
@@ -33,20 +29,6 @@ function getPercentCompleted(node: YT.Player, video: ZVideoMetadataCompatible) {
   return payload;
 }
 
-async function removeOldRecords(days: number) {
-  if (days === 0 || Number.isNaN(days)) return;
-
-  const deletePrior = Date.now() - time.days(days);
-  const historyQuery = indexedDB["history"]
-    .where("updatedAt")
-    .below(deletePrior);
-  const removeCount = await historyQuery.count();
-  if (removeCount) {
-    const deletedCount = await historyQuery.delete();
-    toast(`Removed ${deletedCount}, ${days} days old videos from the history.`);
-  }
-}
-
 export function useVideoTracking({
   video,
   thisPlayerRef,
@@ -57,8 +39,6 @@ export function useVideoTracking({
   const updateProgress = async (player: YT.Player) => {
     await indexedDB["history"].put(getPercentCompleted(player, video));
   };
-
-  const { localUserSettings } = useLocalUserSettings(null);
 
   const startTracking = () => {
     if (trackingRef.current) return;
@@ -82,8 +62,6 @@ export function useVideoTracking({
   };
 
   useEffect(() => {
-    removeOldRecords(localUserSettings?.historyDays ?? 0);
-
     return () => {
       if (trackingRef.current) {
         clearInterval(trackingRef.current);

@@ -2,15 +2,14 @@
 
 import type { ChannelTag } from "./helper-methods";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { ChevronLeft, ChevronRight, SlidersHorizontal } from "lucide-react";
+import { SlidersHorizontal } from "lucide-react";
 
 import { parseAsString, useQueryState } from "nuqs";
 
 import useScreenWidth from "~/shared/hooks/use-screen-width";
 import { Avatar, AvatarFallback, AvatarImage } from "~/shared/ui/avatar";
-import { Badge } from "~/shared/ui/badge";
 import { Button } from "~/shared/ui/button";
 import {
   Dialog,
@@ -23,70 +22,14 @@ import {
 } from "~/shared/ui/dialog";
 import { Label } from "~/shared/ui/label";
 import { ToggleGroup, ToggleGroupItem } from "~/shared/ui/toggle-group";
-import { cn } from "~/shared/utils/tailwind-merge";
+
+import BadgeScroll from "~/widgets/badge-scroll";
 export default function FilterChannel({
   activeChannels,
 }: {
   activeChannels: ChannelTag[];
 }) {
-  const [channelId, setChannelId] = useQueryState(
-    "channelId",
-    parseAsString
-      .withDefault("")
-      .withOptions({ history: "replace", shallow: false })
-  );
-
-  const handleSelectionChange = (key: string) => {
-    if (!key) {
-      return;
-    }
-    return setChannelId(key);
-  };
-
-  const handleOnClear = () => {
-    setChannelId(null);
-  };
-
   const containerWidth = useScreenWidth();
-
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
-  const [showLeftScroll, setShowLeftScroll] = useState(false);
-  const [showRightScroll, setShowRightScroll] = useState(false);
-
-  const scrollLeft = () => {
-    if (scrollContainerRef.current) {
-      scrollContainerRef.current.scrollBy({ behavior: "smooth", left: -200 });
-    }
-  };
-
-  const scrollRight = () => {
-    if (scrollContainerRef.current) {
-      scrollContainerRef.current.scrollBy({ behavior: "smooth", left: 200 });
-    }
-  };
-
-  useEffect(() => {
-    const checkScrollButtons = () => {
-      if (scrollContainerRef.current) {
-        const { scrollLeft, scrollWidth, clientWidth } =
-          scrollContainerRef.current;
-        setShowLeftScroll(scrollLeft > 10);
-        setShowRightScroll(scrollLeft < scrollWidth - clientWidth - 10);
-      }
-    };
-
-    const scrollContainer = scrollContainerRef.current;
-    if (scrollContainer) {
-      scrollContainer.addEventListener("scroll", checkScrollButtons);
-
-      // Initial check after content loads
-      setTimeout(checkScrollButtons, 100);
-
-      return () => {
-        scrollContainer.removeEventListener("scroll", checkScrollButtons);
-      };
-    }
-  }, []);
 
   return (
     <div
@@ -95,55 +38,13 @@ export default function FilterChannel({
     >
       <FilterVideosModal />
 
-      <div className="relative flex grow items-center overflow-hidden">
-        {showLeftScroll && (
-          <Button
-            variant="ghost"
-            size="icon"
-            className="from-background absolute top-0 bottom-0 left-0 z-10 flex w-8 items-center rounded-lg bg-linear-to-r to-transparent backdrop-blur-xs"
-            onClick={scrollLeft}
-          >
-            <ChevronLeft className="h-4 w-4" />
-            <span className="sr-only">Scroll left</span>
-          </Button>
-        )}
-
-        {showRightScroll && (
-          <Button
-            variant="ghost"
-            size="icon"
-            className="from-background absolute top-0 right-0 bottom-0 z-10 flex items-center rounded-lg bg-linear-to-r to-transparent backdrop-blur-xs"
-            onClick={scrollRight}
-          >
-            <ChevronRight className="h-4 w-4" />
-            <span className="sr-only">Scroll right</span>
-          </Button>
-        )}
-        <div
-          ref={scrollContainerRef}
-          className={cn(
-            "flex gap-3 items-center overflow-x-auto scrollbar-hide grow"
-          )}
-        >
-          <Badge
-            onClick={handleOnClear}
-            className="h-8 cursor-pointer p-0 px-3 text-sm font-normal tracking-normal text-nowrap select-none"
-            variant={!channelId ? "default" : "outline"}
-          >
-            All
-          </Badge>
-          {activeChannels.map((channel) => (
-            <Badge
-              key={channel.id}
-              variant={channel.id === channelId ? "default" : "outline"}
-              onClick={() => handleSelectionChange(channel.id)}
-              className="h-8 cursor-pointer p-0 px-3 text-sm font-normal tracking-normal text-nowrap select-none"
-            >
-              {channel.title}
-            </Badge>
-          ))}
-        </div>
-      </div>
+      <BadgeScroll
+        queryParam="channelId"
+        values={activeChannels.map((channel) => ({
+          id: channel.id,
+          label: channel.title,
+        }))}
+      />
     </div>
   );
 }

@@ -1,13 +1,18 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
+import { Trash2 } from "lucide-react";
 
 import { parseAsString, useQueryState } from "nuqs";
+import { toast } from "sonner";
 
 import appConfig from "~/shared/app-config";
+import { useLocalUserSettings } from "~/shared/hooks/use-local-user-settings";
 import { indexedDB } from "~/shared/lib/api/dexie";
 import type { History } from "~/shared/types-schema/types";
 import { Badge } from "~/shared/ui/badge";
+import { Button } from "~/shared/ui/button";
+import { time } from "~/shared/utils/time";
 
 import BackLink from "~/widgets/back-link";
 import GridContainer from "~/widgets/grid-container";
@@ -38,8 +43,10 @@ export default function WatchHistory() {
     parseAsString.withOptions({ history: "replace", shallow: false })
   );
 
-  useEffect(() => {
-    const getWatchHistory = async () => {
+  const { localUserSettings } = useLocalUserSettings(null);
+
+  const getWatchHistory = useCallback(async () => {
+    try {
       const indexedHistory = (await indexedDB.history.toArray()) ?? [];
       if (status === "completed") {
         const completed = indexedHistory.filter(
@@ -54,18 +61,50 @@ export default function WatchHistory() {
       } else {
         setHistory(indexedHistory);
       }
-    };
-
-    getWatchHistory();
+    } catch {
+      toast("Unable to cleanup history.");
+    }
   }, [status]);
+
+  useEffect(() => {
+    getWatchHistory();
+  }, [getWatchHistory]);
+
+  async function removeOldRecords() {
+    const days = localUserSettings?.historyDays ?? 0;
+    if (days === 0 || Number.isNaN(days)) {
+      return;
+    }
+
+    const deletePrior = Date.now() - time.days(days);
+    const historyQuery = indexedDB["history"]
+      .where("updatedAt")
+      .below(deletePrior);
+    const removeCount = await historyQuery.count();
+    if (removeCount) {
+      await historyQuery.delete();
+      await getWatchHistory();
+      toast(`Removed ${removeCount} old videos from the history.`);
+    } else {
+      toast("Nothing to cleanup.");
+    }
+  }
 
   return (
     <PublicMainContainer>
-      <PublicHeaderTitle>
+      <PublicHeaderTitle className="flex justify-between">
         <div className="flex items-center gap-2">
           <BackLink href="/explore" />
           <h1 className="text-lg tracking-wide lg:text-xl">Watch history</h1>
         </div>
+        <Button
+          onClick={removeOldRecords}
+          className="flex items-center gap-2"
+          variant="outline"
+        >
+          <Trash2 />
+          <span>Cleanup history</span>
+        </Button>
       </PublicHeaderTitle>
       <FilterWatched status={status} setStatus={setStatus} />
       <PublicContentContainer>

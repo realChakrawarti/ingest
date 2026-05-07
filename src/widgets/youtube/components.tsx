@@ -91,7 +91,7 @@ function DescriptionSheet({
   return (
     <Sheet>
       <SheetTrigger asChild>
-        <div className="absolute top-2 right-0.5 cursor-pointer group-hover/player:block md:right-0 md:hidden">
+        <div className="absolute top-2 right-0 cursor-pointer group-hover/player:block md:hidden">
           <OverlayTip
             className="group/description flex place-items-center gap-1 rounded-l-md px-1.25 py-2"
             id="description"

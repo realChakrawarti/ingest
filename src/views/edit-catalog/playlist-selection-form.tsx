@@ -22,7 +22,7 @@ import { Input } from "~/shared/ui/input";
 import { Separator } from "~/shared/ui/separator";
 import Log from "~/shared/utils/terminal-logger";
 
-import useCatalogStore from "./catalog-store";
+import useCatalogStore from "~/stores/catalog-store";
 
 export default function PlaylistSelectionForm({
   revalidateCatalog,

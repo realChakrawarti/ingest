@@ -19,7 +19,7 @@ export function WatchedStatus({ videoId }: { videoId: string }) {
     videoProgress.completed > localUserSettings.watchedPercentage
   ) {
     return (
-      <div className="group/status absolute top-2 left-0.5 cursor-default md:left-0">
+      <div className="group/status absolute top-2 left-0 cursor-default">
         <OverlayTip
           className="flex place-items-center gap-1 rounded-r-md px-1.25 py-2"
           id="status"
