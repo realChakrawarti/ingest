@@ -3,12 +3,12 @@ import type { ReactNode } from "react";
 import GridContainer from "./grid-container";
 import { PublicMarker } from "./public-layout";
 
-type VideoSectionProps = {
+type ItemSectionProps = {
   label?: string;
   children: ReactNode;
 };
 
-export function ItemSection({ label, children }: VideoSectionProps) {
+export function ItemSection({ label, children }: ItemSectionProps) {
   const id = label?.replaceAll(" ", "-").toLowerCase();
   return (
     <section className="space-y-4 px-0 md:px-3">

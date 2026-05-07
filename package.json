@@ -14,7 +14,7 @@
     "@icons-pack/react-simple-icons": "^10.2.0",
     "@next/third-parties": "15.5.12",
     "@sentry/nextjs": "^10.32.1",
-    "@tanstack/react-hotkeys": "^0.4.2",
+    "@tanstack/react-hotkeys": "^0.10.0",
     "@use-gesture/react": "^10.3.1",
     "canvas-confetti": "^1.9.3",
     "class-variance-authority": "^0.7.1",

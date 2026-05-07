@@ -32,6 +32,8 @@ export function PostCard({
 
   return (
     <div
+      role="button"
+      tabIndex={0}
       key={post.postId}
       onClick={() => {
         setCurrentIndex(index);
@@ -41,6 +43,7 @@ export function PostCard({
     >
       <div className="flex items-center justify-between text-xs">
         <OutLink
+          onClick={(e) => e.stopPropagation()}
           className="text-sm font-bold tracking-wider"
           href={`https://www.reddit.com/r/${post.subreddit}`}
         >
@@ -69,6 +72,7 @@ export function PostCard({
               <>
                 <span>•</span>
                 <OutLink
+                  onClick={(e) => e.stopPropagation()}
                   href={post.postUrl}
                   className="flex items-center gap-1"
                 >

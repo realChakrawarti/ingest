@@ -12,10 +12,6 @@ import { PostCard } from "./post-card";
 import PostDetailSheet from "./post-detail-sheet";
 
 export function SubredditPost({ posts }: { posts: ZCatalogSubredditPost[] }) {
-  const handleSheetOpen = (isOpen: boolean) => {
-    setSheetOpen(isOpen);
-  };
-
   const [sheetOpen, setSheetOpen] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -30,6 +26,14 @@ export function SubredditPost({ posts }: { posts: ZCatalogSubredditPost[] }) {
     : sortedPosts;
 
   const currentPost = filterSubreddits[currentIndex];
+
+  const handleSheetOpen = (isOpen: boolean) => {
+    // Reset currentIndex when sheet is closed
+    if (!isOpen) {
+      setCurrentIndex(0);
+    }
+    setSheetOpen(isOpen);
+  };
 
   function nextSlide() {
     const updateIndex = (currentIndex + 1) % filterSubreddits.length;

@@ -1,3 +1,5 @@
+"use client";
+
 import type { PropsWithChildren } from "react";
 import { useEffect, useRef, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
@@ -77,7 +79,7 @@ export default function BadgeScroll({ queryParam, values }: BadgeScrollProps) {
         <Button
           variant="ghost"
           size="icon"
-          className="from-background absolute top-0 bottom-0 left-0 z-10 flex w-8 items-center rounded-lg bg-linear-to-r to-transparent backdrop-blur-xs"
+          className="clickable from-background absolute top-0 bottom-0 left-0 z-10 flex w-8 items-center rounded-lg bg-linear-to-r to-transparent backdrop-blur-xs"
           onClick={scrollLeft}
         >
           <ChevronLeft className="h-4 w-4" />
@@ -89,7 +91,7 @@ export default function BadgeScroll({ queryParam, values }: BadgeScrollProps) {
         <Button
           variant="ghost"
           size="icon"
-          className="from-background absolute top-0 right-0 bottom-0 z-10 flex items-center rounded-lg bg-linear-to-r to-transparent backdrop-blur-xs"
+          className="clickable from-background absolute top-0 right-0 bottom-0 z-10 flex items-center rounded-lg bg-linear-to-r to-transparent backdrop-blur-xs"
           onClick={scrollRight}
         >
           <ChevronRight className="h-4 w-4" />
@@ -104,7 +106,7 @@ export default function BadgeScroll({ queryParam, values }: BadgeScrollProps) {
       >
         <Badge
           onClick={handleOnClear}
-          className="h-8 cursor-pointer p-0 px-3 text-sm font-normal tracking-normal text-nowrap select-none"
+          className="clickable h-8 cursor-pointer p-0 px-3 text-sm font-normal tracking-normal text-nowrap select-none"
           variant={!queryId ? "default" : "outline"}
         >
           All
@@ -114,7 +116,7 @@ export default function BadgeScroll({ queryParam, values }: BadgeScrollProps) {
             key={value.id}
             variant={value.id === queryId ? "default" : "outline"}
             onClick={() => handleSelectionChange(value.id)}
-            className="h-8 cursor-pointer p-0 px-3 text-sm font-normal tracking-normal text-nowrap select-none"
+            className="clickable h-8 cursor-pointer p-0 px-3 text-sm font-normal tracking-normal text-nowrap select-none"
           >
             {value.label}
           </Badge>

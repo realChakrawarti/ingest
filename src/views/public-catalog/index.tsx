@@ -106,9 +106,11 @@ export default async function PubliCatalog({
         <Tabs defaultValue={posts?.length ? "subreddit" : "youtube"}>
           <TabsList className="mx-2 my-3 text-lg md:mx-3">
             <TabsTrigger value="youtube">YouTube Videos</TabsTrigger>
-            <TabsTrigger value="subreddit">
-              Reddit Posts ({posts?.length})
-            </TabsTrigger>
+            {posts?.length ? (
+              <TabsTrigger value="subreddit">
+                Reddit Posts ({posts?.length})
+              </TabsTrigger>
+            ) : null}
           </TabsList>
           <TabsContent className="space-y-4" value="youtube">
             <FilterChannel activeChannels={activeChannels} />
@@ -151,12 +153,11 @@ export default async function PubliCatalog({
               </ItemSection>
             ) : null}
           </TabsContent>
-          {posts?.length ? (
-            <TabsContent className="space-y-4" value="subreddit">
-              <FilterSubreddit subreddits={Array.from(subreddits)} />
-              <SubredditPost posts={posts} />
-            </TabsContent>
-          ) : null}
+
+          <TabsContent className="space-y-4" value="subreddit">
+            <FilterSubreddit subreddits={Array.from(subreddits)} />
+            <SubredditPost posts={posts ?? []} />
+          </TabsContent>
         </Tabs>
         <ScrollTop />
       </PublicMainContainer>

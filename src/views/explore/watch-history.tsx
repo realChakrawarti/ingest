@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Trash2 } from "lucide-react";
 
 import { parseAsString, useQueryState } from "nuqs";
@@ -45,8 +45,8 @@ export default function WatchHistory() {
 
   const { localUserSettings } = useLocalUserSettings(null);
 
-  useEffect(() => {
-    const getWatchHistory = async () => {
+  const getWatchHistory = useCallback(async () => {
+    try {
       const indexedHistory = (await indexedDB.history.toArray()) ?? [];
       if (status === "completed") {
         const completed = indexedHistory.filter(
@@ -61,10 +61,14 @@ export default function WatchHistory() {
       } else {
         setHistory(indexedHistory);
       }
-    };
-
-    getWatchHistory();
+    } catch {
+      toast("Unable to cleanup history.");
+    }
   }, [status]);
+
+  useEffect(() => {
+    getWatchHistory();
+  }, [getWatchHistory]);
 
   async function removeOldRecords() {
     const days = localUserSettings?.historyDays ?? 0;
@@ -79,6 +83,7 @@ export default function WatchHistory() {
     const removeCount = await historyQuery.count();
     if (removeCount) {
       await historyQuery.delete();
+      await getWatchHistory();
       toast(`Removed ${removeCount} old videos from the history.`);
     } else {
       toast("Nothing to cleanup.");
@@ -98,7 +103,7 @@ export default function WatchHistory() {
           variant="outline"
         >
           <Trash2 />
-          <p>Cleanup history</p>
+          <span>Cleanup history</span>
         </Button>
       </PublicHeaderTitle>
       <FilterWatched status={status} setStatus={setStatus} />

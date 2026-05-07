@@ -156,7 +156,7 @@ function Comment({ id, author, score, created_utc, body }: CommentProps) {
         <span>•</span>
         <span>{commentCreatedAt}</span>
       </div>
-      <div className="border-primary/70 border-l-2 pl-4 group-data-[collapsed=true]:hidden data-[collapsed=false]:block">
+      <div className="border-primary/70 border-l-2 pl-4 group-data-[collapsed=true]:hidden">
         <MarkdownHTML content={body} />
       </div>
     </div>

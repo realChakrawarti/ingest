@@ -13,7 +13,7 @@ export default function NoItemCard({
   subTitle,
 }: NoItemCardProps) {
   return (
-    <Card className="flex h-[200px] justify-center rounded-md border-dashed">
+    <Card className="flex h-50 justify-center rounded-md border-dashed">
       <CardContent className="flex flex-col items-center justify-center py-8 text-center">
         <Icon className="text-muted-foreground mb-4 h-12 w-12" />
         <p className="text-muted-foreground mb-2">{title}</p>

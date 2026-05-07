@@ -2,7 +2,6 @@ import { useEffect, useRef } from "react";
 
 import type { ZVideoMetadataCompatible } from "~/entities/catalogs/models";
 
-import { useLocalUserSettings } from "~/shared/hooks/use-local-user-settings";
 import { indexedDB } from "~/shared/lib/api/dexie";
 import type { History } from "~/shared/types-schema/types";
 
