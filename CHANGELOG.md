@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [26.2.0](https://github.com/realChakrawarti/ingest/compare/v26.1.1...v26.2.0) (2026-05-07)
+
+
+### Features
+
+* **catalog:** tabs for youtube videos and subreddit ([7b4f8a0](https://github.com/realChakrawarti/ingest/commit/7b4f8a0d44e5889fea52b9c24053d51b45f1b5e7))
+* micro-animations & catalog tabs ([#324](https://github.com/realChakrawarti/ingest/issues/324)) ([1324707](https://github.com/realChakrawarti/ingest/commit/1324707856a3991d9e9ebb31e0e12e4576580276))
+* micro-animations in button, cards, sidebar etc ([b0c4adc](https://github.com/realChakrawarti/ingest/commit/b0c4adc41b2d3e2262a60c4ec05a8350e1e527e2))
+
+
+### Bug Fixes
+
+* coderabbit suggestions ([4b7c821](https://github.com/realChakrawarti/ingest/commit/4b7c82138bd335c90e08bdaf613e6c87bbd5fc44))
+
 ### [26.1.1](https://github.com/realChakrawarti/ingest/compare/v26.1.0...v26.1.1) (2026-04-22)
 
 
