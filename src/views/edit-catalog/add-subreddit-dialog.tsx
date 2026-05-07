@@ -35,7 +35,7 @@ import formatLargeNumber from "~/shared/utils/format-large-number";
 import formatRedditImageLink from "~/shared/utils/format-reddit-image-link";
 import Log from "~/shared/utils/terminal-logger";
 
-import useCatalogStore from "./catalog-store";
+import useCatalogStore from "~/stores/catalog-store";
 
 async function getSubreddits(query: string) {
   const response = await fetch(

@@ -93,6 +93,14 @@
       height: 0;
     }
   }
+
+  /* Micro-animations and transitions */
+  --duration-fast: 150ms;
+  --duration-medium: 250ms;
+  --duration-slow: 400ms;
+  --ease-out: cubic-bezier(0.2, 0, 0.38, 0.9);
+  --ease-in: cubic-bezier(0.45, 0, 1, 1);
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /*
@@ -172,6 +180,48 @@
       transform: translateY(-10px);
     }
   }
+
+  /* Enhanced button hover and active states with micro-animations */
+  .clickable {
+    transition: transform var(--duration-fast) var(--ease-out);
+  }
+
+  .clickable:active {
+    transform: scale(0.97);
+  }
+
+  /* Enhanced hover effects */
+  .hover-lift {
+    transition: transform var(--duration-medium) var(--ease-out);
+  }
+  .hover-lift:hover {
+    transform: translateY(-4px);
+  }
+
+  .hover-shift {
+    transition: transform var(--duration-medium) var(--ease-out);
+  }
+  .hover-shift:hover {
+    transform: translateX(-4px);
+  }
+
+  /* Enhanced focus states for accessibility */
+  .focus-ring {
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+  }
+  .focus-ring:focus {
+    outline-color: var(--color-ring);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
 }
 
 @layer base {
@@ -244,14 +294,5 @@
     --sidebar-accent-foreground: 240 4.8% 95.9%;
     --sidebar-border: 240 3.7% 15.9%;
     --sidebar-ring: 217.2 91.2% 59.8%;
-  }
-}
-
-@layer base {
-  * {
-    @apply border-border;
-  }
-  body {
-    @apply bg-background text-foreground;
   }
 }

@@ -18,7 +18,7 @@ import { Input } from "~/shared/ui/input";
 import { Label } from "~/shared/ui/label";
 import Log from "~/shared/utils/terminal-logger";
 
-import useCatalogStore from "./catalog-store";
+import useCatalogStore from "~/stores/catalog-store";
 
 export default function InputURLForm() {
   const [inputMode, setInputMode] = useState<"video" | "channel">("video");

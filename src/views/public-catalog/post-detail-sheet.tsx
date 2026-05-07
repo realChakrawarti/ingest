@@ -4,6 +4,7 @@ import {
   ArrowUp,
   ExternalLink,
   MessageSquare,
+  User,
 } from "lucide-react";
 
 import { useHotkey } from "@tanstack/react-hotkeys";
@@ -79,26 +80,32 @@ export default function PostDetailSheet({
               <div className="flex items-center gap-2">
                 <ArrowLeftCircle
                   className="size-5 cursor-pointer"
-                  onClick={() => previousSlide()}
+                  onClick={previousSlide}
                 />
                 <ArrowRightCircle
                   className="size-5 cursor-pointer"
-                  onClick={() => nextSlide()}
+                  onClick={nextSlide}
                 />
               </div>
+            </div>
+            <div className="text-muted-foreground mt-2 flex items-center gap-2 text-xs">
+              <ArrowUp className="size-4" />
+              <span>{formatLargeNumber(post.postVotes)} votes</span>
+              <span>•</span>
+              <MessageSquare className="size-4" />
+              <span>{formatLargeNumber(post.postCommentsCount)} comments</span>
             </div>
             <p className="text-foreground mt-2">{post.postTitle}</p>
           </SheetTitle>
           <SheetDescription asChild>
             <div>
-              <div className="text-muted-foreground mt-2 flex items-center justify-between text-sm">
-                <div className="flex items-center gap-2">
-                  <ArrowUp className="size-4" />
-                  <span>{formatLargeNumber(post.postVotes)} votes</span>
-                  <span>•</span>
-                  <MessageSquare className="size-4" />
-                  <span>{post.postCommentsCount} comments</span>
-                </div>
+              <div className="text-muted-foreground mt-2 flex items-center gap-2">
+                <User className="size-4" />
+                <span>
+                  <OutLink href={`https://www.reddit.com/u/${post.postAuthor}`}>
+                    u/{post.postAuthor}
+                  </OutLink>
+                </span>
               </div>
               {post.postDomain !== `self.${post.subreddit}` &&
                 post.postDomain !== "i.redd.it" && (
@@ -118,7 +125,7 @@ export default function PostDetailSheet({
             <video
               controls
               muted
-              className="h-auto max-h-96 w-full object-contain"
+              className="h-auto max-h-96 w-full rounded-md object-contain"
             >
               <source src={post.postVideo} type="video/mp4" />
               Your browser does not support the video tag.
@@ -129,7 +136,7 @@ export default function PostDetailSheet({
             <img
               src={post.postImage}
               alt={post.postTitle}
-              className="h-auto max-h-96 w-full object-contain"
+              className="h-auto max-h-96 w-full rounded-md object-contain"
             />
           ) : null}
           {post?.postSelftext ? (

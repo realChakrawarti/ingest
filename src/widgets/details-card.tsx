@@ -40,7 +40,7 @@ export default function DetailsCard({ validData, path }: DetailsCardProps) {
       className={cn(
         "border-none",
         "flex flex-col gap-0 relative overflow-hidden",
-        "rounded-lg hover:bg-primary/10 bg-primary/5 transition-colors"
+        "rounded-lg hover:bg-primary/10 bg-primary/5 transition-colors hover-lift"
       )}
     >
       <div className="relative aspect-video">

@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 
 export default function GridContainer({ children }: { children: ReactNode }) {
   return (
-    <section className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+    <section className="grid grid-cols-[repeat(auto-fill,minmax(min(300px,100%),1fr))] gap-4">
       {children}
     </section>
   );

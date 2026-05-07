@@ -64,12 +64,15 @@ function CopyButton({ id, type }: { id: string; type: "catalog" | "archive" }) {
 }
 
 const cardContainerStyles = cn(
-  "flex flex-col h-[200px]",
+  "flex flex-col h-50",
   "overflow-hidden border-none",
   "hover:bg-primary/10 bg-primary/5 transition-colors"
 );
 
-const cardContentStyles = cn("grow outline-hidden ", "rounded-b-none");
+const cardContentStyles = cn(
+  "grow clickable outline-hidden ",
+  "rounded-b-none"
+);
 
 type ItemCardProps = {
   type: "archive" | "catalog";
@@ -94,7 +97,7 @@ export default function ItemCard({
     type === "archive" ? `/archives/${id}/edit` : `/catalogs/${id}/edit`;
 
   return (
-    <div className="group/card-item relative rounded-md">
+    <div className="group/card-item hover-lift shadow-primary/20 relative rounded-md shadow-sm">
       <Card className={cardContainerStyles}>
         <Link className={cardContentStyles} href={editLink} prefetch>
           <CardHeader className="space-y-1 pb-2">

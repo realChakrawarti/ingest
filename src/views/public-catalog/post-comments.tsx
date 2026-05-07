@@ -1,6 +1,13 @@
 "use client";
 
-import { ArrowBigRightDashIcon, Loader2, MessageSquare } from "lucide-react";
+import { useRef } from "react";
+import {
+  ArrowBigRightDashIcon,
+  Loader2,
+  MessageSquare,
+  MinusCircle,
+  PlusCircle,
+} from "lucide-react";
 
 import useSWRMutation from "swr/mutation";
 
@@ -90,33 +97,68 @@ export default function PostComments({
       </CollapsibleTrigger>
       <CollapsibleContent>
         <div className="space-y-4">
-          {comments.map((comment: any) => {
-            const currentTime = Date.now() / 1000;
-            const commentCreatedAt = getDifferenceString(
-              (currentTime - comment.created_utc) / 60,
-              "ago",
-              true
-            );
-            return (
-              <div
-                key={comment.id}
-                className="border-primary/70 border-l-2 pl-4"
-              >
-                <div className="text-muted-foreground mb-2 flex items-center gap-2 text-xs">
-                  <OutLink href={`https://www.reddit.com/u/${comment.author}`}>
-                    u/{comment.author}
-                  </OutLink>
-                  <span>•</span>
-                  <span>{formatLargeNumber(comment.score)} votes</span>
-                  <span>•</span>
-                  <span>{commentCreatedAt}</span>
-                </div>
-                <MarkdownHTML content={comment.body} />
-              </div>
-            );
-          })}
+          {comments.map((comment: any) => (
+            <Comment
+              key={comment.id}
+              id={comment.id}
+              author={comment.author}
+              score={comment.score}
+              created_utc={comment.created_utc}
+              body={comment.body}
+            />
+          ))}
         </div>
       </CollapsibleContent>
     </Collapsible>
+  );
+}
+
+type CommentProps = {
+  id: string;
+  author: string;
+  score: number;
+  created_utc: number;
+  body: string;
+};
+
+function Comment({ id, author, score, created_utc, body }: CommentProps) {
+  const currentTime = Date.now() / 1000;
+  const commentCreatedAt = getDifferenceString(
+    (currentTime - created_utc) / 60,
+    "ago",
+    true
+  );
+
+  const commentRef = useRef<HTMLDivElement>(null);
+
+  function toggleComment() {
+    const commentEle = commentRef.current;
+    const isCollapsed = commentEle?.getAttribute("data-collapsed") === "true";
+
+    commentEle?.setAttribute("data-collapsed", isCollapsed ? "false" : "true");
+  }
+  return (
+    <div className="group" data-collapsed="false" ref={commentRef} key={id}>
+      <div className="text-muted-foreground mb-2 flex items-center gap-2 text-sm">
+        <MinusCircle
+          onClick={toggleComment}
+          className="clickable -ml-1 size-3 group-data-[collapsed=true]:hidden"
+        />
+        <PlusCircle
+          onClick={toggleComment}
+          className="clickable -ml-1 size-3 group-data-[collapsed=false]:hidden"
+        />
+        <OutLink href={`https://www.reddit.com/u/${author}`}>
+          u/{author}
+        </OutLink>
+        <span>•</span>
+        <span>{formatLargeNumber(score)} votes</span>
+        <span>•</span>
+        <span>{commentCreatedAt}</span>
+      </div>
+      <div className="border-primary/70 border-l-2 pl-4 group-data-[collapsed=true]:hidden">
+        <MarkdownHTML content={body} />
+      </div>
+    </div>
   );
 }
