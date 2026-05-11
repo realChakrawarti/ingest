@@ -6,6 +6,7 @@ const UserSettingsSchema = z.object({
   syncId: z.string(),
   videoLanguage: z.string(),
   watchedPercentage: z.number(),
+  thumbnailGrayscale: z.number(),
 });
 
 export type ZUserSettings = z.infer<typeof UserSettingsSchema>;
