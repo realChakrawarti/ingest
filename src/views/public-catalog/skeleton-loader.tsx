@@ -6,21 +6,11 @@ import GridContainer from "~/widgets/grid-container";
 export default function CatalogLoadingSkeleton() {
   return (
     <div className="space-y-4 pt-7 pb-6">
-      <section className="px-2 md:px-3">
-        <div className="space-y-0">
-          <div className="flex items-center justify-between">
-            <div className="flex gap-4">
-              <Skeleton className="size-6" />
-              <Skeleton className="h-6 w-64" />
-              <Skeleton className="size-6" />
-            </div>
-            <div>
-              <Skeleton className="size-6" />
-            </div>
-          </div>
-        </div>
+      <section className="space-y-4 px-2 md:px-3">
+        <Skeleton className="bg-primary/10 size-full min-h-45 w-full rounded-md" />
+        <Skeleton className="h-6 w-48" />
       </section>
-      <SubredditSection />
+
       <FilterSection />
       <VideoSection>
         {Array.from(Array(4).keys()).map((index) => (
@@ -53,18 +43,6 @@ function FilterSection() {
   );
 }
 
-function SubredditSection() {
-  return (
-    <section className="space-y-4 px-0 md:px-3">
-      <div className="flex items-center gap-2 px-2 md:px-0">
-        <Skeleton className="h-6 w-1 rounded-md" />
-        <Skeleton className="h-6 w-32" />
-        <Skeleton className="h-6 min-w-36" />
-      </div>
-      <Skeleton className="min-h-44 w-full" />
-    </section>
-  );
-}
 function VideoSection({ children }: { children: ReactNode[] }) {
   return (
     <section className="space-y-4 px-0 md:px-3">

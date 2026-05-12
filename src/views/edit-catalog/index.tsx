@@ -100,7 +100,7 @@ export default function EditCatalog({ catalogId }: { catalogId: string }) {
     "type",
     parseAsString.withDefault("youtube").withOptions({
       history: "replace",
-      shallow: false,
+      shallow: true,
     })
   );
 
@@ -158,6 +158,8 @@ export default function EditCatalog({ catalogId }: { catalogId: string }) {
       toast("Something went wrong.");
     }
   };
+
+  const activeType = type === "reddit" ? "reddit" : "youtube";
 
   return (
     <div>
@@ -220,26 +222,20 @@ export default function EditCatalog({ catalogId }: { catalogId: string }) {
           <Spinner className="size-8" />
         </div>
       )}
-      <Tabs defaultValue="youtube" className="space-y-7 px-3 py-2">
+      <Tabs
+        value={activeType}
+        onValueChange={handleTabChange}
+        className="space-y-7 px-3 py-2"
+      >
         <div className="flex justify-between">
           <TabsList>
-            <TabsTrigger
-              onClick={() => handleTabChange("youtube")}
-              value="youtube"
-            >
-              YouTube
-            </TabsTrigger>
-            <TabsTrigger
-              onClick={() => handleTabChange("reddit")}
-              value="reddit"
-            >
-              Subreddit
-            </TabsTrigger>
+            <TabsTrigger value="youtube">YouTube</TabsTrigger>
+            <TabsTrigger value="reddit">Subreddit</TabsTrigger>
           </TabsList>
-          {type === "youtube" ? (
+          {activeType === "youtube" ? (
             <AddChannelPlaylistDialog revalidateCatalog={revalidateCatalog} />
           ) : null}
-          {type === "reddit" ? (
+          {activeType === "reddit" ? (
             <AddSubredditDialog revalidateCatalog={revalidateCatalog} />
           ) : null}
         </div>

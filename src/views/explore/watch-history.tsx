@@ -40,7 +40,7 @@ export default function WatchHistory() {
   const [history, setHistory] = useState<History[]>([]);
   const [status, setStatus] = useQueryState(
     "status",
-    parseAsString.withOptions({ history: "replace", shallow: false })
+    parseAsString.withOptions({ history: "replace", shallow: true })
   );
 
   const { localUserSettings } = useLocalUserSettings(null);

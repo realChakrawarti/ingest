@@ -36,9 +36,9 @@ export default function VideoCard({ video, removeVideo }: VideoCardProps) {
 
   return (
     <div className="flex flex-col gap-3">
-      <div key={videoId} className="relative overflow-hidden rounded-lg">
+      <div key={videoId} className="relative overflow-hidden">
         <div className="relative aspect-video overflow-hidden">
-          <img src={videoThumbnail} alt={videoTitle} />
+          <img className="rounded-md" src={videoThumbnail} alt={videoTitle} />
         </div>
         <Popover>
           <PopoverTrigger asChild>
@@ -61,7 +61,7 @@ export default function VideoCard({ video, removeVideo }: VideoCardProps) {
             <RemoveVideo videoId={videoId} removeVideo={removeVideo} />
           </PopoverContent>
         </Popover>
-        <div className="p-3">
+        <div className="py-3">
           <ChannelMeta video={video} hideAvatar />
         </div>
       </div>
