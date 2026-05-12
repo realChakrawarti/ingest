@@ -1,6 +1,6 @@
 {
   "name": "ingest",
-  "version": "26.3.0",
+  "version": "26.3.1",
   "scripts": {
     "build": "next build",
     "dev": "next dev --turbopack",

@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [26.3.1](https://github.com/realChakrawarti/ingest/compare/v26.3.0...v26.3.1) (2026-05-12)
+
+
+### Bug Fixes
+
+* **build:** regenerate pnpm lockfile ([30ad14b](https://github.com/realChakrawarti/ingest/commit/30ad14b07beab6285266f63ee70fa6ee2d3ab353))
+
 ## [26.3.0](https://github.com/realChakrawarti/ingest/compare/v26.2.0...v26.3.0) (2026-05-12)
 
 
