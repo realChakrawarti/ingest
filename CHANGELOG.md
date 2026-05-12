@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [26.3.0](https://github.com/realChakrawarti/ingest/compare/v26.2.0...v26.3.0) (2026-05-12)
+
+
+### Features
+
+* dashboard catalog tabs ([40fd04d](https://github.com/realChakrawarti/ingest/commit/40fd04d7aa125063e2adbce40141493ff6cf4da7))
+* dashboard catalog tabs for videos and subreddits ([#326](https://github.com/realChakrawarti/ingest/issues/326)) ([1eabff2](https://github.com/realChakrawarti/ingest/commit/1eabff2ea8802237ec86e854ab047d7cdc1119e3))
+
+
+### Bug Fixes
+
+* coderabbit suggestion ([9e3b519](https://github.com/realChakrawarti/ingest/commit/9e3b519410768f6f109383cf908f2b64a6fca067))
+* coderabbit suggestion & catalog title card ([ec9bd08](https://github.com/realChakrawarti/ingest/commit/ec9bd0870ab76be96732fd905e27829795f2d580))
+
 ## [26.2.0](https://github.com/realChakrawarti/ingest/compare/v26.1.1...v26.2.0) (2026-05-07)
 
 

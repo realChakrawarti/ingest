@@ -10,7 +10,7 @@ import { Badge } from "~/shared/ui/badge";
 import { Separator } from "~/shared/ui/separator";
 
 import BackLink from "~/widgets/back-link";
-import GridContainer from "~/widgets/grid-container";
+import { ItemSection } from "~/widgets/item-section";
 import Spinner from "~/widgets/spinner";
 
 import AddVideoDialog from "./add-video-dialog";
@@ -80,7 +80,7 @@ export default function EditArchive({ archiveId }: { archiveId: string }) {
         {isLoading ? (
           <Spinner className="size-8" />
         ) : archiveData?.videos ? (
-          <GridContainer>
+          <ItemSection>
             {archiveData?.videos.map((item) => {
               return (
                 <VideoCard
@@ -90,7 +90,7 @@ export default function EditArchive({ archiveId }: { archiveId: string }) {
                 />
               );
             })}
-          </GridContainer>
+          </ItemSection>
         ) : (
           <p>No videos added yet.</p>
         )}
