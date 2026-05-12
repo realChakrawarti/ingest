@@ -18,7 +18,9 @@ export default function ArchiveInformation({
       <div className="flex items-end gap-2 text-sm">
         <div className="text-muted-foreground flex items-center gap-1">
           <VideoIcon className="size-4" />
-          <span>{totalVideos} videos</span>
+          <span>
+            {totalVideos} {totalVideos > 1 ? "videos" : "video"}
+          </span>
         </div>
       </div>
     </div>

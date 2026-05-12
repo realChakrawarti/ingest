@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 
+import useInterval from "~/shared/hooks/use-interval";
 import { getTimeDifference } from "~/shared/utils/time-diff";
 
 export default function UpdatePing({ nextUpdate }: { nextUpdate: string }) {
@@ -9,9 +10,7 @@ export default function UpdatePing({ nextUpdate }: { nextUpdate: string }) {
     getTimeDifference(nextUpdate)
   );
 
-  setInterval(() => {
-    setTime(getTimeDifference(nextUpdate));
-  }, 5_000);
+  useInterval(() => setTime(getTimeDifference(nextUpdate)), 5_000);
 
   return (
     <div className="text-sm">
