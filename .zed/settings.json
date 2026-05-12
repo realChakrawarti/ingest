@@ -8,7 +8,7 @@
     "firebase-debug.log",
     "firestore-debug.log",
     "ui-debug.log",
-    "node_modules",
+    "**/node_modules",
     ".git",
     ".next",
     ".beads",
