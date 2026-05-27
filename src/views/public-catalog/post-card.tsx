@@ -64,11 +64,19 @@ export function PostCard({
 
       <div className="mt-2 flex grow items-end text-xs">
         <div className="text-muted-foreground flex items-center gap-2">
-          <ArrowUp className="size-3" />
-          <span>{formatLargeNumber(post.postVotes)} votes</span>
-          <span>•</span>
-          <MessageSquare className="size-3" />
-          <span>{formatLargeNumber(post.postCommentsCount)} comments</span>
+          {post.postVotes > 1 ? (
+            <>
+              <ArrowUp className="size-3" />
+              <span>{formatLargeNumber(post.postVotes)} votes</span>
+              <span>•</span>
+            </>
+          ) : null}
+          {post.postCommentsCount > 1 ? (
+            <>
+              <MessageSquare className="size-3" />
+              <span>{formatLargeNumber(post.postCommentsCount)} comments</span>
+            </>
+          ) : null}
           {post.postDomain !== `self.${post.subreddit}` &&
             post.postDomain !== "i.redd.it" && (
               <>

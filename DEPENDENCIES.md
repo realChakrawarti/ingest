@@ -4,7 +4,7 @@
 | Package name | Homepage | GitHub | Description | Installed version | Latest version | Upgrade available | Size |
 | - | - | - | - | - | - | - | - |    
 | @bprogress/next | https://bprogress.vercel.app/docs/next/installation | https://github.com/imskyleen/bprogress.git#main | NProgress bar like for Next.js compatible with new app directory | ^3.2.12 | 3.2.12 | ❌ | 226.52KB |
-| @google-analytics/data | https://github.com/googleapis/google-cloud-node/tree/main/packages/google-analytics-data | https://github.com/googleapis/google-cloud-node.git | Data client for Node.js | ^4.12.0 | 5.2.2 | ✅ | 6.68MB |
+| @google-analytics/data | https://github.com/googleapis/google-cloud-node/tree/main/packages/google-analytics-data | https://github.com/googleapis/google-cloud-node.git | Data client for Node.js | ^4.12.0 | 6.0.0 | ✅ | 7.01MB |
 | @icons-pack/react-simple-icons | https://github.com/icons-pack/react-simple-icons#readme | https://github.com/icons-pack/react-simple-icons.git | This package provides the Simple Icons packaged as a set of React components. | ^10.2.0 | 13.13.0 | ✅ | 26.45MB |
 | @next/third-parties | https://github.com/vercel/next.js#readme | https://github.com/vercel/next.js.git | `@next/third-parties` is a collection of components and utilities that can be used to efficiently load third-party libraries into your Next.js application. | 15.5.12 | 16.2.6 | ✅ | 14.81KB |
 | @sentry/nextjs | https://github.com/getsentry/sentry-javascript/tree/master/packages/nextjs | N/A | Official Sentry SDK for Next.js | ^10.32.1 | 10.53.1 | ✅ | 2.10MB |
@@ -12,18 +12,18 @@
 | @use-gesture/react | https://use-gesture.netlify.app | https://github.com/pmndrs/use-gesture.git | React target for @use-gesture | ^10.3.1 | 10.3.1 | ❌ | 37.19KB |
 | canvas-confetti | https://github.com/catdad/canvas-confetti#readme | https://github.com/catdad/canvas-confetti.git | performant confetti animation in the browser | ^1.9.3 | 1.9.4 | ✅ | 92.37KB |
 | class-variance-authority | https://github.com/joe-bell/cva#readme | https://github.com/joe-bell/cva.git | Class Variance Authority 🧬 | ^0.7.1 | 0.7.1 | ❌ | 22.07KB |
-| cloudflare | https://github.com/cloudflare/cloudflare-typescript#readme | https://github.com/cloudflare/cloudflare-typescript.git | The official TypeScript library for the Cloudflare API | ^5.0.0 | 6.1.0 | ✅ | 36.09MB |
+| cloudflare | https://github.com/cloudflare/cloudflare-typescript#readme | https://github.com/cloudflare/cloudflare-typescript.git | The official TypeScript library for the Cloudflare API | ^5.0.0 | 6.2.0 | ✅ | 36.79MB |
 | clsx | https://github.com/lukeed/clsx#readme | https://github.com/lukeed/clsx.git | A tiny (239B) utility for constructing className strings conditionally. | ^2.1.1 | 2.1.1 | ❌ | 8.55KB |
 | cmdk | https://github.com/pacocoursey/cmdk#readme | https://github.com/pacocoursey/cmdk.git | <p align="center"> <img src="./website/public/og.png" /> </p> | ^1.1.1 | 1.1.1 | ❌ | 81.85KB |
 | dexie | https://dexie.org | https://github.com/dexie/Dexie.js.git | A Minimalistic Wrapper for IndexedDB | ^4.0.11 | 4.4.2 | ✅ | 3.23MB |
 | dexie-react-hooks | https://dexie.org | https://github.com/dexie/Dexie.js.git | React hooks for reactive data fetching using Dexie.js | ^1.1.7 | 4.4.0 | ✅ | 153.60KB |
 | firebase | https://firebase.google.com/ | https://github.com/firebase/firebase-js-sdk.git | Firebase JavaScript library for web and Node.js | ^10.14.1 | 12.13.0 | ✅ | 31.27MB |
-| firebase-admin | https://firebase.google.com/ | https://github.com/firebase/firebase-admin-node.git | Firebase admin SDK for Node.js | ^13.3.0 | 13.9.0 | ✅ | 1.43MB |
+| firebase-admin | https://firebase.google.com/ | https://github.com/firebase/firebase-admin-node.git | Firebase admin SDK for Node.js | ^13.3.0 | 13.10.0 | ✅ | 1.43MB |
 | fuse.js | http://fusejs.io | https://github.com/krisk/Fuse.git | Lightweight fuzzy-search | ^7.1.0 | 7.3.0 | ✅ | 311.62KB |
 | jose | https://github.com/panva/jose | https://github.com/panva/jose.git | JWA, JWS, JWE, JWT, JWK, JWKS for Node.js, Browser, Cloudflare Workers, Deno, Bun, and other Web-interoperable runtimes | ^6.0.11 | 6.2.3 | ✅ | 257.74KB |
-| linkify-react | https://linkify.js.org | https://github.com/nfrasser/linkifyjs.git | React element interface for linkifyjs | ^4.2.0 | 4.3.2 | ✅ | 17.87KB |
-| linkifyjs | https://linkify.js.org | https://github.com/nfrasser/linkifyjs.git | Find URLs, email addresses, #hashtags and @mentions in plain-text strings, then convert them into HTML <a> links. | ^4.2.0 | 4.3.2 | ✅ | 259.63KB |
-| lucide-react | https://lucide.dev | https://github.com/lucide-icons/lucide.git | A Lucide icon library package for React applications. | ^0.439.0 | 1.14.0 | ✅ | 30.00MB |
+| linkify-react | https://linkify.js.org | https://github.com/nfrasser/linkifyjs.git | React element interface for linkifyjs | ^4.2.0 | 4.3.3 | ✅ | 17.87KB |
+| linkifyjs | https://linkify.js.org | https://github.com/nfrasser/linkifyjs.git | Find URLs, email addresses, #hashtags and @mentions in plain-text strings, then convert them into HTML <a> links. | ^4.2.0 | 4.3.3 | ✅ | 259.28KB |
+| lucide-react | https://lucide.dev | https://github.com/lucide-icons/lucide.git | A Lucide icon library package for React applications. | ^0.439.0 | 1.16.0 | ✅ | 30.16MB |
 | nanoid | https://github.com/ai/nanoid#readme | https://github.com/ai/nanoid.git | A tiny (118 bytes), secure URL-friendly unique string ID generator | ^5.1.0 | 5.1.11 | ✅ | 13.68KB |
 | next | https://nextjs.org | https://github.com/vercel/next.js.git | The React Framework | 15.5.15 | 16.2.6 | ✅ | 154.84MB |
 | next-themes | https://github.com/pacocoursey/next-themes#readme | https://github.com/pacocoursey/next-themes.git | An abstraction for themes in your React app. | ^0.4.6 | 0.4.6 | ❌ | 33.78KB |
@@ -54,19 +54,19 @@
 | - | - | - | - | - | - | - | - |    
 | @commitlint/cli | https://commitlint.js.org/ | https://github.com/conventional-changelog/commitlint.git | Lint your commit messages | ^19.7.1 | 21.0.1 | ✅ | 34.24KB |
 | @commitlint/config-conventional | https://commitlint.js.org/ | https://github.com/conventional-changelog/commitlint.git | Shareable commitlint config enforcing conventional commits | ^19.7.1 | 21.0.1 | ✅ | 18.48KB |
-| @e18e/eslint-plugin | https://github.com/e18e/eslint-plugin#readme | https://github.com/e18e/eslint-plugin.git | The official e18e ESLint plugin for modernizing code and improving performance. | ^0.3.0 | 0.4.1 | ✅ | 118.15KB |
+| @e18e/eslint-plugin | https://github.com/e18e/eslint-plugin#readme | https://github.com/e18e/eslint-plugin.git | The official e18e ESLint plugin for modernizing code and improving performance. | ^0.3.0 | 0.5.0 | ✅ | 144.30KB |
 | @tailwindcss/postcss | https://tailwindcss.com | https://github.com/tailwindlabs/tailwindcss.git | PostCSS plugin for Tailwind CSS, a utility-first CSS framework for rapidly building custom user interfaces | ^4.2.1 | 4.3.0 | ✅ | 99.69KB |
 | @types/canvas-confetti | https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/canvas-confetti | N/A | TypeScript definitions for canvas-confetti | ^1.9.0 | 1.9.0 | ❌ | 10.78KB |
-| @types/node | https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/node | N/A | TypeScript definitions for node | ^20.17.19 | 25.7.0 | ✅ | 2.36MB |
-| @types/react | https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/react | N/A | TypeScript definitions for react | 19.2.11 | 19.2.14 | ✅ | 410.40KB |
+| @types/node | https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/node | N/A | TypeScript definitions for node | ^20.17.19 | 25.9.1 | ✅ | 2.39MB |
+| @types/react | https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/react | N/A | TypeScript definitions for react | 19.2.11 | 19.2.15 | ✅ | 410.45KB |
 | @types/react-dom | https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/react-dom | N/A | TypeScript definitions for react-dom | 19.2.3 | 19.2.3 | ❌ | 30.06KB |
 | @types/react-slick | https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/react-slick | N/A | TypeScript definitions for react-slick | ^0.23.13 | 0.23.13 | ❌ | 6.11KB |
 | @types/youtube | https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/youtube | N/A | TypeScript definitions for youtube | ^0.1.2 | 0.2.0 | ✅ | 31.12KB |
-| firebase-tools | https://github.com/firebase/firebase-tools | https://github.com/firebase/firebase-tools.git | Command-Line Interface for Firebase | ^13.31.1 | 15.17.0 | ✅ | 5.51MB |
+| firebase-tools | https://github.com/firebase/firebase-tools | https://github.com/firebase/firebase-tools.git | Command-Line Interface for Firebase | ^13.31.1 | 15.18.0 | ✅ | 5.52MB |
 | husky | https://github.com/typicode/husky#readme | https://github.com/typicode/husky.git | Modern native Git hooks | ^9.1.7 | 9.1.7 | ❌ | 4.04KB |
-| oxfmt | https://oxc.rs/docs/guide/usage/formatter | https://github.com/oxc-project/oxc | Formatter for the JavaScript Oxidation Compiler | ^0.44.0 | 0.49.0 | ✅ | 8.48MB |
-| oxlint | https://oxc.rs/docs/guide/usage/linter | https://github.com/oxc-project/oxc | Linter for the JavaScript Oxidation Compiler | ^1.59.0 | 1.64.0 | ✅ | 1.43MB |
-| postcss | https://postcss.org/ | https://github.com/postcss/postcss.git | Tool for transforming styles with JS plugins | ^8.5.2 | 8.5.14 | ✅ | 205.30KB |
+| oxfmt | https://oxc.rs/docs/guide/usage/formatter | https://github.com/oxc-project/oxc | Formatter for the JavaScript Oxidation Compiler | ^0.44.0 | 0.51.0 | ✅ | 8.48MB |
+| oxlint | https://oxc.rs/docs/guide/usage/linter | https://github.com/oxc-project/oxc | Linter for the JavaScript Oxidation Compiler | ^1.59.0 | 1.66.0 | ✅ | 1.55MB |
+| postcss | https://postcss.org/ | https://github.com/postcss/postcss.git | Tool for transforming styles with JS plugins | ^8.5.2 | 8.5.15 | ✅ | 205.62KB |
 | standard-version | https://github.com/conventional-changelog/standard-version#readme | https://github.com/conventional-changelog/standard-version.git | replacement for `npm version` with automatic CHANGELOG generation | ^9.5.0 | 9.5.0 | ❌ | 136.39KB |
 | tailwindcss | https://tailwindcss.com | https://github.com/tailwindlabs/tailwindcss.git | A utility-first CSS framework for rapidly building custom user interfaces. | ^4.2.1 | 4.3.0 | ✅ | 754.92KB |
 | typescript | https://www.typescriptlang.org/ | https://github.com/microsoft/TypeScript.git | TypeScript is a language for application scale JavaScript development | ^5.8.3 | 6.0.3 | ✅ | 24.35MB |

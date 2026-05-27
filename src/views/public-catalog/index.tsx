@@ -16,9 +16,11 @@ import YouTubeCard from "~/widgets/youtube/youtube-card";
 import { CatalogAction } from "./catalog-action";
 import CatalogInformation from "./catalog-information";
 import FilterChannel, { CurrentActive } from "./filter-channel";
+import { FilterPodcast } from "./filter-podcast";
 import { FilterSubreddit } from "./filter-subreddit";
 import { filterVideos, getActiveChannelIds } from "./helper-methods";
 import NextUpdateToast from "./next-update-toast";
+import { PodcastEpisodes } from "./podcast-episodes";
 import { SubredditPost } from "./subreddit-posts";
 import UpdatePing from "./update-ping";
 
@@ -44,6 +46,8 @@ export default async function PubliCatalog({
   const catalogTitle = catalogData?.title ?? "";
   const catalogDescription = catalogData?.description ?? "";
 
+  const podcasts = catalogData?.podcasts;
+
   const playerOptions: YouTubeCardOptions = {
     addWatchLater: true,
     enableJsApi: true,
@@ -66,7 +70,18 @@ export default async function PubliCatalog({
   const [today, week, month] = filterVideos(videos, channelId, duration);
 
   const activeChannels = getActiveChannelIds(videos);
-  const subreddits = new Set(posts?.map((post) => post.subreddit));
+  const subreddits = Array.from(new Set(posts?.map((post) => post.subreddit)));
+  const podcastList = Array.from(
+    podcasts
+      ?.reduce((map, podcast) => {
+        const key = podcast.podcastId!.toString();
+        if (!map.has(key)) {
+          map.set(key, { key: key, value: podcast.podcastTitle! });
+        }
+        return map;
+      }, new Map())
+      .values() ?? []
+  );
 
   const activeTab = posts?.length ? "subreddit" : "youtube";
 
@@ -105,10 +120,18 @@ export default async function PubliCatalog({
           <TabsList className="mx-2 my-3 text-lg md:mx-3">
             {posts?.length ? (
               <TabsTrigger value="subreddit">
-                Reddit Posts ({posts?.length})
+                Reddit ({posts?.length})
               </TabsTrigger>
             ) : null}
-            <TabsTrigger value="youtube">YouTube Videos</TabsTrigger>
+            {podcasts?.length ? (
+              <TabsTrigger value="podcast">
+                Podcast ({podcasts?.length})
+              </TabsTrigger>
+            ) : null}
+            <TabsTrigger value="youtube">
+              YouTube (
+              {videos.day.length + videos.month.length + videos.week.length})
+            </TabsTrigger>
           </TabsList>
           <TabsContent className="space-y-4" value="youtube">
             <FilterChannel activeChannels={activeChannels} />
@@ -153,8 +176,13 @@ export default async function PubliCatalog({
           </TabsContent>
 
           <TabsContent className="space-y-4" value="subreddit">
-            <FilterSubreddit subreddits={Array.from(subreddits)} />
+            <FilterSubreddit subreddits={subreddits} />
             <SubredditPost posts={posts ?? []} />
+          </TabsContent>
+
+          <TabsContent className="space-y-4" value="podcast">
+            <FilterPodcast podcasts={podcastList} />
+            <PodcastEpisodes podcasts={podcasts ?? []} />
           </TabsContent>
         </Tabs>
         <ScrollTop />

@@ -3,6 +3,7 @@ import { create } from "zustand";
 import type {
   ZCatalogChannel,
   ZCatalogPlaylist,
+  ZCatalogPodcast,
   ZCatalogSubreddit,
 } from "~/entities/catalogs/models";
 import type {
@@ -22,6 +23,7 @@ interface State {
   videoLink: VideoLink;
   savedChannels: ZCatalogChannel[];
   savedSubreddits: ZCatalogSubreddit[];
+  savedPodcasts: ZCatalogPodcast[];
   selectedPlaylists: ChannelPlaylist[];
   searchPlaylists: ChannelPlaylist[];
   channelPlaylists: ChannelPlaylist[];
@@ -29,6 +31,7 @@ interface State {
   savedPlaylists: ZCatalogPlaylist[];
   formStep: Step;
   selectedSubreddits: ZCatalogSubreddit[];
+  selectedPodcasts: ZCatalogPodcast[];
 }
 
 interface Actions {
@@ -37,6 +40,7 @@ interface Actions {
   setSavedPlaylists: (playlist: ZCatalogPlaylist[]) => void;
   setSavedChannels: (channels: ZCatalogChannel[]) => void;
   setSavedSubreddits: (subreddits: ZCatalogSubreddit[]) => void;
+  setSavedPodcasts: (podcasts: ZCatalogPodcast[]) => void;
   setSelectedPlaylists: (selectedPlaylists: ChannelPlaylist[]) => void;
   setSearchPlaylists: (searchPlaylists: ChannelPlaylist[]) => void;
   setChannelPlaylists: (channelPlaylists: ChannelPlaylist[]) => void;
@@ -44,6 +48,7 @@ interface Actions {
   resetTempData: () => void;
   setFormStep: (step: Step) => void;
   setSelectedSubreddits: (selectedSubreddits: ZCatalogSubreddit[]) => void;
+  setSelectedPodcasts: (selectedPodcasts: ZCatalogPodcast[]) => void;
 }
 
 const initialState: State = {
@@ -63,10 +68,12 @@ const initialState: State = {
   savedChannels: [],
   savedPlaylists: [],
   savedSubreddits: [],
+  savedPodcasts: [],
   searchPlaylists: [],
   selectedPlaylists: [],
   selectedSubreddits: [],
   videoLink: { error: "", link: "" },
+  selectedPodcasts: [],
 };
 
 const useCatalogStore = create<State & Actions>((set) => ({
@@ -81,6 +88,7 @@ const useCatalogStore = create<State & Actions>((set) => ({
       selectedPlaylists: [],
       selectedSubreddits: [],
       videoLink: { error: "", link: "" },
+      selectedPodcasts: [],
     }),
   setChannelInfo: (channelInfo) => set({ channelInfo: channelInfo }),
   setChannelPlaylists: (channelPlaylists) =>
@@ -90,6 +98,7 @@ const useCatalogStore = create<State & Actions>((set) => ({
   setSavedChannels: (channels) => set({ savedChannels: channels }),
   setSavedPlaylists: (playlists) => set({ savedPlaylists: playlists }),
   setSavedSubreddits: (subreddits) => set({ savedSubreddits: subreddits }),
+  setSavedPodcasts: (podcasts) => set({ savedPodcasts: podcasts }),
   setSearchPlaylists: (searchPlaylists) =>
     set({ searchPlaylists: searchPlaylists }),
   setSelectedPlaylists: (selectedPlaylists) =>
@@ -104,6 +113,9 @@ const useCatalogStore = create<State & Actions>((set) => ({
         ...link,
       },
     }));
+  },
+  setSelectedPodcasts: (selectedPodcasts) => {
+    set({ selectedPodcasts: selectedPodcasts });
   },
 }));
 

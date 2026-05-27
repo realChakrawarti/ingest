@@ -24,9 +24,11 @@ import Spinner from "~/widgets/spinner";
 import useCatalogStore from "~/stores/catalog-store";
 
 import AddChannelPlaylistDialog from "./add-channel-playlist-dialog";
+import AddPodcastDialog from "./add-podcast-dialog";
 import AddSubredditDialog from "./add-subreddit-dialog";
 import ChannelTable from "./channel-table";
 import PlaylistTable from "./playlist-table";
+import PodcastTable from "./podcast-table";
 import SubredditTable from "./subreddit-table";
 import UpdateCatalogMeta from "./update-catalog-meta";
 
@@ -55,6 +57,8 @@ export default function EditCatalog({ catalogId }: { catalogId: string }) {
     setSavedSubreddits,
     savedPlaylists,
     savedSubreddits,
+    savedPodcasts,
+    setSavedPodcasts,
   } = useCatalogStore();
 
   useEffect(() => {
@@ -65,12 +69,20 @@ export default function EditCatalog({ catalogId }: { catalogId: string }) {
       setSavedPlaylists(
         catalogsData?.list?.filter((item) => item.type === "playlist")
       );
-
       setSavedSubreddits(
         catalogsData?.list?.filter((item) => item.type === "subreddit")
       );
+      setSavedPodcasts(
+        catalogsData?.list?.filter((item) => item.type === "podcast")
+      );
     }
-  }, [catalogsData, setSavedChannels, setSavedPlaylists, setSavedSubreddits]);
+  }, [
+    catalogsData,
+    setSavedChannels,
+    setSavedPlaylists,
+    setSavedSubreddits,
+    setSavedPodcasts,
+  ]);
 
   // TODO: Deleting item should be a single function as both doing the same thing, and should use a single endpoint
   const handleDeleteSaved = async (id: string) => {
@@ -133,6 +145,34 @@ export default function EditCatalog({ catalogId }: { catalogId: string }) {
     }
   };
 
+  const handleDeleteSavedPodcast = async (id: number) => {
+    // oxlint-disable
+    console.log("ID to be deleted", id);
+
+    const deletePodcast = savedPodcasts.find(
+      (podcast) => podcast.type === "podcast" && podcast.podcastId === id
+    );
+    if (!deletePodcast) {
+      return;
+    }
+
+    const result = await fetchApi(`/catalogs/${catalogId}/podcast`, {
+      body: JSON.stringify(deletePodcast),
+      method: "DELETE",
+    });
+
+    if (result.success) {
+      toast(
+        `${
+          deletePodcast.type === "podcast" && deletePodcast.podcastTitle
+        }'s podcast deleted from the catalog.`
+      );
+      revalidateCatalog();
+    } else {
+      toast("Something went wrong.");
+    }
+  };
+
   const handleDeleteSavedSubreddit = async (id: string) => {
     const deleteSubreddit = savedSubreddits.find(
       (subreddit) =>
@@ -158,8 +198,6 @@ export default function EditCatalog({ catalogId }: { catalogId: string }) {
       toast("Something went wrong.");
     }
   };
-
-  const activeType = type === "reddit" ? "reddit" : "youtube";
 
   return (
     <div>
@@ -223,7 +261,7 @@ export default function EditCatalog({ catalogId }: { catalogId: string }) {
         </div>
       )}
       <Tabs
-        value={activeType}
+        value={type}
         onValueChange={handleTabChange}
         className="space-y-7 px-3 py-2"
       >
@@ -231,12 +269,16 @@ export default function EditCatalog({ catalogId }: { catalogId: string }) {
           <TabsList>
             <TabsTrigger value="youtube">YouTube</TabsTrigger>
             <TabsTrigger value="reddit">Subreddit</TabsTrigger>
+            <TabsTrigger value="podcast">Podcast</TabsTrigger>
           </TabsList>
-          {activeType === "youtube" ? (
+          {type === "youtube" ? (
             <AddChannelPlaylistDialog revalidateCatalog={revalidateCatalog} />
           ) : null}
-          {activeType === "reddit" ? (
+          {type === "reddit" ? (
             <AddSubredditDialog revalidateCatalog={revalidateCatalog} />
+          ) : null}
+          {type === "podcast" ? (
+            <AddPodcastDialog revalidateCatalog={revalidateCatalog} />
           ) : null}
         </div>
 
@@ -300,6 +342,12 @@ export default function EditCatalog({ catalogId }: { catalogId: string }) {
               />
             </div>
           ) : null}
+        </TabsContent>
+        <TabsContent value="podcast">
+          <PodcastTable
+            podcasts={savedPodcasts}
+            handleDelete={handleDeleteSavedPodcast}
+          />
         </TabsContent>
       </Tabs>
     </div>

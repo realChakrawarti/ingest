@@ -89,11 +89,21 @@ export default function PostDetailSheet({
               </div>
             </div>
             <div className="text-muted-foreground mt-2 flex items-center gap-2 text-xs">
-              <ArrowUp className="size-4" />
-              <span>{formatLargeNumber(post.postVotes)} votes</span>
-              <span>•</span>
-              <MessageSquare className="size-4" />
-              <span>{formatLargeNumber(post.postCommentsCount)} comments</span>
+              {post.postVotes > 1 ? (
+                <>
+                  <ArrowUp className="size-4" />
+                  <span>{formatLargeNumber(post.postVotes)} votes</span>
+                </>
+              ) : null}
+              {post.postCommentsCount > 1 ? (
+                <>
+                  <span>•</span>
+                  <MessageSquare className="size-4" />
+                  <span>
+                    {formatLargeNumber(post.postCommentsCount)} comments
+                  </span>
+                </>
+              ) : null}
             </div>
             <p className="text-foreground mt-2">{post.postTitle}</p>
           </SheetTitle>

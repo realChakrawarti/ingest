@@ -23,6 +23,9 @@ const envVariables = z.object({
   SENTRY_ORG: z.string(),
   SENTRY_PROJECT: z.string(),
   YOUTUBE_API_KEY: z.string(),
+  PODCAST_INDEX_BASE_URL: z.string(),
+  PODCAST_INDEX_AUTH_KEY: z.string(),
+  PODCAST_INDEX_SECRET_KEY: z.string(),
 });
 
 envVariables.parse(process.env);

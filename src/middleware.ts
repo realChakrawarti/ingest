@@ -83,7 +83,10 @@ export const config = {
     "/api/catalogs/:catalogId/delete",
     "/api/catalogs/:catalogId/playlist",
     "/api/catalogs/:catalogId/subreddit",
+    "/api/catalogs/:catalogId/podcast",
     "/api/catalogs/:catalogId/update",
+    // Podcasr Routes
+    "/api/podcast",
     // YouTube Routes
     "/api/youtube/video",
     "/api/youtube/playlists",
