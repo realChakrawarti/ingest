@@ -1,6 +1,6 @@
 export default function formatLargeNumber(num: number | undefined): string {
   if (!num) {
-    return "";
+    return "0";
   }
 
   const billion = 1_000_000_000;

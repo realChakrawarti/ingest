@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [26.4.0](https://github.com/realChakrawarti/ingest/compare/v26.3.0...v26.4.0) (2026-05-29)
+
+
+### Features
+
+* integrate podcast to catalogs ([4dc7284](https://github.com/realChakrawarti/ingest/commit/4dc7284008e5182e4b0b6d2c14d9c80adc080e5b))
+* integrate podcast to catalogs ([#329](https://github.com/realChakrawarti/ingest/issues/329)) ([1db96f4](https://github.com/realChakrawarti/ingest/commit/1db96f4c2d88de42b05a7d27ef674a1a67c31036))
+
+
+### Bug Fixes
+
+* **build:** regenerate pnpm lockfile ([30ad14b](https://github.com/realChakrawarti/ingest/commit/30ad14b07beab6285266f63ee70fa6ee2d3ab353))
+* coderabbit suggestions ([132cc7c](https://github.com/realChakrawarti/ingest/commit/132cc7c5d3034940374337bc489b62664862b82e))
+
 ### [26.3.1](https://github.com/realChakrawarti/ingest/compare/v26.3.0...v26.3.1) (2026-05-12)
 
 

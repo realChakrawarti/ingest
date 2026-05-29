@@ -38,10 +38,39 @@ export const CatalogSubredditSchema = z.object({
   type: z.literal("subreddit"),
 });
 
+export const CatalogPodcastItemSchema = z.object({
+  podcastId: z.number().optional(),
+  podcastTitle: z.string().optional(),
+  podcastArtwork: z.string().optional(),
+  id: z.number(),
+  title: z.string(),
+  link: z.string(),
+  description: z.string(),
+  datePublished: z.number(),
+  enclosureUrl: z.string(),
+  enclosureType: z.string(),
+  enclosureLength: z.number(),
+  duration: z.number(),
+  feedImage: z.string(),
+  feedId: z.number(),
+});
+
+export const CatalogPodcastSchema = z.object({
+  podcastTitle: z.string(),
+  podcastId: z.number(),
+  podcastLink: z.string(),
+  podcastEpisode: z.number(),
+  podcastDescription: z.string(),
+  podcastArtwork: z.string(),
+  podcastLastPublished: z.number(),
+  type: z.literal("podcast"),
+});
+
 const CatalogListSchema = z.discriminatedUnion("type", [
   CatalogChannelSchema,
   CatalogPlaylistSchema,
   CatalogSubredditSchema,
+  CatalogPodcastSchema,
 ]);
 
 const TimestampSchema = z.custom<Timestamp>(
@@ -136,6 +165,7 @@ const CatalogSubredditPostSchema = z.object({
 const CatalogDocumentSchema = CatalogMetaSchema.extend({
   data: z.object({
     posts: z.array(CatalogSubredditPostSchema).optional(),
+    podcasts: z.array(CatalogPodcastItemSchema).optional(),
     totalPosts: z.number().prefault(0),
     totalVideos: z.number().prefault(0),
     updatedAt: TimestampSchema,
@@ -168,10 +198,13 @@ const ContentByCatalogSchema = CatalogMetaSchema.extend({
   nextUpdate: z.string(),
   pageviews: z.number(),
   posts: z.array(CatalogSubredditPostSchema),
+  podcasts: z.array(CatalogPodcastItemSchema),
   totalPosts: z.number().prefault(0),
   totalVideos: z.number().prefault(0),
   videos: CatalogVideoListSchema,
 });
+
+export type ZCatalogPodcastItem = z.infer<typeof CatalogPodcastItemSchema>;
 
 export type ZCatalogSubredditPost = z.infer<typeof CatalogSubredditPostSchema>;
 
@@ -202,3 +235,5 @@ export type ZContentByCatalog = z.infer<typeof ContentByCatalogSchema>;
 export type ZCatalogByUser = z.infer<typeof CatalogByUserSchema>;
 
 export type ZCatalogValid = z.infer<typeof CatalogValidSchema>;
+
+export type ZCatalogPodcast = z.infer<typeof CatalogPodcastSchema>;
