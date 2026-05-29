@@ -146,9 +146,6 @@ export default function EditCatalog({ catalogId }: { catalogId: string }) {
   };
 
   const handleDeleteSavedPodcast = async (id: number) => {
-    // oxlint-disable
-    console.log("ID to be deleted", id);
-
     const deletePodcast = savedPodcasts.find(
       (podcast) => podcast.type === "podcast" && podcast.podcastId === id
     );

@@ -59,7 +59,7 @@ export default function PodcastTable({
                       />
                     ) : null}
                     {podcastLink ? (
-                      <OutLink href={`https://www.reddit.com${podcastLink}`}>
+                      <OutLink href={podcastLink}>
                         <p>{podcastTitle}</p>
                       </OutLink>
                     ) : (

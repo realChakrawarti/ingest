@@ -30,9 +30,5 @@ export const PODCAST_EPISODE_BY_ID = (
   id: number,
   since: number,
   limit: number = 10
-) => {
-  const url = `${podcastIndexApiBaseUrl}/episodes/byfeedid?id=${id}&since=${since}&max=${limit}&fulltext`;
-  // oxlint-disable-next-line no-console
-  console.log(url);
-  return url;
-};
+) =>
+  `${podcastIndexApiBaseUrl}/episodes/byfeedid?id=${id}&since=${since}&max=${limit}&fulltext`;

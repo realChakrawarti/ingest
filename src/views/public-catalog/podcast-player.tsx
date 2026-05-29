@@ -8,7 +8,6 @@ import type { ZCatalogPodcastItem } from "~/entities/catalogs/models";
 import { Popover, PopoverContent, PopoverTrigger } from "~/shared/ui/popover";
 import { Slider } from "~/shared/ui/slider";
 import formatSecondsToHMS from "~/shared/utils/format-seconds-HMS";
-import { cn } from "~/shared/utils/tailwind-merge";
 
 import { usePodcastPlayer } from "./use-podcast-player";
 
@@ -26,10 +25,8 @@ export function PodcastPlayer({
     <div className="flex items-center gap-2">
       <div className="flex min-w-0 flex-1 gap-2">
         <span
-          className={cn(
-            "text-muted-foreground text-xs",
-            `w-${formatSecondsToHMS(current).length}ch`
-          )}
+          className="text-muted-foreground text-xs"
+          style={{ width: `${formatSecondsToHMS(current).length}ch` }}
         >
           {formatSecondsToHMS(current)}
         </span>
@@ -42,10 +39,8 @@ export function PodcastPlayer({
           aria-label="Seek"
         />
         <span
-          className={cn(
-            "text-muted-foreground text-xs",
-            `w-${formatSecondsToHMS(podcast.duration).length}ch`
-          )}
+          className="text-muted-foreground text-xs"
+          style={{ width: `${formatSecondsToHMS(current).length}ch` }}
         >
           {formatSecondsToHMS(podcast.duration)}
         </span>
