@@ -8,7 +8,8 @@ type EndpointPrefixes =
   | "users"
   | "logout"
   | "youtube"
-  | "feedback";
+  | "feedback"
+  | "podcast";
 export type EndpointURL = `/${EndpointPrefixes}${string}`;
 
 import type { ApiResponse } from "../next/nx-response";

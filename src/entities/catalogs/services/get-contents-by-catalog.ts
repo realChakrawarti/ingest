@@ -1,20 +1,12 @@
-import type {
-  ZCatalogChannel,
-  ZCatalogList,
-  ZCatalogPlaylist,
-  ZCatalogSubreddit,
-  ZCatalogSubredditPost,
-  ZCatalogVideoListSchema,
-  ZContentByCatalog,
-  ZVideoContentInfo,
-  ZVideoMetadataWithoutContent,
-} from "../models";
-
 import { revalidatePath } from "next/cache";
 
 import { Timestamp } from "firebase-admin/firestore";
 
 import appConfig from "~/shared/app-config";
+import {
+  generatePodcastIndexHeaders,
+  PODCAST_EPISODE_BY_ID,
+} from "~/shared/lib/api/podcast-index-endpoints";
 import {
   YOUTUBE_CHANNEL_INFORMATION_BY_IDS,
   YOUTUBE_CHANNEL_PLAYLIST_VIDEOS,
@@ -28,6 +20,20 @@ import formatRedditImageLink from "~/shared/utils/format-reddit-image-link";
 import Log from "~/shared/utils/terminal-logger";
 import { time } from "~/shared/utils/time";
 
+import {
+  CatalogPodcastItemSchema,
+  type ZCatalogChannel,
+  type ZCatalogList,
+  type ZCatalogPlaylist,
+  type ZCatalogPodcast,
+  type ZCatalogPodcastItem,
+  type ZCatalogSubreddit,
+  type ZCatalogSubredditPost,
+  type ZCatalogVideoListSchema,
+  type ZContentByCatalog,
+  type ZVideoContentInfo,
+  type ZVideoMetadataWithoutContent,
+} from "../models";
 import { getPageviewByCatalogId } from "./get-pageviews-by-catalog-id";
 
 async function updateChannelLogos(
@@ -97,6 +103,7 @@ export async function getContentsByCatalog(
   };
 
   let postResults: ZCatalogSubredditPost[] | undefined = [];
+  let podcastResults: ZCatalogPodcastItem[] | undefined = [];
   let totalVideos = 0;
 
   const catalogRef = refs.catalogs.doc(catalogId);
@@ -119,9 +126,13 @@ export async function getContentsByCatalog(
   const catalogList = userSnapData?.list;
 
   const youtubeList =
-    catalogList?.filter((item) => item.type !== "subreddit") ?? [];
+    catalogList?.filter(
+      (item) => item.type === "channel" || item.type === "playlist"
+    ) ?? [];
   const redditList =
     catalogList?.filter((item) => item.type === "subreddit") ?? [];
+  const podcastList =
+    catalogList?.filter((item) => item.type === "podcast") ?? [];
 
   // TODO: This is restrictive as catalog must at-least have a channel/playlist, having only subreddit doesn't cut
   if (!youtubeList.length && !redditList.length) {
@@ -145,9 +156,9 @@ export async function getContentsByCatalog(
     appConfig.catalogUpdateEnabled
   ) {
     const updatedList = await updateChannelLogos(youtubeList);
-    // Update the YouTube list channel logos and keep the Reddit list intact
+    // Update the YouTube list channel logos and keep the Reddit and podcast list intact
     await userCatalogRef.set({
-      list: [...updatedList, ...redditList],
+      list: [...updatedList, ...redditList, ...podcastList],
       updatedAt: Timestamp.fromDate(new Date()),
     });
   } else {
@@ -195,6 +206,10 @@ export async function getContentsByCatalog(
       postResults = await getSubredditPosts(redditList);
     }
 
+    if (podcastList.length) {
+      podcastResults = await getPodcastItems(podcastList);
+    }
+
     const videoResults = await Promise.allSettled(videoListPromise);
 
     videoResults.forEach((result) => {
@@ -237,6 +252,7 @@ export async function getContentsByCatalog(
 
     const catalogContents = {
       data: {
+        podcasts: podcastResults,
         posts: postResults,
         totalPosts: postResults.length,
         totalVideos: totalVideos,
@@ -253,6 +269,7 @@ export async function getContentsByCatalog(
   } else {
     videoFilterData = catalogSnapData?.data.videos;
     postResults = catalogSnapData?.data.posts;
+    podcastResults = catalogSnapData?.data.podcasts;
     recentUpdate = lastUpdated;
     totalVideos = catalogSnapData?.data?.totalVideos;
     pageviews = catalogSnapData?.pageviews ?? 0;
@@ -271,11 +288,74 @@ export async function getContentsByCatalog(
     ).toUTCString(),
     pageviews: pageviews,
     posts: postResults ?? [],
+    podcasts: podcastResults ?? [],
     title: catalogSnapData?.title,
     totalPosts: postResults?.length ?? 0,
     totalVideos: totalVideos,
     videos: videoFilterData,
   };
+}
+
+async function getPodcastItems(list: ZCatalogPodcast[]) {
+  const podcastIndexHeaders = generatePodcastIndexHeaders();
+
+  const podcastList: ZCatalogPodcastItem[] = [];
+
+  const since30days = Math.floor((Date.now() - time.days(30)) / 1000);
+
+  try {
+    const podcastPromises = list.map(async (item) => {
+      const response = fetch(
+        PODCAST_EPISODE_BY_ID(item.podcastId, since30days),
+        {
+          headers: podcastIndexHeaders,
+        }
+      );
+
+      return {
+        info: {
+          podcastId: item.podcastId,
+          podcastTitle: item.podcastTitle,
+          podcastArtwork: item.podcastArtwork,
+        },
+        response: response,
+      };
+    });
+
+    const podcastResults = await Promise.allSettled(podcastPromises);
+
+    for (const result of podcastResults) {
+      if (result.status === "fulfilled") {
+        const { info, response } = result.value;
+        const podcastItems = await (await response).json();
+
+        if (podcastItems?.items?.length) {
+          const {
+            success,
+            data: parsedPodcastItems,
+            error,
+          } = CatalogPodcastItemSchema.array().safeParse(podcastItems?.items);
+          if (success) {
+            const refinedPodcastItems = parsedPodcastItems.map((item) => ({
+              ...item,
+              ...info,
+            }));
+            podcastList.push(...refinedPodcastItems);
+          } else {
+            Log.fail(error);
+          }
+        } else {
+          Log.warn("No podcast items found.");
+        }
+      } else {
+        Log.fail(result.reason);
+      }
+    }
+  } catch (err) {
+    Log.fail(err);
+  }
+
+  return podcastList;
 }
 
 async function getSubredditPosts(list: ZCatalogSubreddit[]) {

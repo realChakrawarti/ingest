@@ -69,6 +69,7 @@ export function PostCard({
           <span>•</span>
           <MessageSquare className="size-3" />
           <span>{formatLargeNumber(post.postCommentsCount)} comments</span>
+
           {post.postDomain !== `self.${post.subreddit}` &&
             post.postDomain !== "i.redd.it" && (
               <>

@@ -151,8 +151,12 @@ function Comment({ id, author, score, created_utc, body }: CommentProps) {
         <OutLink href={`https://www.reddit.com/u/${author}`}>
           u/{author}
         </OutLink>
-        <span>•</span>
-        <span>{formatLargeNumber(score)} votes</span>
+        {score > 1 ? (
+          <>
+            <span>•</span>
+            <span>{formatLargeNumber(score)} votes</span>
+          </>
+        ) : null}
         <span>•</span>
         <span>{commentCreatedAt}</span>
       </div>

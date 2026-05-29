@@ -3,8 +3,8 @@ import type { NextRequest } from "next/server";
 
 import { z } from "zod";
 
-import { deleteSubreddit, updateCatalogSubreddits } from "~/entities/catalogs";
-import { CatalogSubredditSchema } from "~/entities/catalogs/models";
+import { deletePodcast, updateCatalogPodcasts } from "~/entities/catalogs";
+import { CatalogPodcastSchema } from "~/entities/catalogs/models";
 
 import { getUserIdHeader } from "~/shared/lib/next/get-user-id-header";
 import { NxResponse } from "~/shared/lib/next/nx-response";
@@ -35,26 +35,26 @@ export async function PATCH(request: NextRequest, ctx: ContextParams) {
   const body = await request.json();
 
   const { success, data, error } = z
-    .array(CatalogSubredditSchema)
+    .array(CatalogPodcastSchema)
     .safeParse(body);
 
   if (success) {
     try {
-      await updateCatalogSubreddits(userId, catalogId, data);
-      return NxResponse.success("Subreddit update successfully.", {}, 200);
+      await updateCatalogPodcasts(userId, catalogId, data);
+      return NxResponse.success("Podcast update successfully.", {}, 200);
     } catch (err) {
       if (err instanceof Error) {
         return NxResponse.fail(
           err.message,
-          { code: "CATALOG_SUBREDDIT_UPDATE", details: err.message },
+          { code: "CATALOG_PODCAST_UPDATE", details: err.message },
           Status.BadRequest
         );
       }
       return NxResponse.fail(
-        "Unable to update catalog subreddits.",
+        "Unable to update catalog podcasts.",
         {
-          code: "CATALOG_SUBREDDIT_UPDATE",
-          details: "Unable to update catalog subreddits.",
+          code: "CATALOG_PODCAST_UPDATE",
+          details: "Unable to update catalog podcasts.",
         },
         Status.BadRequest
       );
@@ -74,20 +74,20 @@ export async function DELETE(request: NextRequest, ctx: ContextParams) {
 
   const body = await request.json();
 
-  const { success, error, data } = CatalogSubredditSchema.safeParse(body);
+  const { success, error, data } = CatalogPodcastSchema.safeParse(body);
 
   if (success) {
     try {
-      await deleteSubreddit(userId, catalogId, data);
+      await deletePodcast(userId, catalogId, data);
       revalidatePath(`/c/${catalogId}`);
-      return NxResponse.success("Subreddit deleted successfully.", {}, 200);
+      return NxResponse.success("Podcast deleted successfully.", {}, 200);
     } catch (err) {
       Log.fail(err);
       return NxResponse.fail(
-        "Unable to delete subreddit from the catalog.",
+        "Unable to delete podcast from the catalog.",
         {
-          code: "SUBREDDIT_DELETE_FAILED",
-          details: "Unable to delete subreddit from the catalog.",
+          code: "PODCAST_DELETE_FAILED",
+          details: "Unable to delete podcast from the catalog.",
         },
         Status.BadRequest
       );

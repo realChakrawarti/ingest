@@ -107,7 +107,7 @@ export default function AddSubredditDialog({
     setSearchInput(input);
   }
 
-  async function _handleAddSubreddit() {
+  async function handleAddSubreddit() {
     setIsLoadingUpdate(true);
     try {
       const result = await fetchApi(`/catalogs/${catalogId}/subreddit`, {
@@ -132,7 +132,7 @@ export default function AddSubredditDialog({
     }
   }
 
-  function _handleDialogClose(open: boolean) {
+  function handleDialogClose(open: boolean) {
     if (!open) {
       resetTempData();
     }
@@ -140,7 +140,7 @@ export default function AddSubredditDialog({
   }
 
   return (
-    <Dialog open={isDialogOpen} onOpenChange={_handleDialogClose}>
+    <Dialog open={isDialogOpen} onOpenChange={handleDialogClose}>
       <DialogTrigger asChild>
         <Button aria-label="Add subreddit">
           <span className="flex items-center gap-1">
@@ -209,7 +209,7 @@ export default function AddSubredditDialog({
 
           <div className="flex gap-2 pt-4">
             <Button
-              onClick={_handleAddSubreddit}
+              onClick={handleAddSubreddit}
               disabled={selectedSubreddits.length === 0 || isLoadingUpdate}
               className="flex-1"
             >
@@ -284,7 +284,7 @@ function SearchDropdown({
                 </Avatar>
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center gap-2">
-                    <span className="text-primary/80 text-sm dark:text-white">
+                    <span className="text-primary/80 text-sm font-semibold tracking-wide dark:text-white">
                       r/{subreddit.display_name}
                     </span>
                     <Badge

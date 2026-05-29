@@ -13,3 +13,7 @@ export { getValidCatalogIds } from "./services/get-valid-catalogs-ids";
 export { updateCatalogChannels } from "./services/update-catalog-channels";
 export { updateCatalogMeta } from "./services/update-catalog-meta";
 export { updateCatalogPlaylists } from "./services/update-catalog-playlists";
+export { updateCatalogPodcasts } from "./services/update-catalog-podcasts";
+export { deletePodcast } from "./services/delete-podcast";
+export { deleteSubreddit } from "./services/delete-subreddit";
+export { updateCatalogSubreddits } from "./services/update-catalog-subreddits";
