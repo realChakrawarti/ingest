@@ -17,7 +17,6 @@ import type {
 import useDebounce from "~/shared/hooks/use-debounce";
 import fetchApi from "~/shared/lib/api/fetch";
 import type { ApiResponse } from "~/shared/lib/next/nx-response";
-import { redditRequestHeaders } from "~/shared/lib/reddit/reddit-header";
 import { Avatar, AvatarFallback, AvatarImage } from "~/shared/ui/avatar";
 import { Badge } from "~/shared/ui/badge";
 import { Button } from "~/shared/ui/button";
@@ -38,15 +37,8 @@ import Log from "~/shared/utils/terminal-logger";
 import useCatalogStore from "~/stores/catalog-store";
 
 async function getSubreddits(query: string) {
-  const response = await fetch(
-    `https://www.reddit.com/subreddits/search.json?q=${query}&limit=25&include_over_18=0`,
-    {
-      headers: redditRequestHeaders(),
-    }
-  );
-  const data = await response.json();
-  const results = data.data.children.map((child: any) => child.data);
-  return results;
+  const response = await fetchApi(`/reddit/search?q=${query}`);
+  return response.data;
 }
 
 export default function AddSubredditDialog({
