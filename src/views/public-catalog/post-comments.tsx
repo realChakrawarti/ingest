@@ -13,7 +13,7 @@ import useSWRMutation from "swr/mutation";
 
 import type { ZCatalogSubredditPost } from "~/entities/catalogs/models";
 
-import { redditRequestHeaders } from "~/shared/lib/reddit/reddit-header";
+import fetchApi from "~/shared/lib/api/fetch";
 import { Button } from "~/shared/ui/button";
 import {
   Collapsible,
@@ -27,22 +27,10 @@ import MarkdownHTML from "~/widgets/markdown-html";
 import { OutLink } from "~/widgets/out-link";
 
 async function getPostComments(subreddit: string, postId: string) {
-  const headers = redditRequestHeaders();
-
-  const response = await fetch(
-    `https://oauth.reddit.com/r/${subreddit}/comments/${postId}.json?limit=20&sort=top`,
-    {
-      headers: headers,
-    }
+  const response = await fetchApi(
+    `/reddit/comments?subreddit=${subreddit}&postId=${postId}`
   );
-  const data = await response.json();
-  const results = data[1].data.children
-    .filter(
-      (child: any) => child.data.body && child.data.author !== "[deleted]"
-    )
-    .map((child: any) => child.data);
-
-  return results;
+  return response.data;
 }
 
 export default function PostComments({
