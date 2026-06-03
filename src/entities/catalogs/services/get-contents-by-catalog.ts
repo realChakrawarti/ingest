@@ -7,6 +7,10 @@ import {
   generatePodcastIndexHeaders,
   PODCAST_EPISODE_BY_ID,
 } from "~/shared/lib/api/podcast-index-endpoints";
+import getRedditAccessToken, {
+  redditRequestHeaders,
+  SUBREDDIT_POSTS_HOT,
+} from "~/shared/lib/api/reddit-endpoints";
 import {
   YOUTUBE_CHANNEL_INFORMATION_BY_IDS,
   YOUTUBE_CHANNEL_PLAYLIST_VIDEOS,
@@ -14,8 +18,6 @@ import {
 } from "~/shared/lib/api/youtube-endpoints";
 import { YouTubePrefix } from "~/shared/lib/constants";
 import { refs } from "~/shared/lib/firebase/refs";
-import getRedditAccessToken from "~/shared/lib/reddit/get-access-token";
-import { redditRequestHeaders } from "~/shared/lib/reddit/reddit-header";
 import formatRedditImageLink from "~/shared/utils/format-reddit-image-link";
 import Log from "~/shared/utils/terminal-logger";
 import { time } from "~/shared/utils/time";
@@ -364,11 +366,10 @@ async function getSubredditPosts(list: ZCatalogSubreddit[]) {
   const postList: ZCatalogSubredditPost[] = [];
   try {
     const postPromises = list.map(async (item) => {
-      const redditUrl = `https://oauth.reddit.com/r/${item.subredditName}/hot.json?limit=15`;
       const headers = redditRequestHeaders();
       headers.set("Authorization", `Bearer ${accessToken}`);
 
-      return fetch(redditUrl, {
+      return fetch(SUBREDDIT_POSTS_HOT(item.subredditName), {
         headers: headers,
       })
         .then((data) => {

@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [26.4.1](https://github.com/realChakrawarti/ingest/compare/v26.4.0...v26.4.1) (2026-06-03)
+
+
+### Bug Fixes
+
+* coderabbit suggestion ([25d4ba1](https://github.com/realChakrawarti/ingest/commit/25d4ba19c5abc751eec9e4944dbb5c94155ec7da))
+* reddit search and comments using API authorization ([c1af4a3](https://github.com/realChakrawarti/ingest/commit/c1af4a3170cb3877ae3069aa55acaee9562566fc))
+* reddit subreddit search & post comments using API authorization ([c5b8c4c](https://github.com/realChakrawarti/ingest/commit/c5b8c4cdaa41e97a3c9dc486964fdb577897d9e8))
+
 ## [26.4.0](https://github.com/realChakrawarti/ingest/compare/v26.3.0...v26.4.0) (2026-05-29)
 
 
