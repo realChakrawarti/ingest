@@ -13,8 +13,8 @@ export async function GET(request: NextRequest) {
 
   if (!subredditParam || !postIdParam) {
     return NxResponse.fail(
-      "Search query not provided.",
-      { code: "BAD_REQUEST", details: "Search query not provided." },
+      "Unable to parse subreddit or post.",
+      { code: "BAD_REQUEST", details: "Unable to parse subreddit or post." },
       Status.BadRequest
     );
   }
