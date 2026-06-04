@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [26.4.2](https://github.com/realChakrawarti/ingest/compare/v26.4.1...v26.4.2) (2026-06-04)
+
+
+### Bug Fixes
+
+* `global.d.ts` ambient context ([40d1bf0](https://github.com/realChakrawarti/ingest/commit/40d1bf0ba41d9c843cacbbb6c497fca6ab277da2))
+* coderabbit suggestions ([77d1b5a](https://github.com/realChakrawarti/ingest/commit/77d1b5a5b9326a8e597f39bd442d780a1bd284c8))
+* **env.ts:** zod schema optional-default-transform ([02c884c](https://github.com/realChakrawarti/ingest/commit/02c884c302d29182dac83f2c85e55ff9c2612004))
+* remove `forwardRef` from shadcn/ui components ([6f9e37b](https://github.com/realChakrawarti/ingest/commit/6f9e37b517f85ec8eee7a3b21f3ba87963b3de3c))
+* remove `forwardRef` from shadcn/ui components ([42c6072](https://github.com/realChakrawarti/ingest/commit/42c607221d85a567ce412e5d4f1d130b9cc304cb))
+
 ### [26.4.1](https://github.com/realChakrawarti/ingest/compare/v26.4.0...v26.4.1) (2026-06-03)
 
 
