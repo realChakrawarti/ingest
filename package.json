@@ -1,6 +1,6 @@
 {
   "name": "ingest",
-  "version": "26.4.1",
+  "version": "26.4.2",
   "scripts": {
     "build": "next build",
     "dev": "next dev --turbopack",
@@ -65,8 +65,8 @@
     "@types/youtube": "^0.1.2",
     "firebase-tools": "^13.31.1",
     "husky": "^9.1.7",
-    "oxfmt": "^0.44.0",
-    "oxlint": "^1.59.0",
+    "oxfmt": "^0.53.0",
+    "oxlint": "^1.68.0",
     "postcss": "^8.5.2",
     "standard-version": "^9.5.0",
     "tailwindcss": "^4.2.1",
