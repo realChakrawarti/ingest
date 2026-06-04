@@ -2,16 +2,12 @@ import * as React from "react";
 
 import { cn } from "~/shared/utils/tailwind-merge";
 
-const Input = (
-  {
-    ref,
-    className,
-    type,
-    ...props
-  }: React.ComponentProps<"input"> & {
-    ref: React.RefObject<HTMLInputElement>;
-  }
-) => {
+const Input = ({
+  ref,
+  className,
+  type,
+  ...props
+}: React.ComponentProps<"input">) => {
   return (
     <input
       type={type}
