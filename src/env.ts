@@ -6,6 +6,7 @@ export const envVariables = z.object({
   CLOUDFLARE_KV_NAMESPACE_ID: z.string(),
   ENABLE_CATALOG_UPDATE: z
     .enum(["true", "false"])
+    .default("false")
     .transform((v) => v === "true"),
   FIREBASE_CLIENT_EMAIL: z.string(),
   FIREBASE_PRIVATE_KEY: z.string(),
@@ -24,14 +25,14 @@ export const envVariables = z.object({
   SENTRY_AUTH_TOKEN: z.string().optional(),
   SENTRY_CI: z
     .enum(["true", "false"])
-    .transform((v) => v === "true")
     .optional()
-    .default(false),
+    .default("false")
+    .transform((v) => v === "true"),
   SENTRY_LOGGER: z
     .enum(["true", "false"])
-    .transform((v) => v === "true")
     .optional()
-    .default(false),
+    .default("false")
+    .transform((v) => v === "true"),
   SENTRY_ORG: z.string().optional(),
   SENTRY_PROJECT: z.string().optional(),
   YOUTUBE_API_KEY: z.string(),
