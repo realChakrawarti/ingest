@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [26.4.3](https://github.com/realChakrawarti/ingest/compare/v26.4.2...v26.4.3) (2026-06-05)
+
+
+### Bug Fixes
+
+* build error, PIAuthKey could be undefined ([4015172](https://github.com/realChakrawarti/ingest/commit/4015172ea24cde9cc1846c0d309837c8a031afeb))
+
 ### [26.4.2](https://github.com/realChakrawarti/ingest/compare/v26.4.1...v26.4.2) (2026-06-04)
 
 
