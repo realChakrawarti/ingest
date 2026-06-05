@@ -36,8 +36,8 @@ export const envVariables = z.object({
   SENTRY_ORG: z.string().optional(),
   SENTRY_PROJECT: z.string().optional(),
   YOUTUBE_API_KEY: z.string(),
-  PODCAST_INDEX_AUTH_KEY: z.string().optional(),
-  PODCAST_INDEX_SECRET_KEY: z.string().optional(),
+  PODCAST_INDEX_AUTH_KEY: z.string(),
+  PODCAST_INDEX_SECRET_KEY: z.string(),
 });
 
 export type EnvType = z.infer<typeof envVariables>;
