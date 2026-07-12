@@ -6,7 +6,13 @@
     "dev": "next dev --turbopack",
     "prepare": "husky",
     "release": "standard-version",
-    "start": "next start"
+    "start": "next start",
+    "lint": "oxlint",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run --project unit",
+    "test:watch": "vitest --project unit",
+    "test:browser": "vitest run --project browser",
+    "test:browser:watch": "vitest --project browser"
   },
   "dependencies": {
     "@bprogress/next": "^3.2.12",
@@ -63,6 +69,8 @@
     "@types/react-dom": "19.2.3",
     "@types/react-slick": "^0.23.13",
     "@types/youtube": "^0.1.2",
+    "@vitejs/plugin-react": "^6.0.3",
+    "@vitest/browser-preview": "^4.1.10",
     "firebase-tools": "^13.31.1",
     "husky": "^9.1.7",
     "oxfmt": "^0.53.0",
@@ -70,7 +78,10 @@
     "postcss": "^8.5.2",
     "standard-version": "^9.5.0",
     "tailwindcss": "^4.2.1",
-    "typescript": "^5.8.3"
+    "typescript": "^5.8.3",
+    "vite-tsconfig-paths": "^6.1.1",
+    "vitest": "^4.1.10",
+    "vitest-browser-react": "^2.2.0"
   },
   "engines": {
     "node": "24.15.0"
