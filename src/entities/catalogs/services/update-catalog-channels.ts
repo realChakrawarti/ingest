@@ -4,11 +4,17 @@ import { FieldValue } from "firebase-admin/firestore";
 
 import { refs } from "~/shared/lib/firebase/refs";
 
-export async function updateCatalogChannels(
-  userId: string,
-  catalogId: string,
-  channel: ZCatalogChannel
-) {
+export interface UpdateCatalogChannelsParams {
+  userId: string;
+  catalogId: string;
+  channel: ZCatalogChannel;
+}
+
+export async function updateCatalogChannels({
+  userId,
+  catalogId,
+  channel,
+}: UpdateCatalogChannelsParams) {
   const userCatalogRef = refs.userCatalogs(userId).doc(catalogId);
 
   try {
