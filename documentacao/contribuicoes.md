@@ -26,9 +26,9 @@ Este documento detalha as contribuições da dupla para o projeto Ingest, dividi
 ---
 
   ## 4. Lista de Pull Requests
-* **PR1 (Arquitetura):** [Link do seu PR1 aqui]
-* **PR2 (Padrões):** [Link do seu PR2 aqui]
-* **PR3 (Refatoração):** [Link do PR3 - a ser preenchido após abertura]
-* **PR4 (Testes):** [A cargo da Iasmin]
-* **PR5 (DevOps):** [A cargo da Iasmin]
-* **PR6 (Issue Resolvida):** [A cargo da Iasmin]
+* **PR1 (Arquitetura):** https://github.com/realChakrawarti/ingest/pull/337
+* **PR2 (Padrões):** https://github.com/realChakrawarti/ingest/pull/338
+* **PR3 (Refatoração):** https://github.com/realChakrawarti/ingest/pull/339
+* **PR4 (Testes):** [Iasmin]
+* **PR5 (DevOps):** [Iasmin]
+* **PR6 (Issue Resolvida):** [Iasmin]
