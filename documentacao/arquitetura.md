@@ -29,5 +29,3 @@ graph TD
 
 ### Fluxo de Dados (Justificativa)
 A escolha dessa arquitetura baseada em Next.js no Frontend comunicando-se diretamente com o Firebase (BaaS) elimina a necessidade de mantermos um servidor Backend próprio para o CRUD de catálogos. A YouTube Data API é consumida diretamente pelo servidor do Next.js (via Server Actions/Route Handlers) para garantir a segurança da chave de API e não expô-la ao cliente.
-
-    
