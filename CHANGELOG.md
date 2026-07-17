@@ -2,6 +2,47 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [26.4.3](https://github.com/realChakrawarti/ingest/compare/v26.4.2...v26.4.3) (2026-06-05)
+
+
+### Bug Fixes
+
+* build error, PIAuthKey could be undefined ([4015172](https://github.com/realChakrawarti/ingest/commit/4015172ea24cde9cc1846c0d309837c8a031afeb))
+
+### [26.4.2](https://github.com/realChakrawarti/ingest/compare/v26.4.1...v26.4.2) (2026-06-04)
+
+
+### Bug Fixes
+
+* `global.d.ts` ambient context ([40d1bf0](https://github.com/realChakrawarti/ingest/commit/40d1bf0ba41d9c843cacbbb6c497fca6ab277da2))
+* coderabbit suggestions ([77d1b5a](https://github.com/realChakrawarti/ingest/commit/77d1b5a5b9326a8e597f39bd442d780a1bd284c8))
+* **env.ts:** zod schema optional-default-transform ([02c884c](https://github.com/realChakrawarti/ingest/commit/02c884c302d29182dac83f2c85e55ff9c2612004))
+* remove `forwardRef` from shadcn/ui components ([6f9e37b](https://github.com/realChakrawarti/ingest/commit/6f9e37b517f85ec8eee7a3b21f3ba87963b3de3c))
+* remove `forwardRef` from shadcn/ui components ([42c6072](https://github.com/realChakrawarti/ingest/commit/42c607221d85a567ce412e5d4f1d130b9cc304cb))
+
+### [26.4.1](https://github.com/realChakrawarti/ingest/compare/v26.4.0...v26.4.1) (2026-06-03)
+
+
+### Bug Fixes
+
+* coderabbit suggestion ([25d4ba1](https://github.com/realChakrawarti/ingest/commit/25d4ba19c5abc751eec9e4944dbb5c94155ec7da))
+* reddit search and comments using API authorization ([c1af4a3](https://github.com/realChakrawarti/ingest/commit/c1af4a3170cb3877ae3069aa55acaee9562566fc))
+* reddit subreddit search & post comments using API authorization ([c5b8c4c](https://github.com/realChakrawarti/ingest/commit/c5b8c4cdaa41e97a3c9dc486964fdb577897d9e8))
+
+## [26.4.0](https://github.com/realChakrawarti/ingest/compare/v26.3.0...v26.4.0) (2026-05-29)
+
+
+### Features
+
+* integrate podcast to catalogs ([4dc7284](https://github.com/realChakrawarti/ingest/commit/4dc7284008e5182e4b0b6d2c14d9c80adc080e5b))
+* integrate podcast to catalogs ([#329](https://github.com/realChakrawarti/ingest/issues/329)) ([1db96f4](https://github.com/realChakrawarti/ingest/commit/1db96f4c2d88de42b05a7d27ef674a1a67c31036))
+
+
+### Bug Fixes
+
+* **build:** regenerate pnpm lockfile ([30ad14b](https://github.com/realChakrawarti/ingest/commit/30ad14b07beab6285266f63ee70fa6ee2d3ab353))
+* coderabbit suggestions ([132cc7c](https://github.com/realChakrawarti/ingest/commit/132cc7c5d3034940374337bc489b62664862b82e))
+
 ### [26.3.1](https://github.com/realChakrawarti/ingest/compare/v26.3.0...v26.3.1) (2026-05-12)
 
 

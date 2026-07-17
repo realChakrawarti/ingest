@@ -17,7 +17,6 @@ import type {
 import useDebounce from "~/shared/hooks/use-debounce";
 import fetchApi from "~/shared/lib/api/fetch";
 import type { ApiResponse } from "~/shared/lib/next/nx-response";
-import { redditRequestHeaders } from "~/shared/lib/reddit/reddit-header";
 import { Avatar, AvatarFallback, AvatarImage } from "~/shared/ui/avatar";
 import { Badge } from "~/shared/ui/badge";
 import { Button } from "~/shared/ui/button";
@@ -38,15 +37,8 @@ import Log from "~/shared/utils/terminal-logger";
 import useCatalogStore from "~/stores/catalog-store";
 
 async function getSubreddits(query: string) {
-  const response = await fetch(
-    `https://www.reddit.com/subreddits/search.json?q=${query}&limit=25&include_over_18=0`,
-    {
-      headers: redditRequestHeaders(),
-    }
-  );
-  const data = await response.json();
-  const results = data.data.children.map((child: any) => child.data);
-  return results;
+  const response = await fetchApi(`/reddit/search?q=${query}`);
+  return response.data;
 }
 
 export default function AddSubredditDialog({
@@ -107,7 +99,7 @@ export default function AddSubredditDialog({
     setSearchInput(input);
   }
 
-  async function _handleAddSubreddit() {
+  async function handleAddSubreddit() {
     setIsLoadingUpdate(true);
     try {
       const result = await fetchApi(`/catalogs/${catalogId}/subreddit`, {
@@ -132,7 +124,7 @@ export default function AddSubredditDialog({
     }
   }
 
-  function _handleDialogClose(open: boolean) {
+  function handleDialogClose(open: boolean) {
     if (!open) {
       resetTempData();
     }
@@ -140,7 +132,7 @@ export default function AddSubredditDialog({
   }
 
   return (
-    <Dialog open={isDialogOpen} onOpenChange={_handleDialogClose}>
+    <Dialog open={isDialogOpen} onOpenChange={handleDialogClose}>
       <DialogTrigger asChild>
         <Button aria-label="Add subreddit">
           <span className="flex items-center gap-1">
@@ -209,7 +201,7 @@ export default function AddSubredditDialog({
 
           <div className="flex gap-2 pt-4">
             <Button
-              onClick={_handleAddSubreddit}
+              onClick={handleAddSubreddit}
               disabled={selectedSubreddits.length === 0 || isLoadingUpdate}
               className="flex-1"
             >
@@ -284,7 +276,7 @@ function SearchDropdown({
                 </Avatar>
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center gap-2">
-                    <span className="text-primary/80 text-sm dark:text-white">
+                    <span className="text-primary/80 text-sm font-semibold tracking-wide dark:text-white">
                       r/{subreddit.display_name}
                     </span>
                     <Badge

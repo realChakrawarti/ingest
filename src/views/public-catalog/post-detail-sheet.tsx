@@ -91,7 +91,6 @@ export default function PostDetailSheet({
             <div className="text-muted-foreground mt-2 flex items-center gap-2 text-xs">
               <ArrowUp className="size-4" />
               <span>{formatLargeNumber(post.postVotes)} votes</span>
-              <span>•</span>
               <MessageSquare className="size-4" />
               <span>{formatLargeNumber(post.postCommentsCount)} comments</span>
             </div>

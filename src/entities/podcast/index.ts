@@ -1,0 +1,1 @@
+export { getPodcasts } from "./services/get-podcasts";
