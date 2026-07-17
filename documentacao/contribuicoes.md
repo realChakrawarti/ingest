@@ -30,5 +30,5 @@ Este documento detalha as contribuições da dupla para o projeto Ingest, dividi
 * **PR2 (Padrões):** https://github.com/realChakrawarti/ingest/pull/338
 * **PR3 (Refatoração):** https://github.com/realChakrawarti/ingest/pull/339
 * **PR4 (Testes):** https://github.com/realChakrawarti/ingest/pull/340
-* **PR5 (DevOps):** https://github.com/1asm1n/ingest/pulls (Mantido no fork da dupla)
-* **PR6 (Issue Resolvida):** https://github.com/1asm1n/ingest/pulls (Mantido no fork da dupla)
+* **PR5 (DevOps):** https://github.com/1asm1n/ingest/pull/1
+* **PR6 (Issue Resolvida):** https://github.com/1asm1n/ingest/pull/2
