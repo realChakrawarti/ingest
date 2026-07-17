@@ -47,12 +47,13 @@ import { getTimeDifference } from "~/shared/utils/time-diff";
 
 import Spinner from "./spinner";
 
-const initialSettings = {
+const initialSettings: ZUserSettings = {
   historyDays: 15,
   playbackRate: 1,
   syncId: "",
   videoLanguage: "",
   watchedPercentage: appConfig.watchedPercentage,
+  thumbnailGrayscale: 0,
 };
 
 const playbackRates = [0.5, 0.75, 1.0, 1.25, 1.5, 1.75, 2.0];
@@ -312,6 +313,21 @@ export function UserSettings() {
                 min={80}
                 max={98}
                 step={2}
+              />
+            </FormElementContainer>
+            <FormElementContainer>
+              <Label className="text-primary" htmlFor="thumbnail-grayscale">
+                Thumbnail Grayscale ({userSettings.thumbnailGrayscale}%)
+              </Label>
+              <Slider
+                onValueChange={(value) =>
+                  handleLocalChange("thumbnailGrayscale", value[0])
+                }
+                id="thumbnail-grayscale"
+                value={[userSettings.thumbnailGrayscale]}
+                min={0}
+                max={100}
+                step={10}
               />
             </FormElementContainer>
             <Separator orientation="horizontal" />

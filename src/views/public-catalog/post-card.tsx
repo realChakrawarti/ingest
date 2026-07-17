@@ -30,15 +30,17 @@ export function PostCard({
     true
   );
 
+  const handleOpenSheet = () => {
+    setCurrentIndex(index);
+    handleSheetOpen(true);
+  };
+
   return (
     <div
       role="button"
       tabIndex={0}
       key={post.postId}
-      onClick={() => {
-        setCurrentIndex(index);
-        handleSheetOpen(true);
-      }}
+      onClick={handleOpenSheet}
       className="group/card-item hover-lift shadow-primary/20 clickable flex max-h-64 min-h-32 min-w-full flex-col gap-3 rounded border p-3 shadow"
     >
       <div className="flex items-center justify-between text-xs">

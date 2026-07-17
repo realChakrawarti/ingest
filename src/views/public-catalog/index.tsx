@@ -14,12 +14,13 @@ import ScrollTop from "~/widgets/scroll-top";
 import YouTubeCard from "~/widgets/youtube/youtube-card";
 
 import { CatalogAction } from "./catalog-action";
-import CatalogInformationPopover from "./catalog-information-popover";
+import CatalogInformation from "./catalog-information";
 import FilterChannel, { CurrentActive } from "./filter-channel";
 import { FilterSubreddit } from "./filter-subreddit";
 import { filterVideos, getActiveChannelIds } from "./helper-methods";
 import NextUpdateToast from "./next-update-toast";
 import { SubredditPost } from "./subreddit-posts";
+import UpdatePing from "./update-ping";
 
 export default async function PubliCatalog({
   channelId = "",
@@ -67,50 +68,47 @@ export default async function PubliCatalog({
   const activeChannels = getActiveChannelIds(videos);
   const subreddits = new Set(posts?.map((post) => post.subreddit));
 
+  const activeTab = posts?.length ? "subreddit" : "youtube";
+
   return (
     <>
       <NextUpdateToast nextUpdate={nextUpdate} />
       <PublicMainContainer className="space-y-4">
         <PublicHeaderTitle>
-          <div className="space-y-0">
-            <div className="flex items-start justify-between">
-              <div className="flex items-center gap-4">
-                <BackLink href="/explore/catalogs" />
-                <div className="space-y-1">
-                  <span className="flex items-center gap-4">
-                    <h1 className="text-lg tracking-wide lg:text-xl">
-                      {catalogTitle}
-                    </h1>
-                    <CatalogInformationPopover
-                      pageviews={catalogData.pageviews}
-                      description={catalogData?.description ?? ""}
-                      totalVideos={catalogData.totalVideos}
-                      totalPosts={catalogData.totalPosts}
-                      nextUpdate={catalogData.nextUpdate}
-                    />
-                  </span>
-                </div>
-              </div>
-
-              <div className="mr-2">
-                <CatalogAction
-                  catalogTitle={catalogTitle}
-                  catalogDescription={catalogDescription}
-                  catalogId={catalogId}
+          <div className="border-primary/40 shadow-primary/20 relative min-h-45 rounded-md border p-3 shadow-md">
+            <div className="flex flex-col">
+              <BackLink className="size-6" href="/explore/catalogs" />
+              <div className="mt-4">
+                <CatalogInformation
+                  title={catalogTitle}
+                  pageviews={catalogData.pageviews}
+                  description={catalogDescription}
+                  totalVideos={catalogData.totalVideos}
+                  totalPosts={catalogData.totalPosts}
                 />
               </div>
+            </div>
+            <div className="absolute top-3 right-3">
+              <UpdatePing nextUpdate={nextUpdate ?? ""} />
+            </div>
+            <div className="absolute right-4 bottom-3">
+              <CatalogAction
+                catalogTitle={catalogTitle}
+                catalogDescription={catalogDescription}
+                catalogId={catalogId}
+              />
             </div>
           </div>
         </PublicHeaderTitle>
 
-        <Tabs defaultValue={posts?.length ? "subreddit" : "youtube"}>
+        <Tabs defaultValue={activeTab}>
           <TabsList className="mx-2 my-3 text-lg md:mx-3">
-            <TabsTrigger value="youtube">YouTube Videos</TabsTrigger>
             {posts?.length ? (
               <TabsTrigger value="subreddit">
                 Reddit Posts ({posts?.length})
               </TabsTrigger>
             ) : null}
+            <TabsTrigger value="youtube">YouTube Videos</TabsTrigger>
           </TabsList>
           <TabsContent className="space-y-4" value="youtube">
             <FilterChannel activeChannels={activeChannels} />

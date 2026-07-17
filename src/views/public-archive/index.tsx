@@ -1,12 +1,17 @@
 import type { ZArchiveByID } from "~/entities/archives/models";
 
 import fetchApi from "~/shared/lib/api/fetch";
+import { getTimeDifference } from "~/shared/utils/time-diff";
 
 import BackLink from "~/widgets/back-link";
-import GridContainer from "~/widgets/grid-container";
+import { ItemSection } from "~/widgets/item-section";
+import {
+  PublicHeaderTitle,
+  PublicMainContainer,
+} from "~/widgets/public-layout";
 import YouTubeCard from "~/widgets/youtube/youtube-card";
 
-import ArchiveInformationPopover from "./archive-information-popover";
+import ArchiveInformation from "./archive-information";
 
 export default async function PublicArchive({
   archiveId,
@@ -25,38 +30,45 @@ export default async function PublicArchive({
   const archiveUpdatedAt = archiveData.updatedAt;
 
   return (
-    <div className="space-y-4 pt-7 pb-6">
-      <section className="px-2 md:px-3">
-        <div className="flex items-center gap-4">
-          <BackLink href="/explore/archives" />
-          <div className="flex items-center gap-1">
-            <h1 className="text-lg tracking-wide lg:text-xl">{archiveTitle}</h1>
-            <ArchiveInformationPopover
-              description={archiveDescription}
-              totalVideos={archiveData?.videos.length ?? 0}
-              updatedAt={archiveUpdatedAt}
-            />
+    <PublicMainContainer className="space-y-4">
+      <PublicHeaderTitle>
+        <div className="border-primary/40 shadow-primary/20 relative min-h-45 rounded-md border p-3 shadow-md">
+          <div className="flex h-full items-start justify-between">
+            <div className="flex flex-col">
+              <BackLink className="size-6" href="/explore/archives" />
+              <div className="mt-4">
+                <ArchiveInformation
+                  title={archiveTitle}
+                  description={archiveDescription}
+                  totalVideos={archiveData?.videos.length ?? 0}
+                />
+              </div>
+            </div>
+          </div>
+          <div className="absolute top-3 right-3 text-sm">
+            {getTimeDifference(archiveUpdatedAt)[1]} ago
           </div>
         </div>
-      </section>
+      </PublicHeaderTitle>
 
       {archiveData?.videos.length ? (
-        <section className="px-0 md:px-3">
-          <GridContainer>
-            {archiveData.videos.map((video) => {
-              return (
-                <YouTubeCard
-                  key={video.videoId}
-                  video={video}
-                  options={{ hideAvatar: true, focusMode: true }}
-                />
-              );
-            })}
-          </GridContainer>
-        </section>
+        <ItemSection>
+          {archiveData.videos.map((video) => {
+            return (
+              <YouTubeCard
+                key={video.videoId}
+                video={video}
+                options={{
+                  hideAvatar: true,
+                  focusMode: true,
+                }}
+              />
+            );
+          })}
+        </ItemSection>
       ) : (
         <p>No videos added yet.</p>
       )}
-    </div>
+    </PublicMainContainer>
   );
 }

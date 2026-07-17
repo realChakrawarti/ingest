@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 import Link from "next/link";
 
+import { parseAsString, useQueryState } from "nuqs";
 import { toast } from "sonner";
 import useSWR from "swr";
 
@@ -14,6 +15,7 @@ import { Button } from "~/shared/ui/button";
 import { LinkIcon } from "~/shared/ui/icons";
 import { Separator } from "~/shared/ui/separator";
 import { Skeleton } from "~/shared/ui/skeleton";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/shared/ui/tabs";
 
 import BackLink from "~/widgets/back-link";
 import JustTip from "~/widgets/just-the-tip";
@@ -94,6 +96,18 @@ export default function EditCatalog({ catalogId }: { catalogId: string }) {
     }
   };
 
+  const [type, setType] = useQueryState(
+    "type",
+    parseAsString.withDefault("youtube").withOptions({
+      history: "replace",
+      shallow: true,
+    })
+  );
+
+  const handleTabChange = (value: string) => {
+    setType(value);
+  };
+
   const handleDeleteSavedPlaylist = async (id: string) => {
     const deletePlaylist = savedPlaylists.find(
       (playlist) => playlist.type === "playlist" && playlist.playlistId === id
@@ -144,6 +158,8 @@ export default function EditCatalog({ catalogId }: { catalogId: string }) {
       toast("Something went wrong.");
     }
   };
+
+  const activeType = type === "reddit" ? "reddit" : "youtube";
 
   return (
     <div>
@@ -197,8 +213,6 @@ export default function EditCatalog({ catalogId }: { catalogId: string }) {
               </JustTip>
             </Link>
           ) : null}
-          <AddSubredditDialog revalidateCatalog={revalidateCatalog} />
-          <AddChannelPlaylistDialog revalidateCatalog={revalidateCatalog} />
         </div>
       </div>
       <Separator className="my-3" />
@@ -208,8 +222,25 @@ export default function EditCatalog({ catalogId }: { catalogId: string }) {
           <Spinner className="size-8" />
         </div>
       )}
-      {!isLoading && !error && (
-        <div className="space-y-7 p-3">
+      <Tabs
+        value={activeType}
+        onValueChange={handleTabChange}
+        className="space-y-7 px-3 py-2"
+      >
+        <div className="flex justify-between">
+          <TabsList>
+            <TabsTrigger value="youtube">YouTube</TabsTrigger>
+            <TabsTrigger value="reddit">Subreddit</TabsTrigger>
+          </TabsList>
+          {activeType === "youtube" ? (
+            <AddChannelPlaylistDialog revalidateCatalog={revalidateCatalog} />
+          ) : null}
+          {activeType === "reddit" ? (
+            <AddSubredditDialog revalidateCatalog={revalidateCatalog} />
+          ) : null}
+        </div>
+
+        <TabsContent value="youtube">
           {savedChannels?.length ? (
             <div className="space-y-3">
               <div className="flex items-center justify-between">
@@ -229,7 +260,6 @@ export default function EditCatalog({ catalogId }: { catalogId: string }) {
               />
             </div>
           ) : null}
-
           {savedPlaylists?.length ? (
             <div className="space-y-3">
               <div className="flex items-center justify-between">
@@ -249,7 +279,8 @@ export default function EditCatalog({ catalogId }: { catalogId: string }) {
               />
             </div>
           ) : null}
-
+        </TabsContent>
+        <TabsContent value="reddit">
           {savedSubreddits?.length ? (
             <div className="space-y-3">
               <div className="flex items-center justify-between">
@@ -269,8 +300,8 @@ export default function EditCatalog({ catalogId }: { catalogId: string }) {
               />
             </div>
           ) : null}
-        </div>
-      )}
+        </TabsContent>
+      </Tabs>
     </div>
   );
 }
