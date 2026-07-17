@@ -3,12 +3,12 @@ import type { NextRequest } from "next/server";
 
 import { z } from "zod";
 
+import { deleteSubreddit, updateCatalogSubreddits } from "~/entities/catalogs";
 import { CatalogSubredditSchema } from "~/entities/catalogs/models";
-import { deleteSubreddit } from "~/entities/catalogs/services/delete-subreddit";
-import { updateCatalogSubreddits } from "~/entities/catalogs/services/update-catalog-subreddits";
 
 import { getUserIdHeader } from "~/shared/lib/next/get-user-id-header";
 import { NxResponse } from "~/shared/lib/next/nx-response";
+import { Status } from "~/shared/utils/http-status";
 import Log from "~/shared/utils/terminal-logger";
 
 type ContextParams = {
@@ -28,7 +28,7 @@ export async function PATCH(request: NextRequest, ctx: ContextParams) {
         code: "BAD_REQUEST",
         details: "Catalog ID is missing from request params.",
       },
-      400
+      Status.BadRequest
     );
   }
 
@@ -47,7 +47,7 @@ export async function PATCH(request: NextRequest, ctx: ContextParams) {
         return NxResponse.fail(
           err.message,
           { code: "CATALOG_SUBREDDIT_UPDATE", details: err.message },
-          400
+          Status.BadRequest
         );
       }
       return NxResponse.fail(
@@ -56,14 +56,14 @@ export async function PATCH(request: NextRequest, ctx: ContextParams) {
           code: "CATALOG_SUBREDDIT_UPDATE",
           details: "Unable to update catalog subreddits.",
         },
-        400
+        Status.BadRequest
       );
     }
   } else {
     return NxResponse.fail(
       "Invalid data provided.",
       { code: "INVALID_DATA", details: error.message },
-      422
+      Status.UnprocessableEntity
     );
   }
 }
@@ -89,14 +89,14 @@ export async function DELETE(request: NextRequest, ctx: ContextParams) {
           code: "SUBREDDIT_DELETE_FAILED",
           details: "Unable to delete subreddit from the catalog.",
         },
-        400
+        Status.BadRequest
       );
     }
   } else {
     return NxResponse.fail(
       "Invalid data provided.",
       { code: "INVALID_DATA", details: error.message },
-      422
+      Status.UnprocessableEntity
     );
   }
 }

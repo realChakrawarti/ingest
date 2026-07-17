@@ -186,7 +186,7 @@ export default function YoutubePlayer(
       onClick={loadIFrameElement}
     >
       <YouTubeEmbed
-        style={`background-image: url(${video.videoThumbnail})`}
+        style={`background-image: url(${video.videoThumbnail}); filter: grayscale(${localUserSettings?.thumbnailGrayscale ?? 0}%);`}
         params={playerParams}
         videoid={videoId}
         js-api={enableJsApi}

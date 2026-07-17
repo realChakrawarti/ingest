@@ -63,7 +63,7 @@ export function CatalogAction({
         <ThreeDotIcon className="size-5" />
       </DropdownMenuTrigger>
       <DropdownMenuContent
-        side="bottom"
+        side="top"
         align="end"
         className="flex w-auto flex-col gap-2 rounded-lg border-none"
       >

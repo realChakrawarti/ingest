@@ -82,7 +82,7 @@ export function getDifferenceString(
 /**
  * @returns {number} - Returns the time difference in milliseconds
  */
-export function timeDelta(compareWithCurrent: string): number {
+export function timeDelta(compareWithCurrent: string | number): number {
   const currentTime = Date.now();
   const serverTime = new Date(compareWithCurrent).getTime();
 
@@ -93,13 +93,13 @@ export function timeDelta(compareWithCurrent: string): number {
 
 /**
  *
- * @param {string} compareWithCurrent - Compare with current time
+ * @param {string | number} compareWithCurrent -
  * @param {boolean} [suffixEnabled=false] - Approximate time difference with `ago` and `later` appended
  * @param {boolean} [limitMonth=true] - Show N/A when time difference exceeds 30 days
  * @returns {(string | number)[]}
  */
 export function getTimeDifference(
-  compareWithCurrent: string,
+  compareWithCurrent: string | number,
   suffixEnabled = false,
   limitMonth = true
 ): [number, string] {

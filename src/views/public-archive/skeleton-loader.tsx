@@ -1,25 +1,21 @@
 import { Skeleton } from "~/shared/ui/skeleton";
 
-import GridContainer from "~/widgets/grid-container";
+import { ItemSection } from "~/widgets/item-section";
 
 export function ArchiveLoadingSkeleton() {
   return (
     <div className="space-y-4 pt-7 pb-6">
-      <section className="px-2 md:px-3">
-        <div className="space-y-1">
-          <Skeleton className="h-6 w-64" />
-          <Skeleton className="h-4 w-64 sm:w-96" />
-        </div>
+      <section className="space-y-4 px-2 md:px-3">
+        <Skeleton className="bg-primary/10 size-full min-h-45 w-full rounded-md" />
+        <Skeleton className="h-6 w-48" />
       </section>
-      <section className="px-0 md:px-3">
-        {Array.from(Array(4).keys()).map((index) => (
-          <GridContainer key={`section-${index}`}>
-            {Array.from(Array(4).keys()).map((index) => (
-              <YouTubeSkeletonCard key={`card-${index}`} />
-            ))}
-          </GridContainer>
-        ))}
-      </section>
+      {Array.from(Array(4).keys()).map((index) => (
+        <ItemSection key={`section-${index}`}>
+          {Array.from(Array(4).keys()).map((index) => (
+            <YouTubeSkeletonCard key={`card-${index}`} />
+          ))}
+        </ItemSection>
+      ))}
     </div>
   );
 }
