@@ -88,22 +88,14 @@ ui-migrate:
 release as:
     {{ NODE_PM }} release --release-as {{ as }}
 
-# run unit tests in Node.js
+# run tests in either unit | browser Node.js
 [group("Testing")]
-test:
-    {{ NODE_PM }} test
-
-# run unit tests in watch mode
-[group("Testing")]
-test-watch:
-    {{ NODE_PM }} test:watch
-
-# run browser preview tests locally (not for CI)
-[group("Testing")]
-test-browser:
-    {{ NODE_PM }} test:browser
+[arg('mode', pattern='unit|browser')]
+test-run mode="unit":
+    {{ NODE_PM }} test --project {{ mode }}
 
 # run browser preview tests in watch mode
 [group("Testing")]
-test-browser-watch:
-    {{ NODE_PM }} test:browser:watch
+[arg('mode', pattern='unit|browser')]
+test-watch mode="unit":
+    {{ NODE_PM }} test:watch --project {{ mode }}

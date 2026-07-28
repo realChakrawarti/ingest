@@ -17,10 +17,11 @@
   "language_servers": [
     "!deno",
     "!eslint",
+    "!vtsls",
     "just-lsp",
     "oxlint",
     "oxfmt",
-    "vtsls",
+    "typescript-ls",
     "tailwindcss-language-server",
     "json-language-server",
     "package-version-server"

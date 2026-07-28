@@ -7,10 +7,8 @@
     "prepare": "husky",
     "release": "standard-version",
     "start": "next start",
-    "test": "vitest run --project unit",
-"test:watch": "vitest --project unit",
-"test:browser": "vitest run --project browser",
-"test:browser:watch": "vitest --project browser"
+    "test": "vitest run",
+    "test:watch": "vitest watch"
   },
   "dependencies": {
     "@bprogress/next": "^3.2.12",
@@ -56,8 +54,6 @@
     "zod": "^4.1.8",
     "zustand": "^5.0.3"
   },
-
-  
   "devDependencies": {
     "@commitlint/cli": "^19.7.1",
     "@commitlint/config-conventional": "^19.7.1",
@@ -69,6 +65,8 @@
     "@types/react-dom": "19.2.3",
     "@types/react-slick": "^0.23.13",
     "@types/youtube": "^0.1.2",
+    "@vitejs/plugin-react": "^6.0.3",
+    "@vitest/browser-preview": "^4.1.10",
     "firebase-tools": "^13.31.1",
     "husky": "^9.1.7",
     "oxfmt": "^0.53.0",
@@ -77,11 +75,8 @@
     "standard-version": "^9.5.0",
     "tailwindcss": "^4.2.1",
     "typescript": "^5.8.3",
-    "@vitejs/plugin-react": "^6.0.3",
-"@vitest/browser-preview": "^4.1.10",
-"vite-tsconfig-paths": "^6.1.1",
-"vitest": "^4.1.10",
-"vitest-browser-react": "^2.2.0"
+    "vitest": "^4.1.10",
+    "vitest-browser-react": "^2.2.0"
   },
   "engines": {
     "node": "24.15.0"
