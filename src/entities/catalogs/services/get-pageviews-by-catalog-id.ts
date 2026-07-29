@@ -5,11 +5,11 @@ import Log from "~/shared/utils/terminal-logger";
 
 const analyticsDataClient = new BetaAnalyticsDataClient({
   credentials: {
-    client_email: process.env.GOOGLE_CLIENT_EMAIL,
+    client_email: process.env.FIREBASE_CLIENT_EMAIL,
     // TODO: Consider storing private key as encoded base64, then decode and use
-    private_key: process.env.GOOGLE_ANALYTICS_PRIVATE_KEY.split(
-      String.raw`\n`
-    ).join("\n"),
+    private_key: process.env.FIREBASE_PRIVATE_KEY.split(String.raw`\n`).join(
+      "\n"
+    ),
   },
 });
 
@@ -65,7 +65,7 @@ export async function getPageviewByCatalogId(
         name: "screenPageViews",
       },
     ],
-    property: `properties/${process.env.GOOGLE_ANALYTICS_PROPERTY_ID}`,
+    property: `properties/${process.env.GA_PROPERTY_ID}`,
   } as protos.google.analytics.data.v1beta.IRunReportRequest;
 
   Log.info(`Querying pageview of catalog: ${catalogId}`);
