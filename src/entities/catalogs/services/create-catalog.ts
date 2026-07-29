@@ -30,6 +30,7 @@ export async function createCatalog(
       data: {
         totalPosts: 0,
         totalVideos: 0,
+        totalPodcasts: 0,
         updatedAt: Timestamp.fromDate(new Date(0)),
         videos: { day: [], month: [], week: [] },
       },

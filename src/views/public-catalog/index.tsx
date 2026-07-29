@@ -2,9 +2,11 @@ import type { ZContentByCatalog } from "~/entities/catalogs/models";
 
 import fetchApi from "~/shared/lib/api/fetch";
 import type { YouTubeCardOptions } from "~/shared/types-schema/types";
+import { Separator } from "~/shared/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/shared/ui/tabs";
 
 import BackLink from "~/widgets/back-link";
+import FooterBlur from "~/widgets/footer-blur";
 import { ItemSection } from "~/widgets/item-section";
 import {
   PublicHeaderTitle,
@@ -90,23 +92,21 @@ export default async function PubliCatalog({
       <NextUpdateToast nextUpdate={nextUpdate} />
       <PublicMainContainer className="space-y-4">
         <PublicHeaderTitle>
-          <div className="border-primary/40 shadow-primary/20 relative min-h-45 rounded-md border p-3 shadow-md">
-            <div className="flex flex-col">
+          <div className="relative min-h-45 rounded-md px-2 py-1">
+            <div className="flex flex-col gap-3">
               <BackLink className="size-6" href="/explore/catalogs" />
-              <div className="mt-4">
+              <div>
                 <CatalogInformation
                   title={catalogTitle}
                   pageviews={catalogData.pageviews}
                   description={catalogDescription}
-                  totalVideos={catalogData.totalVideos}
-                  totalPosts={catalogData.totalPosts}
                 />
               </div>
             </div>
             <div className="absolute top-3 right-3">
               <UpdatePing nextUpdate={nextUpdate ?? ""} />
             </div>
-            <div className="absolute right-4 bottom-3">
+            <div className="mt-3">
               <CatalogAction
                 catalogTitle={catalogTitle}
                 catalogDescription={catalogDescription}
@@ -115,6 +115,8 @@ export default async function PubliCatalog({
             </div>
           </div>
         </PublicHeaderTitle>
+
+        <Separator />
 
         <Tabs defaultValue={activeTab}>
           <TabsList className="mx-2 my-3 text-lg md:mx-3">
@@ -186,6 +188,7 @@ export default async function PubliCatalog({
           </TabsContent>
         </Tabs>
         <ScrollTop />
+        <FooterBlur />
       </PublicMainContainer>
     </>
   );

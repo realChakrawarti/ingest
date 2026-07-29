@@ -1,6 +1,6 @@
 "use client";
 
-import type { MutableRefObject } from "react";
+import type { RefObject } from "react";
 import Link from "next/link";
 
 import Slider, { type Settings } from "react-slick";
@@ -12,7 +12,7 @@ function ThumbnailCarousel({
 }: {
   path: string;
   thumbnails: string[];
-  sliderRef: MutableRefObject<Slider | null>;
+  sliderRef: RefObject<Slider | null>;
 }) {
   const settings: Settings = {
     arrows: false,

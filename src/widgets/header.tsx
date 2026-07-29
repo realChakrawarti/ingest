@@ -56,12 +56,15 @@ const Header = () => {
                 alt={`${appConfig.marketName} logo`}
                 className="size-7"
               />
-              <p
-                className="text-primary/80 hover:text-primary self-end text-lg tracking-wide dark:text-white/80 dark:hover:text-white"
+              <div
+                className="text-primary/80 hover:text-primary relative self-end text-lg tracking-wide dark:text-white/80 dark:hover:text-white"
                 aria-hidden="true"
               >
-                {appConfig.marketName}
-              </p>
+                <h2>{appConfig.marketName}</h2>
+                <p className="border-primary/20 absolute -top-2 -right-4 -z-10 rounded-md border-2 mask-clip-content p-0.5 text-[10px] font-semibold tracking-wider">
+                  v{appConfig.version}
+                </p>
+              </div>
             </h1>
           </Link>
         </div>

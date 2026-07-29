@@ -6,8 +6,7 @@ import { CopyIcon, ShareIcon } from "lucide-react";
 import { toast } from "sonner";
 
 import appConfig from "~/shared/app-config";
-import { useIsMobile } from "~/shared/hooks/use-mobile";
-import { cn } from "~/shared/utils/tailwind-merge";
+import { Button } from "~/shared/ui/button";
 
 type ShareCatalogProps = {
   catalogId: string;
@@ -20,8 +19,6 @@ export default function ShareCatalog({
   catalogDescription,
   catalogTitle,
 }: ShareCatalogProps) {
-  const isMobile = useIsMobile();
-
   const shareData = useMemo(
     () => ({
       text: catalogDescription,
@@ -56,30 +53,25 @@ export default function ShareCatalog({
     window.navigator.canShare(shareData)
   ) {
     return (
-      <button
-        type="button"
-        className={cn(
-          "flex items-center gap-2 w-full",
-          isMobile ? "text-base" : "text-sm"
-        )}
+      <Button
+        variant="outline"
+        className="flex items-center gap-2 text-sm"
         onClick={shareLink}
       >
-        <ShareIcon className={cn(isMobile ? "size-6" : "size-4")} />
+        <ShareIcon className="size-4" />
         Share catalog
-      </button>
+      </Button>
     );
   }
+
   return (
-    <button
-      type="button"
-      className={cn(
-        "flex items-center gap-2",
-        isMobile ? "text-base" : "text-sm"
-      )}
+    <Button
+      variant="outline"
+      className="flex items-center gap-2 text-sm"
       onClick={copyLink}
     >
-      <CopyIcon className={cn(isMobile ? "size-6" : "size-4")} />
+      <CopyIcon className="size-4" />
       Copy to Clipboard
-    </button>
+    </Button>
   );
 }

@@ -6,8 +6,8 @@ import { StarIcon } from "lucide-react";
 import { useLiveQuery } from "dexie-react-hooks";
 import { toast } from "sonner";
 
-import { useIsMobile } from "~/shared/hooks/use-mobile";
 import { indexedDB } from "~/shared/lib/api/dexie";
+import { Button } from "~/shared/ui/button";
 import { cn } from "~/shared/utils/tailwind-merge";
 
 export default function AddToFavorites({
@@ -19,8 +19,6 @@ export default function AddToFavorites({
   catalogTitle: string;
   catalogDescription: string;
 }) {
-  const isMobile = useIsMobile();
-
   const favoriteCatalogs =
     useLiveQuery(() => indexedDB["favorites"].toArray(), []) ?? [];
   const [catalogExists, setCatalogExists] = useState<boolean>(false);
@@ -58,21 +56,18 @@ export default function AddToFavorites({
   };
 
   return (
-    <button
-      type="button"
-      className={cn(
-        "flex items-center gap-2 w-full",
-        isMobile ? "text-base" : "text-sm"
-      )}
+    <Button
+      variant="outline"
+      className="flex items-center gap-2 text-sm"
       onClick={addToFav}
     >
       <StarIcon
         className={cn(
-          isMobile ? "size-6" : "size-4",
+          "size-4",
           catalogExists ? "fill-primary text-primary" : ""
         )}
       />
       {catalogExists ? "Remove from favorites" : "Add to favorites"}
-    </button>
+    </Button>
   );
 }

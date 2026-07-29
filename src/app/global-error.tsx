@@ -8,7 +8,6 @@ import { fontHilmar, fontOutfit } from "~/shared/lib/fonts";
 import { Button } from "~/shared/ui/button";
 
 import AppSidebar from "~/widgets/app-sidebar";
-import Footer from "~/widgets/footer";
 import Header from "~/widgets/header";
 
 import Providers from "./(views)/context";
@@ -53,7 +52,6 @@ export default function GlobalError({
                 </div>
               </div>
             </main>
-            <Footer />
           </div>
         </Providers>
       </body>

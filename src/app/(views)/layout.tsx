@@ -13,7 +13,6 @@ import { fontHilmar, fontOutfit } from "~/shared/lib/fonts";
 import { Toaster } from "~/shared/ui/sonner";
 
 import AppSidebar from "~/widgets/app-sidebar";
-import Footer from "~/widgets/footer";
 import Header from "~/widgets/header";
 
 import Providers from "./context";
@@ -63,9 +62,8 @@ export default function RootLayout({
             <main className="container mx-auto flex-1 overflow-y-auto">
               {children}
             </main>
-            <Footer />
           </div>
-          <Toaster closeButton visibleToasts={1} position="top-center" />
+          <Toaster closeButton visibleToasts={1} position="bottom-center" />
         </Providers>
       </body>
       {process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID && (

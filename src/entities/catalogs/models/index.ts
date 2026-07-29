@@ -168,6 +168,7 @@ const CatalogDocumentSchema = CatalogMetaSchema.extend({
     podcasts: z.array(CatalogPodcastItemSchema).optional(),
     totalPosts: z.number().prefault(0),
     totalVideos: z.number().prefault(0),
+    totalPodcasts: z.number().prefault(0),
     updatedAt: TimestampSchema,
     videos: CatalogVideoListSchema,
   }),
@@ -185,6 +186,7 @@ const CatalogValidSchema = z.object({
   thumbnails: z.array(z.string()),
   title: z.string(),
   totalPosts: z.number(),
+  totalPodcasts: z.number(),
   totalVideos: z.number(),
   updatedAt: TimestampSchema,
 });
@@ -201,6 +203,7 @@ const ContentByCatalogSchema = CatalogMetaSchema.extend({
   podcasts: z.array(CatalogPodcastItemSchema),
   totalPosts: z.number().prefault(0),
   totalVideos: z.number().prefault(0),
+  totalPodcasts: z.number().prefault(0),
   videos: CatalogVideoListSchema,
 });
 

@@ -37,6 +37,7 @@ export async function getValidCatalogIds() {
           title: catalogData?.title,
           totalPosts: catalogData?.data.totalPosts,
           totalVideos: catalogData?.data?.totalVideos,
+          totalPodcasts: catalogData?.data?.totalPodcasts,
           updatedAt: catalogData?.data.updatedAt,
         };
 

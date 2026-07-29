@@ -152,11 +152,12 @@ export async function getContentsByCatalog(
 
   const timeDiffLogo = currentTime - lastUpdatedCatalogList;
 
-  // Update channel logos
-  if (
+  const isChannelLogoUpdateRequired =
     timeDiffLogo > appConfig.channelLogoUpdatePeriod &&
-    appConfig.catalogUpdateEnabled
-  ) {
+    appConfig.catalogUpdateEnabled;
+
+  // Update channel logos
+  if (isChannelLogoUpdateRequired) {
     const updatedList = await updateChannelLogos(youtubeList);
     // Update the YouTube list channel logos and keep the Reddit and podcast list intact
     await userCatalogRef.set({
@@ -176,10 +177,11 @@ export async function getContentsByCatalog(
   let pageviews = 0;
   const timeDiffContent = currentTime - lastUpdatedTime;
 
-  if (
+  const isContentUpdateRequired =
     timeDiffContent > appConfig.catalogUpdatePeriod &&
-    appConfig.catalogUpdateEnabled
-  ) {
+    appConfig.catalogUpdateEnabled;
+
+  if (isContentUpdateRequired) {
     try {
       pageviews = await getPageviewByCatalogId(catalogId);
     } catch (err) {
@@ -258,6 +260,7 @@ export async function getContentsByCatalog(
         posts: postResults,
         totalPosts: postResults.length,
         totalVideos: totalVideos,
+        totalPodcasts: podcastResults.length,
         updatedAt: recentUpdate,
         videos: videoFilterData,
       },
@@ -293,6 +296,7 @@ export async function getContentsByCatalog(
     podcasts: podcastResults ?? [],
     title: catalogSnapData?.title,
     totalPosts: postResults?.length ?? 0,
+    totalPodcasts: podcastResults?.length ?? 0,
     totalVideos: totalVideos,
     videos: videoFilterData,
   };

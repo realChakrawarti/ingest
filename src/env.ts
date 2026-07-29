@@ -1,13 +1,10 @@
 import { z } from "zod";
 
-export const envVariables = z.object({
+const envVariables = z.object({
   CLOUDFLARE_ACCOUNT_ID: z.string(),
   CLOUDFLARE_API_TOKEN: z.string(),
   CLOUDFLARE_KV_NAMESPACE_ID: z.string(),
-  ENABLE_CATALOG_UPDATE: z
-    .enum(["true", "false"])
-    .default("false")
-    .transform((v) => v === "true"),
+  ENABLE_CATALOG_UPDATE: z.enum(["true", "false"]).default("false"),
   FIREBASE_CLIENT_EMAIL: z.string(),
   FIREBASE_PRIVATE_KEY: z.string(),
   GOOGLE_ANALYTICS_PRIVATE_KEY: z.string(),

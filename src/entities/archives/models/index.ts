@@ -70,6 +70,7 @@ const ArchiveValidSchema = z.object({
   title: z.string(),
   totalPosts: z.number().optional(),
   totalVideos: z.number(),
+  totalPodcasts: z.number().optional(),
   updatedAt: TimestampSchema,
 });
 

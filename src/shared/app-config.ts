@@ -3,7 +3,7 @@ import isDevelopment from "./utils/is-development";
 import { time } from "./utils/time";
 
 class AppConfig {
-  private _catalogUpdateEnabled = process.env.ENABLE_CATALOG_UPDATE;
+  private _catalogUpdateEnabled = process.env.ENABLE_CATALOG_UPDATE === "true";
   private _catalogUpdatePeriod = time.hours(4);
   private _catalogVideoLimit = 10;
   private _channelLogoUpdatePeriod = time.days(1);
@@ -22,10 +22,11 @@ class AppConfig {
   private _exploreFeatured = true;
 
   get catalogUpdateEnabled(): boolean {
-    return (
-      (this._catalogUpdateEnabled && Boolean(process.env.YOUTUBE_API_KEY)) ||
-      !isDevelopment()
-    );
+    if (!this._catalogUpdateEnabled) {
+      return false;
+    }
+
+    return Boolean(process.env.YOUTUBE_API_KEY) || !isDevelopment();
   }
 
   get exploreFeatured(): boolean {

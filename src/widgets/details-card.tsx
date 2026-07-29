@@ -4,11 +4,12 @@ import type Slider from "react-slick";
 
 import { type MouseEvent, useRef, useState } from "react";
 import Link from "next/link";
-import { EyeIcon, File, Pause, Play, VideoIcon } from "lucide-react";
+import { EyeIcon, File, Pause, Play, Podcast, VideoIcon } from "lucide-react";
 
 import type { ZArchiveValid } from "~/entities/archives/models";
 import type { ZCatalogValid } from "~/entities/catalogs/models";
 
+import { Separator } from "~/shared/ui/separator";
 import { cn } from "~/shared/utils/tailwind-merge";
 
 import ThumbnailCarousel from "./carousel-thumbnails";
@@ -44,7 +45,6 @@ export default function DetailsCard({ validData, path }: DetailsCardProps) {
       )}
     >
       <div className="relative aspect-video">
-        {/* TODO: Function components cannot be given refs, consider moving to Next.js 15 which supports React 19 */}
         <ThumbnailCarousel
           path={path}
           sliderRef={sliderRef}
@@ -85,7 +85,7 @@ export default function DetailsCard({ validData, path }: DetailsCardProps) {
         key={validData?.id}
         href={path}
       >
-        <div className="group flex justify-between p-4 pt-2">
+        <div className="group flex flex-col justify-between gap-3 p-4 pt-2">
           <div>
             <h2
               id={validData?.id}
@@ -97,45 +97,38 @@ export default function DetailsCard({ validData, path }: DetailsCardProps) {
               {validData?.description}
             </p>
           </div>
+          <Separator />
+          <div className="text-muted-foreground flex gap-2 text-sm">
+            <div className="flex items-center gap-1">
+              <VideoIcon className="size-4" />
+              <span>{validData.totalVideos} videos</span>
+            </div>
+            {validData?.totalPosts ? (
+              <>
+                <span>•</span>
+                <div className="flex items-center gap-1">
+                  <File className="size-4" />
+                  <span>{validData.totalPosts} posts</span>
+                </div>
+              </>
+            ) : null}
+            {validData.totalPodcasts ? (
+              <>
+                <span>•</span>
+                <div className="flex items-center gap-1">
+                  <Podcast className="size-4" />
+                  <span>{validData.totalPodcasts} podcasts</span>
+                </div>
+              </>
+            ) : null}
+          </div>
         </div>
       </Link>
 
       {validData?.pageviews ? (
         <Pageview pageviews={validData.pageviews} />
       ) : null}
-      <div className="absolute top-2 left-0 z-20 flex flex-col gap-2">
-        {validData?.totalVideos ? (
-          <TotalVideos totalVideos={validData.totalVideos} />
-        ) : null}
-        {validData?.totalPosts ? (
-          <TotalPosts totalPosts={validData.totalPosts} />
-        ) : null}
-      </div>
     </section>
-  );
-}
-
-function TotalVideos({ totalVideos }: { totalVideos: number }) {
-  return (
-    <OverlayTip
-      id="total-videos"
-      className="flex items-center gap-1 rounded-r-md px-1.25 py-2"
-    >
-      <p className="text-xs">{totalVideos}</p>
-      <VideoIcon className="size-3" />
-    </OverlayTip>
-  );
-}
-
-function TotalPosts({ totalPosts }: { totalPosts: number }) {
-  return (
-    <OverlayTip
-      id="total-posts"
-      className="flex items-center gap-1 rounded-r-md px-1.25 py-2"
-    >
-      <p className="text-xs">{totalPosts}</p>
-      <File className="size-3" />
-    </OverlayTip>
   );
 }
 
