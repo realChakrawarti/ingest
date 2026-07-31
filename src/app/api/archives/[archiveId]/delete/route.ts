@@ -19,7 +19,7 @@ export async function DELETE(_request: NextRequest, ctx: ContextParams) {
 
   try {
     await deleteArchive(userId, archiveId);
-    revalidatePath("/explore");
+    revalidatePath("/");
     revalidatePath("/explore/archives");
     return NxResponse.success("Archive deleted successfully.", {}, 200);
   } catch (err) {

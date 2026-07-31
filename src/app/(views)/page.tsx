@@ -1,13 +1,7 @@
-import FAQSection from "~/widgets/faq-section";
-import FeatureCarousel from "~/widgets/feature-section";
-import HeroSection from "~/widgets/hero-section";
+import Explore from "~/views/explore";
 
-export default function LoginPage() {
-  return (
-    <div className="relative flex flex-col pb-3">
-      <FAQSection />
-      <HeroSection />
-      <FeatureCarousel />
-    </div>
-  );
+export const revalidate = 300; // Cache the page for 5 minutes, unless revalidated on updates
+
+export default function ExplorePage() {
+  return <Explore />;
 }

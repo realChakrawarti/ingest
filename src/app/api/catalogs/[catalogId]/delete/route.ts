@@ -24,7 +24,8 @@ export async function DELETE(_request: NextRequest, ctx: ContextParams) {
       400
     );
   }
-  revalidatePath("/explore");
+  revalidatePath("/");
+  revalidatePath("/explore/catalogs");
 
   return NxResponse.success("Catalog deleted successfully.", {}, 200);
 }

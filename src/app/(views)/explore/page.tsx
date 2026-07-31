@@ -1,7 +1,5 @@
-import Explore from "~/views/explore";
+import { redirect } from "next/navigation";
 
-export const revalidate = 300; // Cache the page for 5 minutes, unless revalidated on updates
-
-export default function ExplorePage() {
-  return <Explore />;
+export default function RedirectExploreRoot() {
+  return redirect("/");
 }
