@@ -6,7 +6,7 @@ import { DropdownMenu as DropdownMenuPrimitive } from "radix-ui";
 
 import { cn } from "~/shared/utils/tailwind-merge";
 
-import { CheckIcon, ChevronRightIcon, CircleIcon } from "./icons";
+import { CheckIcon, ChevronRightIcon, CircleIcon } from "lucide-react"
 
 const DropdownMenu = DropdownMenuPrimitive.Root;
 

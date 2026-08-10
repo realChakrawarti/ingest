@@ -45,6 +45,7 @@ import { ToggleGroup, ToggleGroupItem } from "~/shared/ui/toggle-group";
 import { cn } from "~/shared/utils/tailwind-merge";
 import { getTimeDifference } from "~/shared/utils/time-diff";
 
+import { OutLink } from "./out-link";
 import Spinner from "./spinner";
 
 const initialSettings: ZUserSettings = {
@@ -372,6 +373,14 @@ export function UserSettings() {
               </Button>
             </div>
           </form>
+          <OutLink
+            href={`https://github.com/realChakrawarti/ingest/releases/tag/v${appConfig.version}`}
+            target="_blank"
+          >
+            <p className="ttext-muted-foreground p-0.5 text-right text-xs tracking-wider">
+              v{appConfig.version}
+            </p>
+          </OutLink>
         </DialogContent>
       </Dialog>
     </section>

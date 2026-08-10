@@ -15,7 +15,7 @@ export function CatalogAction({
   catalogDescription,
 }: CatalogActionProps) {
   return (
-    <div className="flex justify-end gap-4">
+    <div className="flex justify-start gap-4 md:justify-end">
       <ShareCatalog
         catalogId={catalogId}
         catalogTitle={catalogTitle}

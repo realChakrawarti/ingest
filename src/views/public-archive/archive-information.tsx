@@ -1,4 +1,5 @@
-import { VideoIcon } from "lucide-react";
+import { EyeIcon, VideoIcon } from "lucide-react";
+import { Separator } from "~/shared/ui/separator";
 
 type ArchiveInformationProps = {
   description: string;
@@ -12,17 +13,18 @@ export default function ArchiveInformation({
   title,
 }: ArchiveInformationProps) {
   return (
-    <div className="flex flex-col gap-3">
-      <h1 className="text-lg tracking-wide lg:text-xl">{title}</h1>
-      <p className="text-md">{description}</p>
-      <div className="flex items-end gap-2 text-sm">
-        <div className="text-muted-foreground flex items-center gap-1">
-          <VideoIcon className="size-4" />
-          <span>
-            {totalVideos} {totalVideos > 1 ? "videos" : "video"}
-          </span>
+  <div className="flex flex-col gap-3">
+    <h1 className="flex items-center gap-2 text-lg tracking-wide lg:text-xl">
+      <p>{title}</p>
+      <Separator orientation="vertical" className="bg-primary/40 h-4 w-2" />
+      <div className="text-muted-foreground flex items-end gap-2 text-sm">
+        <div className="flex items-center gap-1">
+          <EyeIcon className="size-4" />
+          <span>{totalVideos} views</span>
         </div>
       </div>
-    </div>
+    </h1>
+    <p className="text-md">{description}</p>
+  </div>
   );
 }

@@ -8,30 +8,30 @@ import { toast } from "sonner";
 import appConfig from "~/shared/app-config";
 import { Button } from "~/shared/ui/button";
 
-type ShareCatalogProps = {
-  catalogId: string;
-  catalogDescription: string;
-  catalogTitle: string;
+type ShareArchiveProps = {
+  archiveId: string;
+  archiveDescription: string;
+  archiveTitle: string;
 };
 
-export default function ShareCatalog({
-  catalogId,
-  catalogDescription,
-  catalogTitle,
-}: ShareCatalogProps) {
+export default function ShareArchive({
+  archiveId,
+  archiveDescription,
+  archiveTitle,
+}: ShareArchiveProps) {
   const shareData = useMemo(
     () => ({
-      text: catalogDescription,
-      title: catalogTitle,
-      url: `${appConfig.url}/c/${catalogId}`,
+      text: archiveDescription,
+      title: archiveTitle,
+      url: `${appConfig.url}/a/${archiveId}`,
     }),
-    [catalogId, catalogDescription, catalogTitle]
+    [archiveId, archiveDescription, archiveTitle]
   );
 
   const copyLink = () => {
     window.navigator.clipboard.writeText(shareData.url);
     toast("Link copied", {
-      description: "The catalog link has been copied to your clipboard.",
+      description: "The archive link has been copied to your clipboard.",
     });
   };
 
@@ -59,7 +59,7 @@ export default function ShareCatalog({
         onClick={shareLink}
       >
         <ShareIcon className="size-4" />
-        Share catalog
+        Share archive
       </Button>
     );
   }

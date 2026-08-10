@@ -1,10 +1,11 @@
+import { ArchiveIcon } from "lucide-react";
+
 import { toast } from "sonner";
 import useSWR from "swr";
 
 import appConfig from "~/shared/app-config";
 import fetchApi from "~/shared/lib/api/fetch";
 import { Badge } from "~/shared/ui/badge";
-import { ArchiveIcon } from "~/shared/ui/icons";
 import Log from "~/shared/utils/terminal-logger";
 import { getTimeDifference } from "~/shared/utils/time-diff";
 

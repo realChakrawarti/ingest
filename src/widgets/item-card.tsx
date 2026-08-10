@@ -1,6 +1,14 @@
 import { type ReactNode, useState } from "react";
 import Link from "next/link";
-import { Check, Clock, Copy, Globe, GlobeLock, Trash2 } from "lucide-react";
+import {
+  AlertTriangleIcon,
+  Check,
+  Clock,
+  Copy,
+  Globe,
+  GlobeLock,
+  Trash2,
+} from "lucide-react";
 
 import { toast } from "sonner";
 
@@ -24,7 +32,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "~/shared/ui/dialog";
-import { WarningIcon } from "~/shared/ui/icons";
 import { cn } from "~/shared/utils/tailwind-merge";
 
 import JustTip from "~/widgets/just-the-tip";
@@ -172,7 +179,7 @@ function DeleteModal({ children, handleDelete }: DeleteModalProps) {
       <DialogContent>
         <DialogHeader>
           <DialogTitle className="flex items-center justify-center gap-2 md:justify-start">
-            <WarningIcon className="text-primary h-5 w-5" />
+            <AlertTriangleIcon className="text-primary h-5 w-5" />
             Confirm Deletion
           </DialogTitle>
           <DialogDescription className="text-primary/70">

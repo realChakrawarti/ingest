@@ -92,7 +92,7 @@ export default async function PubliCatalog({
       <NextUpdateToast nextUpdate={nextUpdate} />
       <PublicMainContainer className="space-y-4">
         <PublicHeaderTitle>
-          <div className="relative min-h-45 rounded-md px-2 py-1">
+          <div className="relative px-2 py-1">
             <div className="flex flex-col gap-3">
               <BackLink className="size-6" href="/explore/catalogs" />
               <div>

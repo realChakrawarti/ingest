@@ -1,7 +1,7 @@
 import type { KeyedMutator } from "swr";
 
 import { type ChangeEvent, type SubmitEvent, useState } from "react";
-import { Loader2 } from "lucide-react";
+import { Loader2, PlusIcon } from "lucide-react";
 
 import { toast } from "sonner";
 import useSWRMutation from "swr/mutation";
@@ -20,7 +20,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "~/shared/ui/dialog";
-import { PlusIcon } from "~/shared/ui/icons";
 import { Input } from "~/shared/ui/input";
 import { Label } from "~/shared/ui/label";
 import { Switch } from "~/shared/ui/switch";

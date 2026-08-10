@@ -11,7 +11,6 @@ import { cn } from "~/shared/utils/tailwind-merge";
 
 import AppIcon from "../../public/icon.png";
 import { GitHubStargazer } from "./github-stargazers";
-import ThemeToggle from "./theme-toggle";
 
 const Header = () => {
   const isHidden = useScrollTrigger();
@@ -57,20 +56,16 @@ const Header = () => {
                 className="size-7"
               />
               <div
-                className="text-primary/80 hover:text-primary relative self-end text-lg tracking-wide dark:text-white/80 dark:hover:text-white"
+                className="hidden md:block text-primary/80 hover:text-primary relative self-end text-lg tracking-wide dark:text-white/80 dark:hover:text-white"
                 aria-hidden="true"
               >
                 <h2>{appConfig.marketName}</h2>
-                <p className="border-primary/20 absolute -top-2 -right-4 -z-10 rounded-md border-2 mask-clip-content p-0.5 text-[10px] font-semibold tracking-wider">
-                  v{appConfig.version}
-                </p>
               </div>
             </h1>
           </Link>
         </div>
         <div className="flex items-center gap-3">
           <GitHubStargazer owner="realChakrawarti" repo="ingest" />
-          <ThemeToggle />
         </div>
       </div>
     </header>

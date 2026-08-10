@@ -1,13 +1,11 @@
 "use client";
 
+import { SiGmail } from "@icons-pack/react-simple-icons";
+
 import { useAuth } from "~/features/auth/context-provider";
-import {
-  githubProvider,
-  googleProvider,
-} from "~/features/auth/service-providers";
+import { googleProvider } from "~/features/auth/service-providers";
 
 import { Button } from "~/shared/ui/button";
-import { GithubIcon, GoogleIcon } from "~/shared/ui/icons";
 
 import JustTip from "./just-the-tip";
 
@@ -18,32 +16,18 @@ export default function AuthButton() {
     await authenticateWith(googleProvider);
   };
 
-  const signInWithGitHub = async () => {
-    await authenticateWith(githubProvider);
-  };
-
   return (
-    <div className="flex items-center gap-3">
-      <JustTip label="Login with Google">
-        <Button
-          className="flex items-center gap-3"
-          variant="outline"
-          onClick={signInWithGoogle}
-        >
-          <GoogleIcon color="#EA4335" size={24} />
-          <p className="tracking-wider">Google</p>
-        </Button>
-      </JustTip>
-      <JustTip label="Login with GitHub">
-        <Button
-          className="flex items-center gap-3"
-          variant="outline"
-          onClick={signInWithGitHub}
-        >
-          <GithubIcon size={24} />
-          <p className="tracking-wider">GitHub</p>
-        </Button>
-      </JustTip>
-    </div>
+    <JustTip label="Login with Google">
+      <Button
+        className="flex w-max items-center justify-start gap-1 rounded-md border border-l-0 p-0 pr-2"
+        variant="outline"
+        onClick={signInWithGoogle}
+      >
+        <div className="flex h-full items-center justify-center rounded-md bg-[#EA4335] p-2">
+          <SiGmail color="#FFF" className="size-full" />
+        </div>
+        <p className="tracking-wider">Google</p>
+      </Button>
+    </JustTip>
   );
 }

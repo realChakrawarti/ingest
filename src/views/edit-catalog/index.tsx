@@ -2,6 +2,7 @@
 
 import { useEffect } from "react";
 import Link from "next/link";
+import { LinkIcon } from "lucide-react";
 
 import { parseAsString, useQueryState } from "nuqs";
 import { toast } from "sonner";
@@ -12,7 +13,6 @@ import type { ZCatalogByID } from "~/entities/catalogs/models";
 import fetchApi from "~/shared/lib/api/fetch";
 import { Badge } from "~/shared/ui/badge";
 import { Button } from "~/shared/ui/button";
-import { LinkIcon } from "~/shared/ui/icons";
 import { Separator } from "~/shared/ui/separator";
 import { Skeleton } from "~/shared/ui/skeleton";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/shared/ui/tabs";

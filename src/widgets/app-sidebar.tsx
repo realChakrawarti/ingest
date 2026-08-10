@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
@@ -8,29 +7,23 @@ import {
   BookOpen,
   ChevronRight,
   Clock8,
-  Compass,
+  HeartIcon,
   History,
-  LayoutDashboard,
-  PauseIcon,
-  PlayIcon,
-  XIcon,
+  HomeIcon,
+  LogOutIcon,
 } from "lucide-react";
 
 import { useLiveQuery } from "dexie-react-hooks";
 
 import { useAuth } from "~/features/auth/context-provider";
 
-import useInterval from "~/shared/hooks/use-interval";
 import { indexedDB } from "~/shared/lib/api/dexie";
-import { PlayerState } from "~/shared/lib/constants";
-import { Avatar, AvatarFallback, AvatarImage } from "~/shared/ui/avatar";
 import { Button } from "~/shared/ui/button";
 import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
 } from "~/shared/ui/collapsible";
-import { HeartListIcon, LogoutIcon, RefreshIcon } from "~/shared/ui/icons";
 import { Separator } from "~/shared/ui/separator";
 import {
   Sidebar,
@@ -48,13 +41,12 @@ import {
   SidebarMenuSubItem,
   useSidebar,
 } from "~/shared/ui/sidebar";
-import { Skeleton } from "~/shared/ui/skeleton";
 import { cn } from "~/shared/utils/tailwind-merge";
 
-import AuthButton from "./auth-buttons";
 import Feedback from "./feedback";
+import PopupPlayer from "./pop-up-player";
+import ThemeToggle from "./theme-toggle";
 import { UserSettings } from "./user-settings";
-import useActivePlayerRef from "./youtube/use-active-player";
 
 export default function AppSidebar() {
   const { user, logout } = useAuth();
@@ -66,7 +58,7 @@ export default function AppSidebar() {
         <ExploreGroup />
         <Separator />
         <LocalGroup />
-        <PlayerStatus />
+        <PopupPlayer />
       </SidebarContent>
       <SidebarFooter className="px-0">
         <div className="px-2">
@@ -75,110 +67,26 @@ export default function AppSidebar() {
               variant="ghost"
               onClick={logout}
               className={cn(
-                "w-full justify-start px-2",
+                "flex flex-col gap-1",
+                "w-full justify-start px-2 h-auto items-start",
                 "hover:bg-primary/5 hover:text-primary/80"
               )}
             >
-              <LogoutIcon className="mr-2 h-4 w-4" />
-              <p className="tracking-wide">Logout</p>
+              <div className="flex gap-2">
+                <LogOutIcon className="mr-2 h-4 w-4" />
+                <p className="tracking-wide">Logout</p>
+              </div>
+              <p className="text-muted-foreground text-xs">
+                {user?.displayName}
+              </p>
             </Button>
           ) : null}
+          <ThemeToggle />
           <UserSettings />
           <Feedback />
         </div>
       </SidebarFooter>
     </Sidebar>
-  );
-}
-
-function PlayerStatus() {
-  const [playingStatus, setPlayingStatus] = useState<YT.PlayerState>();
-  const [showMiniPlayer, setShowMiniPlayer] = useState(false);
-  const playerRef = useActivePlayerRef();
-  const title = playerRef?.getVideoData().title;
-
-  const pathname = usePathname();
-  function renderControls(status: YT.PlayerState | undefined) {
-    switch (status) {
-      case PlayerState.PLAYING:
-        return (
-          <Button
-            className="clickable flex items-center gap-2"
-            onClick={() => playerRef?.pauseVideo()}
-          >
-            <PauseIcon size={24} />
-            Pause
-          </Button>
-        );
-
-      case PlayerState.PAUSED:
-        return (
-          <Button
-            className="flex items-center gap-2"
-            onClick={() => playerRef?.playVideo()}
-          >
-            <PlayIcon size={24} />
-            Resume
-          </Button>
-        );
-
-      case PlayerState.ENDED:
-        return (
-          <Button
-            className="flex items-center gap-2"
-            onClick={() => playerRef?.playVideo()}
-          >
-            <RefreshIcon size={24} />
-            Start Over
-          </Button>
-        );
-
-      default:
-        return <Skeleton className="h-9 w-12" />;
-    }
-  }
-
-  useEffect(() => {
-    if (playerRef) {
-      const status = playerRef?.getPlayerState();
-      setPlayingStatus(status);
-      setShowMiniPlayer(true);
-    }
-  }, [playerRef]);
-
-  // If the pathname changes, hide the mini player
-  useEffect(() => {
-    setShowMiniPlayer(false);
-  }, [pathname]);
-
-  useInterval(() => {
-    const status = playerRef?.getPlayerState();
-    setPlayingStatus(status);
-  }, 1_000);
-
-  if (!showMiniPlayer) {
-    return null;
-  }
-
-  return (
-    <SidebarGroup>
-      <SidebarGroupContent className="relative">
-        <Button
-          className="clickable absolute top-0.5 right-0.5 hover:bg-transparent"
-          onClick={() => setShowMiniPlayer(false)}
-          size="icon"
-          variant="ghost"
-        >
-          <XIcon />
-        </Button>
-        <div className="bg-primary/40 flex h-max flex-col gap-3 rounded-md p-2">
-          <div className="flex grow justify-start">
-            {renderControls(playingStatus)}
-          </div>
-          <p className="line-clamp-2">{title}</p>
-        </div>
-      </SidebarGroupContent>
-    </SidebarGroup>
   );
 }
 
@@ -200,7 +108,7 @@ function LocalGroup() {
             )}
           >
             <div className="flex items-center gap-2 text-[#18181B] dark:text-white">
-              <HeartListIcon className="mr-2 h-4 w-4" />
+              <HeartIcon className="mr-2 h-4 w-4" />
               <p className="tracking-wide">Favorite Catalogs</p>
             </div>
             <ChevronRight className="ml-auto transition-transform group-data-[state=open]/collapsible:rotate-90" />
@@ -249,70 +157,38 @@ function LocalGroup() {
   );
 }
 
+import { AvatarFallback, AvatarImage, Avatar } from "~/shared/ui/avatar";
+
+import AuthButton from "./auth-buttons";
+
 function UserGroup() {
   const { user } = useAuth();
-
-  const pathname = usePathname();
-  const { setOpenMobile } = useSidebar();
-
-  const isDashboardActive = pathname.includes("dashboard");
-
-  if (!user) {
-    return (
-      <SidebarHeader className="h-14 justify-center border-b px-4">
-        <AuthButton />
-      </SidebarHeader>
-    );
-  }
   return (
     <>
       <SidebarHeader className="h-14 justify-center border-b px-4">
-        <div className="flex items-center gap-2">
-          <Avatar className="size-8 rounded-lg">
-            <AvatarImage
-              src={
-                user?.photoURL ||
-                `https://ui-avatars.com/api/?name=${user?.displayName}&background=random&size=96`
-              }
-              alt={user?.displayName || ""}
-            />
-            <AvatarFallback>{user?.displayName || ""}</AvatarFallback>
-          </Avatar>
-          <p>{user?.displayName}</p>
-        </div>
+        {user ? (
+          <Link href={"/dashboard"}>
+            <Button
+              variant="outline"
+              className="flex w-auto items-center gap-1 rounded-md border border-l-0 p-0 pr-2"
+            >
+              <Avatar className="size-full w-auto rounded-md">
+                <AvatarImage
+                  src={
+                    user?.photoURL ||
+                    `https://ui-avatars.com/api/?name=${user?.displayName}&background=random&size=96`
+                  }
+                  alt={user?.displayName || ""}
+                />
+                <AvatarFallback>{user?.displayName || ""}</AvatarFallback>
+              </Avatar>
+              <p>Dashboard</p>
+            </Button>
+          </Link>
+        ) : (
+          <AuthButton />
+        )}
       </SidebarHeader>
-      <SidebarGroup>
-        <SidebarContent>
-          <SidebarMenu>
-            <SidebarMenuItem>
-              <SidebarMenuButton
-                onClick={() => setOpenMobile(false)}
-                className={cn(
-                  "px-0",
-                  "data-[active=true]:bg-primary/20 dark:data-[active=true]:text-white",
-                  "data-[state=open]:hover:bg-transparent",
-                  "hover:bg-transparent"
-                )}
-                asChild
-                isActive={isDashboardActive}
-              >
-                <Link href={"/dashboard"}>
-                  <Button
-                    variant="ghost"
-                    className={cn(
-                      "w-full justify-start px-2",
-                      "hover:bg-primary/5 hover:text-primary/80"
-                    )}
-                  >
-                    <LayoutDashboard className="mr-2 h-4 w-4" />
-                    <p className="tracking-wide">Dashboard</p>
-                  </Button>
-                </Link>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-          </SidebarMenu>
-        </SidebarContent>
-      </SidebarGroup>
     </>
   );
 }
@@ -323,7 +199,6 @@ function ExploreGroup() {
     useLiveQuery(() => indexedDB["watch-later"].toArray()) ?? [];
 
   const exploreItems = [
-    { icon: Compass, label: "Explore", path: "/explore", shortPath: "/e/" },
     {
       icon: BookOpen,
       label: "Catalogs",
@@ -357,6 +232,31 @@ function ExploreGroup() {
     <SidebarGroup>
       <SidebarGroupContent>
         <SidebarMenu>
+          <SidebarMenuItem>
+            <SidebarMenuButton
+              onClick={() => setOpenMobile(false)}
+              className={cn(
+                "px-0",
+                "data-[active=true]:bg-primary/20 dark:data-[active=true]:text-white",
+                "data-[state=open]:hover:bg-transparent",
+                "hover:bg-transparent"
+              )}
+              asChild
+            >
+              <Link className="hover-shift" href={"/"}>
+                <Button
+                  variant="ghost"
+                  className={cn(
+                    "w-full justify-start px-2",
+                    "hover:bg-primary/5 hover:text-primary/80"
+                  )}
+                >
+                  <HomeIcon className="mr-2 h-4 w-4" />
+                  <p className="tracking-wide">Home</p>
+                </Button>
+              </Link>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
           {exploreItems.map((item) => {
             const isActive =
               pathname === item.path || pathname.includes(item.shortPath);

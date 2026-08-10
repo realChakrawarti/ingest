@@ -1,8 +1,9 @@
+import { DeleteIcon, MoreVerticalIcon } from "lucide-react";
+
 import type { ZVideoMetadataCompatible } from "~/entities/catalogs/models";
 
 import type { YouTubeCardOptions } from "~/shared/types-schema/types";
 import { Button } from "~/shared/ui/button";
-import { DeleteIcon, ThreeDotIcon } from "~/shared/ui/icons";
 import { Popover, PopoverContent, PopoverTrigger } from "~/shared/ui/popover";
 
 import { ChannelMeta } from "~/widgets/youtube/components";
@@ -48,7 +49,7 @@ export default function VideoCard({ video, removeVideo }: VideoCardProps) {
                 size="icon"
                 className="absolute top-3 right-0 h-6 w-6"
               >
-                <ThreeDotIcon className="h-6 w-6" />
+                <MoreVerticalIcon className="h-6 w-6" />
                 <span className="sr-only">Open menu</span>
               </Button>
             </div>

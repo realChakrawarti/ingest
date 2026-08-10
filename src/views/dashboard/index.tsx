@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Trash2 } from "lucide-react";
+import { MoreVerticalIcon, Trash2 } from "lucide-react";
 
 import { toast } from "sonner";
 import useSWR from "swr";
@@ -8,7 +8,6 @@ import useSWRMutation from "swr/mutation";
 import { useLocalUserSettings } from "~/shared/hooks/use-local-user-settings";
 import fetchApi from "~/shared/lib/api/fetch";
 import { Button } from "~/shared/ui/button";
-import { ThreeDotIcon } from "~/shared/ui/icons";
 import { Popover, PopoverContent, PopoverTrigger } from "~/shared/ui/popover";
 import { Separator } from "~/shared/ui/separator";
 import { Skeleton } from "~/shared/ui/skeleton";
@@ -97,7 +96,7 @@ export default function Dashboard() {
               <Popover open={dropdownOpen} onOpenChange={setDropdownOpen}>
                 <PopoverTrigger asChild>
                   <Button variant="ghost" size="icon" className="size-6">
-                    <ThreeDotIcon className="h-6 w-6" />
+                    <MoreVerticalIcon className="h-6 w-6" />
                     <span className="sr-only">Open menu</span>
                   </Button>
                 </PopoverTrigger>

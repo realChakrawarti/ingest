@@ -1,5 +1,7 @@
 "use client";
 
+import { BookOpenIcon } from "lucide-react";
+
 import { toast } from "sonner";
 import useSWR from "swr";
 
@@ -8,7 +10,6 @@ import type { ZCatalogByUser } from "~/entities/catalogs/models";
 import appConfig from "~/shared/app-config";
 import fetchApi from "~/shared/lib/api/fetch";
 import { Badge } from "~/shared/ui/badge";
-import { BookOpenIcon } from "~/shared/ui/icons";
 import Log from "~/shared/utils/terminal-logger";
 import { getTimeDifference } from "~/shared/utils/time-diff";
 

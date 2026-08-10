@@ -1,7 +1,8 @@
+import { DeleteIcon } from "lucide-react";
+
 import type { ZCatalogSubreddit } from "~/entities/catalogs/models";
 
 import { Button } from "~/shared/ui/button";
-import { DeleteIcon } from "~/shared/ui/icons";
 import {
   Table,
   TableBody,

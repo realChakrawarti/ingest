@@ -1,8 +1,8 @@
 set shell := ["cmd.exe", "/c"]
 
 NODE_PM := "pnpm"
-FIREBASE_START := "firebase --project ingest-dev emulators:start"
-FIREBASE_EXPORT := "firebase --project ingest-dev emulators:export seed"
+FIREBASE_START := "firebase --project ingest-outbuild emulators:start"
+FIREBASE_EXPORT := "firebase --project ingest-outbuild emulators:export seed"
 
 # list the available recipes
 [default]

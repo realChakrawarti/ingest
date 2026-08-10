@@ -94,7 +94,7 @@ export default function WatchHistory() {
     <PublicMainContainer>
       <PublicHeaderTitle className="flex justify-between">
         <div className="flex items-center gap-2">
-          <BackLink href="/explore" />
+          <BackLink href="/" />
           <h1 className="text-lg tracking-wide lg:text-xl">Watch history</h1>
         </div>
         <Button

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { MoreVerticalIcon } from "lucide-react";
 
 import useSWR from "swr";
 
@@ -9,7 +10,6 @@ import type { ZVideoMetadataCompatible } from "~/entities/catalogs/models";
 import { useIsMobile } from "~/shared/hooks/use-mobile";
 import type { YouTubeCardOptions } from "~/shared/types-schema/types";
 import { Button } from "~/shared/ui/button";
-import { ThreeDotIcon } from "~/shared/ui/icons";
 import { Popover, PopoverContent, PopoverTrigger } from "~/shared/ui/popover";
 import { Sheet, SheetContent, SheetTrigger } from "~/shared/ui/sheet";
 
@@ -92,7 +92,7 @@ export default function ShowCardOption({
               size="icon"
               className="absolute top-3 right-0 size-6"
             >
-              <ThreeDotIcon className="size-6" />
+              <MoreVerticalIcon className="size-6" />
               <span className="sr-only">Open menu</span>
             </Button>
           </SheetTrigger>
@@ -128,7 +128,7 @@ export default function ShowCardOption({
               size="icon"
               className="absolute top-3 right-0 size-6"
             >
-              <ThreeDotIcon className="size-6" />
+              <MoreVerticalIcon className="size-6" />
               <span className="sr-only">Open menu</span>
             </Button>
           </PopoverTrigger>

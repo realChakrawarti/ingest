@@ -1,6 +1,12 @@
 "use client";
 
-import { Clock8, HardDriveDownloadIcon } from "lucide-react";
+import {
+  Clock8,
+  DeleteIcon,
+  HardDriveDownloadIcon,
+  InfoIcon,
+  LinkIcon,
+} from "lucide-react";
 
 import { useLiveQuery } from "dexie-react-hooks";
 import Linkify from "linkify-react";
@@ -13,7 +19,6 @@ import { indexedDB } from "~/shared/lib/api/dexie";
 import type { YouTubeCardOptions } from "~/shared/types-schema/types";
 import { Avatar, AvatarFallback, AvatarImage } from "~/shared/ui/avatar";
 import { Button } from "~/shared/ui/button";
-import { DeleteIcon, InfoIcon, LinkIcon } from "~/shared/ui/icons";
 import {
   Sheet,
   SheetContent,

@@ -12,6 +12,8 @@ import {
 import YouTubeCard from "~/widgets/youtube/youtube-card";
 
 import ArchiveInformation from "./archive-information";
+import { Separator } from "~/shared/ui/separator";
+import ShareArchive from "./share-archive";
 
 export default async function PublicArchive({
   archiveId,
@@ -32,24 +34,29 @@ export default async function PublicArchive({
   return (
     <PublicMainContainer className="space-y-4">
       <PublicHeaderTitle>
-        <div className="border-primary/40 shadow-primary/20 relative min-h-45 rounded-md border p-3 shadow-md">
-          <div className="flex h-full items-start justify-between">
-            <div className="flex flex-col">
-              <BackLink className="size-6" href="/explore/archives" />
-              <div className="mt-4">
-                <ArchiveInformation
-                  title={archiveTitle}
-                  description={archiveDescription}
-                  totalVideos={archiveData?.videos.length ?? 0}
-                />
-              </div>
+        <div className="relative px-2 py-1">
+        <div className="flex flex-col">
+          <BackLink className="size-6" href="/explore/archives" />
+          <div className="mt-4">
+            <ArchiveInformation
+              title={archiveTitle}
+              description={archiveDescription}
+              totalVideos={archiveData?.videos.length ?? 0}
+            />
+          </div>
+          <div className="mt-3">
+            <div className="flex justify-start gap-4 md:justify-end">
+            	<ShareArchive archiveId={archiveId} archiveDescription={archiveDescription} archiveTitle={archiveTitle} />
             </div>
           </div>
+        </div>
           <div className="absolute top-3 right-3 text-sm">
             {getTimeDifference(archiveUpdatedAt)[1]} ago
           </div>
         </div>
       </PublicHeaderTitle>
+
+      <Separator />
 
       {archiveData?.videos.length ? (
         <ItemSection>
