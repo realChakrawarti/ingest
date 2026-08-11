@@ -8,6 +8,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/shared/ui/tabs";
 import BackLink from "~/widgets/back-link";
 import FooterBlur from "~/widgets/footer-blur";
 import { ItemSection } from "~/widgets/item-section";
+import PopupPlayer from "~/widgets/pop-up-player";
 import {
   PublicHeaderTitle,
   PublicMainContainer,
@@ -89,6 +90,7 @@ export default async function PubliCatalog({
 
   return (
     <>
+      <PopupPlayer />
       <NextUpdateToast nextUpdate={nextUpdate} />
       <PublicMainContainer className="space-y-4">
         <PublicHeaderTitle>

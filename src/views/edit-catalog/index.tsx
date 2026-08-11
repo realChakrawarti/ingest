@@ -280,65 +280,32 @@ export default function EditCatalog({ catalogId }: { catalogId: string }) {
         </div>
 
         <TabsContent value="youtube">
-          {savedChannels?.length ? (
-            <div className="space-y-3">
-              <div className="flex items-center justify-between">
-                <h2 className="text-xl font-normal tracking-wide">
-                  Saved Channels
-                </h2>
-                <Badge
-                  className="font-normal tracking-wide"
-                  variant="secondary"
-                >
-                  {savedChannels?.length} of 15 channels added
-                </Badge>
-              </div>
-              <ChannelTable
-                channels={savedChannels}
-                handleDelete={handleDeleteSaved}
-              />
-            </div>
-          ) : null}
-          {savedPlaylists?.length ? (
-            <div className="space-y-3">
-              <div className="flex items-center justify-between">
-                <h2 className="text-xl font-normal tracking-wide">
-                  Saved Playlists
-                </h2>
-                <Badge
-                  className="font-normal tracking-wide"
-                  variant="secondary"
-                >
-                  {savedPlaylists?.length} of 15 playlists added
-                </Badge>
-              </div>
-              <PlaylistTable
-                playlists={savedPlaylists}
-                handleDelete={handleDeleteSavedPlaylist}
-              />
-            </div>
-          ) : null}
+          <div className="space-y-3">
+            <h2 className="text-xl font-normal tracking-wide">
+              Saved Channels
+            </h2>
+
+            <ChannelTable
+              channels={savedChannels}
+              handleDelete={handleDeleteSaved}
+            />
+          </div>
+
+          <div className="space-y-3">
+            <h2 className="text-xl font-normal tracking-wide">
+              Saved Playlists
+            </h2>
+            <PlaylistTable
+              playlists={savedPlaylists}
+              handleDelete={handleDeleteSavedPlaylist}
+            />
+          </div>
         </TabsContent>
         <TabsContent value="reddit">
-          {savedSubreddits?.length ? (
-            <div className="space-y-3">
-              <div className="flex items-center justify-between">
-                <h2 className="text-xl font-normal tracking-wide">
-                  Saved Subreddits
-                </h2>
-                <Badge
-                  className="font-normal tracking-wide"
-                  variant="secondary"
-                >
-                  {savedSubreddits?.length} of 10 subreddits added
-                </Badge>
-              </div>
-              <SubredditTable
-                subreddits={savedSubreddits}
-                handleDelete={handleDeleteSavedSubreddit}
-              />
-            </div>
-          ) : null}
+          <SubredditTable
+            subreddits={savedSubreddits}
+            handleDelete={handleDeleteSavedSubreddit}
+          />
         </TabsContent>
         <TabsContent value="podcast">
           <PodcastTable

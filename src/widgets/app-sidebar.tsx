@@ -44,7 +44,6 @@ import {
 import { cn } from "~/shared/utils/tailwind-merge";
 
 import Feedback from "./feedback";
-import PopupPlayer from "./pop-up-player";
 import ThemeToggle from "./theme-toggle";
 import { UserSettings } from "./user-settings";
 
@@ -58,7 +57,6 @@ export default function AppSidebar() {
         <ExploreGroup />
         <Separator />
         <LocalGroup />
-        <PopupPlayer />
       </SidebarContent>
       <SidebarFooter className="px-0">
         <div className="px-2">

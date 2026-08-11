@@ -27,7 +27,9 @@ export default function PlaylistTable({
 }: PlaylistTableProps) {
   return (
     <Table>
-      <TableCaption>A list of playlists.</TableCaption>
+      <TableCaption>
+        <b>{playlists?.length} of 15</b> playlists added.
+      </TableCaption>
       <TableHeader>
         <TableRow>
           <TableHead className="max-w-12.5">SL No</TableHead>

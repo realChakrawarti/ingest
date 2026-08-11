@@ -27,7 +27,9 @@ export default function SubredditTable({
 }: SubredditTableProps) {
   return (
     <Table>
-      <TableCaption>A list of subreddits.</TableCaption>
+      <TableCaption>
+        <b>{subreddits?.length} of 10</b> subreddits added.
+      </TableCaption>
       <TableHeader>
         <TableRow>
           <TableHead className="max-w-12.5">SL No</TableHead>

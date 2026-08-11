@@ -1,4 +1,4 @@
-import { EyeIcon, VideoIcon } from "lucide-react";
+import { EyeIcon } from "lucide-react";
 import { Separator } from "~/shared/ui/separator";
 
 type ArchiveInformationProps = {

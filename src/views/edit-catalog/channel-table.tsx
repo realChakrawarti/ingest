@@ -25,7 +25,9 @@ function ChannelTable({
 }) {
   return (
     <Table>
-      <TableCaption>A list of channels.</TableCaption>
+      <TableCaption>
+        <b>{channels?.length} of 15</b> channels added.
+      </TableCaption>
       <TableHeader>
         <TableRow>
           <TableHead className="max-w-12.5">SL No</TableHead>

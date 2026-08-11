@@ -31,7 +31,7 @@ export default function PodcastTable({
       <TableHeader>
         <TableRow>
           <TableHead className="max-w-12.5">SL No</TableHead>
-          <TableHead>Podcast title</TableHead>
+          <TableHead>Podcast Title</TableHead>
           <TableHead>Podcast ID</TableHead>
           <TableHead />
         </TableRow>
