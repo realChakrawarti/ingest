@@ -2,8 +2,9 @@
 
 import { useEffect } from "react";
 import Link from "next/link";
-import { LinkIcon } from "lucide-react";
+import { LinkIcon, PodcastIcon } from "lucide-react";
 
+import { SiReddit, SiYoutube } from "@icons-pack/react-simple-icons";
 import { parseAsString, useQueryState } from "nuqs";
 import { toast } from "sonner";
 import useSWR from "swr";
@@ -13,6 +14,15 @@ import type { ZCatalogByID } from "~/entities/catalogs/models";
 import fetchApi from "~/shared/lib/api/fetch";
 import { Badge } from "~/shared/ui/badge";
 import { Button } from "~/shared/ui/button";
+import {
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from "~/shared/ui/empty";
+import { Marker, MarkerContent } from "~/shared/ui/marker";
 import { Separator } from "~/shared/ui/separator";
 import { Skeleton } from "~/shared/ui/skeleton";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/shared/ui/tabs";
@@ -34,7 +44,6 @@ import UpdateCatalogMeta from "./update-catalog-meta";
 
 // TODO: Instead of table for rendering saved and unsaved channels/playlist, consider using cards
 // This will simplify the UI/UX. Against each unsaved, add a button to saved.
-// Make a separate endpoint for updating catalog's title and description
 
 export default function EditCatalog({ catalogId }: { catalogId: string }) {
   const {
@@ -268,22 +277,39 @@ export default function EditCatalog({ catalogId }: { catalogId: string }) {
             <TabsTrigger value="reddit">Subreddit</TabsTrigger>
             <TabsTrigger value="podcast">Podcast</TabsTrigger>
           </TabsList>
-          {type === "youtube" ? (
+          {type === "youtube" &&
+          (savedChannels.length || savedPlaylists.length) ? (
             <AddChannelPlaylistDialog revalidateCatalog={revalidateCatalog} />
           ) : null}
-          {type === "reddit" ? (
+          {type === "reddit" && savedSubreddits.length ? (
             <AddSubredditDialog revalidateCatalog={revalidateCatalog} />
           ) : null}
-          {type === "podcast" ? (
+          {type === "podcast" && savedPodcasts.length ? (
             <AddPodcastDialog revalidateCatalog={revalidateCatalog} />
           ) : null}
         </div>
 
         <TabsContent value="youtube">
           <div className="space-y-3">
-            <h2 className="text-xl font-normal tracking-wide">
-              Saved Channels
-            </h2>
+            {savedChannels?.length === 0 && savedPlaylists.length === 0 ? (
+              <Empty>
+                <EmptyHeader>
+                  <EmptyMedia variant="default">
+                    <SiYoutube className="size-12" />
+                  </EmptyMedia>
+                  <EmptyTitle>No channel or playlist</EmptyTitle>
+                  <EmptyDescription>
+                    You haven&apos;t added any channel or playlist yet. Get
+                    started by adding a channel or playlist.
+                  </EmptyDescription>
+                </EmptyHeader>
+                <EmptyContent className="flex-row justify-center gap-2">
+                  <AddChannelPlaylistDialog
+                    revalidateCatalog={revalidateCatalog}
+                  />
+                </EmptyContent>
+              </Empty>
+            ) : null}
 
             <ChannelTable
               channels={savedChannels}
@@ -291,23 +317,60 @@ export default function EditCatalog({ catalogId }: { catalogId: string }) {
             />
           </div>
 
-          <div className="space-y-3">
-            <h2 className="text-xl font-normal tracking-wide">
-              Saved Playlists
-            </h2>
-            <PlaylistTable
-              playlists={savedPlaylists}
-              handleDelete={handleDeleteSavedPlaylist}
-            />
-          </div>
+          {savedChannels.length && savedPlaylists.length ? (
+            <Marker className="my-8" variant="separator">
+              <MarkerContent className="border-border rounded-md border px-3 py-2">
+                Playlists
+              </MarkerContent>
+            </Marker>
+          ) : null}
+
+          <PlaylistTable
+            playlists={savedPlaylists}
+            handleDelete={handleDeleteSavedPlaylist}
+          />
         </TabsContent>
         <TabsContent value="reddit">
+          {savedSubreddits.length === 0 ? (
+            <Empty>
+              <EmptyHeader>
+                <EmptyMedia variant="default">
+                  <SiReddit className="size-12" />
+                </EmptyMedia>
+                <EmptyTitle>No subreddit</EmptyTitle>
+                <EmptyDescription>
+                  You haven&apos;t added any subreddit yet. Get started by
+                  adding your first subreddit.
+                </EmptyDescription>
+              </EmptyHeader>
+              <EmptyContent className="flex-row justify-center gap-2">
+                <AddSubredditDialog revalidateCatalog={revalidateCatalog} />
+              </EmptyContent>
+            </Empty>
+          ) : null}
           <SubredditTable
             subreddits={savedSubreddits}
             handleDelete={handleDeleteSavedSubreddit}
           />
         </TabsContent>
         <TabsContent value="podcast">
+          {savedPodcasts.length === 0 ? (
+            <Empty>
+              <EmptyHeader>
+                <EmptyMedia variant="default">
+                  <PodcastIcon className="size-12" />
+                </EmptyMedia>
+                <EmptyTitle>No podcast</EmptyTitle>
+                <EmptyDescription>
+                  You haven&apos;t added any podcast yet. Get started by adding
+                  your first podcast.
+                </EmptyDescription>
+              </EmptyHeader>
+              <EmptyContent className="flex-row justify-center gap-2">
+                <AddPodcastDialog revalidateCatalog={revalidateCatalog} />
+              </EmptyContent>
+            </Empty>
+          ) : null}
           <PodcastTable
             podcasts={savedPodcasts}
             handleDelete={handleDeleteSavedPodcast}

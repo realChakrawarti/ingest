@@ -1,4 +1,4 @@
-import { DeleteIcon } from "lucide-react";
+import { Trash2Icon } from "lucide-react";
 
 import type { ZCatalogChannel } from "~/entities/catalogs/models";
 
@@ -23,6 +23,10 @@ function ChannelTable({
   channels: ZCatalogChannel[];
   handleDelete: (id: string) => Promise<void>;
 }) {
+  if (!channels.length) {
+    return null;
+  }
+
   return (
     <Table>
       <TableCaption>
@@ -37,65 +41,54 @@ function ChannelTable({
         </TableRow>
       </TableHeader>
       <TableBody>
-        {channels?.length === 0 ? (
-          <TableRow>
-            <TableCell colSpan={4} className="h-4 text-center">
-              No channel added yet.
-            </TableCell>
-          </TableRow>
-        ) : (
-          channels?.map((catalogChannel, idx: number) => {
-            const { channelHandle, channelId, channelLogo, channelTitle } =
-              catalogChannel;
-            return (
-              <TableRow key={channelId}>
-                <TableCell>{idx + 1}</TableCell>
-                <TableCell>
-                  <div className="flex items-center gap-2">
-                    {channelLogo ? (
-                      <img
-                        src={channelLogo}
-                        alt={channelTitle}
-                        className="size-6 rounded-lg"
-                      />
-                    ) : null}
+        {channels?.map((catalogChannel, idx: number) => {
+          const { channelHandle, channelId, channelLogo, channelTitle } =
+            catalogChannel;
+          return (
+            <TableRow key={channelId}>
+              <TableCell>{idx + 1}</TableCell>
+              <TableCell>
+                <div className="flex items-center gap-2">
+                  {channelLogo ? (
+                    <img
+                      src={channelLogo}
+                      alt={channelTitle}
+                      className="size-6 rounded-lg"
+                    />
+                  ) : null}
 
-                    {channelHandle ? (
-                      <OutLink
-                        href={`https://www.youtube.com/${channelHandle}`}
-                      >
-                        <p>{channelTitle}</p>
-                      </OutLink>
-                    ) : (
+                  {channelHandle ? (
+                    <OutLink href={`https://www.youtube.com/${channelHandle}`}>
                       <p>{channelTitle}</p>
-                    )}
-                  </div>
-                </TableCell>
-                <TableCell>{channelId}</TableCell>
-                <TableCell>
-                  <DeleteModal
-                    label={
-                      <>
-                        This action cannot be undone. This will permanently
-                        remove{" "}
-                        <span className="text-primary">{channelTitle}</span>{" "}
-                        channel from the catalog?
-                      </>
-                    }
-                    onDelete={() => handleDelete(channelId)}
-                  >
-                    <Button variant="outline">
-                      <DeleteIcon
-                        size={24}
-                        className="cursor-pointer text-red-700 hover:text-red-500"
-                      />
-                    </Button>
-                  </DeleteModal>
-                </TableCell>
-              </TableRow>
-            );
-          })
-        )}
+                    </OutLink>
+                  ) : (
+                    <p>{channelTitle}</p>
+                  )}
+                </div>
+              </TableCell>
+              <TableCell>{channelId}</TableCell>
+              <TableCell>
+                <DeleteModal
+                  label={
+                    <>
+                      This action cannot be undone. This will permanently remove{" "}
+                      <span className="text-primary">{channelTitle}</span>{" "}
+                      channel from the catalog?
+                    </>
+                  }
+                  onDelete={() => handleDelete(channelId)}
+                >
+                  <Button variant="outline">
+                    <Trash2Icon
+                      size={24}
+                      className="cursor-pointer text-red-700 hover:text-red-500"
+                    />
+                  </Button>
+                </DeleteModal>
+              </TableCell>
+            </TableRow>
+          );
+        })}
       </TableBody>
     </Table>
   );

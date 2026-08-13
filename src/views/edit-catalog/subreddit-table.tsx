@@ -1,4 +1,4 @@
-import { DeleteIcon } from "lucide-react";
+import { Trash2Icon } from "lucide-react";
 
 import type { ZCatalogSubreddit } from "~/entities/catalogs/models";
 
@@ -25,6 +25,10 @@ export default function SubredditTable({
   subreddits,
   handleDelete,
 }: SubredditTableProps) {
+  if (!subreddits.length) {
+    return null;
+  }
+
   return (
     <Table>
       <TableCaption>
@@ -39,69 +43,60 @@ export default function SubredditTable({
         </TableRow>
       </TableHeader>
       <TableBody>
-        {subreddits?.length === 0 ? (
-          <TableRow>
-            <TableCell colSpan={4} className="h-4 text-center">
-              No subreddit added yet.
-            </TableCell>
-          </TableRow>
-        ) : (
-          subreddits?.map((subreddit, idx: number) => {
-            const {
-              subredditName,
-              subredditIcon,
-              subredditUrl,
-              subredditTitle,
-              subredditId,
-            } = subreddit;
-            return (
-              <TableRow key={subredditId}>
-                <TableCell>{idx + 1}</TableCell>
-                <TableCell>
-                  <div className="flex items-center gap-2">
-                    {subredditIcon ? (
-                      <img
-                        src={subredditIcon}
-                        alt={subredditUrl}
-                        className="size-6 rounded-lg"
-                      />
-                    ) : null}
-                    {subredditUrl ? (
-                      <OutLink href={`https://www.reddit.com${subredditUrl}`}>
-                        <p>{subredditTitle}</p>
-                      </OutLink>
-                    ) : (
+        {subreddits?.map((subreddit, idx: number) => {
+          const {
+            subredditName,
+            subredditIcon,
+            subredditUrl,
+            subredditTitle,
+            subredditId,
+          } = subreddit;
+          return (
+            <TableRow key={subredditId}>
+              <TableCell>{idx + 1}</TableCell>
+              <TableCell>
+                <div className="flex items-center gap-2">
+                  {subredditIcon ? (
+                    <img
+                      src={subredditIcon}
+                      alt={subredditUrl}
+                      className="size-6 rounded-lg"
+                    />
+                  ) : null}
+                  {subredditUrl ? (
+                    <OutLink href={`https://www.reddit.com${subredditUrl}`}>
                       <p>{subredditTitle}</p>
-                    )}
-                  </div>
-                </TableCell>
-                <TableCell>
-                  r/{subredditName} - ({subredditId})
-                </TableCell>
-                <TableCell>
-                  <DeleteModal
-                    label={
-                      <>
-                        This action cannot be undone. This will permanently
-                        remove{" "}
-                        <span className="text-primary">{subredditTitle}</span>{" "}
-                        subreddit from the catalog?
-                      </>
-                    }
-                    onDelete={() => handleDelete(subredditId)}
-                  >
-                    <Button variant="outline">
-                      <DeleteIcon
-                        size={24}
-                        className="cursor-pointer text-red-700 hover:text-red-500"
-                      />
-                    </Button>
-                  </DeleteModal>
-                </TableCell>
-              </TableRow>
-            );
-          })
-        )}
+                    </OutLink>
+                  ) : (
+                    <p>{subredditTitle}</p>
+                  )}
+                </div>
+              </TableCell>
+              <TableCell>
+                r/{subredditName} - ({subredditId})
+              </TableCell>
+              <TableCell>
+                <DeleteModal
+                  label={
+                    <>
+                      This action cannot be undone. This will permanently remove{" "}
+                      <span className="text-primary">{subredditTitle}</span>{" "}
+                      subreddit from the catalog?
+                    </>
+                  }
+                  onDelete={() => handleDelete(subredditId)}
+                >
+                  <Button variant="outline">
+                    <Trash2Icon
+                      size={24}
+                      className="cursor-pointer text-red-700 hover:text-red-500"
+                    />
+                  </Button>
+                </DeleteModal>
+              </TableCell>
+            </TableRow>
+          );
+        })}
       </TableBody>
     </Table>
   );

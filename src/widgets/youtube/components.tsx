@@ -2,7 +2,7 @@
 
 import {
   Clock8,
-  DeleteIcon,
+  Trash2Icon,
   HardDriveDownloadIcon,
   InfoIcon,
   LinkIcon,
@@ -227,7 +227,7 @@ function RemoveWatchLater({
         )}
         onClick={() => removeFromWatchLater(videoId)}
       >
-        <DeleteIcon className={cn(isMobile ? "size-6" : "size-4")} />
+        <Trash2Icon className={cn(isMobile ? "size-6" : "size-4")} />
         Remove from watch later
       </Button>
     );

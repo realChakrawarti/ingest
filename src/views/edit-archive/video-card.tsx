@@ -1,4 +1,4 @@
-import { DeleteIcon, MoreVerticalIcon } from "lucide-react";
+import { Trash2Icon, MoreVerticalIcon } from "lucide-react";
 
 import type { ZVideoMetadataCompatible } from "~/entities/catalogs/models";
 
@@ -20,7 +20,7 @@ function RemoveVideo({
         className="hover:bg-accent flex w-full cursor-pointer justify-start gap-2 rounded-lg p-2 text-xs"
         onClick={() => removeVideo(videoId)}
       >
-        <DeleteIcon className="mr-2 h-4 w-4" />
+        <Trash2Icon className="mr-2 h-4 w-4" />
         Remove video
       </Button>
     );

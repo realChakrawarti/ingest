@@ -1,4 +1,4 @@
-import { DeleteIcon } from "lucide-react";
+import { Trash2Icon } from "lucide-react";
 
 import type { ZCatalogPlaylist } from "~/entities/catalogs/models";
 
@@ -25,6 +25,10 @@ export default function PlaylistTable({
   playlists,
   handleDelete,
 }: PlaylistTableProps) {
+  if (!playlists.length) {
+    return null;
+  }
+
   return (
     <Table>
       <TableCaption>
@@ -40,70 +44,59 @@ export default function PlaylistTable({
         </TableRow>
       </TableHeader>
       <TableBody>
-        {playlists?.length === 0 ? (
-          <TableRow>
-            <TableCell colSpan={5} className="h-4 text-center">
-              No playlist added yet.
-            </TableCell>
-          </TableRow>
-        ) : (
-          playlists?.map((playlist, idx: number) => {
-            const {
-              playlistTitle,
-              playlistId,
-              channelLogo,
-              channelTitle,
-              channelHandle,
-            } = playlist;
-            return (
-              <TableRow key={playlist?.playlistId}>
-                <TableCell>{idx + 1}</TableCell>
-                <TableCell>{playlistTitle}</TableCell>
-                <TableCell>{playlistId}</TableCell>
-                <TableCell>
-                  <div className="flex items-center gap-2">
-                    {channelLogo ? (
-                      <img
-                        src={channelLogo}
-                        alt={channelTitle}
-                        className="size-6 rounded-lg"
-                      />
-                    ) : null}
-                    {channelHandle ? (
-                      <OutLink
-                        href={`https://www.youtube.com/${channelHandle}`}
-                      >
-                        <p>{channelTitle}</p>
-                      </OutLink>
-                    ) : (
+        {playlists?.map((playlist, idx: number) => {
+          const {
+            playlistTitle,
+            playlistId,
+            channelLogo,
+            channelTitle,
+            channelHandle,
+          } = playlist;
+          return (
+            <TableRow key={playlist?.playlistId}>
+              <TableCell>{idx + 1}</TableCell>
+              <TableCell>{playlistTitle}</TableCell>
+              <TableCell>{playlistId}</TableCell>
+              <TableCell>
+                <div className="flex items-center gap-2">
+                  {channelLogo ? (
+                    <img
+                      src={channelLogo}
+                      alt={channelTitle}
+                      className="size-6 rounded-lg"
+                    />
+                  ) : null}
+                  {channelHandle ? (
+                    <OutLink href={`https://www.youtube.com/${channelHandle}`}>
                       <p>{channelTitle}</p>
-                    )}
-                  </div>
-                </TableCell>
-                <TableCell>
-                  <DeleteModal
-                    label={
-                      <>
-                        This action cannot be undone. This will permanently
-                        remove{" "}
-                        <span className="text-primary">{playlistTitle}</span>{" "}
-                        playlist from the catalog?
-                      </>
-                    }
-                    onDelete={() => handleDelete(playlistId)}
-                  >
-                    <Button variant="outline">
-                      <DeleteIcon
-                        size={24}
-                        className="cursor-pointer text-red-700 hover:text-red-500"
-                      />
-                    </Button>
-                  </DeleteModal>
-                </TableCell>
-              </TableRow>
-            );
-          })
-        )}
+                    </OutLink>
+                  ) : (
+                    <p>{channelTitle}</p>
+                  )}
+                </div>
+              </TableCell>
+              <TableCell>
+                <DeleteModal
+                  label={
+                    <>
+                      This action cannot be undone. This will permanently remove{" "}
+                      <span className="text-primary">{playlistTitle}</span>{" "}
+                      playlist from the catalog?
+                    </>
+                  }
+                  onDelete={() => handleDelete(playlistId)}
+                >
+                  <Button variant="outline">
+                    <Trash2Icon
+                      size={24}
+                      className="cursor-pointer text-red-700 hover:text-red-500"
+                    />
+                  </Button>
+                </DeleteModal>
+              </TableCell>
+            </TableRow>
+          );
+        })}
       </TableBody>
     </Table>
   );

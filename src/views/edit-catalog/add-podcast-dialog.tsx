@@ -5,7 +5,7 @@ import type { KeyedMutator } from "swr";
 import type { ChangeEvent } from "react";
 import { useState } from "react";
 import { useParams } from "next/navigation";
-import { Check, Loader2, Podcast, Search } from "lucide-react";
+import { Check, Loader2, PodcastIcon, Search } from "lucide-react";
 
 import { toast } from "sonner";
 import useSWR from "swr";
@@ -134,7 +134,7 @@ export default function AddPodcastDialog({
       <DialogTrigger asChild>
         <Button aria-label="Add podcast">
           <span className="flex items-center gap-1">
-            <Podcast className="size-8" />
+            <PodcastIcon className="size-8" />
             <p className="hidden md:inline-block">Podcast</p>
           </span>
         </Button>
