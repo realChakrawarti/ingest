@@ -37,7 +37,7 @@
     "linkifyjs": "^4.2.0",
     "lucide-react": "^0.439.0",
     "nanoid": "^5.1.0",
-    "next": "15.5.18",
+    "next": "15.5.21",
     "next-themes": "^0.4.6",
     "nuqs": "^2.4.3",
     "octokit": "^4.1.2",
@@ -84,14 +84,13 @@
     "vitest": "^4.1.10",
     "vitest-browser-react": "^2.2.0"
   },
+  "overrides": {
+    "@types/react": "19.2.11",
+    "@types/react-dom": "19.2.3"
+  },
   "engines": {
+    "bun": ">=1.4.0",
     "node": "24.15.0"
   },
-  "packageManager": "pnpm@10.33.2+sha512.a90faf6feeab71ad6c6e57f94e0fe1a12f5dcc22cd754db40ae9593eb6a3e0b6b12e3540218bb37ae083404b1f2ce6db2a4121e979829b4aff94b99f49da1cf8",
-  "pnpm": {
-    "overrides": {
-      "@types/react": "19.2.11",
-      "@types/react-dom": "19.2.3"
-    }
-  }
+  "packageManager": "bun@1.4.0"
 }
