@@ -81,7 +81,7 @@ export default function YouTubeCard(props: YouTubeCardProps) {
         className={cn(
           "flex justify-between items-center",
           "h-11 px-2 py-3 backdrop-blur-xs rounded-b-md",
-          "bg-primary/60 text-white/90 text-sm"
+          "bg-secondary text-primary text-sm"
         )}
       >
         {showVideoStats ? (

@@ -92,7 +92,7 @@ export default async function PubliCatalog({
     <>
       <PopupPlayer />
       <NextUpdateToast nextUpdate={nextUpdate} />
-      <PublicMainContainer className="space-y-4">
+      <PublicMainContainer className="mb-18 space-y-4">
         <PublicHeaderTitle>
           <div className="relative px-2 py-1">
             <div className="flex flex-col gap-3">
