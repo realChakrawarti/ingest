@@ -1,6 +1,6 @@
 set shell := ["cmd.exe", "/c"]
 
-NODE_PM := "bun --bun"
+NODE_PM := "bun"
 FIREBASE_START := "firebase --project ingest-outbuild emulators:start"
 FIREBASE_EXPORT := "firebase --project ingest-outbuild emulators:export seed"
 

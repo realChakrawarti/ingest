@@ -2,16 +2,71 @@
 
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
-import { PauseIcon, PlayIcon, RefreshCcwIcon, XIcon } from "lucide-react";
+import {
+  PauseIcon,
+  PlayIcon,
+  RefreshCcwIcon,
+  SquareIcon,
+  XIcon,
+} from "lucide-react";
 
 import useInterval from "~/shared/hooks/use-interval";
 import { PlayerState } from "~/shared/lib/constants";
 import { Button } from "~/shared/ui/button";
 import { useSidebar } from "~/shared/ui/sidebar";
-import { Skeleton } from "~/shared/ui/skeleton";
 import formatSecondsToHMS from "~/shared/utils/format-seconds-HMS";
 
 import useActivePlayerRef from "./youtube/use-active-player";
+
+function PlayerControls({
+  status,
+  setShowMiniPlayer,
+}: {
+  status: YT.PlayerState | undefined;
+  setShowMiniPlayer: (value: boolean) => void;
+}) {
+  const playerRef = useActivePlayerRef();
+  const ICON_SIZE = 18;
+
+  function handlePlayerClose() {
+    playerRef?.stopVideo();
+    setShowMiniPlayer(false);
+  }
+
+  if (status === PlayerState.PLAYING) {
+    return (
+      <>
+        <Button onClick={handlePlayerClose} variant="outline">
+          <SquareIcon size={ICON_SIZE} />
+        </Button>
+        <Button variant="outline" onClick={() => playerRef?.pauseVideo()}>
+          <PauseIcon size={ICON_SIZE} />
+        </Button>
+      </>
+    );
+  } else if (status === PlayerState.PAUSED) {
+    return (
+      <>
+        <Button onClick={handlePlayerClose} variant="outline">
+          <SquareIcon size={ICON_SIZE} />
+        </Button>
+        <Button variant="outline" onClick={() => playerRef?.playVideo()}>
+          <PlayIcon size={ICON_SIZE} />
+        </Button>
+      </>
+    );
+  }
+  return (
+    <>
+      <Button onClick={handlePlayerClose} variant="outline">
+        <XIcon size={ICON_SIZE} />
+      </Button>
+      <Button variant="outline" onClick={() => playerRef?.playVideo()}>
+        <RefreshCcwIcon size={ICON_SIZE} />
+      </Button>
+    </>
+  );
+}
 
 export default function PopupPlayer() {
   const [playingStatus, setPlayingStatus] = useState<YT.PlayerState>();
@@ -23,45 +78,6 @@ export default function PopupPlayer() {
   const { state: sidebarState } = useSidebar();
 
   const pathname = usePathname();
-  function renderControls(status: YT.PlayerState | undefined) {
-    switch (status) {
-      case PlayerState.PLAYING:
-        return (
-          <Button
-            variant="outline"
-            className="clickable flex items-center gap-2"
-            onClick={() => playerRef?.pauseVideo()}
-          >
-            <PauseIcon size={24} />
-          </Button>
-        );
-
-      case PlayerState.PAUSED:
-        return (
-          <Button
-            variant="outline"
-            className="flex items-center gap-2"
-            onClick={() => playerRef?.playVideo()}
-          >
-            <PlayIcon size={24} />
-          </Button>
-        );
-
-      case PlayerState.ENDED:
-        return (
-          <Button
-            variant="outline"
-            className="flex items-center gap-2"
-            onClick={() => playerRef?.playVideo()}
-          >
-            <RefreshCcwIcon size={24} />
-          </Button>
-        );
-
-      default:
-        return <Skeleton className="h-9 w-12" />;
-    }
-  }
 
   useEffect(() => {
     if (playerRef) {
@@ -89,24 +105,29 @@ export default function PopupPlayer() {
   return (
     <aside
       style={sidebarState === "collapsed" ? { left: "50%" } : undefined}
-      className="bg-secondary fixed bottom-6 left-1/2 z-10 min-h-max w-3/5 -translate-x-1/2 gap-2 rounded-md md:left-[calc(var(--sidebar-width)+((100vw-var(--sidebar-width))/2))]"
+      className="bg-secondary fixed bottom-6 left-1/2 z-10 min-h-max w-3/5 -translate-x-1/2 gap-2 rounded-md px-2 text-sm md:left-[calc(var(--sidebar-width)+((100vw-var(--sidebar-width))/2))]"
     >
-      <div className="z-10 grid grid-cols-[auto_1fr_auto] items-center gap-2 p-2">
-        <div className="w-max">{renderControls(playingStatus)}</div>
-        <p className="line-clamp-2">{title}</p>
-        <p className="mr-8 text-sm">
-          {formatSecondsToHMS(currentTime || 0)} /{" "}
-          {formatSecondsToHMS(duration || 0)}
-        </p>
+      <div className="z-10 flex flex-col items-center gap-2 p-2 text-sm lg:flex-row lg:justify-between">
+        <a
+          className="outline-offset-2 hover:outline-dotted"
+          href={`#${playerRef?.getVideoData().video_id}`}
+        >
+          <p className="line-clamp-2 w-full text-wrap">{title}</p>
+        </a>
+        <div className="flex items-center justify-center gap-2">
+          <div className="flex w-max items-center gap-2">
+            <PlayerControls
+              setShowMiniPlayer={setShowMiniPlayer}
+              status={playingStatus}
+            />
+          </div>
+
+          <p>
+            {formatSecondsToHMS(currentTime || 0)} /{" "}
+            {formatSecondsToHMS(duration || 0)}
+          </p>
+        </div>
       </div>
-      <Button
-        className="clickable absolute top-0.5 right-0.5 hover:bg-transparent"
-        onClick={() => setShowMiniPlayer(false)}
-        size="icon"
-        variant="ghost"
-      >
-        <XIcon />
-      </Button>
     </aside>
   );
 }

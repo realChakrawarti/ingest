@@ -55,9 +55,8 @@ export default function YouTubeCard(props: YouTubeCardProps) {
 
   return (
     <div
-      key={videoId}
-      id="player-card"
-      className="group/player relative flex flex-col"
+      id={videoId}
+      className="group/player relative flex scroll-mt-14 flex-col"
     >
       <HoverOverlay />
       <div className="relative aspect-video overflow-clip rounded-t-md">

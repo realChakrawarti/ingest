@@ -41,14 +41,8 @@ function ChannelMeta({
   hideAvatar,
   video,
 }: { video: ZVideoMetadataCompatible } & { hideAvatar: boolean }) {
-  const {
-    channelLogo,
-    videoId,
-    channelTitle,
-    channelId,
-    videoTitle,
-    publishedAt,
-  } = video;
+  const { channelLogo, channelTitle, channelId, videoTitle, publishedAt } =
+    video;
 
   const [_, timeElapsed] = getTimeDifference(publishedAt, true, false);
   return (
@@ -64,10 +58,7 @@ function ChannelMeta({
           hideAvatar ? "max-w-full" : "max-w-[calc(100%-32px)]"
         }`}
       >
-        <h3
-          id={videoId}
-          className="text-primary line-clamp-2 pr-6 text-sm leading-normal text-wrap dark:text-white"
-        >
+        <h3 className="text-primary line-clamp-2 pr-6 text-sm leading-normal text-wrap dark:text-white">
           <abbr className="cursor-help no-underline" title={videoTitle}>
             {videoTitle}
           </abbr>
