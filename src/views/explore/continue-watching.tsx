@@ -41,7 +41,7 @@ export default function ContinueWatching() {
     return (
       <PublicMainContainer>
         <PublicHeaderTitle>
-          <div className="flex h-7 gap-2 text-lg tracking-wide md:text-2xl">
+          <div className="flex h-7 gap-2 text-lg tracking-wide">
             <PublicMarker />
             <h1>Continue Watching</h1>
           </div>

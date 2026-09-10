@@ -38,7 +38,7 @@ clean:
 [group("Build")]
 build: clean
     @echo Creating production build...
-    {{ NODE_PM }} build
+    {{ NODE_PM }} run build
 
 # build with output like rewrites, redirects, and headers
 [group("Build")]

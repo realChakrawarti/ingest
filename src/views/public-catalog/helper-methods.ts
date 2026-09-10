@@ -7,7 +7,7 @@ import type {
 
 import { time } from "~/shared/utils/time";
 
-function _filterChannel(
+function filterChannel(
   videoData: ZCatalogVideoListSchema,
   channelId?: string
 ): [ZVideoMetadata[], ZVideoMetadata[], ZVideoMetadata[]] {
@@ -26,26 +26,7 @@ function _filterChannel(
   return [filteredToday, filteredWeek, filteredMonth];
 }
 
-export function filterVideos(
-  videoData: ZCatalogVideoListSchema,
-  channelId?: string,
-  duration?: "short" | "medium" | "long" | null
-): [ZVideoMetadata[], ZVideoMetadata[], ZVideoMetadata[]] {
-  if (channelId && !duration) return _filterChannel(videoData, channelId);
-
-  if (duration && !channelId) {
-    const { day, week, month } = _filterDuration(videoData, duration);
-    return [day, week, month];
-  }
-
-  if (duration && channelId) {
-    return _filterChannel(_filterDuration(videoData, duration), channelId);
-  }
-
-  return [videoData.day, videoData.week, videoData.month];
-}
-
-function _filterDuration(
+function filterDuration(
   videoData: ZCatalogVideoListSchema,
   duration?: "short" | "medium" | "long"
 ): ZCatalogVideoListSchema {
@@ -98,6 +79,25 @@ function _filterDuration(
     (video) => video.videoDuration >= time.minutes(20) / 1000
   );
   return { day: filteredToday, month: filteredMonth, week: filteredWeek };
+}
+
+export function filterVideos(
+  videoData: ZCatalogVideoListSchema,
+  channelId?: string,
+  duration?: "short" | "medium" | "long" | null
+): [ZVideoMetadata[], ZVideoMetadata[], ZVideoMetadata[]] {
+  if (channelId && !duration) return filterChannel(videoData, channelId);
+
+  if (duration && !channelId) {
+    const { day, week, month } = filterDuration(videoData, duration);
+    return [day, week, month];
+  }
+
+  if (duration && channelId) {
+    return filterChannel(filterDuration(videoData, duration), channelId);
+  }
+
+  return [videoData.day, videoData.week, videoData.month];
 }
 
 export type ChannelTag = { title: string; id: string; logo: string };

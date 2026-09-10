@@ -11,41 +11,47 @@ import { parseAsString, useQueryState } from "nuqs";
 import useScreenWidth from "~/shared/hooks/use-screen-width";
 import { Avatar, AvatarFallback, AvatarImage } from "~/shared/ui/avatar";
 import { Button } from "~/shared/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "~/shared/ui/dialog";
-import { Label } from "~/shared/ui/label";
 import { ToggleGroup, ToggleGroupItem } from "~/shared/ui/toggle-group";
 
 import BadgeScroll from "~/widgets/badge-scroll";
+import JustTip from "~/widgets/just-the-tip";
 export default function FilterChannel({
   activeChannels,
 }: {
   activeChannels: ChannelTag[];
 }) {
   const containerWidth = useScreenWidth();
+  const [showFilter, setShowFilter] = useState(false);
 
   return (
-    <div
-      className="container flex items-center gap-2 px-2 md:px-3"
-      style={{ width: `${containerWidth}px` }}
-    >
-      <FilterVideosModal />
+    <>
+      <div
+        className="container flex items-center gap-2 px-2 md:px-3"
+        style={{ width: `${containerWidth}px` }}
+      >
+        <Button
+          onClick={() => setShowFilter((state) => !state)}
+          variant="outline"
+          className="flex h-8 cursor-pointer items-center gap-1 rounded-lg p-0 px-3 text-sm"
+        >
+          <SlidersHorizontal className="size-4" />
+          <span>{showFilter ? "Hide" : "Show"} Filters</span>
+        </Button>
 
-      <BadgeScroll
-        queryParam="channelId"
-        values={activeChannels.map((channel) => ({
-          id: channel.id,
-          label: channel.title,
-        }))}
-      />
-    </div>
+        <BadgeScroll
+          queryParam="channelId"
+          values={activeChannels.map((channel) => ({
+            id: channel.id,
+            label: channel.title,
+          }))}
+        />
+      </div>
+      {showFilter ? (
+        <div className="h-auto border border-t-2 border-b-2 p-3">
+          <FilterVideosPanel />
+        </div>
+      ) : null}
+    </>
   );
 }
 
@@ -97,7 +103,7 @@ export function CurrentActive({
   return null;
 }
 
-function FilterVideosModal() {
+function FilterVideosPanel() {
   const [duration, setDuration] = useQueryState(
     "duration",
     parseAsString.withDefault("").withOptions({
@@ -106,62 +112,77 @@ function FilterVideosModal() {
     })
   );
 
-  function _onValueChange(value: string) {
+  const [watched, setWatched] = useQueryState(
+    "watched",
+    parseAsString.withDefault("").withOptions({
+      history: "replace",
+      shallow: false,
+    })
+  );
+
+  function onDurationChange(value: string) {
     setDuration(value);
   }
 
-  function _clearAll() {
+  function onWatchedChange(value: string) {
+    setWatched(value);
+  }
+
+  function clearAll() {
     setDuration(null);
+    setWatched(null);
   }
 
   return (
-    <Dialog>
-      <DialogTrigger asChild>
-        <Button
-          variant="outline"
-          className="flex h-8 cursor-pointer items-center gap-1 rounded-lg p-0 px-3 text-sm"
+    <div className="flex flex-col items-start gap-3">
+      {/*Watched*/}
+      <div className="flex items-center gap-3">
+        <ToggleGroup
+          id="video-duration"
+          value={watched ?? ""}
+          type="single"
+          onValueChange={onWatchedChange}
         >
-          <SlidersHorizontal className="size-6" />
-          <span>Filters</span>
-        </Button>
-      </DialogTrigger>
-      <DialogContent className="">
-        <DialogHeader title="Filter videos">
-          <DialogTitle>Filter videos</DialogTitle>
-          <DialogDescription>Fine-tune your feed</DialogDescription>
-        </DialogHeader>
-        <div className="flex flex-col items-start gap-3">
-          <div className="flex items-center gap-3">
-            <Label htmlFor="video-duration" className="text-primary text-base">
-              Duration
-            </Label>
-            <ToggleGroup
-              id="video-duration"
-              value={duration ?? ""}
-              type="single"
-              onValueChange={_onValueChange}
-            >
-              <ToggleGroupItem value="short" aria-label="Under 4 minutes">
-                Short
-              </ToggleGroupItem>
-              <ToggleGroupItem
-                value="medium"
-                aria-label="Between 4 and 20 minutes"
-              >
-                Medium
-              </ToggleGroupItem>
-              <ToggleGroupItem value="long" aria-label="Over 20 minutes">
-                Long
-              </ToggleGroupItem>
-            </ToggleGroup>
-          </div>
-        </div>
-        <DialogFooter className="flex flex-1">
-          <Button className="self-end" onClick={_clearAll} variant="outline">
-            Clear all
-          </Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+          <ToggleGroupItem value="all" aria-label="All videos">
+            <JustTip label="Watched videos">
+              <p>All videos</p>
+            </JustTip>
+          </ToggleGroupItem>
+          <ToggleGroupItem value="incomplete" aria-label="Unwatched videos">
+            <JustTip label="Unwatched videos">
+              <p>Unwatched videos</p>
+            </JustTip>
+          </ToggleGroupItem>
+        </ToggleGroup>
+      </div>
+      {/*Duration*/}
+      <div className="flex items-center gap-3">
+        <ToggleGroup
+          id="video-duration"
+          value={duration ?? ""}
+          type="single"
+          onValueChange={onDurationChange}
+        >
+          <ToggleGroupItem value="short" aria-label="Under 4 minutes">
+            <JustTip label="Under 4 minutes">
+              <p>Short videos</p>
+            </JustTip>
+          </ToggleGroupItem>
+          <ToggleGroupItem value="medium" aria-label="Between 4 and 20 minutes">
+            <JustTip label="Between 4 and 20 minutes">
+              <p>Medium videos</p>
+            </JustTip>
+          </ToggleGroupItem>
+          <ToggleGroupItem value="long" aria-label="Over 20 minutes">
+            <JustTip label="Over 20 minutes">
+              <p>Long videos</p>
+            </JustTip>
+          </ToggleGroupItem>
+        </ToggleGroup>
+      </div>
+      <Button onClick={clearAll} variant="outline">
+        Clear all
+      </Button>
+    </div>
   );
 }

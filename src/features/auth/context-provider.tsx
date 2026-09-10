@@ -78,11 +78,11 @@ export default function AuthContextProvider({ children }: PropsWithChildren) {
       const user = response.user;
       if (user) {
         const userToken = await user.getIdToken();
-        const result = await fetchApi("/users", {
+        await fetchApi("/users", {
           body: JSON.stringify({ token: userToken }),
           method: "POST",
         });
-        toast(result.message);
+        toast(`You have logged in successfully.`);
         router.push(Routes.DASHBOARD);
       }
     } catch (err) {
@@ -93,8 +93,8 @@ export default function AuthContextProvider({ children }: PropsWithChildren) {
 
   const logout = async () => {
     signOut(client.auth);
-    const result = await fetchApi("/logout");
-    toast(result.message);
+    await fetchApi("/logout");
+    toast("You have logged out successfully.");
     router.push(Routes.ROOT);
   };
 

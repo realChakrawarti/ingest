@@ -14,6 +14,7 @@ export type YouTubeCardOptions = {
   showDuration: boolean;
   showVideoCategory: boolean;
   focusMode: boolean;
+  hideWatchedVideo: boolean;
 };
 
 export interface History extends ZVideoMetadataCompatible {

@@ -29,7 +29,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/shared/ui/tabs";
 
 import BackLink from "~/widgets/back-link";
 import JustTip from "~/widgets/just-the-tip";
-import Spinner from "~/widgets/spinner";
 
 import useCatalogStore from "~/stores/catalog-store";
 
@@ -261,11 +260,6 @@ export default function EditCatalog({ catalogId }: { catalogId: string }) {
       </div>
       <Separator className="my-3" />
       {error && <p>Something went wrong!</p>}
-      {isLoading && (
-        <div className="grid size-full items-center">
-          <Spinner className="size-8" />
-        </div>
-      )}
       <Tabs
         value={type}
         onValueChange={handleTabChange}

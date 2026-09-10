@@ -60,6 +60,7 @@ export default async function PubliCatalog({
     showVideoCategory: true,
     showVideoStats: true,
     focusMode: true,
+    hideWatchedVideo: true,
   };
 
   if (!videos) {

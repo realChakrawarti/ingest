@@ -110,7 +110,7 @@ ${feedback}
       });
       setFeedbackData(initialFeedbackData);
     } else {
-      toast("Unable to shared feedback.");
+      toast("Unable to share feedback.");
     }
   };
   return (

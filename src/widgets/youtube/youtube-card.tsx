@@ -1,11 +1,17 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
+
+import { useQueryState } from "nuqs";
 
 import type { ZVideoMetadataCompatible } from "~/entities/catalogs/models";
 
+import { useLocalUserSettings } from "~/shared/hooks/use-local-user-settings";
+import { indexedDB } from "~/shared/lib/api/dexie";
 import type { YouTubeCardOptions } from "~/shared/types-schema/types";
 import { cn } from "~/shared/utils/tailwind-merge";
+import Log from "~/shared/utils/terminal-logger";
 
 import { ChannelMeta, DescriptionSheet } from "./components";
 import FocusDialog from "./focus-dialog";
@@ -40,6 +46,9 @@ function HoverOverlay() {
 export default function YouTubeCard(props: YouTubeCardProps) {
   const { video, options } = props;
   const { videoId, videoTitle, videoDescription } = video;
+  const { localUserSettings } = useLocalUserSettings(null);
+  const [hide, setHide] = useState(false);
+  const [completed, setCompleted] = useState(false);
 
   const {
     enableJsApi = false,
@@ -51,7 +60,32 @@ export default function YouTubeCard(props: YouTubeCardProps) {
     showDuration = false,
     showVideoCategory = false,
     focusMode = false,
+    hideWatchedVideo = false,
   } = options ?? {};
+
+  const [watchedStatus] = useQueryState("watched");
+
+  useEffect(() => {
+    if (!hideWatchedVideo || watchedStatus === "all") return;
+
+    const videoProgress = indexedDB["history"].get(videoId);
+
+    videoProgress
+      .then((videoData) => {
+        const watched =
+          videoData &&
+          videoData.completed > localUserSettings.watchedPercentage;
+        if (watched) {
+          setHide(true);
+          setCompleted(true);
+        }
+      })
+      .catch((err) => {
+        Log.debug(err);
+      });
+  }, [videoId, hideWatchedVideo, localUserSettings, watchedStatus]);
+
+  if (hide && completed && watchedStatus === "incomplete") return null;
 
   return (
     <div

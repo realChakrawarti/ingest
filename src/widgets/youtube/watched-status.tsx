@@ -14,10 +14,11 @@ export function WatchedStatus({ videoId }: { videoId: string }) {
 
   const { localUserSettings } = useLocalUserSettings(null);
 
-  if (
+  const watched =
     videoProgress &&
-    videoProgress.completed > localUserSettings.watchedPercentage
-  ) {
+    videoProgress.completed > localUserSettings.watchedPercentage;
+
+  if (watched) {
     return (
       <div className="group/status absolute top-2 left-0 cursor-default">
         <OverlayTip
