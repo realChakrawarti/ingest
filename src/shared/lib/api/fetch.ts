@@ -4,7 +4,7 @@ import Log from "~/shared/utils/terminal-logger";
 
 type EndpointPrefixes =
   | "archives"
-  | "catalogs"
+  | "feeds"
   | "users"
   | "logout"
   | "youtube"

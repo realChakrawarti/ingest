@@ -1,6 +1,6 @@
 import { Trash2Icon, MoreVerticalIcon } from "lucide-react";
 
-import type { ZVideoMetadataCompatible } from "~/entities/catalogs/models";
+import type { ZVideoMetadataCompatible } from "~/entities/feeds/models";
 
 import type { YouTubeCardOptions } from "~/shared/types-schema/types";
 import { Button } from "~/shared/ui/button";

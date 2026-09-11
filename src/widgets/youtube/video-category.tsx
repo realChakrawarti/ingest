@@ -4,7 +4,7 @@ import { FlameIcon, MessageSquareText, TrendingUp } from "lucide-react";
 
 import { useLiveQuery } from "dexie-react-hooks";
 
-import type { ZVideoContentInfo } from "~/entities/catalogs/models";
+import type { ZVideoContentInfo } from "~/entities/feeds/models";
 
 import { useLocalUserSettings } from "~/shared/hooks/use-local-user-settings";
 import { indexedDB } from "~/shared/lib/api/dexie";

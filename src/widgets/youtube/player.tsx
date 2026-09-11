@@ -4,7 +4,7 @@ import { useCallback, useEffect, useRef } from "react";
 
 import { YouTubeEmbed } from "@next/third-parties/google";
 
-import type { ZVideoMetadataCompatible } from "~/entities/catalogs/models";
+import type { ZVideoMetadataCompatible } from "~/entities/feeds/models";
 
 import appConfig from "~/shared/app-config";
 import { useLocalUserSettings } from "~/shared/hooks/use-local-user-settings";

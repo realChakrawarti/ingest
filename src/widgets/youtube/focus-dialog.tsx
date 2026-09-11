@@ -2,7 +2,7 @@ import { useRef } from "react";
 import dynamic from "next/dynamic";
 import { ExternalLink, MaximizeIcon, XIcon } from "lucide-react";
 
-import type { ZVideoMetadataCompatible } from "~/entities/catalogs/models";
+import type { ZVideoMetadataCompatible } from "~/entities/feeds/models";
 
 import { Badge } from "~/shared/ui/badge";
 import { Button } from "~/shared/ui/button";

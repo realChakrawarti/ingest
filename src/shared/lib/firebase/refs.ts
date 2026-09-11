@@ -4,16 +4,13 @@ import type {
   ZArchiveDocument,
   ZUserArchiveDocument,
 } from "~/entities/archives/models";
-import type {
-  ZCatalogDocument,
-  ZUserCatalogDocument,
-} from "~/entities/catalogs/models";
+import type { ZFeedDocument, ZUserFeedDocument } from "~/entities/feeds/models";
 
 import { admin } from "./admin";
 
 const COLLECTION = {
   archives: "archives",
-  catalogs: "catalogs",
+  feeds: "feeds",
   users: "users",
 } as const;
 
@@ -21,20 +18,18 @@ export const refs = {
   archives: admin.db.collection(
     COLLECTION.archives
   ) as CollectionReference<ZArchiveDocument>,
-  catalogs: admin.db.collection(
-    COLLECTION.catalogs
-  ) as CollectionReference<ZCatalogDocument>,
+  feeds: admin.db.collection(
+    COLLECTION.feeds
+  ) as CollectionReference<ZFeedDocument>,
   userArchives: (userId: string) =>
     refs.users
       .doc(userId)
       .collection(
         COLLECTION.archives
       ) as CollectionReference<ZUserArchiveDocument>,
-  userCatalogs: (userId: string) =>
+  userFeeds: (userId: string) =>
     refs.users
       .doc(userId)
-      .collection(
-        COLLECTION.catalogs
-      ) as CollectionReference<ZUserCatalogDocument>,
+      .collection(COLLECTION.feeds) as CollectionReference<ZUserFeedDocument>,
   users: admin.db.collection(COLLECTION.users),
 } as const;

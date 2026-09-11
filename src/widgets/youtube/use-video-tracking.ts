@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 
-import type { ZVideoMetadataCompatible } from "~/entities/catalogs/models";
+import type { ZVideoMetadataCompatible } from "~/entities/feeds/models";
 
 import { indexedDB } from "~/shared/lib/api/dexie";
 import type { History } from "~/shared/types-schema/types";

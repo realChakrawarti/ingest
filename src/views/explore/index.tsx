@@ -2,7 +2,7 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
 import type { ZArchiveValid } from "~/entities/archives/models";
-import type { ZCatalogValid } from "~/entities/catalogs/models";
+import type { ZFeedValid } from "~/entities/feeds/models";
 
 import appConfig from "~/shared/app-config";
 import fetchApi from "~/shared/lib/api/fetch";
@@ -19,29 +19,29 @@ import {
 import ContinueWatching from "./continue-watching";
 
 export default async function Explore() {
-  const [catalogs, archives] = await Promise.all([
-    fetchApi<ZCatalogValid[]>("/catalogs/valid"),
+  const [feeds, archives] = await Promise.all([
+    fetchApi<ZFeedValid[]>("/feeds/valid"),
     fetchApi<ZArchiveValid[]>("/archives/valid"),
   ]);
 
-  const catalogsData = catalogs?.data;
+  const feedsData = feeds?.data;
   const archivesData = archives?.data;
 
   return (
     <PublicMainContainer className="space-y-4">
       {/* Continue Watching */}
       <ContinueWatching />
-      {/* Featured Catalogs */}
-      {catalogsData?.length && appConfig.exploreFeatured ? (
+      {/* Featured Feeds */}
+      {feedsData?.length && appConfig.exploreFeatured ? (
         <section>
-          <Title label="Featured Catalogs" type="catalogs" />
+          <Title label="Featured Feeds" type="feeds" />
           <PublicContentContainer>
             <GridContainer>
-              {catalogsData.slice(0, 4).map((catalog) => (
+              {feedsData.slice(0, 4).map((feed) => (
                 <DetailsCard
-                  path={`/c/${catalog.id}`}
-                  key={catalog.id}
-                  validData={catalog}
+                  path={`/c/${feed.id}`}
+                  key={feed.id}
+                  validData={feed}
                 />
               ))}
             </GridContainer>

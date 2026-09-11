@@ -3,7 +3,7 @@
 import type { PropsWithChildren } from "react";
 import { EyeIcon, MessageSquare, ThumbsUp } from "lucide-react";
 
-import type { ZVideoContentInfo } from "~/entities/catalogs/models";
+import type { ZVideoContentInfo } from "~/entities/feeds/models";
 
 import formatLargeNumber from "~/shared/utils/format-large-number";
 

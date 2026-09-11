@@ -5,7 +5,7 @@ import { MoreVerticalIcon } from "lucide-react";
 
 import useSWR from "swr";
 
-import type { ZVideoMetadataCompatible } from "~/entities/catalogs/models";
+import type { ZVideoMetadataCompatible } from "~/entities/feeds/models";
 
 import { useIsMobile } from "~/shared/hooks/use-mobile";
 import type { YouTubeCardOptions } from "~/shared/types-schema/types";

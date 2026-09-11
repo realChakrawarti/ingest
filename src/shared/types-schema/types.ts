@@ -1,7 +1,7 @@
 import type { TitleDescriptionSchema } from "./schemas";
 import type { z } from "zod";
 
-import type { ZVideoMetadataCompatible } from "~/entities/catalogs/models";
+import type { ZVideoMetadataCompatible } from "~/entities/feeds/models";
 
 export type YouTubeCardOptions = {
   removeVideo?: (_videoId: string) => void;

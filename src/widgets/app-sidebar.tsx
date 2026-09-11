@@ -90,7 +90,7 @@ export default function AppSidebar() {
 
 function LocalGroup() {
   const { setOpenMobile } = useSidebar();
-  const favoriteCatalogs =
+  const favoriteFeeds =
     useLiveQuery(() => indexedDB["favorites"].toArray(), []) ?? [];
 
   return (
@@ -107,7 +107,7 @@ function LocalGroup() {
           >
             <div className="flex items-center gap-2 text-[#18181B] dark:text-white">
               <HeartIcon className="mr-2 h-4 w-4" />
-              <p className="tracking-wide">Favorite Catalogs</p>
+              <p className="tracking-wide">Favorite Feeds</p>
             </div>
             <ChevronRight className="ml-auto transition-transform group-data-[state=open]/collapsible:rotate-90" />
           </CollapsibleTrigger>
@@ -116,7 +116,7 @@ function LocalGroup() {
           <SidebarGroupContent>
             <SidebarMenu>
               <div className="max-h-50 min-h-auto overflow-y-auto">
-                {favoriteCatalogs.map((item) => (
+                {favoriteFeeds.map((item) => (
                   <SidebarMenuItem key={item.id}>
                     <SidebarMenuSub>
                       <SidebarMenuSubItem>
@@ -199,8 +199,8 @@ function ExploreGroup() {
   const exploreItems = [
     {
       icon: BookOpen,
-      label: "Catalogs",
-      path: "/explore/catalogs",
+      label: "Feeds",
+      path: "/explore/feeds",
       shortPath: "/c/",
     },
     {
