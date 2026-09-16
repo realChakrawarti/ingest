@@ -36,12 +36,12 @@ import { cn } from "~/shared/utils/tailwind-merge";
 
 import JustTip from "~/widgets/just-the-tip";
 
-function CopyButton({ id, type }: { id: string; type: "feed" | "archive" }) {
+function CopyButton({ id, type }: { id: string; type: "feed" | "pick" }) {
   const [copied, setCopied] = useState(false);
 
   const copyToClipboard = () => {
     const exploreType = type === "feed" ? "c" : "a";
-    const exploreName = type === "feed" ? "Catalog" : "Archive";
+    const exploreName = type === "feed" ? "Catalog" : "Pick";
     navigator.clipboard
       .writeText(`${appConfig.url}/${exploreType}/${id}`)
       .then(() => {
@@ -82,7 +82,7 @@ const cardContentStyles = cn(
 );
 
 type ItemCardProps = {
-  type: "archive" | "feed";
+  type: "pick" | "feed";
   id: string;
   title: string;
   description: string;
@@ -100,8 +100,7 @@ export default function ItemCard({
   onDelete,
   isPublic = true,
 }: ItemCardProps) {
-  const editLink =
-    type === "archive" ? `/archives/${id}/edit` : `/feeds/${id}/edit`;
+  const editLink = type === "pick" ? `/picks/${id}/edit` : `/feeds/${id}/edit`;
 
   return (
     <div className="group/card-item hover-lift shadow-primary/20 relative rounded-md shadow-sm">

@@ -1,8 +1,8 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
-import type { ZArchiveValid } from "~/entities/archives/models";
 import type { ZFeedValid } from "~/entities/feeds/models";
+import type { ZPickValid } from "~/entities/picks/models";
 
 import appConfig from "~/shared/app-config";
 import fetchApi from "~/shared/lib/api/fetch";
@@ -19,13 +19,13 @@ import {
 import ContinueWatching from "./continue-watching";
 
 export default async function Explore() {
-  const [feeds, archives] = await Promise.all([
+  const [feeds, picks] = await Promise.all([
     fetchApi<ZFeedValid[]>("/feeds/valid"),
-    fetchApi<ZArchiveValid[]>("/archives/valid"),
+    fetchApi<ZPickValid[]>("/picks/valid"),
   ]);
 
   const feedsData = feeds?.data;
-  const archivesData = archives?.data;
+  const picksData = picks?.data;
 
   return (
     <PublicMainContainer className="space-y-4">
@@ -49,17 +49,17 @@ export default async function Explore() {
         </section>
       ) : null}
 
-      {/* Featured Archives */}
-      {archivesData?.length && appConfig.exploreFeatured ? (
+      {/* Featured Picks */}
+      {picksData?.length && appConfig.exploreFeatured ? (
         <section>
-          <Title label="Featured Archives" type="archives" />
+          <Title label="Featured Picks" type="picks" />
           <PublicContentContainer>
             <GridContainer>
-              {archivesData.slice(0, 4).map((archive) => (
+              {picksData.slice(0, 4).map((pick) => (
                 <DetailsCard
-                  path={`/a/${archive.id}`}
-                  key={archive.id}
-                  validData={archive}
+                  path={`/p/${pick.id}`}
+                  key={pick.id}
+                  validData={pick}
                 />
               ))}
             </GridContainer>

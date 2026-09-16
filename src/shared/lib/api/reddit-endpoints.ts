@@ -1,7 +1,7 @@
 import appConfig from "~/shared/app-config";
 
 // Refer: https://github.com/reddit-archive/reddit/wiki/OAuth2#application-only-oauth
-const RedditUserAgent = `web:ingest.707x.in:v${appConfig.version} (by /u/CURVX)`;
+const RedditUserAgent = `web:ingest.${appConfig.domain}:v${appConfig.version} (by /u/CURVX)`;
 
 export function redditRequestHeaders(): Headers {
   const headers = new Headers();

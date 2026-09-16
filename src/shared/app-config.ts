@@ -7,9 +7,9 @@ class AppConfig {
   private _feedUpdatePeriod = time.hours(4);
   private _feedVideoLimit = 10;
   private _channelLogoUpdatePeriod = time.days(1);
-  private _domain = "707x.in";
+  private _domain = "outbuild.in";
   private _githubRepo = "https://github.com/realChakrawarti/ingest";
-  private _limitArchives = 10;
+  private _limitPicks = 10;
   private _limitFeeds = 5;
   private _marketName = "Ingest";
   private _name = packageInfo.name;
@@ -91,8 +91,8 @@ class AppConfig {
     return this._limitFeeds;
   }
 
-  get limitArchives(): number {
-    return this._limitArchives;
+  get limitPicks(): number {
+    return this._limitPicks;
   }
 
   get tracesSampleRate(): number | undefined {

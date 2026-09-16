@@ -6,8 +6,8 @@ import { type MouseEvent, useRef, useState } from "react";
 import Link from "next/link";
 import { EyeIcon, File, Pause, Play, Podcast, VideoIcon } from "lucide-react";
 
-import type { ZArchiveValid } from "~/entities/archives/models";
 import type { ZFeedValid } from "~/entities/feeds/models";
+import type { ZPickValid } from "~/entities/picks/models";
 
 import { Separator } from "~/shared/ui/separator";
 import { cn } from "~/shared/utils/tailwind-merge";
@@ -16,7 +16,7 @@ import ThumbnailCarousel from "./carousel-thumbnails";
 import OverlayTip from "./overlay-tip";
 
 interface DetailsCardProps {
-  validData: ZFeedValid | ZArchiveValid;
+  validData: ZFeedValid | ZPickValid;
   path: string;
 }
 
