@@ -43,14 +43,14 @@ export async function PATCH(request: NextRequest, ctx: ContextParams) {
       if (err instanceof Error) {
         return NxResponse.fail(
           err.message,
-          { code: "CATALOG_PLAYLIST_UPDATE", details: err.message },
+          { code: "FEED_PLAYLIST_UPDATE", details: err.message },
           400
         );
       }
       return NxResponse.fail(
         "Unable to update feed playlists.",
         {
-          code: "CATALOG_PLAYLIST_UPDATE",
+          code: "FEED_PLAYLIST_UPDATE",
           details: "Unable to update feed playlists.",
         },
         400

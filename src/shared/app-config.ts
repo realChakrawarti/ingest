@@ -3,7 +3,7 @@ import isDevelopment from "./utils/is-development";
 import { time } from "./utils/time";
 
 class AppConfig {
-  private _feedUpdateEnabled = process.env.ENABLE_CATALOG_UPDATE === "true";
+  private _feedUpdateEnabled = process.env.ENABLE_FEED_UPDATE === "true";
   private _feedUpdatePeriod = time.hours(4);
   private _feedVideoLimit = 10;
   private _channelLogoUpdatePeriod = time.days(1);

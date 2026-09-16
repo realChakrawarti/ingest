@@ -21,7 +21,7 @@ export async function GET() {
     return NxResponse.fail(
       "Unable to retrieve user feeds.",
       {
-        code: AppErrorCodes.GET_USER_CATALOG_FAILED,
+        code: AppErrorCodes.GET_USER_FEED_FAILED,
         details:
           err instanceof Error ? err.message : "Unable to retrieve user feeds.",
       },

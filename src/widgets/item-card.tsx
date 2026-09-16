@@ -40,8 +40,8 @@ function CopyButton({ id, type }: { id: string; type: "feed" | "pick" }) {
   const [copied, setCopied] = useState(false);
 
   const copyToClipboard = () => {
-    const exploreType = type === "feed" ? "c" : "a";
-    const exploreName = type === "feed" ? "Catalog" : "Pick";
+    const exploreType = type === "feed" ? "f" : "p";
+    const exploreName = type === "feed" ? "Feed" : "Pick";
     navigator.clipboard
       .writeText(`${appConfig.url}/${exploreType}/${id}`)
       .then(() => {

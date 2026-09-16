@@ -28,7 +28,7 @@ export async function GET() {
     return NxResponse.fail(
       "Unable to retrieve user picks.",
       {
-        code: AppErrorCodes.GET_USER_ARCHIVE_FAILED,
+        code: AppErrorCodes.GET_USER_PICK_FAILED,
         details: "Unable to retrieve user picks.",
       },
       Status.InternalServerError

@@ -13,7 +13,7 @@ const envVariables = z.object({
   CLOUDFLARE_ACCOUNT_ID: z.string(),
   CLOUDFLARE_API_TOKEN: z.string(),
   CLOUDFLARE_KV_NAMESPACE_ID: z.string(),
-  ENABLE_CATALOG_UPDATE: z.enum(["true", "false"]).default("false"),
+  ENABLE_FEED_UPDATE: z.enum(["true", "false"]).default("false"),
   FIREBASE_CLIENT_EMAIL: z.string(),
   FIREBASE_PRIVATE_KEY: z.string(),
   GA_PROPERTY_ID: z.string(),

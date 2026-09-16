@@ -23,7 +23,7 @@ export async function generateMetadata({
       siteName: `${appConfig.marketName}`,
       title: pickData?.title,
       type: "website",
-      url: `${appConfig.url}/a/${pickId}`,
+      url: `${appConfig.url}/p/${pickId}`,
     },
     title: `${pickData?.title} | ${appConfig.marketName}`,
   };

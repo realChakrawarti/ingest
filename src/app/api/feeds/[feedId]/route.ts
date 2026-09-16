@@ -30,7 +30,7 @@ export async function GET(_request: NextRequest, ctx: ContextParams) {
   return NxResponse.fail(
     result.error,
     {
-      code: AppErrorCodes.GET_CATALOG_BY_ID_FAILED,
+      code: AppErrorCodes.GET_FEED_BY_ID_FAILED,
       details: result.error,
     },
     Status.BadRequest

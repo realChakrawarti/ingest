@@ -44,14 +44,14 @@ export async function PATCH(request: NextRequest, ctx: ContextParams) {
       if (err instanceof Error) {
         return NxResponse.fail(
           err.message,
-          { code: "CATALOG_PODCAST_UPDATE", details: err.message },
+          { code: "FEED_PODCAST_UPDATE", details: err.message },
           Status.BadRequest
         );
       }
       return NxResponse.fail(
         "Unable to update feed podcasts.",
         {
-          code: "CATALOG_PODCAST_UPDATE",
+          code: "FEED_PODCAST_UPDATE",
           details: "Unable to update feed podcasts.",
         },
         Status.BadRequest

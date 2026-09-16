@@ -20,7 +20,7 @@ export async function DELETE(_request: NextRequest, ctx: ContextParams) {
   if (result) {
     return NxResponse.fail(
       result,
-      { code: "CATALOG_DELETE", details: result },
+      { code: "FEED_DELETE", details: result },
       400
     );
   }
