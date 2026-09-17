@@ -17,9 +17,9 @@ import { cn } from "~/shared/utils/tailwind-merge";
 const features = [
   {
     description:
-      "Create custom catalogs for your favorite channels, playlists and subreddits tailored to your interests.",
+      "Create custom feeds for your favorite channels, playlists and subreddits tailored to your interests.",
     icon: <Book className="h-5 w-5" />,
-    title: "Personalized Catalogs",
+    title: "Personalized Feeds",
   },
   {
     description:
@@ -35,9 +35,9 @@ const features = [
   },
   {
     description:
-      "Share your curated catalogs with friends and family, making it easy to discover new content together.",
+      "Share your curated feeds with friends and family, making it easy to discover new content together.",
     icon: <Share2 className="h-5 w-5" />,
-    title: "Shareable Catalogs",
+    title: "Shareable Feeds",
   },
   {
     description:
@@ -53,7 +53,7 @@ const features = [
   },
   {
     description:
-      "Access your curated catalogs on your smartphone or tablet, anytime, anywhere.",
+      "Access your curated feeds on your smartphone or tablet, anytime, anywhere.",
     icon: <Smartphone className="h-5 w-5" />,
     title: "Mobile-Friendly",
   },

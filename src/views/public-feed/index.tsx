@@ -1,0 +1,196 @@
+import type { ZContentByFeed } from "~/entities/feeds/models";
+
+import fetchApi from "~/shared/lib/api/fetch";
+import type { YouTubeCardOptions } from "~/shared/types-schema/types";
+import { Separator } from "~/shared/ui/separator";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/shared/ui/tabs";
+
+import BackLink from "~/widgets/back-link";
+import FooterBlur from "~/widgets/footer-blur";
+import { ItemSection } from "~/widgets/item-section";
+import PopupPlayer from "~/widgets/pop-up-player";
+import {
+  PublicHeaderTitle,
+  PublicMainContainer,
+} from "~/widgets/public-layout";
+import ScrollTop from "~/widgets/scroll-top";
+import YouTubeCard from "~/widgets/youtube/youtube-card";
+
+import { FeedAction } from "./feed-action";
+import FeedInformation from "./feed-information";
+import FilterChannel, { CurrentActive } from "./filter-channel";
+import { FilterPodcast } from "./filter-podcast";
+import { FilterSubreddit } from "./filter-subreddit";
+import { filterVideos, getActiveChannelIds } from "./helper-methods";
+import NextUpdateToast from "./next-update-toast";
+import { PodcastEpisodes } from "./podcast-episodes";
+import { SubredditPost } from "./subreddit-posts";
+import UpdatePing from "./update-ping";
+
+export default async function PubliFeed({
+  channelId = "",
+  feedId,
+  duration = null,
+}: {
+  channelId: string;
+  feedId: string;
+  duration: "short" | "medium" | "long" | null;
+}) {
+  const result = await fetchApi<ZContentByFeed>(`/feeds/${feedId}/contents`);
+
+  const feedData = result.data;
+
+  const posts = feedData?.posts;
+  const nextUpdate = feedData?.nextUpdate;
+
+  const videos = feedData?.videos;
+  const feedTitle = feedData?.title ?? "";
+  const feedDescription = feedData?.description ?? "";
+
+  const podcasts = feedData?.podcasts;
+
+  const playerOptions: YouTubeCardOptions = {
+    addWatchLater: true,
+    enableJsApi: true,
+    hideAvatar: Boolean(channelId),
+    markWatched: true,
+    showDuration: true,
+    showVideoCategory: true,
+    showVideoStats: true,
+    focusMode: true,
+    hideWatchedVideo: true,
+  };
+
+  if (!videos) {
+    return (
+      <div className="grid h-full w-full place-items-center">
+        No data available. Please update the channel list
+      </div>
+    );
+  }
+
+  const [today, week, month] = filterVideos(videos, channelId, duration);
+
+  const activeChannels = getActiveChannelIds(videos);
+  const subreddits = Array.from(new Set(posts?.map((post) => post.subreddit)));
+  const podcastList = Array.from(
+    podcasts
+      ?.reduce((map, podcast) => {
+        const key = podcast.podcastId!.toString();
+        if (!map.has(key)) {
+          map.set(key, { key: key, value: podcast.podcastTitle! });
+        }
+        return map;
+      }, new Map())
+      .values() ?? []
+  );
+
+  const activeTab = posts?.length ? "subreddit" : "youtube";
+
+  return (
+    <>
+      <PopupPlayer />
+      <NextUpdateToast nextUpdate={nextUpdate} />
+      <PublicMainContainer className="mb-18 space-y-4">
+        <PublicHeaderTitle>
+          <div className="relative px-2 py-1">
+            <div className="flex flex-col gap-3">
+              <BackLink className="size-6" href="/explore/feeds" />
+              <div>
+                <FeedInformation
+                  title={feedTitle}
+                  pageviews={feedData.pageviews}
+                  description={feedDescription}
+                />
+              </div>
+            </div>
+            <div className="absolute top-3 right-3">
+              <UpdatePing nextUpdate={nextUpdate ?? ""} />
+            </div>
+            <div className="mt-3">
+              <FeedAction
+                feedTitle={feedTitle}
+                feedDescription={feedDescription}
+                feedId={feedId}
+              />
+            </div>
+          </div>
+        </PublicHeaderTitle>
+
+        <Separator />
+
+        <Tabs defaultValue={activeTab}>
+          <TabsList className="mx-2 my-3 text-lg md:mx-3">
+            {posts?.length ? (
+              <TabsTrigger value="subreddit">
+                Reddit ({posts?.length})
+              </TabsTrigger>
+            ) : null}
+            {podcasts?.length ? (
+              <TabsTrigger value="podcast">
+                Podcast ({podcasts?.length})
+              </TabsTrigger>
+            ) : null}
+            <TabsTrigger value="youtube">
+              YouTube (
+              {videos.day.length + videos.month.length + videos.week.length})
+            </TabsTrigger>
+          </TabsList>
+          <TabsContent className="space-y-4" value="youtube">
+            <FilterChannel activeChannels={activeChannels} />
+            <CurrentActive activeChannels={activeChannels} />
+
+            {/* Today */}
+            {today?.length ? (
+              <ItemSection label="Today">
+                {today.map((video) => (
+                  <YouTubeCard
+                    key={video.videoId}
+                    options={playerOptions}
+                    video={video}
+                  />
+                ))}
+              </ItemSection>
+            ) : null}
+            {/* This week */}
+            {week?.length ? (
+              <ItemSection label="This week">
+                {week.map((video) => (
+                  <YouTubeCard
+                    key={video.videoId}
+                    options={playerOptions}
+                    video={video}
+                  />
+                ))}
+              </ItemSection>
+            ) : null}
+            {/* This month */}
+            {month?.length ? (
+              <ItemSection label="This month">
+                {month.map((video) => (
+                  <YouTubeCard
+                    key={video.videoId}
+                    options={playerOptions}
+                    video={video}
+                  />
+                ))}
+              </ItemSection>
+            ) : null}
+          </TabsContent>
+
+          <TabsContent className="space-y-4" value="subreddit">
+            <FilterSubreddit subreddits={subreddits} />
+            <SubredditPost posts={posts ?? []} />
+          </TabsContent>
+
+          <TabsContent className="space-y-4" value="podcast">
+            <FilterPodcast podcasts={podcastList} />
+            <PodcastEpisodes podcasts={podcasts ?? []} />
+          </TabsContent>
+        </Tabs>
+        <ScrollTop />
+        <FooterBlur />
+      </PublicMainContainer>
+    </>
+  );
+}

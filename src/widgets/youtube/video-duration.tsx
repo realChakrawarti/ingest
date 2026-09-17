@@ -1,6 +1,6 @@
 "use client";
 
-import type { ZVideoMetadata } from "~/entities/catalogs/models";
+import type { ZVideoMetadata } from "~/entities/feeds/models";
 
 import formatSecondsToHMS from "~/shared/utils/format-seconds-HMS";
 

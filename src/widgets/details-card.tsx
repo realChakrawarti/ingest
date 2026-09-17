@@ -7,7 +7,7 @@ import Link from "next/link";
 import { EyeIcon, File, Pause, Play, Podcast, VideoIcon } from "lucide-react";
 
 import type { ZArchiveValid } from "~/entities/archives/models";
-import type { ZCatalogValid } from "~/entities/catalogs/models";
+import type { ZFeedValid } from "~/entities/feeds/models";
 
 import { Separator } from "~/shared/ui/separator";
 import { cn } from "~/shared/utils/tailwind-merge";
@@ -16,7 +16,7 @@ import ThumbnailCarousel from "./carousel-thumbnails";
 import OverlayTip from "./overlay-tip";
 
 interface DetailsCardProps {
-  validData: ZCatalogValid | ZArchiveValid;
+  validData: ZFeedValid | ZArchiveValid;
   path: string;
 }
 
@@ -81,7 +81,7 @@ export default function DetailsCard({ validData, path }: DetailsCardProps) {
       </div>
 
       <Link
-        prefetch={false} // In order to disable automatic updation to not frequently viewed catalogs
+        prefetch={false} // In order to disable automatic updation to not frequently viewed feeds
         key={validData?.id}
         href={path}
       >

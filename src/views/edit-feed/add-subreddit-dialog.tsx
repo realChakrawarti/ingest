@@ -1,0 +1,298 @@
+// oxlint-disable typescript/no-explicit-any
+
+import type { ChangeEvent } from "react";
+import { useState } from "react";
+import { useParams } from "next/navigation";
+import { Check, Loader2, Search } from "lucide-react";
+
+import { SiReddit } from "@icons-pack/react-simple-icons";
+import { toast } from "sonner";
+import useSWR, { type KeyedMutator } from "swr";
+
+import type { ZFeedByID, ZFeedSubreddit } from "~/entities/feeds/models";
+
+import useDebounce from "~/shared/hooks/use-debounce";
+import fetchApi from "~/shared/lib/api/fetch";
+import type { ApiResponse } from "~/shared/lib/next/nx-response";
+import { Avatar, AvatarFallback, AvatarImage } from "~/shared/ui/avatar";
+import { Badge } from "~/shared/ui/badge";
+import { Button } from "~/shared/ui/button";
+import { Checkbox } from "~/shared/ui/checkbox";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "~/shared/ui/dialog";
+import { Input } from "~/shared/ui/input";
+import { Separator } from "~/shared/ui/separator";
+import formatLargeNumber from "~/shared/utils/format-large-number";
+import formatRedditImageLink from "~/shared/utils/format-reddit-image-link";
+import Log from "~/shared/utils/terminal-logger";
+
+import useFeedStore from "~/stores/feed-store";
+
+async function getSubreddits(query: string) {
+  const response = await fetchApi(`/reddit/search?q=${query}`);
+  return response.data;
+}
+
+export default function AddSubredditDialog({
+  revalidateFeed,
+}: {
+  revalidateFeed: KeyedMutator<ApiResponse<ZFeedByID>>;
+}) {
+  const [searchInput, setSearchInput] = useState<string>("");
+  const debouncedSearch = useDebounce(searchInput, 1000);
+  const { selectedSubreddits, setSelectedSubreddits, resetTempData } =
+    useFeedStore();
+
+  const { feedId } = useParams<{ feedId: string }>();
+
+  const [isLoadingUpdate, setIsLoadingUpdate] = useState<boolean>(false);
+
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+
+  const toggleSubredditSelection = (subreddit: any) => {
+    const subredditId = subreddit?.id || subreddit?.subredditId;
+    // Check if subreddit already added
+    const subredditExists = selectedSubreddits.find(
+      (item) => item.subredditId === subredditId
+    );
+
+    // Remove subreddit when already added
+    if (subredditExists) {
+      const filteredSubreddit = selectedSubreddits.filter(
+        (item) => item.subredditId !== subredditId
+      );
+      setSelectedSubreddits(filteredSubreddit);
+      // Add subreddit to the local subreddit
+    } else {
+      const subredditFormatted: ZFeedSubreddit = {
+        subredditDescription: subreddit.public_description,
+        subredditIcon:
+          formatRedditImageLink(subreddit.icon_img) ||
+          formatRedditImageLink(subreddit.community_icon) ||
+          "",
+        subredditId: subredditId,
+        subredditName: subreddit.display_name,
+        subredditTitle: subreddit.title,
+        subredditUrl: subreddit.url,
+        type: "subreddit",
+      };
+
+      setSelectedSubreddits([...selectedSubreddits, subredditFormatted]);
+    }
+  };
+
+  const { data, isLoading, mutate } = useSWR(
+    debouncedSearch?.length > 2 ? `subreddits-${debouncedSearch}` : null,
+    () => getSubreddits(debouncedSearch)
+  );
+
+  function _onSearchInputChange(e: ChangeEvent<HTMLInputElement>) {
+    const input = e.target.value;
+    setSearchInput(input);
+  }
+
+  async function handleAddSubreddit() {
+    setIsLoadingUpdate(true);
+    try {
+      const result = await fetchApi(`/feeds/${feedId}/subreddit`, {
+        body: JSON.stringify(selectedSubreddits),
+        method: "PATCH",
+      });
+
+      if (result.success) {
+        toast("Feed has been updated with new subreddits.");
+        revalidateFeed();
+        resetTempData();
+      } else {
+        toast("Something went wrong!");
+      }
+      setSearchInput("");
+      await mutate(undefined); // Clear the data
+      setIsDialogOpen(false);
+    } catch (err) {
+      Log.fail(err);
+    } finally {
+      setIsLoadingUpdate(false);
+    }
+  }
+
+  function handleDialogClose(open: boolean) {
+    if (!open) {
+      resetTempData();
+    }
+    setIsDialogOpen(open);
+  }
+
+  return (
+    <Dialog open={isDialogOpen} onOpenChange={handleDialogClose}>
+      <DialogTrigger asChild>
+        <Button aria-label="Add subreddit">
+          <span className="flex items-center gap-1">
+            <SiReddit className="size-8" />
+            <p className="hidden md:inline-block">Subreddit</p>
+          </span>
+        </Button>
+      </DialogTrigger>
+      <DialogContent className="flex max-h-[80vh] flex-col overflow-hidden px-3 py-6 sm:max-w-150">
+        <DialogHeader className="px-3">
+          <DialogTitle>Add Subreddit</DialogTitle>
+        </DialogHeader>
+        <div className="space-y-4 px-3">
+          <div className="relative">
+            <Search className="text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 transform" />
+            <Input
+              className="input-search-icon pl-10"
+              type="search"
+              id="subreddit-search"
+              placeholder="Search subreddits..."
+              value={searchInput}
+              onChange={_onSearchInputChange}
+              autoFocus
+            />
+          </div>
+
+          {selectedSubreddits.length > 0 && (
+            <div className="flex flex-wrap gap-2">
+              {selectedSubreddits.map((subreddit) => {
+                return (
+                  <Badge
+                    key={subreddit.subredditId}
+                    variant="secondary"
+                    className="bg-primary/60 hover:bg-primary/40 gap-1 font-normal"
+                  >
+                    r/{subreddit.subredditName}
+                    <button
+                      type="button"
+                      onClick={() => toggleSubredditSelection(subreddit)}
+                      className="hover:bg-muted-foreground/20 ml-1 rounded-full p-0.5"
+                    >
+                      ×
+                    </button>
+                  </Badge>
+                );
+              })}
+            </div>
+          )}
+
+          <Separator />
+
+          {searchInput ? (
+            <SearchDropdown
+              isLoading={isLoading}
+              subreddits={data}
+              toggleSubredditSelection={toggleSubredditSelection}
+            />
+          ) : (
+            <div className="text-muted-foreground py-8 text-center">
+              <p className="mb-2">Search for subreddits to get started</p>
+              <p className="text-sm">
+                Try searching for topics like "technology", "gaming", or "news"
+              </p>
+            </div>
+          )}
+
+          <div className="flex gap-2 pt-4">
+            <Button
+              onClick={handleAddSubreddit}
+              disabled={selectedSubreddits.length === 0 || isLoadingUpdate}
+              className="flex-1"
+            >
+              <div className="flex items-center gap-2">
+                {isLoadingUpdate ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    <p>
+                      Adding {selectedSubreddits.length} Subreddit
+                      {selectedSubreddits.length !== 1 ? "s..." : "..."}
+                    </p>
+                  </>
+                ) : (
+                  <>
+                    <Check className="mr-2 h-4 w-4" />
+                    <p>
+                      Add {selectedSubreddits.length} Subreddit
+                      {selectedSubreddits.length !== 1 ? "s" : ""}
+                    </p>
+                  </>
+                )}
+              </div>
+            </Button>
+          </div>
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
+}
+
+function SearchDropdown({
+  isLoading,
+  subreddits,
+  toggleSubredditSelection,
+}: {
+  isLoading: boolean;
+  subreddits: any;
+  toggleSubredditSelection: (subreddit: any) => void;
+}) {
+  const { selectedSubreddits } = useFeedStore();
+
+  function subredditAlreadySelected(id: string) {
+    return Boolean(selectedSubreddits.find((item) => item.subredditId === id));
+  }
+
+  return (
+    <div className="bg-card border-border z-50 mt-1 max-h-96 overflow-y-auto rounded-md border">
+      {isLoading ? (
+        <div className="text-muted-foreground p-4 text-center">
+          Searching...
+        </div>
+      ) : subreddits?.length > 0 ? (
+        subreddits.map((subreddit: any) => {
+          return (
+            <div
+              key={subreddit.id}
+              className="hover:bg-accent border-border flex cursor-pointer items-start justify-between gap-2 border-b p-3 transition-colors last:border-b-0"
+              onClick={() => toggleSubredditSelection(subreddit)}
+            >
+              <div className="flex items-center gap-3">
+                <Avatar className="size-8 rounded-lg">
+                  <AvatarImage
+                    src={
+                      formatRedditImageLink(subreddit.community_icon) ||
+                      formatRedditImageLink(subreddit.icon_img)
+                    }
+                    alt={`r/${subreddit.display_name} icon`}
+                  />
+                  <AvatarFallback className="bg-primary/80 text-sm text-white">
+                    r/
+                  </AvatarFallback>
+                </Avatar>
+                <div className="min-w-0 flex-1">
+                  <div className="flex items-center gap-2">
+                    <span className="text-primary/80 text-sm font-semibold tracking-wide dark:text-white">
+                      r/{subreddit.display_name}
+                    </span>
+                    <Badge
+                      variant="secondary"
+                      className="text-primary/80 text-xs dark:text-white"
+                    >
+                      {formatLargeNumber(subreddit.subscribers)} members
+                    </Badge>
+                  </div>
+                  <p className="text-muted-foreground line-clamp-2 text-xs">
+                    {subreddit.public_description || subreddit.title}
+                  </p>
+                </div>
+              </div>
+              <Checkbox checked={subredditAlreadySelected(subreddit.id)} />
+            </div>
+          );
+        })
+      ) : null}
+    </div>
+  );
+}

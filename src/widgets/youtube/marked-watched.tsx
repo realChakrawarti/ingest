@@ -4,7 +4,7 @@ import { Check, Square } from "lucide-react";
 
 import { useLiveQuery } from "dexie-react-hooks";
 
-import type { ZVideoMetadataCompatible } from "~/entities/catalogs/models";
+import type { ZVideoMetadataCompatible } from "~/entities/feeds/models";
 
 import { useLocalUserSettings } from "~/shared/hooks/use-local-user-settings";
 import { useIsMobile } from "~/shared/hooks/use-mobile";

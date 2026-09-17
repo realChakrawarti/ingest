@@ -36,12 +36,12 @@ import { cn } from "~/shared/utils/tailwind-merge";
 
 import JustTip from "~/widgets/just-the-tip";
 
-function CopyButton({ id, type }: { id: string; type: "catalog" | "archive" }) {
+function CopyButton({ id, type }: { id: string; type: "feed" | "archive" }) {
   const [copied, setCopied] = useState(false);
 
   const copyToClipboard = () => {
-    const exploreType = type === "catalog" ? "c" : "a";
-    const exploreName = type === "catalog" ? "Catalog" : "Archive";
+    const exploreType = type === "feed" ? "c" : "a";
+    const exploreName = type === "feed" ? "Catalog" : "Archive";
     navigator.clipboard
       .writeText(`${appConfig.url}/${exploreType}/${id}`)
       .then(() => {
@@ -82,7 +82,7 @@ const cardContentStyles = cn(
 );
 
 type ItemCardProps = {
-  type: "archive" | "catalog";
+  type: "archive" | "feed";
   id: string;
   title: string;
   description: string;
@@ -101,7 +101,7 @@ export default function ItemCard({
   isPublic = true,
 }: ItemCardProps) {
   const editLink =
-    type === "archive" ? `/archives/${id}/edit` : `/catalogs/${id}/edit`;
+    type === "archive" ? `/archives/${id}/edit` : `/feeds/${id}/edit`;
 
   return (
     <div className="group/card-item hover-lift shadow-primary/20 relative rounded-md shadow-sm">
@@ -139,7 +139,7 @@ export default function ItemCard({
                 className="hover:bg-primary/5 text-primary/80 hover:text-primary h-8 w-8"
               >
                 <Trash2 className="bg-primary/5 h-4 w-4" />
-                <span className="sr-only">Delete catalog</span>
+                <span className="sr-only">Delete feed</span>
               </Button>
             </DeleteModal>
           </div>
@@ -183,8 +183,7 @@ function DeleteModal({ children, handleDelete }: DeleteModalProps) {
             Confirm Deletion
           </DialogTitle>
           <DialogDescription className="text-primary/70">
-            This action is irreversible. The catalog will be permanently
-            deleted.
+            This action is irreversible. The feed will be permanently deleted.
           </DialogDescription>
         </DialogHeader>
         <DialogFooter className="gap-3 sm:justify-start">

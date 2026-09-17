@@ -16,7 +16,7 @@ import { DeleteModal } from "~/widgets/delete-modal";
 import Spinner from "~/widgets/spinner";
 
 import ArchiveView from "./archive-view";
-import CatalogView from "./catalog-view";
+import CatalogView from "./feed-view";
 
 export default function Dashboard() {
   const {

@@ -24,19 +24,19 @@ interface FAQItem {
 
 const faqs: FAQItem[] = [
   {
-    answer: `${appConfig.marketName} lets you create personalized collections of content from both YouTube and Reddit. You can build custom catalogs tailored to your interests, making it much easier to find exactly the videos and trending posts you want to see, when you want to see them. You don't even need to sign up or log in to watch videos or read posts.`,
+    answer: `${appConfig.marketName} lets you create personalized collections of content from both YouTube and Reddit. You can build custom feeds tailored to your interests, making it much easier to find exactly the videos and trending posts you want to see, when you want to see them. You don't even need to sign up or log in to watch videos or read posts.`,
     question: `What can I do with ${appConfig.marketName}?`,
   },
   {
-    answer: `It's simple! You can select the YouTube channels you like, and even choose specific playlists from those channels for finer control. You can also add your favorite subreddits to your catalogs. ${appConfig.marketName} then automatically adds new videos or trending posts to your curated catalogs, so you don't miss anything. Think of it as your own personalized feed for YouTube and Reddit!`,
+    answer: `It's simple! You can select the YouTube channels you like, and even choose specific playlists from those channels for finer control. You can also add your favorite subreddits to your feeds. ${appConfig.marketName} then automatically adds new videos or trending posts to your curated feeds, so you don't miss anything. Think of it as your own personalized feed for YouTube and Reddit!`,
     question: `How do I use ${appConfig.marketName} to organize my content?`,
   },
   {
-    answer: `${appConfig.marketName} checks for new content from your selected channels, playlists, and subreddits every 4 hours, so your catalogs are always up-to-date.`,
-    question: "How often are new videos and posts added to my catalogs?",
+    answer: `${appConfig.marketName} checks for new content from your selected channels, playlists, and subreddits every 4 hours, so your feeds are always up-to-date.`,
+    question: "How often are new videos and posts added to my feeds?",
   },
   {
-    answer: `Yes, ${appConfig.marketName} is designed to work seamlessly on mobile devices. Access your catalogs from your smartphone or tablet anytime, anywhere.`,
+    answer: `Yes, ${appConfig.marketName} is designed to work seamlessly on mobile devices. Access your feeds from your smartphone or tablet anytime, anywhere.`,
     question: `Can I use ${appConfig.marketName} on my phone or tablet?`,
   },
   {
@@ -46,8 +46,8 @@ const faqs: FAQItem[] = [
   },
   {
     answer:
-      "Yes, you can easily share your curated catalogs with friends and family, allowing them to discover great content too. Your privacy settings remain in control.",
-    question: "Can I share my catalogs with friends?",
+      "Yes, you can easily share your curated feeds with friends and family, allowing them to discover great content too. Your privacy settings remain in control.",
+    question: "Can I share my feeds with friends?",
   },
   {
     answer:

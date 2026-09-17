@@ -3,14 +3,14 @@ import isDevelopment from "./utils/is-development";
 import { time } from "./utils/time";
 
 class AppConfig {
-  private _catalogUpdateEnabled = process.env.ENABLE_CATALOG_UPDATE === "true";
-  private _catalogUpdatePeriod = time.hours(4);
-  private _catalogVideoLimit = 10;
+  private _feedUpdateEnabled = process.env.ENABLE_CATALOG_UPDATE === "true";
+  private _feedUpdatePeriod = time.hours(4);
+  private _feedVideoLimit = 10;
   private _channelLogoUpdatePeriod = time.days(1);
   private _domain = "707x.in";
   private _githubRepo = "https://github.com/realChakrawarti/ingest";
   private _limitArchives = 10;
-  private _limitCatalogs = 5;
+  private _limitFeeds = 5;
   private _marketName = "Ingest";
   private _name = packageInfo.name;
   private _organization = "707x Labs";
@@ -21,8 +21,8 @@ class AppConfig {
   private _metadataUpdateCooldown = time.hours(4);
   private _exploreFeatured = true;
 
-  get catalogUpdateEnabled(): boolean {
-    if (!this._catalogUpdateEnabled) {
+  get feedUpdateEnabled(): boolean {
+    if (!this._feedUpdateEnabled) {
       return false;
     }
 
@@ -41,12 +41,12 @@ class AppConfig {
     return this._channelLogoUpdatePeriod;
   }
 
-  get catalogVideoLimit(): number {
-    return this._catalogVideoLimit;
+  get feedVideoLimit(): number {
+    return this._feedVideoLimit;
   }
 
-  get catalogUpdatePeriod(): number {
-    return this._catalogUpdatePeriod;
+  get feedUpdatePeriod(): number {
+    return this._feedUpdatePeriod;
   }
 
   get watchedPercentage(): number {
@@ -87,8 +87,8 @@ class AppConfig {
     return this._githubRepo;
   }
 
-  get limitCatalogs(): number {
-    return this._limitCatalogs;
+  get limitFeeds(): number {
+    return this._limitFeeds;
   }
 
   get limitArchives(): number {

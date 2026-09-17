@@ -1,7 +1,7 @@
 import { beforeEach, expect, test, vi } from "vitest";
 import { render } from "vitest-browser-react";
 
-import type { ZVideoMetadataCompatible } from "~/entities/catalogs/models";
+import type { ZVideoMetadataCompatible } from "~/entities/feeds/models";
 
 import { indexedDB } from "~/shared/lib/api/dexie";
 import { LOCAL_USER_SETTINGS } from "~/shared/lib/constants";

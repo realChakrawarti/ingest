@@ -8,7 +8,7 @@ import Log from "~/shared/utils/terminal-logger";
 import { verifyFirebaseSessionCookie } from "./shared/lib/firebase/verify-session-cookie";
 
 const whiteListedEndpoints = [
-  "/api/catalogs/valid",
+  "/api/feeds/valid",
   "/api/archives/valid",
   "/api/users/update-sync",
   "/api/users/get-sync",
@@ -68,7 +68,7 @@ export const config = {
   matcher: [
     // Views
     "/dashboard",
-    "/catalogs/:catalogId/edit",
+    "/feeds/:feedId/edit",
     "/archives/:archiveId/edit",
     // Archives Routes
     "/api/archives",
@@ -76,15 +76,15 @@ export const config = {
     "/api/archives/:archiveId/delete",
     "/api/archives/:archiveId/remove-video",
     "/api/archives/:archiveId/update",
-    // Catalogs Routes
-    "/api/catalogs",
-    "/api/catalogs/:catalogId",
-    "/api/catalogs/:catalogId/channel",
-    "/api/catalogs/:catalogId/delete",
-    "/api/catalogs/:catalogId/playlist",
-    "/api/catalogs/:catalogId/subreddit",
-    "/api/catalogs/:catalogId/podcast",
-    "/api/catalogs/:catalogId/update",
+    // Feeds Routes
+    "/api/feeds",
+    "/api/feeds/:feedId",
+    "/api/feeds/:feedId/channel",
+    "/api/feeds/:feedId/delete",
+    "/api/feeds/:feedId/playlist",
+    "/api/feeds/:feedId/subreddit",
+    "/api/feeds/:feedId/podcast",
+    "/api/feeds/:feedId/update",
     // Podcasr Routes
     "/api/podcast",
     // YouTube Routes
