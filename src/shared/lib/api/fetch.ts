@@ -3,7 +3,7 @@
 import Log from "~/shared/utils/terminal-logger";
 
 type EndpointPrefixes =
-  | "archives"
+  | "picks"
   | "feeds"
   | "users"
   | "logout"

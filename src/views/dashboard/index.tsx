@@ -15,8 +15,8 @@ import { Skeleton } from "~/shared/ui/skeleton";
 import { DeleteModal } from "~/widgets/delete-modal";
 import Spinner from "~/widgets/spinner";
 
-import ArchiveView from "./archive-view";
 import CatalogView from "./feed-view";
+import PickView from "./pick-view";
 
 export default function Dashboard() {
   const {
@@ -149,7 +149,7 @@ export default function Dashboard() {
       <Separator />
       <CatalogView />
       <Separator />
-      <ArchiveView />
+      <PickView />
     </div>
   );
 }

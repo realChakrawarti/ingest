@@ -44,14 +44,14 @@ export async function PATCH(request: NextRequest, ctx: ContextParams) {
       if (err instanceof Error) {
         return NxResponse.fail(
           err.message,
-          { code: "CATALOG_SUBREDDIT_UPDATE", details: err.message },
+          { code: "FEED_SUBREDDIT_UPDATE", details: err.message },
           Status.BadRequest
         );
       }
       return NxResponse.fail(
         "Unable to update feed subreddits.",
         {
-          code: "CATALOG_SUBREDDIT_UPDATE",
+          code: "FEED_SUBREDDIT_UPDATE",
           details: "Unable to update feed subreddits.",
         },
         Status.BadRequest

@@ -205,9 +205,9 @@ function ExploreGroup() {
     },
     {
       icon: Archive,
-      label: "Archives",
-      path: "/explore/archives",
-      shortPath: "/a/",
+      label: "Picks",
+      path: "/explore/picks",
+      shortPath: "/p/",
     },
     {
       badge: existingVideos.length,

@@ -58,7 +58,7 @@ export async function PATCH(request: NextRequest, ctx: ContextParams) {
     if (message) {
       return NxResponse.fail(
         message,
-        { code: "CATALOG_UPDATE_FAILED", details: message },
+        { code: "FEED_UPDATE_FAILED", details: message },
         400
       );
     }

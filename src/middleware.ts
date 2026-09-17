@@ -9,7 +9,7 @@ import { verifyFirebaseSessionCookie } from "./shared/lib/firebase/verify-sessio
 
 const whiteListedEndpoints = [
   "/api/feeds/valid",
-  "/api/archives/valid",
+  "/api/picks/valid",
   "/api/users/update-sync",
   "/api/users/get-sync",
 ];
@@ -69,13 +69,13 @@ export const config = {
     // Views
     "/dashboard",
     "/feeds/:feedId/edit",
-    "/archives/:archiveId/edit",
-    // Archives Routes
-    "/api/archives",
-    "/api/archives/:archiveId/add-video",
-    "/api/archives/:archiveId/delete",
-    "/api/archives/:archiveId/remove-video",
-    "/api/archives/:archiveId/update",
+    "/picks/:pickId/edit",
+    // Picks Routes
+    "/api/picks",
+    "/api/picks/:pickId/add-video",
+    "/api/picks/:pickId/delete",
+    "/api/picks/:pickId/remove-video",
+    "/api/picks/:pickId/update",
     // Feeds Routes
     "/api/feeds",
     "/api/feeds/:feedId",

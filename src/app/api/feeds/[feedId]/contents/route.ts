@@ -46,7 +46,7 @@ export async function GET(request: NextRequest, ctx: ContextParams) {
       return NxResponse.fail(
         "Unable to fetch feed contents.",
         {
-          code: "FAILED_CATALOG_VIDEOS",
+          code: "FAILED_FEED_VIDEOS",
           details: "Unable to fetch feed contents.",
         },
         500

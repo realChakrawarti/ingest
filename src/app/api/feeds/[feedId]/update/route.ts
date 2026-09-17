@@ -21,7 +21,7 @@ export async function PATCH(request: NextRequest, ctx: ContextParams) {
     return NxResponse.fail(
       "Missing or invalid Feed identifier.",
       {
-        code: AppErrorCodes.INVALID_CATALOG_ID,
+        code: AppErrorCodes.INVALID_FEED_ID,
         details:
           "Feed identifier route parameter is required & cannot be empty.",
       },
