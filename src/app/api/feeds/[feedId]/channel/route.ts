@@ -23,7 +23,7 @@ export async function DELETE(request: NextRequest, ctx: ContextParams) {
 
   if (success) {
     await deleteChannel(userId, feedId, data);
-    revalidatePath(`/c/${feedId}`);
+    revalidatePath(`/f/${feedId}`);
     return NxResponse.success("Channel deleted successfully.", {}, 200);
   }
   return NxResponse.fail(

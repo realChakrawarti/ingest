@@ -77,7 +77,7 @@ export async function DELETE(request: NextRequest, ctx: ContextParams) {
   if (success) {
     try {
       await deleteSubreddit(userId, feedId, data);
-      revalidatePath(`/c/${feedId}`);
+      revalidatePath(`/f/${feedId}`);
       return NxResponse.success("Subreddit deleted successfully.", {}, 200);
     } catch (err) {
       Log.fail(err);

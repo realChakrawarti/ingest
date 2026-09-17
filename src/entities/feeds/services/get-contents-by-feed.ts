@@ -265,7 +265,7 @@ export async function getContentsByFeed(
 
     await feedRef.set(feedContents, { merge: true });
 
-    revalidatePath(`/c/${feedId}`);
+    revalidatePath(`/f/${feedId}`);
     Log.info(`Cached invalidated /c/${feedId}`);
   } else {
     videoFilterData = feedSnapData?.data.videos;

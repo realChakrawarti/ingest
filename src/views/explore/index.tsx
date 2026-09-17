@@ -39,7 +39,7 @@ export default async function Explore() {
             <GridContainer>
               {feedsData.slice(0, 4).map((feed) => (
                 <DetailsCard
-                  path={`/c/${feed.id}`}
+                  path={`/f/${feed.id}`}
                   key={feed.id}
                   validData={feed}
                 />

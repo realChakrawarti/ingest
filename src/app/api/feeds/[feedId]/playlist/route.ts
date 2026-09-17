@@ -76,7 +76,7 @@ export async function DELETE(request: NextRequest, ctx: ContextParams) {
   if (success) {
     try {
       await deletePlaylist(userId, feedId, data);
-      revalidatePath(`/c/${feedId}`);
+      revalidatePath(`/f/${feedId}`);
       return NxResponse.success("Playlist deleted successfully.", {}, 200);
     } catch (err) {
       Log.fail(err);

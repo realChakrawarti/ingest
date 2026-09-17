@@ -130,7 +130,7 @@ function LocalGroup() {
                           )}
                           asChild
                         >
-                          <Link href={`/c/${item.id}`}>
+                          <Link href={`/f/${item.id}`}>
                             <Button
                               variant="ghost"
                               className={cn(
@@ -201,7 +201,7 @@ function ExploreGroup() {
       icon: BookOpen,
       label: "Feeds",
       path: "/explore/feeds",
-      shortPath: "/c/",
+      shortPath: "/f/",
     },
     {
       icon: Archive,

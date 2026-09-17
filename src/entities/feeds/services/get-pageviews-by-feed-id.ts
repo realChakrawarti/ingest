@@ -49,7 +49,7 @@ export async function getPageviewByFeedId(feedId: string): Promise<number> {
         fieldName: "pagePath",
         stringFilter: {
           matchType: "EXACT",
-          value: `/c/${feedId}`,
+          value: `/f/${feedId}`,
         },
       },
     },
