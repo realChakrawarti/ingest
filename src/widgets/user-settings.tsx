@@ -235,10 +235,12 @@ export function UserSettings() {
                 {remoteUserSettings?.data && (
                   <p className="text-xs">
                     Updated{" "}
-                    {getTimeDifference(
-                      remoteUserSettings?.data?.updatedAt,
-                      true
-                    )[1].toLowerCase()}
+                    {getTimeDifference({
+                      value: remoteUserSettings?.data?.updatedAt,
+                      nearest: false,
+                      suffixEnabled: true,
+                      limitMonth: true,
+                    })[1].toLowerCase()}
                   </p>
                 )}
               </div>

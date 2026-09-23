@@ -1,18 +1,15 @@
 "use client";
 
-import type Slider from "react-slick";
-
-import { type MouseEvent, useRef, useState } from "react";
 import Link from "next/link";
-import { EyeIcon, File, Pause, Play, Podcast, VideoIcon } from "lucide-react";
+import { EyeIcon, File, Podcast, VideoIcon } from "lucide-react";
 
 import type { ZFeedValid } from "~/entities/feeds/models";
 import type { ZPickValid } from "~/entities/picks/models";
 
+import { useLocalUserSettings } from "~/shared/hooks/use-local-user-settings";
 import { Separator } from "~/shared/ui/separator";
 import { cn } from "~/shared/utils/tailwind-merge";
 
-import ThumbnailCarousel from "./carousel-thumbnails";
 import OverlayTip from "./overlay-tip";
 
 interface DetailsCardProps {
@@ -21,20 +18,7 @@ interface DetailsCardProps {
 }
 
 export default function DetailsCard({ validData, path }: DetailsCardProps) {
-  const sliderRef = useRef<Slider | null>(null);
-  const [slidesPlaying, setSlidesPlaying] = useState<boolean>(false);
-
-  const playSlides = (e: MouseEvent<HTMLButtonElement>) => {
-    e.stopPropagation();
-    setSlidesPlaying(true);
-    sliderRef.current?.slickPlay();
-  };
-
-  const pauseSlides = (e: MouseEvent<HTMLButtonElement>) => {
-    e.stopPropagation();
-    setSlidesPlaying(false);
-    sliderRef.current?.slickPause();
-  };
+  const { localUserSettings } = useLocalUserSettings(null);
 
   return (
     <section
@@ -45,39 +29,29 @@ export default function DetailsCard({ validData, path }: DetailsCardProps) {
       )}
     >
       <div className="relative aspect-video">
-        <ThumbnailCarousel
-          path={path}
-          sliderRef={sliderRef}
-          thumbnails={validData.thumbnails}
-        />
-
-        <div className="absolute right-0 bottom-3">
-          {slidesPlaying ? (
-            <OverlayTip
-              id="slider-play"
-              className="z-20 grid size-8 cursor-pointer rounded-l-md"
-            >
-              <span
-                className="grid size-full place-items-center"
-                onMouseDown={pauseSlides}
-              >
-                <Pause className="size-5" />
-              </span>
-            </OverlayTip>
-          ) : (
-            <OverlayTip
-              id="slider-pause"
-              className="z-20 size-8 cursor-pointer rounded-l-md"
-            >
-              <span
-                className="grid size-full place-items-center"
-                onMouseDown={playSlides}
-              >
-                <Play className="size-5" />
-              </span>
-            </OverlayTip>
-          )}
-        </div>
+        {validData?.thumbnails?.length >= 4 ? (
+          <Link prefetch={false} scroll={false} href={path}>
+            <div className="grid grid-cols-2 grid-rows-2">
+              {validData.thumbnails.slice(0, 4).map((thumb, index) => (
+                <img
+                  style={{
+                    filter: `grayscale(${localUserSettings?.thumbnailGrayscale ?? 0}%)`,
+                  }}
+                  key={index}
+                  className="size-full object-contain"
+                  src={thumb}
+                  alt="thumbnail"
+                />
+              ))}
+            </div>
+          </Link>
+        ) : (
+          <img
+            className="size-full object-contain"
+            src={validData.thumbnails[0]}
+            alt="thumbnail"
+          />
+        )}
       </div>
 
       <Link

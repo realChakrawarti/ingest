@@ -44,7 +44,12 @@ function ChannelMeta({
   const { channelLogo, channelTitle, channelId, videoTitle, publishedAt } =
     video;
 
-  const [_, timeElapsed] = getTimeDifference(publishedAt, true, false);
+  const [_, timeElapsed] = getTimeDifference({
+    value: publishedAt,
+    nearest: true,
+    suffixEnabled: true,
+    limitMonth: false,
+  });
   return (
     <div className="flex gap-3">
       {channelLogo && !hideAvatar ? (

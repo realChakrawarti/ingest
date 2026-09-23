@@ -4,7 +4,7 @@ import type { Metadata } from "next";
 import appConfig from "~/shared/app-config";
 
 export const metadata: Metadata = {
-  title: `Edit Catalog | ${appConfig.marketName}`,
+  title: `Edit Feed | ${appConfig.marketName}`,
 };
 
 export default function DashboardLayout({

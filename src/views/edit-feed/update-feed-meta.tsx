@@ -102,7 +102,15 @@ export default function UpdateFeedMeta({
           <DialogTitle>Update Feed</DialogTitle>
           {lastUpdatedAt && (
             <DialogDescription>
-              Last updated: {getTimeDifference(lastUpdatedAt)[1]}
+              Last updated:{" "}
+              {
+                getTimeDifference({
+                  value: lastUpdatedAt,
+                  nearest: false,
+                  suffixEnabled: true,
+                  limitMonth: false,
+                })[1]
+              }
             </DialogDescription>
           )}
         </DialogHeader>

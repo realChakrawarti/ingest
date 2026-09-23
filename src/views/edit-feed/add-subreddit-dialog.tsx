@@ -163,7 +163,7 @@ export default function AddSubredditDialog({
                   <Badge
                     key={subreddit.subredditId}
                     variant="secondary"
-                    className="bg-primary/60 hover:bg-primary/40 gap-1 font-normal"
+                    className="bg-secondary hover:bg-primary/40 gap-1 font-normal"
                   >
                     r/{subreddit.subredditName}
                     <button

@@ -122,7 +122,7 @@ export default function PopupPlayer() {
             />
           </div>
 
-          <p>
+          <p className="w-[15ch]">
             {formatSecondsToHMS(currentTime || 0)} /{" "}
             {formatSecondsToHMS(duration || 0)}
           </p>

@@ -8,7 +8,7 @@ import {
 import type { ZFeedSubredditPost } from "~/entities/feeds/models";
 
 import formatLargeNumber from "~/shared/utils/format-large-number";
-import { getDifferenceString } from "~/shared/utils/time-diff";
+import { getTimeDifference } from "~/shared/utils/time-diff";
 
 import { OutLink } from "~/widgets/out-link";
 
@@ -23,12 +23,12 @@ export function PostCard({
   handleSheetOpen: (isOpen: boolean) => void;
   setCurrentIndex: (index: number) => void;
 }) {
-  const currentTime = Date.now() / 1000;
-  const createdAt = getDifferenceString(
-    (currentTime - post.postCreatedAt) / 60,
-    "ago",
-    true
-  );
+  const createdAt = getTimeDifference({
+    value: post.postCreatedAt * 1000,
+    suffixEnabled: true,
+    nearest: true,
+    limitMonth: true,
+  })[1];
 
   const handleOpenSheet = () => {
     setCurrentIndex(index);

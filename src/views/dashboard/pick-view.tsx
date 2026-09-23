@@ -62,11 +62,12 @@ export default function PickView() {
           {picks?.data.length ? (
             <GridContainer>
               {picks?.data.map((pick: any) => {
-                const [_, lastUpdated] = getTimeDifference(
-                  pick?.videoData?.updatedAt,
-                  true,
-                  false
-                );
+                const [_, lastUpdated] = getTimeDifference({
+                  value: pick?.videoData?.updatedAt,
+                  nearest: false,
+                  suffixEnabled: true,
+                  limitMonth: true,
+                });
                 return (
                   <PickCard
                     isPublic={pick?.isPublic}

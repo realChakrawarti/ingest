@@ -103,7 +103,15 @@ export default function UpdatePickMeta({
           <DialogTitle>Update Pick</DialogTitle>
           {lastUpdatedAt && (
             <DialogDescription>
-              Last updated: {getTimeDifference(lastUpdatedAt)[1]}
+              Last updated:{" "}
+              {
+                getTimeDifference({
+                  value: lastUpdatedAt,
+                  nearest: false,
+                  suffixEnabled: true,
+                  limitMonth: false,
+                })[1]
+              }
             </DialogDescription>
           )}
         </DialogHeader>

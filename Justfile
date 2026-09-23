@@ -75,7 +75,7 @@ start-seed: import-seed next-dev
 # update the CONTRIBUTING.md with all the project dependencies metadata
 [group("Chore")]
 deps:
-    pnpx dependex
+    bunx dependex
 
 # update the project to use the unified radix-ui mono package instead of individual @radix-ui/react-* packages
 [group("Chore")]

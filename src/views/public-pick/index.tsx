@@ -51,7 +51,15 @@ export default async function PublicPick({ pickId }: { pickId: string }) {
             </div>
           </div>
           <div className="absolute top-3 right-3 text-sm">
-            {getTimeDifference(pickUpdatedAt)[1]} ago
+            {
+              getTimeDifference({
+                value: pickUpdatedAt,
+                nearest: false,
+                suffixEnabled: true,
+                limitMonth: true,
+              })[1]
+            }{" "}
+            ago
           </div>
         </div>
       </PublicHeaderTitle>

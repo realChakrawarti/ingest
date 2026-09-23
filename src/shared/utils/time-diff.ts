@@ -1,8 +1,8 @@
-function formatPluralUnit(
-  value: number,
-  type: "month" | "minute" | "hour" | "day"
-) {
-  return `${value} ${type}${value > 1 ? "s" : ""}`;
+function formatPluralUnit(value: number, type: "mo" | "min" | "hr" | "d") {
+  if (type === "d") {
+    return `${value}${type}`;
+  }
+  return `${value}${type}${value > 1 ? "s" : ""}`;
 }
 
 const MINUTES_PER_HOUR = 60;
@@ -42,38 +42,34 @@ function formatTimeDifferenceWithMonths(timeDiff: number) {
   return { days, hours, minutes, months };
 }
 
-export function getDifferenceString(
-  deltaMinutes: number,
-  suffix: "ago" | "later",
-  suffixEnabled = false
-) {
+export function getDifferenceString(deltaMinutes: number, nearest = true) {
   const { months, days, hours, minutes } =
     formatTimeDifferenceWithMonths(deltaMinutes);
   let timeDifferenceString = "";
 
   if (months) {
-    timeDifferenceString = `${formatPluralUnit(months, "month")} `;
-    if (suffixEnabled) {
-      return timeDifferenceString + suffix;
+    timeDifferenceString = `${formatPluralUnit(months, "mo")} `;
+    if (nearest) {
+      return timeDifferenceString;
     }
   }
 
   if (days) {
-    timeDifferenceString += `${formatPluralUnit(days, "day")} `;
-    if (suffixEnabled) {
-      return timeDifferenceString + suffix;
+    timeDifferenceString += `${formatPluralUnit(days, "d")} `;
+    if (nearest) {
+      return timeDifferenceString;
     }
   }
   if (hours) {
-    timeDifferenceString += `${formatPluralUnit(hours, "hour")} `;
-    if (suffixEnabled) {
-      return timeDifferenceString + suffix;
+    timeDifferenceString += `${formatPluralUnit(hours, "hr")} `;
+    if (nearest) {
+      return timeDifferenceString;
     }
   }
   if (minutes) {
-    timeDifferenceString += `${formatPluralUnit(minutes, "minute")} `;
-    if (suffixEnabled) {
-      return timeDifferenceString + suffix;
+    timeDifferenceString += `${formatPluralUnit(minutes, "min")} `;
+    if (nearest) {
+      return timeDifferenceString;
     }
   }
   return timeDifferenceString;
@@ -91,22 +87,16 @@ export function timeDelta(compareWithCurrent: string | number): number {
   return delta;
 }
 
-/**
- *
- * @param {string | number} compareWithCurrent -
- * @param {boolean} [suffixEnabled=false] - Approximate time difference with `ago` and `later` appended
- * @param {boolean} [limitMonth=true] - Show N/A when time difference exceeds 30 days
- * @returns {(string | number)[]}
- */
-export function getTimeDifference(
-  compareWithCurrent: string | number,
-  suffixEnabled = false,
-  limitMonth = true
-): [number, string] {
-  const delta = timeDelta(compareWithCurrent);
+export function getTimeDifference(props: {
+  value: string | number;
+  suffixEnabled: boolean;
+  limitMonth: boolean;
+  nearest: boolean;
+}): [number, string] {
+  const delta = timeDelta(props.value);
   const deltaMinutes = Math.abs(delta) / (60 * 1000); // In minutes
 
-  if (deltaMinutes > MINUTES_PER_MONTH && limitMonth) {
+  if (deltaMinutes > MINUTES_PER_MONTH && props.limitMonth) {
     return [0, "N/A"];
   }
 
@@ -116,7 +106,10 @@ export function getTimeDifference(
 
   const suffix = delta > 0 ? "ago" : "later";
   const direction = delta > 0 ? -1 : 1;
-  const diffToString = getDifferenceString(deltaMinutes, suffix, suffixEnabled);
+  let diffToString = getDifferenceString(deltaMinutes, props.nearest);
+  if (props.suffixEnabled) {
+    diffToString += ` ${suffix}`;
+  }
 
   return [direction, diffToString];
 }

@@ -1,13 +1,16 @@
 "use client";
 
 import type { RefObject } from "react";
-import { Volume2Icon } from "lucide-react";
+import { PauseIcon, PlayIcon, Volume2Icon } from "lucide-react";
 
 import type { ZFeedPodcastItem } from "~/entities/feeds/models";
 
+import { Button } from "~/shared/ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "~/shared/ui/popover";
 import { Slider } from "~/shared/ui/slider";
 import formatSecondsToHMS from "~/shared/utils/format-seconds-HMS";
+
+import Spinner from "~/widgets/spinner";
 
 import { usePodcastPlayer } from "./use-podcast-player";
 
@@ -18,16 +21,35 @@ export function PodcastPlayer({
   podcast: ZFeedPodcastItem;
   audioPlayerRef: RefObject<HTMLAudioElement | null>;
 }) {
-  const { current, onSeek, volume, onVolume } =
-    usePodcastPlayer(audioPlayerRef);
+  const {
+    current,
+    onSeek,
+    volume,
+    onVolume,
+    isPlaying,
+    isBuffering,
+    togglePlay,
+  } = usePodcastPlayer(audioPlayerRef);
 
   return (
     <div className="flex items-center gap-2">
+      <Button
+        variant="ghost"
+        onClick={togglePlay}
+        aria-label={isPlaying ? "Pause" : "Play"}
+      >
+        <div className="">
+          {isBuffering ? (
+            <Spinner className="size-4" />
+          ) : isPlaying ? (
+            <PauseIcon className="size-4" />
+          ) : (
+            <PlayIcon className="size-4" />
+          )}
+        </div>
+      </Button>
       <div className="flex min-w-0 flex-1 gap-2">
-        <span
-          className="text-muted-foreground text-xs"
-          style={{ width: `${formatSecondsToHMS(current).length}ch` }}
-        >
+        <span className="text-muted-foreground w-[8ch] text-xs">
           {formatSecondsToHMS(current)}
         </span>
         <Slider
@@ -38,10 +60,7 @@ export function PodcastPlayer({
           className="w-full"
           aria-label="Seek"
         />
-        <span
-          className="text-muted-foreground text-xs"
-          style={{ width: `${formatSecondsToHMS(current).length}ch` }}
-        >
+        <span className="text-muted-foreground w-[8ch] text-xs">
           {formatSecondsToHMS(podcast.duration)}
         </span>
       </div>

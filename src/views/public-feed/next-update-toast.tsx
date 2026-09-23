@@ -13,7 +13,12 @@ export default function NextUpdateToast({
 }) {
   useEffect(() => {
     if (nextUpdate) {
-      const [when, updateString] = getTimeDifference(nextUpdate);
+      const [when, updateString] = getTimeDifference({
+        value: nextUpdate,
+        nearest: false,
+        suffixEnabled: true,
+        limitMonth: false,
+      });
       if (when < 0) {
         toast("You are currently viewing an older version.", {
           action: {

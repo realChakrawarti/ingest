@@ -70,11 +70,12 @@ export default function FeedView() {
           {feedsData?.length ? (
             <GridContainer>
               {feedsData.map((feed) => {
-                const [_, lastUpdated] = getTimeDifference(
-                  feed.updatedAt,
-                  true,
-                  false
-                );
+                const [_, lastUpdated] = getTimeDifference({
+                  value: feed.updatedAt,
+                  nearest: false,
+                  suffixEnabled: true,
+                  limitMonth: true,
+                });
                 return (
                   <FeedCard
                     isPublic={feed.isPublic}

@@ -7,10 +7,26 @@ import { getTimeDifference } from "~/shared/utils/time-diff";
 
 export default function UpdatePing({ nextUpdate }: { nextUpdate: string }) {
   const [[when, diffUpdate], setTime] = useState(() =>
-    getTimeDifference(nextUpdate)
+    getTimeDifference({
+      value: nextUpdate,
+      nearest: false,
+      suffixEnabled: true,
+      limitMonth: false,
+    })
   );
 
-  useInterval(() => setTime(getTimeDifference(nextUpdate)), 5_000);
+  useInterval(
+    () =>
+      setTime(
+        getTimeDifference({
+          value: nextUpdate,
+          nearest: false,
+          suffixEnabled: true,
+          limitMonth: false,
+        })
+      ),
+    5_000
+  );
 
   return (
     <div className="text-sm">
