@@ -16,29 +16,6 @@ html {
   }
 }
 
-.pages-slider {
-  height: 100px;
-  margin: auto;
-  overflow: hidden;
-  width: auto;
-
-  .slide-track {
-    animation: scroll 40s linear infinite;
-    display: flex;
-    gap: 12px;
-    width: calc(100px * 14);
-  }
-
-  .slide {
-    background-color: #0f0e0a;
-    display: flex;
-    justify-content: center;
-    padding: 4px;
-    border-radius: 0.5rem;
-    width: 100px;
-  }
-}
-
 /* YouTube Embed styling overrides */
 .lty-playbtn {
   display: none !important;
@@ -90,11 +67,11 @@ html {
   transition: background-color 0.35s ease;
 }
 
-#player-card lite-youtube {
+.player-card lite-youtube {
   transition: 0.5s ease-in-out;
 }
 
-#player-card:hover {
+.player-card:hover {
   & lite-youtube:not(:has(iframe)) {
     transform: scale(1.07);
   }

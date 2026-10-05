@@ -179,7 +179,6 @@ export default function YoutubePlayer(
 
   return (
     <div
-      id="player-card"
       className="relative overflow-hidden"
       tabIndex={0}
       ref={containerRef}

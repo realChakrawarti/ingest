@@ -6,6 +6,7 @@ export function usePodcastPlayer(
 ) {
   const [current, setCurrent] = useState(0);
   const [volume, setVolume] = useState(1);
+  const [playbackRate, setPlaybackRate] = useState(1);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isBuffering, setIsBuffering] = useState(false);
 
@@ -107,11 +108,40 @@ export function usePodcastPlayer(
     setVolume(next);
   }
 
+  const forward10 = () => {
+    const audio = audioPlayerRef.current;
+    if (!audio) return;
+
+    audio.currentTime = Math.min(
+      audio.currentTime + 10,
+      audio.duration || Infinity
+    );
+  };
+
+  const backward10 = () => {
+    const audio = audioPlayerRef.current;
+    if (!audio) return;
+
+    audio.currentTime = Math.max(audio.currentTime - 10, 0);
+  };
+
+  const changeSpeed = (speed: number) => {
+    const audio = audioPlayerRef.current;
+    if (!audio) return;
+
+    audio.playbackRate = speed;
+    setPlaybackRate(speed);
+  };
+
   return {
+    forward10,
+    backward10,
+    changeSpeed,
     onSeek,
     togglePlay,
     onVolume,
     current,
+    playbackRate,
     volume,
     isPlaying,
     isBuffering,

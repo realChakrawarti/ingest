@@ -9,7 +9,7 @@ import { cn } from "../utils/tailwind-merge";
 const Slider = ({
   ref,
   className,
-  showThumb = true,
+  showThumb,
   ...props
 }: React.ComponentProps<typeof SliderPrimitive.Root> & {
   showThumb: boolean;
@@ -26,7 +26,7 @@ const Slider = ({
       <SliderPrimitive.Range className="bg-primary absolute h-full" />
     </SliderPrimitive.Track>
     {showThumb && (
-      <SliderPrimitive.Thumb className="border-primary/50 bg-background focus-visible:ring-ring block h-4 w-4 rounded-full border shadow-sm transition-colors focus-visible:ring-1 focus-visible:outline-hidden disabled:pointer-events-none disabled:opacity-50" />
+      <SliderPrimitive.Thumb className="border-primary/50 bg-background focus-visible:ring-ring block h-3 w-3 rounded-full border shadow-sm transition-colors focus-visible:ring-1 focus-visible:outline-hidden disabled:pointer-events-none disabled:opacity-50" />
     )}
   </SliderPrimitive.Root>
 );

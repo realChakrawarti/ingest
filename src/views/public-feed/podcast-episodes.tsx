@@ -47,12 +47,12 @@ function PodcastCard({ podcast }: { podcast: ZFeedPodcastItem }) {
 
   return (
     <div
-      className="group/card-item hover-lift shadow-primary/20 rounded border shadow"
+      className="group/card-item hover-lift shadow-primary/20 border shadow"
       key={podcast.id}
     >
-      <div className="flex flex-col gap-3 p-3">
-        <div className="grid grid-cols-[96px_1fr] gap-3">
-          <div className="size-24 overflow-clip rounded">
+      <div className="flex flex-col gap-3 py-3">
+        <div className="grid grid-cols-[96px_1fr] gap-3 px-3">
+          <div className="size-24 overflow-clip">
             <img src={podcast.feedImage} alt={podcast.podcastTitle} />
           </div>
           <button

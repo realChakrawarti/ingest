@@ -1,5 +1,3 @@
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
 import "~/app/styles/globals.css";
 import "~/app/styles/custom.css";
 import type { Metadata } from "next";
@@ -63,7 +61,12 @@ export default function RootLayout({
               {children}
             </main>
           </div>
-          <Toaster closeButton visibleToasts={1} position="bottom-center" />
+          <Toaster
+            duration={Infinity}
+            closeButton
+            visibleToasts={1}
+            position="bottom-center"
+          />
         </Providers>
       </body>
       {process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID && (

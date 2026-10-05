@@ -32,7 +32,7 @@ export default function UpdatePing({ nextUpdate }: { nextUpdate: string }) {
     <div className="text-sm">
       {when > 0 ? (
         <div className="flex items-center gap-2">
-          <span className="bg-primary/75 inline-flex size-2 animate-ping rounded-full" />
+          <span className="bg-primary/75 inline-flex size-2 animate-ping" />
           <p>{diffUpdate}</p>
         </div>
       ) : (

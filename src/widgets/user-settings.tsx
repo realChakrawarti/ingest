@@ -308,6 +308,7 @@ export function UserSettings() {
                 Mark as Watched ({userSettings.watchedPercentage}%)
               </Label>
               <Slider
+                showThumb
                 onValueChange={(value) =>
                   handleLocalChange("watchedPercentage", value[0])
                 }
@@ -323,6 +324,7 @@ export function UserSettings() {
                 Thumbnail Grayscale ({userSettings.thumbnailGrayscale}%)
               </Label>
               <Slider
+                showThumb
                 onValueChange={(value) =>
                   handleLocalChange("thumbnailGrayscale", value[0])
                 }

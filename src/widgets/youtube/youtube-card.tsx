@@ -90,7 +90,7 @@ export default function YouTubeCard(props: YouTubeCardProps) {
   return (
     <div
       id={videoId}
-      className="group/player relative flex scroll-mt-14 flex-col"
+      className="group/player player-card relative flex scroll-mt-14 flex-col"
     >
       <HoverOverlay />
       <div className="relative aspect-video overflow-clip rounded-t-md">
@@ -114,7 +114,7 @@ export default function YouTubeCard(props: YouTubeCardProps) {
         className={cn(
           "flex justify-between items-center",
           "h-11 px-2 py-3 backdrop-blur-xs rounded-b-md",
-          "bg-secondary text-primary text-sm"
+          "border-t-0 border-b-2 border-x-2 text-primary text-sm"
         )}
       >
         {showVideoStats ? (
