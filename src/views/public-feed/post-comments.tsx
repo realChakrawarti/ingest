@@ -21,7 +21,7 @@ import {
   CollapsibleTrigger,
 } from "~/shared/ui/collapsible";
 import formatLargeNumber from "~/shared/utils/format-large-number";
-import { getDifferenceString } from "~/shared/utils/time-diff";
+import { getTimeDifference } from "~/shared/utils/time-diff";
 
 import MarkdownHTML from "~/widgets/markdown-html";
 import { OutLink } from "~/widgets/out-link";
@@ -110,12 +110,12 @@ type CommentProps = {
 };
 
 function Comment({ id, author, score, created_utc, body }: CommentProps) {
-  const currentTime = Date.now() / 1000;
-  const commentCreatedAt = getDifferenceString(
-    (currentTime - created_utc) / 60,
-    "ago",
-    true
-  );
+  const commentCreatedAt = getTimeDifference({
+    value: created_utc * 1_000,
+    suffixEnabled: true,
+    limitMonth: false,
+    nearest: true,
+  })[1];
 
   const commentRef = useRef<HTMLDivElement>(null);
 
