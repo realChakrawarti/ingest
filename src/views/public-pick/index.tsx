@@ -58,8 +58,7 @@ export default async function PublicPick({ pickId }: { pickId: string }) {
                 suffixEnabled: true,
                 limitMonth: true,
               })[1]
-            }{" "}
-            ago
+            }
           </div>
         </div>
       </PublicHeaderTitle>
